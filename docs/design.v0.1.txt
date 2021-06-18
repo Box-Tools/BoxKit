@@ -1,0 +1,13 @@
+---------------   ------------------
+class/interface   Description
+---------------   ------------------
+Data              - class to handle data storage
+                  - stores information in a dictionary format
+                  - takes attributes neccessary to sort
+                  - sorting - ['presorted', 'morton sort', 'x-major']
+
+Block             - points to a Data block
+                  - stores block information ['nxb','nyb','nzb', 'dx', 'dy', 'dz']
+
+
+Grid              - creates Data and Block

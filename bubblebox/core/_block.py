@@ -26,21 +26,8 @@ class Block(object):
 
         """
 
-        self._initialize_attributes(attributes)
-
-        self.xcenter = (self.xmin + self.xmax)/2.
-        self.ycenter = (self.ymin + self.ymax)/2.
-        self.zcenter = (self.zmin + self.zmax)/2.
-
-        self.dx = abs(self.xmax - self.xmin) / self.nxb
-        self.dy = abs(self.ymax - self.ymin) / self.nyb
-        self.dz = abs(self.zmax - self.zmin) / self.nzb
-
-        [self.dx, self.dy, self.dz] = [1. if   grid_spacing == 0. 
-                                          else grid_spacing
-                                          for  grid_spacing in [self.dx, self.dy, self.dz]]
-
-        self.data = data
+        self._set_attributes(attributes)
+        self._set_data(data)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -74,9 +61,9 @@ class Block(object):
         else:
             self.data[key] = value
 
-    def _initialize_attributes(self,attributes):
+    def _set_attributes(self,attributes):
         """
-        Private subroutine for intialization
+        Private method for intialization
         """
 
         _default_attributes = {'nxb'  : 1 , 'nyb'  : 1,  'nzb'  : 1,
@@ -91,4 +78,23 @@ class Block(object):
                 raise ValueError('Attribute "{}" not present in class block'.format(key))
 
         for key, value in _default_attributes.items(): setattr(self, key, value)
+
+        self.xcenter = (self.xmin + self.xmax)/2.
+        self.ycenter = (self.ymin + self.ymax)/2.
+        self.zcenter = (self.zmin + self.zmax)/2.
+
+        self.dx = abs(self.xmax - self.xmin) / self.nxb
+        self.dy = abs(self.ymax - self.ymin) / self.nyb
+        self.dz = abs(self.zmax - self.zmin) / self.nzb
+
+        [self.dx, self.dy, self.dz] = [1. if   grid_spacing == 0. 
+                                          else grid_spacing
+                                          for  grid_spacing in [self.dx, self.dy, self.dz]]
+
+    def _set_data(self,data):
+        """
+        Private method for initialization
+        """
+        self.data = data
+
 
