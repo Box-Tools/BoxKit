@@ -1,5 +1,6 @@
 # Import libraries
 import h5py
+import numpy
 import bubblebox
 
 # Read the hdf5 file
@@ -7,13 +8,14 @@ file_path  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/I
 input_file = h5py.File(file_path,'r')
 
 # Create data object
-data = bubblebox.data(input_file['quantities'])
+data3D = bubblebox.Data(input_file['quantities'])
 
+# Extract axes index and total number of blocks
 iaxis,jaxis,kaxis = [0,1,2]
-
 lblocks = input_file['numbox'][iaxis]*input_file['numbox'][jaxis]*input_file['numbox'][kaxis]
-blocks  = []
 
+# Create blocks
+block3D = []
 for lblock in range(lblocks):
 
     block_attributes = {'nxb'  : input_file['sizebox'][iaxis],
@@ -27,15 +29,17 @@ for lblock in range(lblocks):
                         'zmax' : input_file['boundbox/max'][lblock,kaxis],
                         'tag'  : lblock}
 
-    blocks.append(bubblebox.block(block_attributes,data))
+    block3D.append(bubblebox.Block(block_attributes,data3D))
 
 
-grid_attributes = {'xmin' : -2.5,
-                   'ymin' :  2.5,
-                   'zmin' : -2.5,
-                   'xmax' :  2.5,
-                   'ymax' :  9.0,
-                   'zmax' :  2.5}
+# Create grid
+grid_attributes = {'xmin' : -2.0,
+                   'ymin' :  0.0,
+                   'zmin' : -5.0,
+                   'xmax' :  5.0,
+                   'ymax' : 10.0,
+                   'zmax' :  5.0}
 
-grid = bubblebox.grid(grid_attributes,blocks)
+grid3D = bubblebox.Grid(grid_attributes,block3D)
 
+print(grid3D.lbx,grid3D.lby,grid3D.lbz)

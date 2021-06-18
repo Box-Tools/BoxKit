@@ -1,2 +1,2 @@
-from ._block import block
-from ._grid  import grid
+from ._block import Block
+from ._grid  import Grid

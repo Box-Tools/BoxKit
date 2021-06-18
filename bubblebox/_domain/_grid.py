@@ -1,9 +1,11 @@
 """Module with implementation of the Grid classes."""
 
-class grid(object):
+import pymorton
+
+class Grid(object):
     """Default class for the Grid."""
 
-    type_ = 'default-grid'
+    type_ = 'default'
 
     def __init__(self, attributes, blocks):
         """Initialize the Grid object and allocate the data.
@@ -31,6 +33,7 @@ class grid(object):
         self._check_bounds(blocks)
         self._map_blocks(blocks)
 
+
     def __repr__(self):
         """Return a representation of the object."""
         return ("Grid:\n" +
@@ -41,6 +44,12 @@ class grid(object):
                                                                          self.ymax,
                                                                          self.zmin,
                                                                          self.zmax))
+
+    def __getitem__(self,key):
+        """
+        """
+        return
+
     def _initialize_attributes(self,attributes):
         """
         Private method for intialization
@@ -61,7 +70,26 @@ class grid(object):
         """
         Private method for mapping blocks
         """
-        self.blocks = [block for block in blocks]
+        self.blocks = [block for block in blocks
+                       if ((block.xmin >= self.xmin and block.xmin <= self.xmax) and
+                           (block.xmax >= self.xmin and block.xmax <= self.xmax) and
+                           (block.ymin >= self.ymin and block.ymin <= self.ymax) and
+                           (block.ymax >= self.ymin and block.ymax <= self.ymax) and
+                           (block.zmin >= self.zmin and block.zmin <= self.zmax) and
+                           (block.zmax >= self.zmin and block.zmax <= self.zmax))]
+
+        self.lbx,self.lby,self.lbz = [dict()]*3
+
+        self.lbx['min'],self.lby['min'],self.lbz['min'] = \
+                                     [min([pymorton.deinterleave3(block.tag)[0] for block in self.blocks]),
+                                      min([pymorton.deinterleave3(block.tag)[1] for block in self.blocks]),
+                                      min([pymorton.deinterleave3(block.tag)[2] for block in self.blocks])]
+
+        self.lbx['max'],self.lby['max'],self.lbz['max'] = \
+                                     [max([pymorton.deinterleave3(block.tag)[0] for block in self.blocks]),
+                                      max([pymorton.deinterleave3(block.tag)[1] for block in self.blocks]),
+                                      max([pymorton.deinterleave3(block.tag)[2] for block in self.blocks])]
+
 
     def _check_bounds(self,blocks):
         """
@@ -77,11 +105,9 @@ class grid(object):
                             max([block.zmax for block in blocks])]
         
         min_grid_bounds  = [self.xmin,self.ymin,self.zmin]
-
         max_grid_bounds  = [self.xmax,self.ymax,self.zmax]
 
         min_bound_check = [grid_min >= block_min for grid_min,block_min in zip(min_grid_bounds,min_block_bounds)]
-
         max_bound_check = [grid_max <= block_max for grid_max,block_max in zip(max_grid_bounds,max_block_bounds)]
 
         if False in min_bound_check:
@@ -89,3 +115,4 @@ class grid(object):
         
         if False in max_bound_check:
             raise ValueError('Cannot create grid: max bounds outside blocks scope')
+

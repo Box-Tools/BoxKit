@@ -1,6 +1,6 @@
 """Module with implementation of the Block classes."""
 
-class block(object):
+class Block(object):
     """Default class for a Block."""
 
     type_ = 'default'
@@ -42,7 +42,6 @@ class block(object):
 
         self.data = data
 
-
     def __repr__(self):
         """Return a representation of the object."""
         return ("Block:\n" +
@@ -55,6 +54,25 @@ class block(object):
                                                                          self.zmin,
                                                                          self.zmax) +
                 " - data   : {} \n".format(self.data))
+
+    def __getitem__(self,key):
+        """
+        Get variable data
+        """
+        if self.tag is not None:
+            return self.data[key][self.tag]
+        else:
+            return self.data[key]
+
+
+    def __setitem__(self,key,value):
+        """
+        Set variable data
+        """
+        if self.tag is not None:
+            self.data[key][self.tag] = value
+        else:
+            self.data[key] = value
 
     def _initialize_attributes(self,attributes):
         """

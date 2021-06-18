@@ -1,7 +1,7 @@
 """Module with implementation of the Data classes."""
 
-class data(object):
-    """Default class for a Data packet"""
+class Data(object):
+    """Default class to store data"""
 
     type_ = "default"
 
