@@ -11,23 +11,14 @@ class Block(object):
         Parameters
         ----------
         attributes : dictionary
-                     { 'nxb'  : number of grid points in x dir
-                       'nyb'  : number of grid points in y dir
-                       'nzb'  : number of grid points in z dir
-                       'xmin' : low  bound in x dir
-                       'ymin' : low  bound in y dir
-                       'zmin' : low  bound in z dir
-                       'xmax' : high bound in x dir
-                       'ymax' : high bound in y dir
-                       'zmax' : high bound in z dir
-                       'tag'  : block ID for reference }
+                     {'tag' : block ID}
 
-        data       : data object
+        data : data object
 
         """
 
-        self._set_attributes(attributes)
         self._set_data(data)
+        self._set_attributes(attributes)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -40,7 +31,7 @@ class Block(object):
                                                                          self.ymax,
                                                                          self.zmin,
                                                                          self.zmax) +
-                " - data   : {} \n".format(self.data))
+                " - tag    : {}\n".format(self.tag))
 
     def __getitem__(self,key):
         """
@@ -61,15 +52,18 @@ class Block(object):
         else:
             self.data[key] = value
 
+    def _set_data(self,data):
+        """
+        Private method for initialization
+        """
+        self.data = data
+
     def _set_attributes(self,attributes):
         """
         Private method for intialization
-        """
+        """        
 
-        _default_attributes = {'nxb'  : 1 , 'nyb'  : 1,  'nzb'  : 1,
-                               'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
-                               'xmax' : 0., 'ymax' : 0., 'zmax' : 0.,
-                               'tag'  : None}
+        _default_attributes = {'tag' : None}
 
         for key in attributes:
             if key in _default_attributes:
@@ -79,22 +73,69 @@ class Block(object):
 
         for key, value in _default_attributes.items(): setattr(self, key, value)
 
-        self.xcenter = (self.xmin + self.xmax)/2.
-        self.ycenter = (self.ymin + self.ymax)/2.
-        self.zcenter = (self.zmin + self.zmax)/2.
+        if self.data:
+            self.xcenter = (self.xmin + self.xmax)/2.
+            self.ycenter = (self.ymin + self.ymax)/2.
+            self.zcenter = (self.zmin + self.zmax)/2.
 
-        self.dx = abs(self.xmax - self.xmin) / self.nxb
-        self.dy = abs(self.ymax - self.ymin) / self.nyb
-        self.dz = abs(self.zmax - self.zmin) / self.nzb
+            self.dx = abs(self.xmax - self.xmin) / self.nxb
+            self.dy = abs(self.ymax - self.ymin) / self.nyb
+            self.dz = abs(self.zmax - self.zmin) / self.nzb
 
-        [self.dx, self.dy, self.dz] = [1. if   grid_spacing == 0. 
-                                          else grid_spacing
-                                          for  grid_spacing in [self.dx, self.dy, self.dz]]
+            [self.dx, self.dy, self.dz] = [1. if   grid_spacing == 0. 
+                                              else grid_spacing
+                                              for  grid_spacing in [self.dx, self.dy, self.dz]]
 
-    def _set_data(self,data):
-        """
-        Private method for initialization
-        """
-        self.data = data
+    @property
+    def nxb(self):
+        return self.data.nxb
 
+    @property
+    def nyb(self):
+        return self.data.nyb
+ 
+    @property
+    def nzb(self):
+        return self.data.nxb
 
+    @property
+    def xmin(self):
+        if self.tag is not None:
+            return self.data.xmin[self.tag]
+        else:
+            return self.data.xmin
+
+    @property
+    def ymin(self):
+        if self.tag is not None:
+            return self.data.ymin[self.tag]
+        else:
+            return self.data.ymin
+
+    @property
+    def zmin(self):
+        if self.tag is not None:
+            return self.data.zmin[self.tag]
+        else:
+            return self.data.zmin
+
+    @property
+    def xmax(self):
+        if self.tag is not None:
+            return self.data.xmax[self.tag]
+        else:
+            return self.data.xmax
+
+    @property
+    def ymax(self):
+        if self.tag is not None:
+            return self.data.ymax[self.tag]
+        else:
+            return self.data.ymax
+
+    @property
+    def zmax(self):
+        if self.tag is not None:
+            return self.data.zmax[self.tag]
+        else:
+            return self.data.zmax

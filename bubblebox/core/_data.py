@@ -10,7 +10,17 @@ class Data(object):
 
         Parameters
         ----------
-        attributes - dictionary
+        attributes : dictionary
+                     { 'lblocks' : total number of blocks
+                       'nxb'     : number of grid points per block in x dir
+                       'nyb'     : number of grid points per block in y dir
+                       'nzb'     : number of grid points per block in z dir
+                       'xmin'    : array[lblocks] low  bound in x dir
+                       'ymin'    : array[lblocks] low  bound in y dir
+                       'zmin'    : array[lblocks] low  bound in z dir
+                       'xmax'    : array[lblocks] high bound in x dir
+                       'ymax'    : array[lblocks] high bound in y dir
+                       'zmax'    : array[lblocks] high bound in z dir }
 
         variables  - dictionary of variables
 
@@ -18,7 +28,6 @@ class Data(object):
 
         self._set_attributes(attributes)
         self._set_variables(variables) 
-        self._set_data()
 
     def __repr__(self):
         """
@@ -73,6 +82,8 @@ class Data(object):
 
         self.variables = variables
         self.keys      = list(self.variables.keys())
+
+        self._set_data()
 
     def _set_data(self):
         """

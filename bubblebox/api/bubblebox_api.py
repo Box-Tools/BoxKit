@@ -23,18 +23,7 @@ data_attributes = {'lblocks' : lblocks,
 data3D = bubblebox.core.Data(attributes=data_attributes, variables=input_file['quantities'])
 
 # Create block objects
-block_attributes = [ {'nxb'  : data3D.nxb,
-                      'nyb'  : data3D.nyb,
-                      'nzb'  : data3D.nzb,
-                      'xmin' : data3D.xmin[lblock],
-                      'ymin' : data3D.ymin[lblock],
-                      'zmin' : data3D.zmin[lblock],
-                      'xmax' : data3D.xmax[lblock],
-                      'ymax' : data3D.ymax[lblock],
-                      'zmax' : data3D.zmax[lblock],
-                      'tag'  : lblock} for lblock in range(data3D.lblocks)]
-
-blocks3D = [bubblebox.core.Block(attributes=block_attr, data=data3D) for block_attr in block_attributes]
+blocks3D = [bubblebox.core.Block(attributes={'tag':lblock}, data=data3D) for lblock in range(data3D.lblocks)]
 
 # Create grid object
 grid_attributes = {'xmin' : -2.5,
@@ -46,5 +35,7 @@ grid_attributes = {'xmin' : -2.5,
 
 grid3D = bubblebox.core.Grid(attributes=grid_attributes, blocks=blocks3D)
 
-print(grid3D.data.variables,blocks3D[0].data.variables,blocks3D[100].data.variables,data3D.variables)
-print(grid3D.blocks[0].tag,grid3D.blocks[10].tag)
+# Create volume object
+slice2D = bubblebox.core.Slice(attributes={'plane':'xy'},grid=grid3D)
+
+input_file.close()
