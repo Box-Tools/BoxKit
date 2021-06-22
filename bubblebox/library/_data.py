@@ -1,5 +1,7 @@
 """Module with implementation of the Data classes."""
 
+import numpy
+
 class Data(object):
     """Default class to store data"""
 
@@ -62,18 +64,18 @@ class Data(object):
         Private method for intialization
         """
 
-        _default_attributes = {'lblocks' : 1,              
+        default_attributes = {'lblocks' : 1,              
                                'nxb'  : 1,  'nyb'  : 1,  'nzb'  : 1,
                                'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
                                'xmax' : 0., 'ymax' : 0., 'zmax' : 0.}
 
         for key in attributes:
-            if key in _default_attributes:
-                _default_attributes[key] = attributes[key]
+            if key in default_attributes:
+                default_attributes[key] = attributes[key]
             else:
                 raise ValueError('Attribute "{}" not present in class block'.format(key))
 
-        for key, value in _default_attributes.items(): setattr(self, key, value)
+        for key, value in default_attributes.items(): setattr(self, key, value)
 
     def _set_variables(self,variables):
         """

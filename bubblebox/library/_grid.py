@@ -42,16 +42,16 @@ class Grid(object):
         Private method for intialization
         """
 
-        _default_attributes = {'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
-                               'xmax' : 0., 'ymax' : 0., 'zmax' : 0.}
+        default_attributes = {'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
+                              'xmax' : 0., 'ymax' : 0., 'zmax' : 0.}
 
         for key in attributes:
-            if key in _default_attributes:
-                _default_attributes[key] = attributes[key]
+            if key in default_attributes:
+                default_attributes[key] = attributes[key]
             else:
                 raise ValueError('Attribute "{}" not present in class grid'.format(key))
 
-        for key, value in _default_attributes.items(): setattr(self, key, value)
+        for key, value in default_attributes.items(): setattr(self, key, value)
 
         self.xcenter = (self.xmin + self.xmax)/2.
         self.ycenter = (self.ymin + self.ymax)/2.
@@ -62,8 +62,6 @@ class Grid(object):
         Private method for initialization
         """
         self.blocks = []
-        self.data = []
-        self.lblocks = None
 
         if blocks:
             self._check_bounds(blocks)
@@ -80,37 +78,25 @@ class Grid(object):
                            (block.ymax >= self.ymin and block.ymax <= self.ymax) and
                            (block.zmin >= self.zmin and block.zmin <= self.zmax) and
                            (block.zmax >= self.zmin and block.zmax <= self.zmax))]
+        """
 
         self.lbx,self.lby,self.lbz = [dict(),dict(),dict()]
+ 
+        self.lbx['min'],self.lby['min'],self.lbz['min']  = \
+                      [min([pymorton.deinterleave3(block.tag)[0] for block in self.blocks]),
+                       min([pymorton.deinterleave3(block.tag)[1] for block in self.blocks]),
+                       min([pymorton.deinterleave3(block.tag)[2] for block in self.blocks])]
 
-        if (self.zmin == self.zmax):
-            self.lbx['min'],self.lby['min'],self.lbz['min']  = \
-                          [min([pymorton.deinterleave2(block.tag)[0] for block in self.blocks]),
-                           min([pymorton.deinterleave2(block.tag)[1] for block in self.blocks]),
-                           0]
-
-            self.lbx['max'],self.lby['max'],self.lbz['max'] = \
-                          [max([pymorton.deinterleave2(block.tag)[0] for block in self.blocks]),
-                           max([pymorton.deinterleave2(block.tag)[1] for block in self.blocks]),
-                           0]
-
-        else:
-            self.lbx['min'],self.lby['min'],self.lbz['min']  = \
-                          [min([pymorton.deinterleave3(block.tag)[0] for block in self.blocks]),
-                           min([pymorton.deinterleave3(block.tag)[1] for block in self.blocks]),
-                           min([pymorton.deinterleave3(block.tag)[2] for block in self.blocks])]
-
-            self.lbx['max'],self.lby['max'],self.lbz['max'] = \
-                          [max([pymorton.deinterleave3(block.tag)[0] for block in self.blocks]),
-                           max([pymorton.deinterleave3(block.tag)[1] for block in self.blocks]),
-                           max([pymorton.deinterleave3(block.tag)[2] for block in self.blocks])]
-
-
-        self.data    = self.blocks[0].data
+        self.lbx['max'],self.lby['max'],self.lbz['max'] = \
+                      [max([pymorton.deinterleave3(block.tag)[0] for block in self.blocks]),
+                       max([pymorton.deinterleave3(block.tag)[1] for block in self.blocks]),
+                       max([pymorton.deinterleave3(block.tag)[2] for block in self.blocks])]
 
         self.lbx['total'] = self.lbx['max']-self.lbx['min']+1
         self.lby['total'] = self.lby['max']-self.lby['min']+1
         self.lbz['total'] = self.lbz['max']-self.lbz['min']+1
+
+        """
 
     def _check_bounds(self,blocks):
         """
