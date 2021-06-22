@@ -42,6 +42,7 @@ class Block(object):
                                                                          self.ymax,
                                                                          self.zmin,
                                                                          self.zmax) +
+                " - keys   : {}\n".format(self.keys) +
                 " - tag    : {}\n".format(self.tag))
 
     def __getitem__(self,key):
@@ -120,6 +121,7 @@ class Block(object):
         Private method for initialization
         """
         self.data = data
+        self.keys = data.keys
 
     def _set_attributes(self,attributes):
         """
