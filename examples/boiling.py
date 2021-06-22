@@ -1,4 +1,4 @@
-import bubblebox.api as box
+import bubblebox.api.sample as box
 
 basedir   = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/'
 prefix    = 'INS_Pool_Boiling_hdf5_'

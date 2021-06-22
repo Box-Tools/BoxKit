@@ -46,7 +46,7 @@ def read_dataset(filename):
                        'ymax'    : inputfile['boundbox/max'][:,1],
                        'zmax'    : inputfile['boundbox/max'][:,2]}
 
-    data3D = library.Data(attributes=data_attributes, variables=inputfile['quantities'])
+    data3D = library.domain.Data(attributes=data_attributes, variables=inputfile['quantities'])
 
     # Create block objects
     block_attributes = [{'nxb'  : data3D.nxb,
@@ -60,14 +60,14 @@ def read_dataset(filename):
                          'zmax' : data3D.zmax[lblock],
                          'tag'  : lblock} for lblock in range(data3D.lblocks)] 
 
-    blocks3D = [library.Block(attributes=block_attr,data=data3D) for block_attr in block_attributes]
+    blocks3D = [library.domain.Block(attributes=block_attr,data=data3D) for block_attr in block_attributes]
 
     return Dataset(blocks3D,inputfile)
 
 def create_grid(grid_attributes,dataset):
     """
     """
-    grid3D = library.Grid(attributes=grid_attributes,blocks=dataset.blocks)
+    grid3D = library.domain.Grid(attributes=grid_attributes,blocks=dataset.blocks)
 
     return Dataset(grid3D.blocks,dataset.inputfile)
 

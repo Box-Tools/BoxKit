@@ -1,1 +1,2 @@
-from ._sample import *
+from . import sample
+from . import flash

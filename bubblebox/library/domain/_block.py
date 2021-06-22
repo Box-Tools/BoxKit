@@ -67,36 +67,53 @@ class Block(object):
     def neighbors3(self):
         """
         Return neighbor tags
+
+        order - xplus,xmins,yplus,ymins,zplus,zmins        
         """
 
-        ibx,iby,ibz = pymorton.deinterleave3(self.tag)
+        if self.tag is not None:
+            ibx,iby,ibz = pymorton.deinterleave3(self.tag)
 
-        ibxplus = pymorton.interleave(ibx+1,iby,ibz)
-        ibxmins = pymorton.interleave(ibx-1,iby,ibz)
-
-        ibyplus = pymorton.interleave(ibx,iby+1,ibz)
-        ibymins = pymorton.interleave(ibx,iby-1,ibz)
-        
-        ibzplus = pymorton.interleave(ibx,iby,ibz+1)
-        ibzmins = pymorton.interleave(ibx,iby,ibz-1)
+            neighbors   = [pymorton.interleave(ibx+1,iby,ibz),
+                           pymorton.interleave(ibx-1,iby,ibz),
+                           pymorton.interleave(ibx,iby+1,ibz),
+                           pymorton.interleave(ibx,iby-1,ibz),
+                           pymorton.interleave(ibx,iby,ibz+1),
+                           pymorton.interleave(ibx,iby,ibz-1)]
  
-        return ibxplus,ibxmins,ibyplus,ibymins,ibzplus,ibzmins
+            neighbors = [None if   neighbor > self.data.lblocks
+                              else neighbor
+                              for  neighbor in neighbors]
+
+        else:
+            neighbors  = [None]*6
+
+        return neighbors
 
     @property
     def neighbors2(self):
         """
         Return neighbor tags
+
+        order - xplus,xmins,yplus,ymins,zplus,zmins
         """
+          
+        if self.tag is not None:
+            ibx,iby   = pymorton.deinterleave2(self.tag)
 
-        ibx,iby = pymorton.deinterleave2(self.tag)
+            neighbors = [pymorton.interleave(ibx+1,iby),
+                         pymorton.interleave(ibx-1,iby),
+                         pymorton.interleave(ibx,iby+1),
+                         pymorton.interleave(ibx,iby-1)]
 
-        ibxplus = pymorton.interleave(ibx+1,iby)
-        ibxmins = pymorton.interleave(ibx-1,iby)
+            neighbors = [None if   neighbor > self.data.lblocks
+                              else neighbor
+                              for  neighbor in neighbors]
 
-        ibyplus = pymorton.interleave(ibx,iby+1)
-        ibymins = pymorton.interleave(ibx,iby-1)
+        else:
+            neighbors = [None]*4
          
-        return ibxplus,ibxmins,ibyplus,ibymins
+        return neighbors
 
     def _set_data(self,data):
         """
