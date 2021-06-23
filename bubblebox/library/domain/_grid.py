@@ -7,7 +7,7 @@ class Grid(object):
 
     type_ = 'default'
 
-    def __init__(self, attributes, blocks):
+    def __init__(self, attributes={}, blocks=[]):
         """Initialize the Grid object and allocate the data.
 
         Parameters
@@ -61,8 +61,6 @@ class Grid(object):
         """
         Private method for initialization
         """
-        self.blocks = []
-
         if blocks:
             self._check_bounds(blocks)
             self._map_blocks(blocks)        
@@ -103,27 +101,29 @@ class Grid(object):
         Private method to check block bounds
         """
 
-        min_block_bounds = [min([block.xmin for block in blocks]),
-                            min([block.ymin for block in blocks]),
-                            min([block.zmin for block in blocks])]
+        block_xmin,block_ymin,block_zmin = [min([block.xmin for block in blocks]),
+                                            min([block.ymin for block in blocks]),
+                                            min([block.zmin for block in blocks])]
 
-        max_block_bounds = [max([block.xmax for block in blocks]),
-                            max([block.ymax for block in blocks]),
-                            max([block.zmax for block in blocks])]
+        block_xmax,block_ymax,block_zmax = [max([block.xmax for block in blocks]),
+                                            max([block.ymax for block in blocks]),
+                                            max([block.zmax for block in blocks])]
+
         
-        min_grid_bounds  = [self.xmin,self.ymin,self.zmin]
-        max_grid_bounds  = [self.xmax,self.ymax,self.zmax]
+        min_bound_check = [grid_min >= block_min for grid_min,block_min in 
+                                                 zip ([self.xmin,  self.ymin,  self.zmin],
+                                                      [block_xmin, block_ymin, block_zmin])]
 
-        min_bound_check = [grid_min >= block_min for grid_min,block_min in zip(min_grid_bounds,min_block_bounds)]
-        max_bound_check = [grid_max <= block_max for grid_max,block_max in zip(max_grid_bounds,max_block_bounds)]
+        max_bound_check = [grid_max <= block_max for grid_max,block_max in
+                                                 zip ([self.xmax,  self.ymax,  self.zmax],
+                                                      [block_xmax, block_ymax, block_zmax])]
 
         if False in min_bound_check:
-            print('Min grid  bounds: "{}"\n',min_grid_bounds)
-            print('Min block bounds: "{}"\n',min_block_bounds)
-            raise ValueError('Cannot create grid: min bounds outside blocks scope')
+            raise ValueError(('Cannot create grid: min bounds outside blocks scope\n')+
+                             ('Min grid  bounds: "{}"\n'.format([self.xmin,self.ymin,self.zmin]))+
+                             ('Min block bounds: "{}"\n'.format([block_xmin,block_ymin,block_zmin])))
         
         if False in max_bound_check:
-            print('Max grid  bounds: "{}"\n',max_grid_bounds)
-            print('Max block bounds: "{}"\n',max_block_bounds)
-            raise ValueError('Cannot create grid: max bounds outside blocks scope')
-
+            raise ValueError(('Cannot create grid: max bounds outside blocks scope\n')+
+                             ('Max grid  bounds: "{}"\n'.format([self.xmax,self.ymax,self.zmax]))+
+                             ('Max block bounds: "{}"\n'.format([block_xmax,block_ymax,block_zmax]))) 

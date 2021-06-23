@@ -7,7 +7,7 @@ class Data(object):
 
     type_ = "default"
 
-    def __init__(self, attributes, variables):
+    def __init__(self, attributes={}, variables={}):
         """Initialize the class object
 
         Parameters

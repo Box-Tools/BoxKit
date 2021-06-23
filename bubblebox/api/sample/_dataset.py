@@ -22,13 +22,26 @@ class Dataset(object):
         self.inputfile = inputfile
         self.keys      = keys
 
+        self.xmin,self.ymin,self.zmin = [min([block.xmin for block in self.blocks]),
+                                         min([block.ymin for block in self.blocks]),
+                                         min([block.zmin for block in self.blocks])]
+
+        self.xmax,self.ymax,self.zmax = [max([block.xmax for block in self.blocks]),
+                                         max([block.ymax for block in self.blocks]),
+                                         max([block.zmax for block in self.blocks])]
+
     def __repr__(self):
         """Return a representation of the object."""
-        return ("Data:\n" +
-                " - type : {}\n".format(type(self)) +
-                " - file : {}\n".format(self.inputfile)+
-                " - keys : {}\n".format(self.keys))
-
+        return ("Dataset:\n" +
+                " - type  : {}\n".format(type(self)) +
+                " - file  : {}\n".format(self.inputfile)+
+                " - keys  : {}\n".format(self.keys) +
+                " - bound : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
+                                                                         self.xmax,
+                                                                         self.ymin,
+                                                                         self.ymax,
+                                                                         self.zmin,
+                                                                         self.zmax))
 def read_dataset(filename):
     """
     """
@@ -72,7 +85,12 @@ def read_dataset(filename):
 
     return Dataset(blocks3D,inputfile,data3D.keys)
 
-def create_grid(grid_attributes,dataset):
+def create_grid(dataset,attributes={}):
     """
     """
+    grid_attributes = {'xmin' : dataset.xmin, 'ymin' : dataset.ymin, 'zmin' : dataset.zmin,
+                       'xmax' : dataset.xmax, 'ymax' : dataset.ymax, 'zmax' : dataset.zmax}
+
+    for key in attributes: grid_attributes[key] = attributes[key]
+
     return library.domain.Grid(attributes=grid_attributes,blocks=dataset.blocks)

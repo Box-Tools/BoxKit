@@ -8,7 +8,7 @@ class Slice(object):
 
     type_ = 'default'
 
-    def __init__(self,attributes,grid):
+    def __init__(self,attributes={},grid=None):
         """Initialize the Slice object and allocate the data.
 
         Parameters
@@ -65,21 +65,4 @@ class Slice(object):
         """
         Private method for initialization
         """
-        self.grid = grid
-
-        if(self.plane == 'xy' or self.plane == 'XY'):
-            self.size = [self.grid.lbx['total']*self.grid.data.nxb,
-                         self.grid.lby['total']*self.grid.data.nyb]
-
-        elif(self.plane == 'yz' or self.plane == 'YZ'):
-            self.size = [self.grid.lby['total']*self.grid.data.nyb,
-                         self.grid.lbz['total']*self.grid.data.nzb]
-
-        elif(self.plane == 'xz' or self.plane == 'ZX'):
-            self.size = [self.grid.lbx['total']*self.grid.data.nxb,
-                         self.grid.lbz['total']*self.grid.data.nzb]
-
-        else:
-            raise ValueError('Cannot create plane "{}"'.format(self.plane))
-
-        self.variable = numpy.zeros([self.size[0],self.size[1]])
+        return None

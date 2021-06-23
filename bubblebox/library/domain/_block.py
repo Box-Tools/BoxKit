@@ -7,7 +7,7 @@ class Block(object):
 
     type_ = 'default'
 
-    def __init__(self, attributes, data):
+    def __init__(self, attributes={}, data=None):
         """Initialize the  object and allocate the data.
 
         Parameters

@@ -7,6 +7,7 @@ filetags  = [0,5,10,15,20,25,30,35,40,45,50,55]
 filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
 datasets  = [box.read_dataset(filename) for filename in filenames]
+grids     = [box.create_grid(dataset) for dataset in datasets]
 
 """
 Run some operations
