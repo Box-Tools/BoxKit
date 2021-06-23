@@ -118,8 +118,12 @@ class Grid(object):
         max_bound_check = [grid_max <= block_max for grid_max,block_max in zip(max_grid_bounds,max_block_bounds)]
 
         if False in min_bound_check:
+            print('Min grid  bounds: "{}"\n',min_grid_bounds)
+            print('Min block bounds: "{}"\n',min_block_bounds)
             raise ValueError('Cannot create grid: min bounds outside blocks scope')
         
         if False in max_bound_check:
+            print('Max grid  bounds: "{}"\n',max_grid_bounds)
+            print('Max block bounds: "{}"\n',max_block_bounds)
             raise ValueError('Cannot create grid: max bounds outside blocks scope')
 

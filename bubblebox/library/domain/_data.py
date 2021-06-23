@@ -16,13 +16,7 @@ class Data(object):
                      { 'lblocks' : total number of blocks
                        'nxb'     : number of grid points per block in x dir
                        'nyb'     : number of grid points per block in y dir
-                       'nzb'     : number of grid points per block in z dir
-                       'xmin'    : array[lblocks] low  bound in x dir
-                       'ymin'    : array[lblocks] low  bound in y dir
-                       'zmin'    : array[lblocks] low  bound in z dir
-                       'xmax'    : array[lblocks] high bound in x dir
-                       'ymax'    : array[lblocks] high bound in y dir
-                       'zmax'    : array[lblocks] high bound in z dir }
+                       'nzb'     : number of grid points per block in z dir}
 
         variables  - dictionary of variables
 
@@ -65,9 +59,7 @@ class Data(object):
         """
 
         default_attributes = {'lblocks' : 1,              
-                               'nxb'  : 1,  'nyb'  : 1,  'nzb'  : 1,
-                               'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
-                               'xmax' : 0., 'ymax' : 0., 'zmax' : 0.}
+                                  'nxb' : 1, 'nyb' : 1, 'nzb' : 1}
 
         for key in attributes:
             if key in default_attributes:

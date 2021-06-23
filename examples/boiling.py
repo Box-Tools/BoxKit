@@ -12,4 +12,8 @@ datasets  = [box.read_dataset(filename) for filename in filenames]
 Run some operations
 """
 
+print(id(datasets[0].blocks[0].data),id(datasets[0].blocks[100].data))
+print(id(datasets[5].blocks[0].data),id(datasets[5].blocks[100].data))
+print(id(datasets[10].blocks[0].data),id(datasets[10].blocks[100].data))
+
 [dataset.inputfile.close() for dataset in datasets]
