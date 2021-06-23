@@ -16,4 +16,5 @@ print(id(datasets[0].blocks[0].data),id(datasets[0].blocks[100].data))
 print(id(datasets[5].blocks[0].data),id(datasets[5].blocks[100].data))
 print(id(datasets[10].blocks[0].data),id(datasets[10].blocks[100].data))
 
+print(datasets[0].blocks[0].neighbors3,datasets[10].blocks[0].neighbors3)
 [dataset.inputfile.close() for dataset in datasets]

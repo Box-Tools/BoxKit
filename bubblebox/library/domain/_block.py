@@ -63,6 +63,44 @@ class Block(object):
         else:
             self.data[key] = value
 
+    def _set_attributes(self,attributes):
+        """
+        Private method for intialization
+        """        
+
+        default_attributes = {'nxb'  : 1 , 'nyb'  : 1 , 'nzb'  : 1 ,
+                              'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
+                              'xmax' : 0., 'ymax' : 0., 'zmax' : 0.,
+                              'tag'  : None}
+
+        for key in attributes:
+            if key in default_attributes:
+                default_attributes[key] = attributes[key]
+            else:
+                raise ValueError('Attribute "{}" not present in class block'.format(key))
+
+        for key, value in default_attributes.items(): setattr(self, key, value)
+
+        self.xcenter = (self.xmin + self.xmax)/2.
+        self.ycenter = (self.ymin + self.ymax)/2.
+        self.zcenter = (self.zmin + self.zmax)/2.
+
+        self.dx = abs(self.xmax - self.xmin) / self.nxb
+        self.dy = abs(self.ymax - self.ymin) / self.nyb
+        self.dz = abs(self.zmax - self.zmin) / self.nzb
+
+        [self.dx, self.dy, self.dz] = [1. if   grid_spacing == 0. 
+                                          else grid_spacing
+                                          for  grid_spacing in [self.dx, self.dy, self.dz]]
+
+
+    def _set_data(self,data):
+        """
+        Private method for initialization
+        """
+        self.data = data
+
+
     @property
     def neighbors3(self):
         """
@@ -114,40 +152,3 @@ class Block(object):
             neighbors = [None]*4
          
         return neighbors
-
-    def _set_data(self,data):
-        """
-        Private method for initialization
-        """
-        self.data = data
-
-    def _set_attributes(self,attributes):
-        """
-        Private method for intialization
-        """        
-
-        default_attributes = {'nxb'  : 1 , 'nyb'  : 1 , 'nzb'  : 1 ,
-                              'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
-                              'xmax' : 0., 'ymax' : 0., 'zmax' : 0.,
-                              'tag'  : None}
-
-        for key in attributes:
-            if key in default_attributes:
-                default_attributes[key] = attributes[key]
-            else:
-                raise ValueError('Attribute "{}" not present in class block'.format(key))
-
-        for key, value in default_attributes.items(): setattr(self, key, value)
-
-        self.xcenter = (self.xmin + self.xmax)/2.
-        self.ycenter = (self.ymin + self.ymax)/2.
-        self.zcenter = (self.zmin + self.zmax)/2.
-
-        self.dx = abs(self.xmax - self.xmin) / self.nxb
-        self.dy = abs(self.ymax - self.ymin) / self.nyb
-        self.dz = abs(self.zmax - self.zmin) / self.nzb
-
-        [self.dx, self.dy, self.dz] = [1. if   grid_spacing == 0. 
-                                          else grid_spacing
-                                          for  grid_spacing in [self.dx, self.dy, self.dz]]
-

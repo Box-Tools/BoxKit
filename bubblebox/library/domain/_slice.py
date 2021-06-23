@@ -47,6 +47,20 @@ class Slice(object):
         
         return None
 
+    def _set_attributes(self,attributes):
+        """
+        Private method for initialization
+        """
+        default_attributes = {'plane' : 'xy'}
+
+        for key in attributes:
+            if key in default_attributes:
+                default_attributes[key] = attributes[key]
+            else:
+                raise ValueError('Attribute "{}" not present in class grid'.format(key))
+
+        for key, value in default_attributes.items(): setattr(self, key, value)
+
     def _set_grid(self,grid):
         """
         Private method for initialization
@@ -69,17 +83,3 @@ class Slice(object):
             raise ValueError('Cannot create plane "{}"'.format(self.plane))
 
         self.variable = numpy.zeros([self.size[0],self.size[1]])
-
-    def _set_attributes(self,attributes):
-        """
-        Private method for initialization
-        """
-        default_attributes = {'plane' : 'xy'}
-
-        for key in attributes:
-            if key in default_attributes:
-                default_attributes[key] = attributes[key]
-            else:
-                raise ValueError('Attribute "{}" not present in class grid'.format(key))
-
-        for key, value in default_attributes.items(): setattr(self, key, value)
