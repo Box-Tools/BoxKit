@@ -1,4 +1,3 @@
-
 The MIT License
 
 Copyright (c) 2010-2020 Google LLC. http://angularjs.org

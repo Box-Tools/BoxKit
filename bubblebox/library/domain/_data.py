@@ -65,7 +65,7 @@ class Data(object):
             if key in default_attributes:
                 default_attributes[key] = attributes[key]
             else:
-                raise ValueError('Attribute "{}" not present in class block'.format(key))
+                raise ValueError('Attribute "{}" not present in class Data'.format(key))
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 

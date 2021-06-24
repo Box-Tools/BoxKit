@@ -1,1 +1,1 @@
-"""Stub implementation"""
+"""Initialization of analysis goes here"""

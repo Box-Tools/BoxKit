@@ -1,14 +1,14 @@
-"""Module with implementation of the Grid classes."""
+"""Module with implementation of the Volume classes."""
 
 import pymorton
 
-class Grid(object):
-    """Default class for the Grid."""
+class Volume(object):
+    """Default class for the Volume."""
 
     type_ = 'default'
 
     def __init__(self, attributes={}, blocks=[]):
-        """Initialize the Grid object and allocate the data.
+        """Initialize the Volume object and allocate the data.
 
         Parameters
         ----------
@@ -29,7 +29,7 @@ class Grid(object):
 
     def __repr__(self):
         """Return a representation of the object."""
-        return ("Grid:\n" +
+        return ("Volume:\n" +
                 " - type      : {}\n".format(type(self)) +
                 " - bound     : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
                                                                          self.xmax,
@@ -49,7 +49,7 @@ class Grid(object):
             if key in default_attributes:
                 default_attributes[key] = attributes[key]
             else:
-                raise ValueError('Attribute "{}" not present in class grid'.format(key))
+                raise ValueError('Attribute "{}" not present in class Volume'.format(key))
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 
@@ -76,25 +76,6 @@ class Grid(object):
                            (block.ymax >= self.ymin and block.ymax <= self.ymax) and
                            (block.zmin >= self.zmin and block.zmin <= self.zmax) and
                            (block.zmax >= self.zmin and block.zmax <= self.zmax))]
-        """
-
-        self.lbx,self.lby,self.lbz = [dict(),dict(),dict()]
- 
-        self.lbx['min'],self.lby['min'],self.lbz['min']  = \
-                      [min([pymorton.deinterleave3(block.tag)[0] for block in self.blocks]),
-                       min([pymorton.deinterleave3(block.tag)[1] for block in self.blocks]),
-                       min([pymorton.deinterleave3(block.tag)[2] for block in self.blocks])]
-
-        self.lbx['max'],self.lby['max'],self.lbz['max'] = \
-                      [max([pymorton.deinterleave3(block.tag)[0] for block in self.blocks]),
-                       max([pymorton.deinterleave3(block.tag)[1] for block in self.blocks]),
-                       max([pymorton.deinterleave3(block.tag)[2] for block in self.blocks])]
-
-        self.lbx['total'] = self.lbx['max']-self.lbx['min']+1
-        self.lby['total'] = self.lby['max']-self.lby['min']+1
-        self.lbz['total'] = self.lbz['max']-self.lbz['min']+1
-
-        """
 
     def _check_bounds(self,blocks):
         """
@@ -110,20 +91,20 @@ class Grid(object):
                                             max([block.zmax for block in blocks])]
 
         
-        min_bound_check = [grid_min >= block_min for grid_min,block_min in 
+        min_bound_check = [volume_min >= block_min for volume_min,block_min in 
                                                  zip ([self.xmin,  self.ymin,  self.zmin],
                                                       [block_xmin, block_ymin, block_zmin])]
 
-        max_bound_check = [grid_max <= block_max for grid_max,block_max in
+        max_bound_check = [volume_max <= block_max for volume_max,block_max in
                                                  zip ([self.xmax,  self.ymax,  self.zmax],
                                                       [block_xmax, block_ymax, block_zmax])]
 
         if False in min_bound_check:
-            raise ValueError(('Cannot create grid: min bounds outside blocks scope\n')+
-                             ('Min grid  bounds: "{}"\n'.format([self.xmin,self.ymin,self.zmin]))+
-                             ('Min block bounds: "{}"\n'.format([block_xmin,block_ymin,block_zmin])))
+            raise ValueError(('Cannot create volume: min bounds outside blocks scope\n')+
+                             ('Min volume bounds: "{}"\n'.format([self.xmin,self.ymin,self.zmin]))+
+                             ('Min block  bounds: "{}"\n'.format([block_xmin,block_ymin,block_zmin])))
         
         if False in max_bound_check:
-            raise ValueError(('Cannot create grid: max bounds outside blocks scope\n')+
-                             ('Max grid  bounds: "{}"\n'.format([self.xmax,self.ymax,self.zmax]))+
-                             ('Max block bounds: "{}"\n'.format([block_xmax,block_ymax,block_zmax]))) 
+            raise ValueError(('Cannot create volume: max bounds outside blocks scope\n')+
+                             ('Max volume bounds: "{}"\n'.format([self.xmax,self.ymax,self.zmax]))+
+                             ('Max block  bounds: "{}"\n'.format([block_xmax,block_ymax,block_zmax]))) 
