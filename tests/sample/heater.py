@@ -47,7 +47,15 @@ class TestHeater(unittest.TestCase):
                                   for  neighbor in neighbors]
 
                 self.assertTrue(neighbors == block.neighbors2, 'Neigbhors are inconsitent with morton order')                
+    def test_measure_bubbles(self):
+        """test bubble measurement"""
 
+        self._setup('oneblk')
+
+        slices = [box.create_slice(dataset) for dataset in self.datasets]
+
+        bubbleprops = [box.measure_regionprops(slice,'phi') for slice in slices]
+       
     def tearDown(self):
         """close files """
 

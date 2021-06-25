@@ -1,1 +1,1 @@
-"""Initialization of analysis goes here"""
+from ._measure import BlockProps

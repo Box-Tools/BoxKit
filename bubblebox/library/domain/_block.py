@@ -137,12 +137,12 @@ class Block(object):
         """
           
         if self.tag is not None:
-            ibx,iby   = pymorton.deinterleave2(self.tag)
+            ib,jb   = pymorton.deinterleave2(self.tag)
 
-            neighbors = [pymorton.interleave(ibx+1,iby),
-                         pymorton.interleave(ibx-1,iby),
-                         pymorton.interleave(ibx,iby+1),
-                         pymorton.interleave(ibx,iby-1)]
+            neighbors = [pymorton.interleave(ib+1,jb),
+                         pymorton.interleave(ib-1,jb),
+                         pymorton.interleave(ib,jb+1),
+                         pymorton.interleave(ib,jb-1)]
 
             neighbors = [None if   neighbor > self.data.lblocks
                               else neighbor

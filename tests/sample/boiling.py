@@ -28,7 +28,7 @@ class TestBoiling(unittest.TestCase):
                                   else False
                                   for  block in dataset.blocks ]
 
-            self.assertTrue(not False in data_assert, 'Data pointers inconsistent')
+            self.assertTrue(not False in data_assert, 'Data pointers are inconsistent')
 
     def test_neighbors(self):
         """test neighbors"""

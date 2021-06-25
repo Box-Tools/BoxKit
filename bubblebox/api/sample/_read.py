@@ -56,27 +56,27 @@ def read_dataset2D(filename):
     # Extract data
     lblocks = inputfile['numbox'][0]*inputfile['numbox'][1]
     nxb     = inputfile['sizebox'][0]
-    nyb     = inputfile['sizebox'][1]
+    nzb     = inputfile['sizebox'][1]
     xmin    = inputfile['boundbox/min'][:,0]
-    ymin    = inputfile['boundbox/min'][:,1]
+    zmin    = inputfile['boundbox/min'][:,1]
     xmax    = inputfile['boundbox/max'][:,0]
-    ymax    = inputfile['boundbox/max'][:,1]
+    zmax    = inputfile['boundbox/max'][:,1]
     quants  = inputfile['quantities']
 
     # Create data object
     data_attributes = {'lblocks' : lblocks,
                        'nxb'     : nxb,
-                       'nyb'     : nyb}
+                       'nzb'     : nzb}
 
     data2D = library.domain.Data(attributes=data_attributes, variables=quants)
 
     # Create block objects
     block_attributes = [{'nxb'  : nxb,
-                         'nyb'  : nyb,
+                         'nzb'  : nzb,
                          'xmin' : xmin[lblock],
-                         'ymin' : ymin[lblock],
+                         'zmin' : zmin[lblock],
                          'xmax' : xmax[lblock],
-                         'ymax' : ymax[lblock],
+                         'zmax' : zmax[lblock],
                          'tag'  : lblock if data2D.lblocks > 1 else None} for lblock in range(data2D.lblocks)] 
 
     blocks2D = [library.domain.Block(attributes=block_attr,data=data2D) for block_attr in block_attributes]

@@ -10,15 +10,20 @@ def create_volume(dataset,attributes={}):
 
     for key in attributes: volume_attributes[key] = attributes[key]
 
-    return library.domain.Volume(attributes=volume_attributes,blocks=dataset.blocks)
+    volume = library.domain.Volume(attributes=volume_attributes,blocks=dataset.blocks)
+
+    return volume
 
 def create_slice(dataset,attributes={}):
     """
     """
-    slice_attributes = {'xmin' : dataset.xmin, 'ymin' : dataset.ymin,
-                        'xmax' : dataset.xmax, 'ymax' : dataset.ymax}
+    slice_attributes = {'plane' : 'y',
+                        'imin'  : dataset.xmin, 'jmin' : dataset.zmin,
+                        'imax'  : dataset.xmax, 'jmax' : dataset.zmax}
 
     for key in attributes: slice_attributes[key] = attributes[key]
 
-    return library.domain.Slice(attributes=slice_attributes,blocks=dataset.blocks)
+    slice = library.domain.Slice(attributes=slice_attributes,blocks=dataset.blocks)
+
+    return slice
 
