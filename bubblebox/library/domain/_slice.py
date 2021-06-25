@@ -36,14 +36,13 @@ class Slice(object):
                                                               self.imax,
                                                               self.jmin,
                                                               self.jmax))
-
     def _set_attributes(self,attributes):
         """
         Private method for initialization
         """
         default_attributes = {'plane': 'y',
-                              'imin' : 0., 'jmin' : 0.,
-                              'imax' : 0., 'jmax' : 0.}
+                              'imin' :  0., 'jmin' : 0.,
+                              'imax' :  0., 'jmax' : 0.}
 
         for key in attributes:
             if key in default_attributes:
@@ -53,52 +52,8 @@ class Slice(object):
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 
-        self.icenter = (self.imin + self.imax)/2.
-        self.jcenter = (self.jmin + self.jmax)/2.
-
     def _set_blocks(self,blocks):
         """
         Private method for initialization
         """
-        if blocks:
-            self._check_bounds(blocks)
-            self._map_blocks(blocks)        
-
-    def _map_blocks(self,blocks):
-        """
-        Private method for mapping blocks
-        """
-        self.blocks = [block for block in blocks
-                       if ((block.xmin >= self.imin and block.xmin <= self.imax) and
-                           (block.xmax >= self.imin and block.xmax <= self.imax) and
-                           (block.zmin >= self.jmin and block.zmin <= self.jmax) and
-                           (block.zmax >= self.jmin and block.zmax <= self.jmax))]
-
-    def _check_bounds(self,blocks):
-        """
-        Private method to check block bounds
-        """
-
-        block_xmin,block_zmin = [min([block.xmin for block in blocks]),
-                                 min([block.zmin for block in blocks])]
-
-        block_xmax,block_zmax = [max([block.xmax for block in blocks]),
-                                 max([block.zmax for block in blocks])]
-        
-        min_bound_check = [slice_min >= block_min for slice_min,block_min in 
-                                                  zip ([self.imin,  self.jmin],
-                                                       [block_xmin, block_zmin])]
-
-        max_bound_check = [slice_max <= block_max for slice_max,block_max in
-                                                  zip ([self.imax,  self.jmax],
-                                                       [block_xmax, block_zmax])]
-
-        if False in min_bound_check:
-            raise ValueError(('Cannot create slice: min bounds outside blocks scope\n')+
-                             ('Min slice bounds: "{}"\n'.format([self.imin,self.jmin]))+
-                             ('Min block  bounds: "{}"\n'.format([block_xmin,block_zmin])))
-        
-        if False in max_bound_check:
-            raise ValueError(('Cannot create slice: max bounds outside blocks scope\n')+
-                             ('Max slice bounds: "{}"\n'.format([self.imax,self.jmax]))+
-                             ('Max block  bounds: "{}"\n'.format([block_xmax,block_zmax]))) 
+        self.blocks = blocks

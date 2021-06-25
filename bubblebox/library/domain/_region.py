@@ -1,14 +1,14 @@
-"""Module with implementation of the Volume classes."""
+"""Module with implementation of the Region classes."""
 
 import pymorton
 
-class Volume(object):
-    """Default class for the Volume."""
+class Region(object):
+    """Default class for the Region."""
 
     type_ = 'default'
 
     def __init__(self, attributes={}, blocks=[]):
-        """Initialize the Volume object and allocate the data.
+        """Initialize the Region object and allocate the data.
 
         Parameters
         ----------
@@ -29,7 +29,7 @@ class Volume(object):
 
     def __repr__(self):
         """Return a representation of the object."""
-        return ("Volume:\n" +
+        return ("Region:\n" +
                 " - type      : {}\n".format(type(self)) +
                 " - bound     : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
                                                                          self.xmax,
@@ -49,13 +49,9 @@ class Volume(object):
             if key in default_attributes:
                 default_attributes[key] = attributes[key]
             else:
-                raise ValueError('Attribute "{}" not present in class Volume'.format(key))
+                raise ValueError('Attribute "{}" not present in class Region'.format(key))
 
         for key, value in default_attributes.items(): setattr(self, key, value)
-
-        self.xcenter = (self.xmin + self.xmax)/2.
-        self.ycenter = (self.ymin + self.ymax)/2.
-        self.zcenter = (self.zmin + self.zmax)/2.
 
     def _set_blocks(self,blocks):
         """
@@ -91,20 +87,20 @@ class Volume(object):
                                             max([block.zmax for block in blocks])]
 
         
-        min_bound_check = [volume_min >= block_min for volume_min,block_min in 
+        min_bound_check = [region_min >= block_min for region_min,block_min in 
                                                  zip ([self.xmin,  self.ymin,  self.zmin],
                                                       [block_xmin, block_ymin, block_zmin])]
 
-        max_bound_check = [volume_max <= block_max for volume_max,block_max in
+        max_bound_check = [region_max <= block_max for region_max,block_max in
                                                  zip ([self.xmax,  self.ymax,  self.zmax],
                                                       [block_xmax, block_ymax, block_zmax])]
 
         if False in min_bound_check:
-            raise ValueError(('Cannot create volume: min bounds outside blocks scope\n')+
-                             ('Min volume bounds: "{}"\n'.format([self.xmin,self.ymin,self.zmin]))+
+            raise ValueError(('Cannot create region: min bounds outside blocks scope\n')+
+                             ('Min region bounds: "{}"\n'.format([self.xmin,self.ymin,self.zmin]))+
                              ('Min block  bounds: "{}"\n'.format([block_xmin,block_ymin,block_zmin])))
         
         if False in max_bound_check:
-            raise ValueError(('Cannot create volume: max bounds outside blocks scope\n')+
-                             ('Max volume bounds: "{}"\n'.format([self.xmax,self.ymax,self.zmax]))+
+            raise ValueError(('Cannot create region: max bounds outside blocks scope\n')+
+                             ('Max region bounds: "{}"\n'.format([self.xmax,self.ymax,self.zmax]))+
                              ('Max block  bounds: "{}"\n'.format([block_xmax,block_ymax,block_zmax]))) 

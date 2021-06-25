@@ -2,8 +2,9 @@
 
 from skimage import measure
 
-def BlockProps(block,key):
+def block_props(block,key):
     """
+    calculate regionprops for a block
     """
 
     bwlabel    = measure.label(block[key][:] >= 0)

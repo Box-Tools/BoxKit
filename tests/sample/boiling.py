@@ -16,8 +16,8 @@ class TestBoiling(unittest.TestCase):
         prefix    = 'INS_Pool_Boiling_hdf5_'
         filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
-        self.datasets  = [box.read_dataset3D(filename) for filename in filenames]
-        self.volumes   = [box.create_volume(dataset)   for dataset  in self.datasets]
+        self.datasets  = [box.dataset_read3D(filename) for filename in filenames]
+        self.regions   = [box.region_create(dataset)   for dataset  in self.datasets]
 
     def test_data_pointers(self):
         """test data pointers"""

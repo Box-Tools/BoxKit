@@ -1,4 +1,4 @@
 from ._data   import Data
 from ._block  import Block
-from ._volume import Volume
+from ._region import Region
 from ._slice  import Slice

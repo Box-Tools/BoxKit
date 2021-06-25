@@ -15,7 +15,7 @@ class TestHeater(unittest.TestCase):
 
         prefix         = "".join([prefix,'/INS_Pool_Boiling_Heater_hdf5_'])
         filenames      = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
-        self.datasets  = [box.read_dataset2D(filename) for filename in filenames]
+        self.datasets  = [box.dataset_read2D(filename) for filename in filenames]
 
     def test_heater_oneblk(self):
         """test neighbors"""
@@ -52,10 +52,9 @@ class TestHeater(unittest.TestCase):
 
         self._setup('oneblk')
 
-        slices = [box.create_slice(dataset) for dataset in self.datasets]
-
-        bubbleprops = [box.measure_regionprops(slice,'phi') for slice in slices]
-       
+        regions     = [box.region_create(dataset) for dataset in self.datasets]
+        bubbleprops = [box.region_bubbles(region,'phi') for region in regions]
+      
     def tearDown(self):
         """close files """
 
