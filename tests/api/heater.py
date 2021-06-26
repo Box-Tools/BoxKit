@@ -26,8 +26,8 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
             for block in dataset.blocklist:
 
-                neighborlist = [None]*4
-                self.assertTrue(neighborlist == block.neighbors2D, 'Single block data structure has no neighbors')
+                neighlist = [None]*4
+                self.assertTrue(neighlist == block.neighlist, 'Single block data structure has no neighbors')
                 
         [dataset.inputfile.close() for dataset in dataframes]
 
@@ -45,21 +45,22 @@ class TestHeater(unittest.TestCase):
 
                 ibx,iby   = pymorton.deinterleave2(block.tag)
 
-                neighborlist = [pymorton.interleave(ibx+1,iby),
-                                pymorton.interleave(ibx-1,iby),
-                                pymorton.interleave(ibx,iby+1),
-                                pymorton.interleave(ibx,iby-1)]
+                neighlist = [pymorton.interleave(ibx+1,iby),
+                             pymorton.interleave(ibx-1,iby),
+                             pymorton.interleave(ibx,iby+1),
+                             pymorton.interleave(ibx,iby-1)]
 
-                neighborlist = [None if   neighbor > block.data.numblocks
-                                     else neighbor
-                                     for  neighbor in neighborlist]
+                neighlist = [None if   neighbor > block.data.nblocks
+                                  else neighbor
+                                  for  neighbor in neighlist]
 
-                self.assertTrue(neighborlist == block.neighbors2D, 'Neigbhors are inconsitent with morton order')                
+                self.assertTrue(neighlist == block.neighlist, 'Neigbhors are inconsitent with morton order')
+
         [dataset.inputfile.close() for dataset in dataframes]
 
         print("2D neighbors are in morton order\n")
 
-    def test_measure_bubbles(self):
+    def test_measure_bubbles_oneblk(self):
         """test bubble measurement"""
 
         self._setup('oneblk')
@@ -68,13 +69,13 @@ class TestHeater(unittest.TestCase):
         regionframes  = [box.create.region(dataset) for dataset in dataframes]
         bubbleframes  = [box.measure.bubbles(region,'phi') for region in regionframes]
 
-        numbubbles = [len(bubblelist) for bubblelist in bubbleframes]
+        bubblenum     = [len(bubblelist) for bubblelist in bubbleframes]
         
-        self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
+        self.assertEqual(bubblenum,[488,163,236,236,242,234,257,223,259,291,235,223])
 
         [dataset.inputfile.close() for dataset in dataframes]
 
-        print("Bubble measurements succesfull\n")
+        print("Single block bubble measurements successful\n")
     
 if __name__ == '__main__':
     unittest.main()

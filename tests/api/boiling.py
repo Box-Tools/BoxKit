@@ -39,18 +39,19 @@ class TestBoiling(unittest.TestCase):
 
                 ibx,iby,ibz  = pymorton.deinterleave3(block.tag)
 
-                neighborlist = [pymorton.interleave(ibx+1,iby,ibz),
-                                pymorton.interleave(ibx-1,iby,ibz),
-                                pymorton.interleave(ibx,iby+1,ibz),
-                                pymorton.interleave(ibx,iby-1,ibz),
-                                pymorton.interleave(ibx,iby,ibz+1),
-                                pymorton.interleave(ibx,iby,ibz-1)]
+                neighlist = [pymorton.interleave(ibx+1,iby,ibz),
+                             pymorton.interleave(ibx-1,iby,ibz),
+                             pymorton.interleave(ibx,iby+1,ibz),
+                             pymorton.interleave(ibx,iby-1,ibz),
+                             pymorton.interleave(ibx,iby,ibz+1),
+                             pymorton.interleave(ibx,iby,ibz-1)]
 
-                neighborlist = [None if   neighbor > block.data.numblocks
-                                     else neighbor
-                                     for  neighbor in neighborlist]
+                neighlist = [None if   neighbor > block.data.nblocks
+                                  else neighbor
+                                  for  neighbor in neighlist]
 
-                self.assertTrue(neighborlist == block.neighbors3D, 'Neigbhors are inconsitent with morton order')                
+                self.assertTrue(neighlist == block.neighlist, 'Neigbhors are inconsitent with morton order')
+
         print("3D neighbors are in morton order\n")
 
     def tearDown(self):

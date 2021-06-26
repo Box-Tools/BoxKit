@@ -13,7 +13,7 @@ class Data(object):
         Parameters
         ----------
         attributes : dictionary
-                     { 'numblocks' : total number of blocks
+                     { 'nblocks'   : total number of blocks
                        'nxb'       : number of grid points per block in x dir
                        'nyb'       : number of grid points per block in y dir
                        'nzb'       : number of grid points per block in z dir}
@@ -58,7 +58,7 @@ class Data(object):
         Private method for intialization
         """
 
-        default_attributes = {'numblocks' : 1,              
+        default_attributes = {'nblocks' : 1,              
                               'nxb' : 1, 'nyb' : 1, 'nzb' : 1}
 
         for key in attributes:
@@ -86,4 +86,4 @@ class Data(object):
 
         empty_keys = [key for key in self.keys if self.variables[key] == None]
 
-        for key in empty_keys: self.variables[key] = numpy.zeros([self.numblocks,self.nxb,self.nyb,self.nzb])
+        for key in empty_keys: self.variables[key] = numpy.zeros([self.nblocks,self.nxb,self.nyb,self.nzb])

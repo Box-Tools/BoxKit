@@ -13,7 +13,7 @@ def dataset3D(filename,variables=[]):
     inputfile = h5py.File(filename,'r')
 
     # Extract data
-    numblocks = inputfile['numbox'][0]*inputfile['numbox'][1]*inputfile['numbox'][2]
+    nblocks   = inputfile['numbox'][0]*inputfile['numbox'][1]*inputfile['numbox'][2]
     nxb       = inputfile['sizebox'][0]
     nyb       = inputfile['sizebox'][1]
     nzb       = inputfile['sizebox'][2]
@@ -29,10 +29,10 @@ def dataset3D(filename,variables=[]):
     variables.update(inputfile['quantities'])
 
     # Create data object
-    data_attributes = {'numblocks': numblocks,
-                       'nxb'      : nxb,
-                       'nyb'      : nyb,
-                       'nzb'      : nzb}
+    data_attributes = {'nblocks' : nblocks,
+                       'nxb'     : nxb,
+                       'nyb'     : nyb,
+                       'nzb'     : nzb}
 
     data = Data(data_attributes,variables)
 
@@ -46,7 +46,7 @@ def dataset3D(filename,variables=[]):
                          'xmax' : xmax[lblock],
                          'ymax' : ymax[lblock],
                          'zmax' : zmax[lblock],
-                         'tag'  : lblock if data.numblocks > 1 else None} for lblock in range(data.numblocks)] 
+                         'tag'  : lblock if data.nblocks > 1 else None} for lblock in range(data.nblocks)] 
 
     blocklist = [Block(attributes,data) for attributes in block_attributes]
 
@@ -59,7 +59,7 @@ def dataset2D(filename,variables=[]):
     inputfile = h5py.File(filename,'r')
 
     # Extract data
-    numblocks = inputfile['numbox'][0]*inputfile['numbox'][1]
+    nblocks   = inputfile['numbox'][0]*inputfile['numbox'][1]
     nxb       = inputfile['sizebox'][0]
     nzb       = inputfile['sizebox'][1]
     xmin      = inputfile['boundbox/min'][:,0]
@@ -72,9 +72,9 @@ def dataset2D(filename,variables=[]):
     variables.update(inputfile['quantities'])
 
     # Create data object
-    data_attributes = {'numblocks': numblocks,
-                       'nxb'      : nxb,
-                       'nzb'      : nzb}
+    data_attributes = {'nblocks' : nblocks,
+                       'nxb'     : nxb,
+                       'nzb'     : nzb}
 
     data = Data(data_attributes,variables)
 
@@ -85,7 +85,7 @@ def dataset2D(filename,variables=[]):
                          'zmin' : zmin[lblock],
                          'xmax' : xmax[lblock],
                          'zmax' : zmax[lblock],
-                         'tag'  : lblock if data.numblocks > 1 else None} for lblock in range(data.numblocks)] 
+                         'tag'  : lblock if data.nblocks > 1 else None} for lblock in range(data.nblocks)] 
 
     blocklist = [Block(attributes,data) for attributes in block_attributes]
 
