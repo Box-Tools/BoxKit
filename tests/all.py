@@ -3,7 +3,7 @@
 import sys
 import unittest
 
-tests = ['sample.boiling','sample.heater']
+tests = ['api.boiling','api.heater']
 
 suite = unittest.TestSuite()
 

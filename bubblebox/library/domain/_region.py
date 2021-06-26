@@ -7,7 +7,7 @@ class Region(object):
 
     type_ = 'default'
 
-    def __init__(self, attributes={}, blocks=[]):
+    def __init__(self, attributes={}, blocklist=[]):
         """Initialize the Region object and allocate the data.
 
         Parameters
@@ -20,12 +20,12 @@ class Region(object):
                        'ymax' : high bound in y dir
                        'zmax' : high bound in z dir}
 
-        blocks     : list of block objects
+        blocklist  : list of block objects
 
         """
        
         self._set_attributes(attributes)
-        self._set_blocks(blocks)
+        self._set_blocklist(blocklist)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -53,54 +53,62 @@ class Region(object):
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 
-    def _set_blocks(self,blocks):
+    def _set_blocklist(self,blocklist):
         """
         Private method for initialization
         """
-        if blocks:
-            self._check_bounds(blocks)
-            self._map_blocks(blocks)        
 
-    def _map_blocks(self,blocks):
-        """
-        Private method for mapping blocks
-        """
-        self.blocks = [block for block in blocks
-                       if ((block.xmin >= self.xmin and block.xmin <= self.xmax) and
-                           (block.xmax >= self.xmin and block.xmax <= self.xmax) and
-                           (block.ymin >= self.ymin and block.ymin <= self.ymax) and
-                           (block.ymax >= self.ymin and block.ymax <= self.ymax) and
-                           (block.zmin >= self.zmin and block.zmin <= self.zmax) and
-                           (block.zmax >= self.zmin and block.zmax <= self.zmax))]
+        self._check_blocklist(blocklist)
+        self._map_blocklist(blocklist)
 
-    def _check_bounds(self,blocks):
+    def _map_blocklist(self,blocklist):
         """
-        Private method to check block bounds
+        Private method for mapping blocklist
+
         """
 
-        block_xmin,block_ymin,block_zmin = [min([block.xmin for block in blocks]),
-                                            min([block.ymin for block in blocks]),
-                                            min([block.zmin for block in blocks])]
+        if not blocklist: return
 
-        block_xmax,block_ymax,block_zmax = [max([block.xmax for block in blocks]),
-                                            max([block.ymax for block in blocks]),
-                                            max([block.zmax for block in blocks])]
+        self.blocklist = [block for block in blocklist
+                          if ((block.xmin >= self.xmin and block.xmin <= self.xmax) and
+                              (block.xmax >= self.xmin and block.xmax <= self.xmax) and
+                              (block.ymin >= self.ymin and block.ymin <= self.ymax) and
+                              (block.ymax >= self.ymin and block.ymax <= self.ymax) and
+                              (block.zmin >= self.zmin and block.zmin <= self.zmax) and
+                              (block.zmax >= self.zmin and block.zmax <= self.zmax))]
+
+    def _check_blocklist(self,blocklist):
+        """
+        Private method to check blocklist
+        """
+
+        if not blocklist: return
+
+        block_xmin,block_ymin,block_zmin = [min([block.xmin for block in blocklist]),
+                                            min([block.ymin for block in blocklist]),
+                                            min([block.zmin for block in blocklist])]
+
+        block_xmax,block_ymax,block_zmax = [max([block.xmax for block in blocklist]),
+                                            max([block.ymax for block in blocklist]),
+                                            max([block.zmax for block in blocklist])]
 
         
-        min_bound_check = [region_min >= block_min for region_min,block_min in 
-                                                 zip ([self.xmin,  self.ymin,  self.zmin],
-                                                      [block_xmin, block_ymin, block_zmin])]
+        min_bound_check = [region_min >= block_min 
+                           for   region_min,block_min in 
+                           zip ([self.xmin,  self.ymin,  self.zmin],
+                                [block_xmin, block_ymin, block_zmin])]
 
-        max_bound_check = [region_max <= block_max for region_max,block_max in
-                                                 zip ([self.xmax,  self.ymax,  self.zmax],
-                                                      [block_xmax, block_ymax, block_zmax])]
+        max_bound_check = [region_max <= block_max 
+                           for   region_max,block_max in
+                           zip ([self.xmax,  self.ymax,  self.zmax],
+                                [block_xmax, block_ymax, block_zmax])]
 
         if False in min_bound_check:
             raise ValueError(('Cannot create region: min bounds outside blocks scope\n')+
                              ('Min region bounds: "{}"\n'.format([self.xmin,self.ymin,self.zmin]))+
-                             ('Min block  bounds: "{}"\n'.format([block_xmin,block_ymin,block_zmin])))
+                             ('Min blocks  bound: "{}"\n'.format([block_xmin,block_ymin,block_zmin])))
         
         if False in max_bound_check:
             raise ValueError(('Cannot create region: max bounds outside blocks scope\n')+
                              ('Max region bounds: "{}"\n'.format([self.xmax,self.ymax,self.zmax]))+
-                             ('Max block  bounds: "{}"\n'.format([block_xmax,block_ymax,block_zmax]))) 
+                             ('Max blocks  bound: "{}"\n'.format([block_xmax,block_ymax,block_zmax]))) 

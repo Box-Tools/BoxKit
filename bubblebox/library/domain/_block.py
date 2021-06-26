@@ -102,7 +102,7 @@ class Block(object):
 
 
     @property
-    def neighbors3(self):
+    def neighbors3D(self):
         """
         Return neighbor tags
 
@@ -112,24 +112,24 @@ class Block(object):
         if self.tag is not None:
             ibx,iby,ibz = pymorton.deinterleave3(self.tag)
 
-            neighbors   = [pymorton.interleave(ibx+1,iby,ibz),
-                           pymorton.interleave(ibx-1,iby,ibz),
-                           pymorton.interleave(ibx,iby+1,ibz),
-                           pymorton.interleave(ibx,iby-1,ibz),
-                           pymorton.interleave(ibx,iby,ibz+1),
-                           pymorton.interleave(ibx,iby,ibz-1)]
+            neighborlist = [pymorton.interleave(ibx+1,iby,ibz),
+                            pymorton.interleave(ibx-1,iby,ibz),
+                            pymorton.interleave(ibx,iby+1,ibz),
+                            pymorton.interleave(ibx,iby-1,ibz),
+                            pymorton.interleave(ibx,iby,ibz+1),
+                            pymorton.interleave(ibx,iby,ibz-1)]
  
-            neighbors = [None if   neighbor > self.data.lblocks
-                              else neighbor
-                              for  neighbor in neighbors]
+            neighborlist = [None if   neighbor > self.data.numblocks
+                                 else neighbor
+                                 for  neighbor in neighborlist]
 
         else:
-            neighbors  = [None]*6
+            neighborlist = [None]*6
 
-        return neighbors
+        return neighborlist
 
     @property
-    def neighbors2(self):
+    def neighbors2D(self):
         """
         Return neighbor tags
 
@@ -139,16 +139,16 @@ class Block(object):
         if self.tag is not None:
             ib,jb   = pymorton.deinterleave2(self.tag)
 
-            neighbors = [pymorton.interleave(ib+1,jb),
-                         pymorton.interleave(ib-1,jb),
-                         pymorton.interleave(ib,jb+1),
-                         pymorton.interleave(ib,jb-1)]
+            neighborlist = [pymorton.interleave(ib+1,jb),
+                            pymorton.interleave(ib-1,jb),
+                            pymorton.interleave(ib,jb+1),
+                            pymorton.interleave(ib,jb-1)]
 
-            neighbors = [None if   neighbor > self.data.lblocks
-                              else neighbor
-                              for  neighbor in neighbors]
+            neighborlist = [None if   neighbor > self.data.numblocks
+                                 else neighbor
+                                 for  neighbor in neighborlist]
 
         else:
-            neighbors = [None]*4
+            neighborlist = [None]*4
          
-        return neighbors
+        return neighborlist

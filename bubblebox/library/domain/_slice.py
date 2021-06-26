@@ -8,7 +8,7 @@ class Slice(object):
 
     type_ = 'default'
 
-    def __init__(self,attributes={},blocks=[]):
+    def __init__(self,attributes={},blocklist=[]):
         """Initialize the Slice object and allocate the data.
 
         Parameters
@@ -20,12 +20,12 @@ class Slice(object):
                       'imax'  : max bound in i dir,
                       'jmax'  : max bound in j dir}  
 
-        blocks     : list of blocks
+        blocklist  : list of blocks
 
         """
 
         self._set_attributes(attributes)        
-        self._set_blocks(blocks)
+        self._set_blocklist(blocklist)
    
     def __repr__(self):
         """Return a representation of the object."""
@@ -40,7 +40,7 @@ class Slice(object):
         """
         Private method for initialization
         """
-        default_attributes = {'plane': 'y',
+        default_attributes = {'plane': ['xz','y'],
                               'imin' :  0., 'jmin' : 0.,
                               'imax' :  0., 'jmax' : 0.}
 
@@ -52,8 +52,8 @@ class Slice(object):
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 
-    def _set_blocks(self,blocks):
+    def _set_blocklist(self,blocklist):
         """
         Private method for initialization
         """
-        self.blocks = blocks
+        pass
