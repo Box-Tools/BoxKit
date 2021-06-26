@@ -16,7 +16,7 @@ class TestHeater(unittest.TestCase):
 
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
-    def test_heater_oneblk(self):
+    def test_neighbors_oneblk(self):
         """test neighbors"""
 
         self._setup('oneblk')
@@ -33,7 +33,7 @@ class TestHeater(unittest.TestCase):
 
         print("Single block returns None neigbhors\n")
 
-    def test_heater_blocks(self):
+    def test_neighbors_blocks(self):
         """test neighbors"""
 
         self._setup('blocks')
