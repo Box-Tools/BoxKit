@@ -1,4 +1,4 @@
-"""Metadata for BubbleBox package."""
+"""Metadata for BubbleBox package"""
 
 __pkgname__     = 'bubblebox'
 __version__     = '0.0.1'

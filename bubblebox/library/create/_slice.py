@@ -1,4 +1,4 @@
-"""Module with implementation of the Slice classes."""
+"""Module with implementation of the Slice class."""
 
 import numpy
 import pymorton

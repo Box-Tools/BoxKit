@@ -1,4 +1,4 @@
-"""Module with implementation of the Block classes."""
+"""Module with implementation of the Block class."""
 
 import pymorton
 
@@ -89,11 +89,6 @@ class Block(object):
         self.dy = abs(self.ymax - self.ymin) / self.nyb
         self.dz = abs(self.zmax - self.zmin) / self.nzb
 
-        if 0 in [self.dx,self.dy,self.dz]:
-            self._get_neighlist = self._get_neighlist_2D
-        else:
-            self._get_neighlist = self._get_neighlist_3D
-
         [self.dx, self.dy, self.dz] = [1. if   grid_spacing == 0. 
                                           else grid_spacing
                                           for  grid_spacing in [self.dx, self.dy, self.dz]]
@@ -104,7 +99,12 @@ class Block(object):
         Private method for initialization
         """
         self.data = data
-        self.neighlist = self._get_neighlist()
+
+        if 1 in [self.nxb,self.nyb,self.nzb]:
+            self.neighlist = self._get_neighlist_2D()
+        else:
+            self.neighlist = self._get_neighlist_3D()
+
 
     def _get_neighlist_3D(self):
         """

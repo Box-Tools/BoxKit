@@ -1,4 +1,4 @@
-"""Module with implementation of measurement methods"""
+"""Module with implementation of measure methods"""
 
 import itertools
 
@@ -6,7 +6,18 @@ import skimage.measure as skimage_measure
 
 def regionprops(region,keylabel):
     """
-    calculate regionprops for a list of blocks
+    Calculate regionprops for a list of blocks
+
+    Parameters
+    ----------
+    region   : Region object
+
+    keylabel : variable containing label
+
+    Returns
+    -------
+    listprops : list of properties
+
     """
 
     initlabel   = list(map(_init_block_label,   region.blocklist, [keylabel]))
@@ -19,7 +30,14 @@ def regionprops(region,keylabel):
 
 def _init_block_label(block,keylabel):
     """
-    label a block
+    Label a block using skimage.measure.label
+
+    Parameters
+    ----------
+    block    : Block object
+
+    keylabel : variable containing label
+
     """
 
     block[keylabel]  =  skimage_measure.label(block[keylabel])
@@ -28,13 +46,32 @@ def _init_block_label(block,keylabel):
 
 def _update_block_label(block,keylabel):
     """
-    update block label
+    Update a block label before measurement
+
+    Parameters
+    ----------
+    block    : Block object
+
+    keylabel : variable containing label
+
     """
+
     return None
 
 def _get_block_props(block,keylabel):
     """
-    calculate regionprops for a block
+    Calculate regionprops for a block
+
+    Parameters
+    ----------
+    block    : Block object
+
+    keylabel : variable containing label
+
+    Returns
+    -------
+    listprops : list of properties
+
     """
 
     listprops = skimage_measure.regionprops(block[keylabel])

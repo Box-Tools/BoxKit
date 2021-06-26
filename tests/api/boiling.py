@@ -1,6 +1,6 @@
 """Tests for `bubblebox/api/sample`."""
 
-import bubblebox.api.sample as box
+import bubblebox.api as box
 import unittest
 import pymorton
 
@@ -15,8 +15,8 @@ class TestBoiling(unittest.TestCase):
         prefix    = 'INS_Pool_Boiling_hdf5_'
         filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
-        self.dataframes   = [box.create.dataset3D(filename) for filename in filenames]
-        self.regionframes = [box.create.region(dataset)     for dataset  in self.dataframes]
+        self.dataframes   = [box.create.dataset(filename) for filename in filenames]
+        self.regionframes = [box.create.region(dataset)   for dataset  in self.dataframes]
 
     def test_data_pointers(self):
         """test data pointers"""

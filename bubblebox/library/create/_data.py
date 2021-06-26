@@ -1,4 +1,4 @@
-"""Module with implementation of the Data classes."""
+"""Module with implementation of the Data class."""
 
 import numpy
 

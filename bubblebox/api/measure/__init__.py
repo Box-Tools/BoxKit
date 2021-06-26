@@ -1,3 +1,3 @@
 """Initialization of measure unit"""
 
-from ._regionprops import regionprops
+from ._bubbles import bubbles

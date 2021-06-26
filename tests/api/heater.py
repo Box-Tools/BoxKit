@@ -1,6 +1,6 @@
 """Tests for `bubblebox/api/sample`."""
 
-import bubblebox.api.sample as box
+import bubblebox.api as box
 import unittest
 import pymorton
 
@@ -21,7 +21,7 @@ class TestHeater(unittest.TestCase):
 
         self._setup('oneblk')
 
-        dataframes = [box.create.dataset2D(filename) for filename in self.filenames]
+        dataframes = [box.create.dataset(filename) for filename in self.filenames]
 
         for dataset in dataframes:
             for block in dataset.blocklist:
@@ -38,7 +38,7 @@ class TestHeater(unittest.TestCase):
 
         self._setup('blocks')
 
-        dataframes  = [box.create.dataset2D(filename) for filename in self.filenames]
+        dataframes  = [box.create.dataset(filename) for filename in self.filenames]
 
         for dataset in dataframes:
             for block in dataset.blocklist:
@@ -65,7 +65,7 @@ class TestHeater(unittest.TestCase):
 
         self._setup('oneblk')
 
-        dataframes    = [box.create.dataset2D(filename,['bubbles']) for filename in self.filenames]
+        dataframes    = [box.create.dataset(filename,uservars=['bubbles']) for filename in self.filenames]
         regionframes  = [box.create.region(dataset) for dataset in dataframes]
         bubbleframes  = [box.measure.bubbles(region,'phi') for region in regionframes]
 

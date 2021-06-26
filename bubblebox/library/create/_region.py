@@ -1,4 +1,4 @@
-"""Module with implementation of the Region classes."""
+"""Module with implementation of the Region class."""
 
 import pymorton
 
