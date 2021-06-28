@@ -11,7 +11,7 @@ class TestBoiling(unittest.TestCase):
         """setup test parameters"""
 
         basedir   = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/'
-        filetags  = [0,5,10,15,20,25,30,35,40,45,50,55]
+        filetags  = [0,10,20,30,40,50]
         prefix    = 'INS_Pool_Boiling_hdf5_'
         filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
