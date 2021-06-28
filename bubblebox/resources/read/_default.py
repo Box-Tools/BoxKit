@@ -55,6 +55,6 @@ def default(filename,uservars):
                          'xmax' : xmax[lblock],
                          'ymax' : ymax[lblock],
                          'zmax' : zmax[lblock],
-                         'tag'  : lblock if nblocks > 1 else None} for lblock in range(nblocks)]
+                         'tag'  : lblock} for lblock in range(nblocks)]
 
     return data_attributes,block_attributes,inputfile,variables

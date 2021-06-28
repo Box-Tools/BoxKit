@@ -2,6 +2,9 @@
 
 from ...library.measure import regionprops
 
+import functools
+import multiprocessing as parallel
+
 def bubbles(region,keys):
     """
     Create a list of bubbles in a region
@@ -23,11 +26,17 @@ def bubbles(region,keys):
 
     lsetkey,bubblekey = keys
 
-    for block in region.blocklist:
-        block[bubblekey] = block[lsetkey][:] >= 0
+    blocktags  = list(map(functools.partial(_tag_block_bubbles,lsetkey,bubblekey),region.blocklist))
 
     listprops  = regionprops(region,bubblekey)
 
     bubblelist = [ {'area' : props['area']} for props in listprops]
 
     return bubblelist
+
+def _tag_block_bubbles(lsetkey,bubblekey,block):
+    """
+    tag each block using level set function
+    """
+
+    block[bubblekey] = block[lsetkey] >= 0

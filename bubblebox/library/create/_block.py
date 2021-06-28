@@ -48,20 +48,13 @@ class Block(object):
         """
         Get variable data
         """
-        if self.tag is not None:
-            return self.data[varkey][self.tag]
-        else:
-            return self.data[varkey]
-
+        return self.data[varkey][self.tag]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        if self.tag is not None:
-            self.data[varkey][self.tag] = value
-        else:
-            self.data[varkey] = value
+        self.data[varkey][self.tag] = value
 
     def _set_attributes(self,attributes):
         """
@@ -71,7 +64,7 @@ class Block(object):
         default_attributes = {'nxb'  : 1 , 'nyb'  : 1 , 'nzb'  : 1 ,
                               'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
                               'xmax' : 0., 'ymax' : 0., 'zmax' : 0.,
-                              'tag'  : None}
+                              'tag'  : 0}
 
         for key in attributes:
             if key in default_attributes:
@@ -113,7 +106,7 @@ class Block(object):
         order - imins,iplus,jmins,jplus
         """
           
-        if self.tag is not None:
+        if self.data and self.data.nblocks > 1:
             iloc,jloc = pymorton.deinterleave2(self.tag)
 
             neighlist = [pymorton.interleave(iloc-1,jloc),
@@ -137,7 +130,7 @@ class Block(object):
         order - xmins,xplus,ymins,yplus,zmins,zplus        
         """
 
-        if self.tag is not None:
+        if self.data and self.data.nblocks > 1:
             xloc,yloc,zloc = pymorton.deinterleave3(self.tag)
 
             neighlist = [pymorton.interleave(xloc-1,yloc,zloc),

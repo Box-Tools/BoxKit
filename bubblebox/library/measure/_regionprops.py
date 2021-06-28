@@ -1,8 +1,9 @@
 """Module with implementation of measure methods"""
 
 import itertools
-
 import skimage.measure as skimage_measure
+import functools
+import multiprocessing as parallel
 
 def regionprops(region,labelkey):
     """
@@ -20,15 +21,15 @@ def regionprops(region,labelkey):
 
     """
 
-    initlabel   = list(map(_init_block_label,   region.blocklist, [labelkey]))
-    updatelabel = list(map(_update_block_label, region.blocklist, [labelkey]))
-    blockprops  = list(map(_get_block_props,    region.blocklist, [labelkey]))
+    initlabel   = list(map(functools.partial(_init_block_label,labelkey),region.blocklist))
+    updatelabel = list(map(functools.partial(_update_block_label,labelkey),region.blocklist))
+    blockprops  = list(map(functools.partial(_get_block_props,labelkey),region.blocklist))
 
     listprops   = list(itertools.chain.from_iterable(blockprops))
 
     return listprops
 
-def _init_block_label(block,labelkey):
+def _init_block_label(labelkey,block):
     """
     Label a block using skimage.measure.label
 
@@ -42,9 +43,7 @@ def _init_block_label(block,labelkey):
 
     block[labelkey]  =  skimage_measure.label(block[labelkey])
 
-    return None
-
-def _update_block_label(block,labelkey):
+def _update_block_label(labelkey,block):
     """
     Update a block label before measurement
 
@@ -55,10 +54,9 @@ def _update_block_label(block,labelkey):
     labelkey : variable containing label
 
     """
+    pass
 
-    return None
-
-def _get_block_props(block,labelkey):
+def _get_block_props(labelkey,block):
     """
     Calculate regionprops for a block
 
@@ -74,6 +72,6 @@ def _get_block_props(block,labelkey):
 
     """
 
-    listprops = skimage_measure.regionprops(block[labelkey])
+    listprops = skimage_measure.regionprops(block[labelkey].astype(int))
 
     return listprops
