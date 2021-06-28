@@ -1,5 +1,5 @@
 """Initializate read unit"""
 
-from ._sample import sample
+from ._default import default
 
 from ._flash  import flash

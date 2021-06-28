@@ -1,59 +1,40 @@
 """Module with implementation of the Slice class."""
 
-import numpy
-import pymorton
+from . import Region
 
-class Slice(object):
-    """Default class for the Slice."""
+class Slice(Region):
+    """Derived class for a Slice."""
 
-    type_ = 'default'
+    type_ = 'derived'
 
-    def __init__(self,attributes={},blocklist=[]):
+    def __init__(self, attributes={}, blocklist=[]):
         """Initialize the Slice object and allocate the data.
 
         Parameters
         ----------
         attributes : dictionary
-                     {'plane' : which plane to slice, 
-                      'imin'  : min bound in i dir,
-                      'jmin'  : min bound in j dir,
-                      'imax'  : max bound in i dir,
-                      'jmax'  : max bound in j dir}  
+                     { 'xmin' : low  bound in x dir
+                       'ymin' : low  bound in y dir
+                       'zmin' : low  bound in z dir
+                       'xmax' : high bound in x dir
+                       'ymax' : high bound in y dir
+                       'zmax' : high bound in z dir}
 
-        blocklist  : list of blocks
+        blocklist  : list of block objects
 
         """
 
-        self._set_attributes(attributes)        
-        self._set_blocklist(blocklist)
-   
+        super().__init__(attributes,blocklist)       
+       
     def __repr__(self):
         """Return a representation of the object."""
-        return ("Slice:\n" +
+        return ("Region:\n" +
                 " - type      : {}\n".format(type(self)) +
-                " - plane     : {}\n".format(self.plane) +
-                " - bound     : [{}, {}] x [{}, {}]\n".format(self.imin,
-                                                              self.imax,
-                                                              self.jmin,
-                                                              self.jmax))
-    def _set_attributes(self,attributes):
-        """
-        Private method for initialization
-        """
-        default_attributes = {'plane': ['xz','y'],
-                              'imin' :  0., 'jmin' : 0.,
-                              'imax' :  0., 'jmax' : 0.}
+                " - bound     : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
+                                                                         self.xmax,
+                                                                         self.ymin,
+                                                                         self.ymax,
+                                                                         self.zmin,
+                                                                         self.zmax))
 
-        for key in attributes:
-            if key in default_attributes:
-                default_attributes[key] = attributes[key]
-            else:
-                raise ValueError('Attribute "{}" not present in class Slice'.format(key))
 
-        for key, value in default_attributes.items(): setattr(self, key, value)
-
-    def _set_blocklist(self,blocklist):
-        """
-        Private method for initialization
-        """
-        pass

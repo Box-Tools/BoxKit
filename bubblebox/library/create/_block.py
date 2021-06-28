@@ -29,7 +29,7 @@ class Block(object):
         """
 
         self._set_attributes(attributes)
-        self._set_data(data)
+        self._map_data(data)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -44,24 +44,24 @@ class Block(object):
                                                                          self.zmax) +
                 " - tag    : {}\n".format(self.tag))
 
-    def __getitem__(self,key):
+    def __getitem__(self,varkey):
         """
         Get variable data
         """
         if self.tag is not None:
-            return self.data[key][self.tag]
+            return self.data[varkey][self.tag]
         else:
-            return self.data[key]
+            return self.data[varkey]
 
 
-    def __setitem__(self,key,value):
+    def __setitem__(self,varkey,value):
         """
         Set variable data
         """
         if self.tag is not None:
-            self.data[key][self.tag] = value
+            self.data[varkey][self.tag] = value
         else:
-            self.data[key] = value
+            self.data[varkey] = value
 
     def _set_attributes(self,attributes):
         """
@@ -94,7 +94,7 @@ class Block(object):
                                           for  grid_spacing in [self.dx, self.dy, self.dz]]
 
 
-    def _set_data(self,data):
+    def _map_data(self,data):
         """
         Private method for initialization
         """
@@ -106,46 +106,20 @@ class Block(object):
             self.neighlist = self._get_neighlist_3D()
 
 
-    def _get_neighlist_3D(self):
-        """
-        Return neighbor tags
-
-        order - xplus,xmins,yplus,ymins,zplus,zmins        
-        """
-
-        if self.tag is not None:
-            ibx,iby,ibz = pymorton.deinterleave3(self.tag)
-
-            neighlist = [pymorton.interleave(ibx+1,iby,ibz),
-                         pymorton.interleave(ibx-1,iby,ibz),
-                         pymorton.interleave(ibx,iby+1,ibz),
-                         pymorton.interleave(ibx,iby-1,ibz),
-                         pymorton.interleave(ibx,iby,ibz+1),
-                         pymorton.interleave(ibx,iby,ibz-1)]
- 
-            neighlist = [None if   neighbor > self.data.nblocks
-                              else neighbor
-                              for  neighbor in neighlist]
-
-        else:
-            neighlist = [None]*6
-
-        return neighlist
-
     def _get_neighlist_2D(self):
         """class property python
         Return neighbor tags
 
-        order - xplus,xmins,yplus,ymins,zplus,zmins
+        order - imins,iplus,jmins,jplus
         """
           
         if self.tag is not None:
-            ib,jb   = pymorton.deinterleave2(self.tag)
+            iloc,jloc = pymorton.deinterleave2(self.tag)
 
-            neighlist = [pymorton.interleave(ib+1,jb),
-                         pymorton.interleave(ib-1,jb),
-                         pymorton.interleave(ib,jb+1),
-                         pymorton.interleave(ib,jb-1)]
+            neighlist = [pymorton.interleave(iloc-1,jloc),
+                         pymorton.interleave(iloc+1,jloc),
+                         pymorton.interleave(iloc,jloc-1),
+                         pymorton.interleave(iloc,jloc+1)]
 
             neighlist = [None if   neighbor > self.data.nblocks
                               else neighbor
@@ -156,11 +130,37 @@ class Block(object):
 
         return neighlist
 
-    def neighdata(self,key,neighbor):
+    def _get_neighlist_3D(self):
+        """
+        Return neighbor tags
+
+        order - xmins,xplus,ymins,yplus,zmins,zplus        
+        """
+
+        if self.tag is not None:
+            xloc,yloc,zloc = pymorton.deinterleave3(self.tag)
+
+            neighlist = [pymorton.interleave(xloc-1,yloc,zloc),
+                         pymorton.interleave(xloc+1,yloc,zloc),
+                         pymorton.interleave(xloc,yloc-1,zloc),
+                         pymorton.interleave(xloc,yloc+1,zloc),
+                         pymorton.interleave(xloc,yloc,zloc-1),
+                         pymorton.interleave(xloc,yloc,zloc+1)]
+ 
+            neighlist = [None if   neighbor > self.data.nblocks
+                              else neighbor
+                              for  neighbor in neighlist]
+
+        else:
+            neighlist = [None]*6
+
+        return neighlist
+
+    def neighdata(self,varkey,neighbor):
         """
         Get neighbor data
         """
         if neighbor is not None:
-            return self.data[key][neighbor]
+            return self.data[varkey][neighbor]
         else:
             return None

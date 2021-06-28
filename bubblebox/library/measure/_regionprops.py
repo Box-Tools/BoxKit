@@ -4,7 +4,7 @@ import itertools
 
 import skimage.measure as skimage_measure
 
-def regionprops(region,keylabel):
+def regionprops(region,labelkey):
     """
     Calculate regionprops for a list of blocks
 
@@ -12,7 +12,7 @@ def regionprops(region,keylabel):
     ----------
     region   : Region object
 
-    keylabel : variable containing label
+    labelkey : variable containing label
 
     Returns
     -------
@@ -20,15 +20,15 @@ def regionprops(region,keylabel):
 
     """
 
-    initlabel   = list(map(_init_block_label,   region.blocklist, [keylabel]))
-    updatelabel = list(map(_update_block_label, region.blocklist, [keylabel]))
-    blockprops  = list(map(_get_block_props,    region.blocklist, [keylabel]))
+    initlabel   = list(map(_init_block_label,   region.blocklist, [labelkey]))
+    updatelabel = list(map(_update_block_label, region.blocklist, [labelkey]))
+    blockprops  = list(map(_get_block_props,    region.blocklist, [labelkey]))
 
     listprops   = list(itertools.chain.from_iterable(blockprops))
 
     return listprops
 
-def _init_block_label(block,keylabel):
+def _init_block_label(block,labelkey):
     """
     Label a block using skimage.measure.label
 
@@ -36,15 +36,15 @@ def _init_block_label(block,keylabel):
     ----------
     block    : Block object
 
-    keylabel : variable containing label
+    labelkey : variable containing label
 
     """
 
-    block[keylabel]  =  skimage_measure.label(block[keylabel])
+    block[labelkey]  =  skimage_measure.label(block[labelkey])
 
     return None
 
-def _update_block_label(block,keylabel):
+def _update_block_label(block,labelkey):
     """
     Update a block label before measurement
 
@@ -52,13 +52,13 @@ def _update_block_label(block,keylabel):
     ----------
     block    : Block object
 
-    keylabel : variable containing label
+    labelkey : variable containing label
 
     """
 
     return None
 
-def _get_block_props(block,keylabel):
+def _get_block_props(block,labelkey):
     """
     Calculate regionprops for a block
 
@@ -66,7 +66,7 @@ def _get_block_props(block,keylabel):
     ----------
     block    : Block object
 
-    keylabel : variable containing label
+    labelkey : variable containing label
 
     Returns
     -------
@@ -74,6 +74,6 @@ def _get_block_props(block,keylabel):
 
     """
 
-    listprops = skimage_measure.regionprops(block[keylabel])
+    listprops = skimage_measure.regionprops(block[labelkey])
 
     return listprops

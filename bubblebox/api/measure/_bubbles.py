@@ -2,17 +2,18 @@
 
 from ...library.measure import regionprops
 
-def bubbles(region,key):
+def bubbles(region,keys):
     """
     Create a list of bubbles in a region
 
     Parameters
     ----------
-    regions : list of regions (Volume or Slice)
+    regions   : list of regions (Volume or Slice)
 
-    key     : key for the variable containing level set function to identify the bubble
 
-    user needs to specifiy 'bubbles' in uservars when creating dataset to use this functionality
+    keys      : list of two keys [lsetkey, bubblekey]
+                lsetkey   - stores information of level set function
+                bubblekey - stores bubble information/label
 
     Returns
     -------
@@ -20,10 +21,12 @@ def bubbles(region,key):
 
     """
 
-    for block in region.blocklist:
-        block['bubbles'] = block[key][:] >= 0
+    lsetkey,bubblekey = keys
 
-    listprops  = regionprops(region,'bubbles')
+    for block in region.blocklist:
+        block[bubblekey] = block[lsetkey][:] >= 0
+
+    listprops  = regionprops(region,bubblekey)
 
     bubblelist = [ {'area' : props['area']} for props in listprops]
 

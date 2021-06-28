@@ -1,10 +1,10 @@
-"""Module to read attributes from sample files"""
+"""Module to read attributes from default files"""
 
 import h5py
 
-def sample(filename,uservars):
+def default(filename,uservars):
     """
-    Read dataset from BubbleBox sample file
+    Read dataset from BubbleBox default file
 
     Parameters
     ----------

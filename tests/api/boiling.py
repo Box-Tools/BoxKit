@@ -1,4 +1,4 @@
-"""Tests for `bubblebox/api/sample`."""
+"""Tests for `bubblebox/api/default`."""
 
 import bubblebox.api as box
 import unittest
@@ -16,7 +16,6 @@ class TestBoiling(unittest.TestCase):
         filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
         self.dataframes   = [box.create.dataset(filename) for filename in filenames]
-        self.regionframes = [box.create.region(dataset)   for dataset  in self.dataframes]
 
     def test_data_pointers(self):
         """test data pointers"""
@@ -37,14 +36,14 @@ class TestBoiling(unittest.TestCase):
         for dataset in self.dataframes:
             for block in dataset.blocklist:
 
-                ibx,iby,ibz  = pymorton.deinterleave3(block.tag)
+                xloc,yloc,zloc  = pymorton.deinterleave3(block.tag)
 
-                neighlist = [pymorton.interleave(ibx+1,iby,ibz),
-                             pymorton.interleave(ibx-1,iby,ibz),
-                             pymorton.interleave(ibx,iby+1,ibz),
-                             pymorton.interleave(ibx,iby-1,ibz),
-                             pymorton.interleave(ibx,iby,ibz+1),
-                             pymorton.interleave(ibx,iby,ibz-1)]
+                neighlist = [pymorton.interleave(xloc-1,yloc,zloc),
+                             pymorton.interleave(xloc+1,yloc,zloc),
+                             pymorton.interleave(xloc,yloc-1,zloc),
+                             pymorton.interleave(xloc,yloc+1,zloc),
+                             pymorton.interleave(xloc,yloc,zloc-1),
+                             pymorton.interleave(xloc,yloc,zloc+1)]
 
                 neighlist = [None if   neighbor > block.data.nblocks
                                   else neighbor
@@ -53,6 +52,16 @@ class TestBoiling(unittest.TestCase):
                 self.assertTrue(neighlist == block.neighlist, 'Neigbhors are inconsitent with morton order')
 
         print("3D neighbors are in morton order\n")
+
+    def test_slice(self):
+        """test slice"""
+
+        dataset = self.dataframes[0]
+        slice   = box.create.slice(dataset,{'zmin':0.01,'zmax':0.01})
+
+        self.assertEqual(int(len(slice.blocklist)**(1/2)),16)
+
+        print("Slice blocklist length matches setup\n")
 
     def tearDown(self):
         """close files"""

@@ -1,4 +1,4 @@
-"""Tests for `bubblebox/api/sample`."""
+"""Tests for `bubblebox/api/default`."""
 
 import bubblebox.api as box
 import unittest
@@ -43,12 +43,12 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
             for block in dataset.blocklist:
 
-                ibx,iby   = pymorton.deinterleave2(block.tag)
+                iloc,jloc   = pymorton.deinterleave2(block.tag)
 
-                neighlist = [pymorton.interleave(ibx+1,iby),
-                             pymorton.interleave(ibx-1,iby),
-                             pymorton.interleave(ibx,iby+1),
-                             pymorton.interleave(ibx,iby-1)]
+                neighlist = [pymorton.interleave(iloc-1,jloc),
+                             pymorton.interleave(iloc+1,jloc),
+                             pymorton.interleave(iloc,jloc-1),
+                             pymorton.interleave(iloc,jloc+1)]
 
                 neighlist = [None if   neighbor > block.data.nblocks
                                   else neighbor
@@ -65,9 +65,9 @@ class TestHeater(unittest.TestCase):
 
         self._setup('oneblk')
 
-        dataframes    = [box.create.dataset(filename,uservars=['bubbles']) for filename in self.filenames]
+        dataframes    = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes  = [box.create.region(dataset) for dataset in dataframes]
-        bubbleframes  = [box.measure.bubbles(region,'phi') for region in regionframes]
+        bubbleframes  = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes]
 
         bubblenum     = [len(bubblelist) for bubblelist in bubbleframes]
         

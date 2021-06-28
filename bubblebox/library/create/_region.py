@@ -1,11 +1,9 @@
 """Module with implementation of the Region class."""
 
-import pymorton
-
 class Region(object):
-    """Default class for the Region."""
+    """Base class for a Region."""
 
-    type_ = 'default'
+    type_ = 'base'
 
     def __init__(self, attributes={}, blocklist=[]):
         """Initialize the Region object and allocate the data.
@@ -25,7 +23,7 @@ class Region(object):
         """
        
         self._set_attributes(attributes)
-        self._set_blocklist(blocklist)
+        self._map_blocklist(blocklist)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -37,6 +35,7 @@ class Region(object):
                                                                          self.ymax,
                                                                          self.zmin,
                                                                          self.zmax))
+
     def _set_attributes(self,attributes):
         """`
         Private method for intialization
@@ -53,62 +52,46 @@ class Region(object):
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 
-    def _set_blocklist(self,blocklist):
-        """
-        Private method for initialization
-        """
-
-        self._check_blocklist(blocklist)
-        self._map_blocklist(blocklist)
+        self.xcenter = (self.xmin + self.xmax)/2.
+        self.ycenter = (self.ymin + self.ymax)/2.
+        self.zcenter = (self.zmin + self.zmax)/2.
 
     def _map_blocklist(self,blocklist):
         """
-        Private method for mapping blocklist
-
+        Private method for initialization
         """
-
         if not blocklist: return
 
-        self.blocklist = [block for block in blocklist
-                          if ((block.xmin >= self.xmin and block.xmin <= self.xmax) and
-                              (block.xmax >= self.xmin and block.xmax <= self.xmax) and
-                              (block.ymin >= self.ymin and block.ymin <= self.ymax) and
-                              (block.ymax >= self.ymin and block.ymax <= self.ymax) and
-                              (block.zmin >= self.zmin and block.zmin <= self.zmax) and
-                              (block.zmax >= self.zmin and block.zmax <= self.zmax))]
+        self.blocklist = [block for block in blocklist if self._in_collision(block)]
 
-    def _check_blocklist(self,blocklist):
+        self._update_bounds()
+
+    def _in_collision(self,block):
         """
-        Private method to check blocklist
+        Check if a block is in collision with the region
+        """        
+        xcollision  = abs(self.xcenter-block.xcenter)-(self.xmax-self.xmin)/2.-(block.xmax-block.xmin)/2. <= 0.
+        ycollision  = abs(self.ycenter-block.ycenter)-(self.ymax-self.ymin)/2.-(block.ymax-block.ymin)/2. <= 0.
+        zcollision  = abs(self.zcenter-block.zcenter)-(self.zmax-self.zmin)/2.-(block.zmax-block.zmin)/2. <= 0.
+
+        incollision = xcollision and ycollision and zcollision 
+
+        return incollision
+
+    def _update_bounds(self):
         """
+        Update block bounds using the blocklist
+        """
+        if not self.blocklist: raise ValueError('Region is empty and outside scope of Blocks\n')
 
-        if not blocklist: return
+        self.xmin,self.ymin,self.zmin = [min([block.xmin for block in self.blocklist]),
+                                         min([block.ymin for block in self.blocklist]),
+                                         min([block.zmin for block in self.blocklist])]
 
-        block_xmin,block_ymin,block_zmin = [min([block.xmin for block in blocklist]),
-                                            min([block.ymin for block in blocklist]),
-                                            min([block.zmin for block in blocklist])]
+        self.xmax,self.ymax,self.zmax = [max([block.xmax for block in self.blocklist]),
+                                         max([block.ymax for block in self.blocklist]),
+                                         max([block.zmax for block in self.blocklist])]
 
-        block_xmax,block_ymax,block_zmax = [max([block.xmax for block in blocklist]),
-                                            max([block.ymax for block in blocklist]),
-                                            max([block.zmax for block in blocklist])]
-
-        
-        min_bound_check = [region_min >= block_min 
-                           for   region_min,block_min in 
-                           zip ([self.xmin,  self.ymin,  self.zmin],
-                                [block_xmin, block_ymin, block_zmin])]
-
-        max_bound_check = [region_max <= block_max 
-                           for   region_max,block_max in
-                           zip ([self.xmax,  self.ymax,  self.zmax],
-                                [block_xmax, block_ymax, block_zmax])]
-
-        if False in min_bound_check:
-            raise ValueError(('Cannot create region: min bounds outside blocks scope\n')+
-                             ('Min region bounds: "{}"\n'.format([self.xmin,self.ymin,self.zmin]))+
-                             ('Min blocks  bound: "{}"\n'.format([block_xmin,block_ymin,block_zmin])))
-        
-        if False in max_bound_check:
-            raise ValueError(('Cannot create region: max bounds outside blocks scope\n')+
-                             ('Max region bounds: "{}"\n'.format([self.xmax,self.ymax,self.zmax]))+
-                             ('Max blocks  bound: "{}"\n'.format([block_xmax,block_ymax,block_zmax]))) 
+        self.xcenter = (self.xmin + self.xmax)/2.
+        self.ycenter = (self.ymin + self.ymax)/2.
+        self.zcenter = (self.zmin + self.zmax)/2.

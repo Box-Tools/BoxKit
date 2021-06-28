@@ -2,9 +2,9 @@
 
 from ...library.create import Data,Block
 
-from ...resources.read import sample,flash
+from ...resources.read import default,flash
 
-def dataset(filename,uservars=[],source='sample'):
+def dataset(filename,uservars=[],source='default'):
     """
     Create a dataset from a file
 
@@ -27,21 +27,21 @@ def dataset(filename,uservars=[],source='sample'):
 
     """
 
-    read = {'sample' : sample, 'flash' : flash}
+    read = {'default' : default, 'flash' : flash}
 
     data_attributes,block_attributes,inputfile,variables = read[source](filename,uservars)
 
     data      = Data(data_attributes,variables)
     blocklist = [Block(attributes,data) for attributes in block_attributes]
 
-    return Dataset(blocklist,inputfile,data.keys)
+    return Dataset(blocklist,inputfile,data.listkeys)
 
 class Dataset(object):
     """API class for storing Dataset info"""
 
     type_ = "default"
 
-    def __init__(self,blocklist,inputfile,datakeys):
+    def __init__(self,blocklist,inputfile,listkeys):
         """Constructor for Dataset
 
         Parameters
@@ -53,7 +53,7 @@ class Dataset(object):
         """
         self.blocklist = blocklist
         self.inputfile = inputfile
-        self.datakeys  = datakeys
+        self.listkeys  = listkeys
 
         self.xmin,self.ymin,self.zmin = [min([block.xmin for block in self.blocklist]),
                                          min([block.ymin for block in self.blocklist]),
@@ -68,7 +68,7 @@ class Dataset(object):
         return ("Dataset:\n" +
                 " - type  : {}\n".format(type(self)) +
                 " - file  : {}\n".format(self.inputfile)+
-                " - keys  : {}\n".format(self.datakeys) +
+                " - keys  : {}\n".format(self.listkeys) +
                 " - bound : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
                                                                      self.xmax,
                                                                      self.ymin,

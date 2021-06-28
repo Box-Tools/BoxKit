@@ -31,27 +31,27 @@ class Data(object):
         """
         return ("Data:\n" +
                 " - type   : {}\n".format(type(self)) +
-                " - keys   : {}\n".format(self.keys))
+                " - keys   : {}\n".format(self.listkeys))
 
-    def __getitem__(self,key):
+    def __getitem__(self,varkey):
         """
         Get variable data
         """
-        if not key in self.keys: 
-            raise ValueError('Variable "{}" does not exist in "{}"'.format(key,self.keys))
+        if not varkey in self.listkeys: 
+            raise ValueError('Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
         else:
-            return self.variables[key]
+            return self.variables[varkey]
 
 
-    def __setitem__(self,key,value):
+    def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        if not key in self.keys:
-            raise ValueError('Variable "{}" does not exist in "{}"'.format(key,self.keys))
+        if not varkey in self.listkeys:
+            raise ValueError('Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
 
         else:
-            self.variables[key] = value
+            self.variables[varkey] = value
 
     def _set_attributes(self,attributes):
         """
@@ -75,7 +75,7 @@ class Data(object):
         """
 
         self.variables = variables
-        self.keys      = list(self.variables.keys())
+        self.listkeys  = list(self.variables.keys())
 
         self._set_data()
 
@@ -84,6 +84,6 @@ class Data(object):
         Private method for setting new data
         """
 
-        empty_keys = [key for key in self.keys if self.variables[key] == None]
+        emptykeys = [varkey for varkey in self.listkeys if self.variables[varkey] == None]
 
-        for key in empty_keys: self.variables[key] = numpy.zeros([self.nblocks,self.nxb,self.nyb,self.nzb])
+        for varkey in emptykeys: self.variables[varkey] = numpy.zeros([self.nblocks,self.nxb,self.nyb,self.nzb])
