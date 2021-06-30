@@ -2,4 +2,4 @@
 
 from . import api
 from . import library
-from . import parallel
+from . import utilities

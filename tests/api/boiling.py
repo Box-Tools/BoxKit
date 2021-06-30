@@ -5,6 +5,7 @@ import unittest
 import itertools
 import pymorton
 import time
+import os
 
 class TestBoiling(unittest.TestCase):
     """bubblebox unit test for 3D boiling data"""
@@ -77,14 +78,18 @@ class TestBoiling(unittest.TestCase):
         print("Slice blocklist length matches setup")
 
     def test_measure_bubbles(self):
-    
+
+        os.environ['BUBBLEBOX_NTASKS_BACKEND'] = '4'
+
         dataset    = box.create.dataset(self.filenames[0],uservars=['bubble'])
         region     = box.create.region(dataset)
-        bubblelist = box.measure.bubbles(region,['phi','bubble'],nparallel=4)
+        bubblelist = box.measure.bubbles(region,['phi','bubble'])
 
         self.assertEqual(len(bubblelist),1341)     
 
         dataset.close()
+
+        del os.environ['BUBBLEBOX_NTASKS_BACKEND']
 
         print("Ran 3D bubble measurements on multiple blocks")
 

@@ -3,9 +3,9 @@
 import itertools
 import skimage.measure as skimage_measure
 
-from ...parallel import Parallel
+from ...utilities import parallel
 
-def regionprops(region,labelkey,nparallel=1):
+def regionprops(region,labelkey):
     """
     Calculate regionprops for a list of blocks
 
@@ -15,15 +15,13 @@ def regionprops(region,labelkey,nparallel=1):
 
     labelkey : variable containing label
 
-    nparallel : number of parallel jobs
-
     Returns
     -------
     listprops : list of properties
 
     """
 
-    Parallel(nparallel).map(_block_label_bw,region.blocklist,labelkey)
+    _block_label_bw(region.blocklist,labelkey)
 
     blockprops = [_block_props(block,labelkey) for block in region.blocklist]
 
@@ -31,6 +29,7 @@ def regionprops(region,labelkey,nparallel=1):
 
     return listprops
 
+@parallel
 def _block_label_bw(block,labelkey):
     """
     Label a block using skimage.measure.label

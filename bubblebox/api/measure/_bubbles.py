@@ -2,22 +2,20 @@
 
 from ...library.measure  import regionprops
 
-from ...parallel import Parallel
+from ...utilities import parallel
 
-def bubbles(region,keys,nparallel=1):
+def bubbles(region,keys):
     """
     Create a list of bubbles in a region
 
     Parameters
     ----------
-    regions   : list of regions (Volume or Slice)
+    regions : list of regions (Volume or Slice)
 
 
-    keys      : list of two keys [lsetkey, bubblekey]
-                lsetkey   - stores information of level set function
-                bubblekey - stores bubble information/label
-
-    nparallel : number of parallel jobs
+    keys    : list of two keys [lsetkey, bubblekey]
+              lsetkey   - stores information of level set function
+              bubblekey - stores bubble information/label
 
     Returns
     -------
@@ -27,14 +25,15 @@ def bubbles(region,keys,nparallel=1):
 
     lsetkey,bubblekey = keys
 
-    Parallel(nparallel).map(_block_label,region.blocklist,lsetkey,bubblekey)
+    _block_label(region.blocklist,lsetkey,bubblekey)
 
-    listprops  = regionprops(region,bubblekey,nparallel)
+    listprops  = regionprops(region,bubblekey)
 
     bubblelist = [ {'area' : props['area']} for props in listprops]
 
     return bubblelist
 
+@parallel
 def _block_label(block,lsetkey,bubblekey):
     """
     tag each block using level set function
