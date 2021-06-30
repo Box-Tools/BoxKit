@@ -2,7 +2,6 @@
 
 import joblib
 import functools
-import itertools
 import os
 
 def blockparallel(target):

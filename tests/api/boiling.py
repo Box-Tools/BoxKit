@@ -2,7 +2,6 @@
 
 import bubblebox.api as box
 import unittest
-import itertools
 import pymorton
 import time
 import os

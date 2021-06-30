@@ -10,12 +10,11 @@ def bubbles(region,keys):
 
     Parameters
     ----------
-    regions : list of regions (Volume or Slice)
+    region : Region object
 
-
-    keys    : list of two keys [lsetkey, bubblekey]
-              lsetkey   - stores information of level set function
-              bubblekey - stores bubble information/label
+    keys   : list of two keys [lsetkey, bubblekey]
+             lsetkey   - stores information of level set function
+             bubblekey - stores bubble information/label
 
     Returns
     -------
