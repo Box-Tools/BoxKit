@@ -1,1 +1,1 @@
-from ._decorators import parallel
+from ._decorators import blockparallel

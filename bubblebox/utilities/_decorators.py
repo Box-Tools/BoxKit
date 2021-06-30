@@ -5,27 +5,27 @@ import functools
 import itertools
 import os
 
-def parallel(target):
+def blockparallel(target):
     """
-    Decorator to parallelize a function operating on an object
+    Decorator to parallelize a function operating on an block
     using joblib   
 
     Parameters
     ----------
-    target : function to parallelize - operates on an object
+    target : function to parallelize - operates on an block
              
-             def target(object, *args)
+             def target(block, *args)
 
-             actual call passes objectlist
+             actual call passes blocklist
       
-             target(objectlist, *args)
+             target(blocklist, *args)
     """
 
     @functools.wraps(target)
-    def parallel_wrapper(objectlist,*args):
+    def parallel_wrapper(blocklist,*args):
         """
-        Wrapper takes in objectlist and additional arguments and
-        then applies target operations to individual objects in 
+        Wrapper takes in blocklist and additional arguments and
+        then applies target operations to individual blocks in 
         parallel
 
         Number of parallel tasks - npool - are inferred from the
@@ -38,7 +38,7 @@ def parallel(target):
         npool = int(os.getenv('BUBBLEBOX_NPOOL_BACKEND') or 1)
 
         listresult = joblib.Parallel(n_jobs=npool)(        
-                         joblib.delayed(target)(object,*args) for object in objectlist)
+                         joblib.delayed(target)(block,*args) for block in blocklist)
 
         return listresult
 

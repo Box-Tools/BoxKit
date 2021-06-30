@@ -2,7 +2,7 @@
 
 from ...library.measure  import regionprops
 
-from ...utilities import parallel
+from ...utilities import blockparallel
 
 def bubbles(region,keys):
     """
@@ -31,7 +31,7 @@ def bubbles(region,keys):
 
     return listbubbles
 
-@parallel
+@blockparallel
 def _block_label(block,lsetkey,bubblekey):
     """
     tag each block using level set function
