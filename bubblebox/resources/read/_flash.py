@@ -15,16 +15,9 @@ def flash(filename,uservars):
     -------
     data_attributes  : dictionary containing data attributes
     block_attributes : dictionary containg block attributes
-    inputfile        : hdf5 handle for input file
-    variables        : dictionary containing variables
-
     """
-
-    inputfile = None
-
-    variables = dict(zip(uservars,[None]*len(uservars)))
 
     data_attributes  = {}
     block_attributes = [{}]
     
-    return data_attributes,block_attributes,inputfile,variables
+    return data_attributes,block_attributes

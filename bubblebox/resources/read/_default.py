@@ -1,6 +1,6 @@
 """Module to read attributes from default files"""
 
-import h5py
+import h5pickle as h5py
 
 def default(filename,uservars):
     """
@@ -15,13 +15,10 @@ def default(filename,uservars):
     -------
     data_attributes  : dictionary containing data attributes
     block_attributes : dictionary containg block attributes
-    inputfile        : hdf5 handle for input file
-    variables        : dictionary containing variables
-
     """
 
     # Read the hdf5 file
-    inputfile = h5py.File(filename,'r')
+    inputfile = h5py.File(filename,'r',skip_cache=True)
 
     # Extract data
     nblocks   = inputfile['numbox'][0]*inputfile['numbox'][1]*inputfile['numbox'][2]
@@ -40,10 +37,12 @@ def default(filename,uservars):
     variables.update(inputfile['quantities'])
 
     # Create data object
-    data_attributes = {'nblocks' : nblocks,
-                       'nxb'     : nxb,
-                       'nyb'     : nyb,
-                       'nzb'     : nzb}
+    data_attributes = {'nblocks'   : nblocks,
+                       'nxb'       : nxb,
+                       'nyb'       : nyb,
+                       'nzb'       : nzb,
+                       'inputfile' : inputfile,
+                       'variables' : variables}
 
     # Create block objects
     block_attributes = [{'nxb'  : nxb,
@@ -57,4 +56,4 @@ def default(filename,uservars):
                          'zmax' : zmax[lblock],
                          'tag'  : lblock} for lblock in range(nblocks)]
 
-    return data_attributes,block_attributes,inputfile,variables
+    return data_attributes,block_attributes

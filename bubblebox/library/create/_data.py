@@ -1,13 +1,16 @@
 """Module with implementation of the Data class."""
 
 import numpy
+import os
+import string
+import random
 
 class Data(object):
     """Default class to store data"""
 
     type_ = "default"
 
-    def __init__(self, attributes={}, variables={}):
+    def __init__(self, attributes={}):
         """Initialize the class object
 
         Parameters
@@ -23,7 +26,7 @@ class Data(object):
         """
 
         self._set_attributes(attributes)
-        self._set_variables(variables) 
+        self._set_data() 
 
     def __repr__(self):
         """
@@ -58,8 +61,10 @@ class Data(object):
         Private method for intialization
         """
 
-        default_attributes = {'nblocks' : 1,              
-                              'nxb' : 1, 'nyb' : 1, 'nzb' : 1}
+        default_attributes = {'nblocks'   : 1,              
+                              'inputfile' : None,
+                              'variables' : {},
+                                    'nxb' : 1, 'nyb' : 1, 'nzb' : 1}
 
         for key in attributes:
             if key in default_attributes:
@@ -69,21 +74,33 @@ class Data(object):
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 
-    def _set_variables(self,variables):
-        """
-        Private method for intialization
-        """
-
-        self.variables = variables
-        self.listkeys  = list(self.variables.keys())
-
-        self._set_data()
-
     def _set_data(self):
         """
         Private method for setting new data
         """
 
-        emptykeys = [varkey for varkey in self.listkeys if self.variables[varkey] == None]
+        self.listkeys  = list(self.variables.keys())
+        self.memmap = None
+        self._create_memmap()
 
-        for varkey in emptykeys: self.variables[varkey] = numpy.zeros([self.nblocks,self.nxb,self.nyb,self.nzb])
+    def _create_memmap(self):
+        """
+        Create a memory map for numpy arrays
+        """
+
+        emptykeys = [varkey for varkey in self.listkeys if self.variables[varkey] == None]
+      
+        if not emptykeys: return
+
+        namerandom  = ''.join(random.choice(string.ascii_lowercase) for i in range(5)) 
+        self.memmap = "".join(['./memmap_',namerandom])
+
+        try:
+            os.mkdir(self.memmap)
+        except FileExistsError:
+            pass
+
+        for varkey in emptykeys:
+            outputfile  = os.path.join(self.memmap,varkey)
+            outputshape = (self.nblocks,self.nxb,self.nyb,self.nzb)
+            self.variables[varkey] = numpy.memmap(outputfile, dtype=float, shape=outputshape, mode='w+')

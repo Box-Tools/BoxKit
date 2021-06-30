@@ -1,6 +1,6 @@
 """Module with implemenetation of Dataset class and methods"""
 
-from ...library.create import Data,Block
+from ...library.create import Data,Block,Dataset
 
 from ...resources.read import default,flash
 
@@ -29,49 +29,9 @@ def dataset(filename,uservars=[],source='default'):
 
     read = {'default' : default, 'flash' : flash}
 
-    data_attributes,block_attributes,inputfile,variables = read[source](filename,uservars)
+    data_attributes,block_attributes = read[source](filename,uservars)
 
-    data      = Data(data_attributes,variables)
+    data      = Data(data_attributes) 
     blocklist = [Block(attributes,data) for attributes in block_attributes]
 
-    return Dataset(blocklist,inputfile,data.listkeys)
-
-class Dataset(object):
-    """API class for storing Dataset info"""
-
-    type_ = "default"
-
-    def __init__(self,blocklist,inputfile,listkeys):
-        """Constructor for Dataset
-
-        Parameters
-        ----------
-        blocklist : list of block objects
-
-        inputfile : handle for hdf5 file
-
-        """
-        self.blocklist = blocklist
-        self.inputfile = inputfile
-        self.listkeys  = listkeys
-
-        self.xmin,self.ymin,self.zmin = [min([block.xmin for block in self.blocklist]),
-                                         min([block.ymin for block in self.blocklist]),
-                                         min([block.zmin for block in self.blocklist])]
-
-        self.xmax,self.ymax,self.zmax = [max([block.xmax for block in self.blocklist]),
-                                         max([block.ymax for block in self.blocklist]),
-                                         max([block.zmax for block in self.blocklist])]
-
-    def __repr__(self):
-        """Return a representation of the object."""
-        return ("Dataset:\n" +
-                " - type  : {}\n".format(type(self)) +
-                " - file  : {}\n".format(self.inputfile)+
-                " - keys  : {}\n".format(self.listkeys) +
-                " - bound : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
-                                                                     self.xmax,
-                                                                     self.ymin,
-                                                                     self.ymax,
-                                                                     self.zmin,
-                                                                     self.zmax))
+    return Dataset(blocklist,data)

@@ -13,6 +13,7 @@ class TestCreate(unittest.TestCase):
         library.create.Block()
         library.create.Region()
         library.create.Slice()
+        library.create.Dataset()
 
         print("Empty objects can be created\n")
    

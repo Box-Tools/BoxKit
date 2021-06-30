@@ -2,10 +2,10 @@
 
 import itertools
 import skimage.measure as skimage_measure
-import functools
-import multiprocessing as parallel
 
-def regionprops(region,labelkey):
+from ...parallel import Parallel
+
+def regionprops(region,labelkey,nparallel=1):
     """
     Calculate regionprops for a list of blocks
 
@@ -21,15 +21,15 @@ def regionprops(region,labelkey):
 
     """
 
-    initlabel   = list(map(functools.partial(_init_block_label,labelkey),region.blocklist))
-    updatelabel = list(map(functools.partial(_update_block_label,labelkey),region.blocklist))
-    blockprops  = list(map(functools.partial(_get_block_props,labelkey),region.blocklist))
+    Parallel(nparallel).map(_block_label_bw,region.blocklist,labelkey)
 
-    listprops   = list(itertools.chain.from_iterable(blockprops))
+    blockprops = [_block_props(block,labelkey) for block in region.blocklist]
+
+    listprops  = list(itertools.chain.from_iterable(blockprops))
 
     return listprops
 
-def _init_block_label(labelkey,block):
+def _block_label_bw(block,labelkey):
     """
     Label a block using skimage.measure.label
 
@@ -43,20 +43,7 @@ def _init_block_label(labelkey,block):
 
     block[labelkey]  =  skimage_measure.label(block[labelkey])
 
-def _update_block_label(labelkey,block):
-    """
-    Update a block label before measurement
-
-    Parameters
-    ----------
-    block    : Block object
-
-    labelkey : variable containing label
-
-    """
-    pass
-
-def _get_block_props(labelkey,block):
+def _block_props(block,labelkey):
     """
     Calculate regionprops for a block
 

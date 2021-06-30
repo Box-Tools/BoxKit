@@ -91,6 +91,8 @@ class Block(object):
         """
         Private method for initialization
         """
+        if not data: return
+
         self.data = data
 
         if 1 in [self.nxb,self.nyb,self.nzb]:
@@ -106,7 +108,7 @@ class Block(object):
         order - imins,iplus,jmins,jplus
         """
           
-        if self.data and self.data.nblocks > 1:
+        if self.data.nblocks > 1:
             iloc,jloc = pymorton.deinterleave2(self.tag)
 
             neighlist = [pymorton.interleave(iloc-1,jloc),
@@ -130,7 +132,7 @@ class Block(object):
         order - xmins,xplus,ymins,yplus,zmins,zplus        
         """
 
-        if self.data and self.data.nblocks > 1:
+        if self.data.nblocks > 1:
             xloc,yloc,zloc = pymorton.deinterleave3(self.tag)
 
             neighlist = [pymorton.interleave(xloc-1,yloc,zloc),

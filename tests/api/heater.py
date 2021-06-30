@@ -3,12 +3,15 @@
 import bubblebox.api as box
 import unittest
 import pymorton
+import time
 
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""
 
     def _setup(self,prefix):
         """setup test parameters"""
+
+        self.startTime = time.time()
 
         basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/heater2D/'
         filetags = [0,5,10,15,20,25,30,35,40,45,50,55]
@@ -19,28 +22,25 @@ class TestHeater(unittest.TestCase):
     def test_neighbors_oneblk(self):
         """test neighbors"""
 
-        self._setup('oneblk')
-
-        dataframes = [box.create.dataset(filename) for filename in self.filenames]
-
-        for dataset in dataframes:
+        def _test_neighbors_oneblk(dataset):
             for block in dataset.blocklist:
 
                 neighlist = [None]*4
                 self.assertTrue(neighlist == block.neighlist, 'Single block data structure has no neighbors')
-                
-        [dataset.inputfile.close() for dataset in dataframes]
+ 
+        self._setup('oneblk')
 
-        print("Single block returns None neigbhors\n")
+        dataframes   = [box.create.dataset(filename)    for filename in self.filenames]
+        neigh_assert = [_test_neighbors_oneblk(dataset) for dataset  in dataframes]
+               
+        [dataset.close() for dataset in dataframes]
+
+        print("Single block returns None neigbhors")
 
     def test_neighbors_blocks(self):
         """test neighbors"""
 
-        self._setup('blocks')
-
-        dataframes  = [box.create.dataset(filename) for filename in self.filenames]
-
-        for dataset in dataframes:
+        def _test_neighbors_blocks(dataset):
             for block in dataset.blocklist:
 
                 iloc,jloc   = pymorton.deinterleave2(block.tag)
@@ -56,9 +56,14 @@ class TestHeater(unittest.TestCase):
 
                 self.assertTrue(neighlist == block.neighlist, 'Neigbhors are inconsitent with morton order')
 
-        [dataset.inputfile.close() for dataset in dataframes]
+        self._setup('blocks')
 
-        print("2D neighbors are in morton order\n")
+        dataframes   = [box.create.dataset(filename)    for filename in self.filenames]
+        neigh_assert = [_test_neighbors_blocks(dataset) for dataset in dataframes]
+
+        [dataset.close() for dataset in dataframes]
+
+        print("2D neighbors are in morton order")
 
     def test_measure_bubbles_oneblk(self):
         """test bubble measurement"""
@@ -73,9 +78,32 @@ class TestHeater(unittest.TestCase):
         
         self.assertEqual(bubblenum,[488,163,236,236,242,234,257,223,259,291,235,223])
 
-        [dataset.inputfile.close() for dataset in dataframes]
+        [dataset.close() for dataset in dataframes]
 
-        print("Single block bubble measurements successful\n")
+        print("Single block bubble measurements successful")
+
+    def test_measure_bubbles_blocks(self):
+        """test neighbors"""
+
+        self._setup('blocks')
+
+        dataframes    = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
+        regionframes  = [box.create.region(dataset) for dataset in dataframes]
+        bubbleframes  = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes]
+
+        bubblenum     = [len(bubblelist) for bubblelist in bubbleframes]
+ 
+        [dataset.close() for dataset in dataframes]
+
+        print("Ran 2D bubble measurements on multiple blocks")
+
+    def tearDown(self):
+        """
+        Execute after each test
+        """
+
+        testTime = time.time() - self.startTime
+        print('%s: %.3fs\n' % (self.id(), testTime))
     
 if __name__ == '__main__':
     unittest.main()
