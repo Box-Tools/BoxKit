@@ -14,7 +14,7 @@ class TestHeater(unittest.TestCase):
         self.startTime = time.time()
 
         basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/heater2D/'
-        filetags = [0,5,10,15,20,25,30,35,40,45,50,55]
+        filetags = [*range(0,60,5)]
         prefix   = "".join([prefix,'/INS_Pool_Boiling_Heater_hdf5_'])
 
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
@@ -74,9 +74,9 @@ class TestHeater(unittest.TestCase):
         regionframes  = [box.create.region(dataset) for dataset in dataframes]
         bubbleframes  = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes]
 
-        bubblenum     = [len(bubblelist) for bubblelist in bubbleframes]
+        numbubbles    = [len(listbubbles) for listbubbles in bubbleframes]
         
-        self.assertEqual(bubblenum,[488,163,236,236,242,234,257,223,259,291,235,223])
+        self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
 
         [dataset.close() for dataset in dataframes]
 
@@ -91,8 +91,8 @@ class TestHeater(unittest.TestCase):
         regionframes  = [box.create.region(dataset) for dataset in dataframes]
         bubbleframes  = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes]
 
-        bubblenum     = [len(bubblelist) for bubblelist in bubbleframes]
- 
+        numbubbles    = [len(listbubbles) for listbubbles in bubbleframes]
+
         [dataset.close() for dataset in dataframes]
 
         print("Ran 2D bubble measurements on multiple blocks")

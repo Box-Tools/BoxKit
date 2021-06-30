@@ -23,7 +23,7 @@ def regionprops(region,labelkey):
 
     _block_label_bw(region.blocklist,labelkey)
 
-    blockprops = [_block_props(block,labelkey) for block in region.blocklist]
+    blockprops = _block_props(region.blocklist,labelkey)
 
     listprops  = list(itertools.chain.from_iterable(blockprops))
 
@@ -44,6 +44,7 @@ def _block_label_bw(block,labelkey):
 
     block[labelkey]  =  skimage_measure.label(block[labelkey])
 
+@parallel
 def _block_props(block,labelkey):
     """
     Calculate regionprops for a block
@@ -61,5 +62,7 @@ def _block_props(block,labelkey):
     """
 
     listprops = skimage_measure.regionprops(block[labelkey].astype(int))
+
+    listprops = [{'area' : props['area']} for props in listprops]
 
     return listprops

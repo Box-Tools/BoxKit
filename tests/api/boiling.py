@@ -16,7 +16,7 @@ class TestBoiling(unittest.TestCase):
         self.startTime = time.time()
 
         basedir        = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/'
-        filetags       = [*range(0,50,10)]
+        filetags       = [30]
         prefix         = 'INS_Pool_Boiling_hdf5_'
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
@@ -68,28 +68,28 @@ class TestBoiling(unittest.TestCase):
     def test_slice(self):
         """test slice"""
 
-        dataset = box.create.dataset(self.filenames[0])
-        slice   = box.create.slice(dataset,{'zmin':0.01,'zmax':0.01})
+        dataframes   = [box.create.dataset(filename) for filename in self.filenames]
+        regionframes = [box.create.slice(dataset,{'zmin':0.01,'zmax':0.01}) for dataset in dataframes]
 
-        self.assertEqual(int(len(slice.blocklist)**(1/2)),16)
+        [self.assertEqual(int(len(region.blocklist)**(1/2)),16) for region in regionframes]
 
-        dataset.close()
+        [dataset.close() for dataset in dataframes]
 
         print("Slice blocklist length matches setup")
 
     def test_measure_bubbles(self):
 
-        os.environ['BUBBLEBOX_NTASKS_BACKEND'] = '4'
+        os.environ['BUBBLEBOX_NPOOL_BACKEND'] = '4'
 
-        dataset    = box.create.dataset(self.filenames[0],uservars=['bubble'])
-        region     = box.create.region(dataset)
-        bubblelist = box.measure.bubbles(region,['phi','bubble'])
+        dataframes   = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
+        regionframes = [box.create.region(dataset) for dataset in dataframes]
+        bubbleframes = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes]
 
-        self.assertEqual(len(bubblelist),1341)     
+        numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
 
-        dataset.close()
+        [dataset.close() for dataset in dataframes]
 
-        del os.environ['BUBBLEBOX_NTASKS_BACKEND']
+        del os.environ['BUBBLEBOX_NPOOL_BACKEND']
 
         print("Ran 3D bubble measurements on multiple blocks")
 

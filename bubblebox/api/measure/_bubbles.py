@@ -27,11 +27,9 @@ def bubbles(region,keys):
 
     _block_label(region.blocklist,lsetkey,bubblekey)
 
-    listprops  = regionprops(region,bubblekey)
+    listbubbles  = regionprops(region,bubblekey)
 
-    bubblelist = [ {'area' : props['area']} for props in listprops]
-
-    return bubblelist
+    return listbubbles
 
 @parallel
 def _block_label(block,lsetkey,bubblekey):
