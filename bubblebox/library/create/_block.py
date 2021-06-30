@@ -119,7 +119,7 @@ class Block(object):
                          pymorton.interleave(iloc,jloc-1),
                          pymorton.interleave(iloc,jloc+1)]
 
-            neighlist = [None if   neighbor > self.data.nblocks
+            neighlist = [None if   neighbor > self.data.nblocks-1
                               else neighbor
                               for  neighbor in neighlist]
 
@@ -145,7 +145,7 @@ class Block(object):
                          pymorton.interleave(xloc,yloc,zloc-1),
                          pymorton.interleave(xloc,yloc,zloc+1)]
  
-            neighlist = [None if   neighbor > self.data.nblocks
+            neighlist = [None if   neighbor > self.data.nblocks-1
                               else neighbor
                               for  neighbor in neighlist]
 

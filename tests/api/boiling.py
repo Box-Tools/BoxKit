@@ -5,6 +5,7 @@ import unittest
 import pymorton
 import time
 import os
+from progress.bar import Bar
 
 class TestBoiling(unittest.TestCase):
     """bubblebox unit test for 3D boiling data"""
@@ -15,7 +16,7 @@ class TestBoiling(unittest.TestCase):
         self.startTime = time.time()
 
         basedir        = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/'
-        filetags       = [30]
+        filetags       = [*range(0,58,10)]
         prefix         = 'INS_Pool_Boiling_hdf5_'
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
@@ -30,11 +31,12 @@ class TestBoiling(unittest.TestCase):
             self.assertTrue(not False in data_assert, 'Data pointers are inconsistent')
        
         dataframes  = [box.create.dataset(filename) for filename in self.filenames]
-        data_assert = [_test_data_pointers(dataset) for dataset  in dataframes]
+
+        bar = Bar('Testing data pointers...',max=len(dataframes))
+        data_assert = [_test_data_pointers(dataset) for dataset  in dataframes if not bar.next()]
+        bar.finish()
 
         [dataset.close() for dataset in dataframes]
-
-        print("Data pointers are consistent")
 
     def test_neighbors(self):
         """test neighbors"""
@@ -51,18 +53,19 @@ class TestBoiling(unittest.TestCase):
                              pymorton.interleave(xloc,yloc,zloc-1),
                              pymorton.interleave(xloc,yloc,zloc+1)]
 
-                neighlist = [None if   neighbor > block.data.nblocks
+                neighlist = [None if   neighbor > block.data.nblocks-1
                                   else neighbor
                                   for  neighbor in neighlist]
 
                 self.assertTrue(neighlist == block.neighlist, 'Neigbhors are inconsitent with morton order')
 
         dataframes   = [box.create.dataset(filename) for filename in self.filenames]
-        neigh_assert = [_test_neighbors(dataset)     for dataset  in dataframes]
+
+        bar = Bar('Testing morton order in 3D...',max=len(dataframes))
+        neigh_assert = [_test_neighbors(dataset) for dataset  in dataframes if not bar.next()]
+        bar.finish()
     
         [dataset.close() for dataset in dataframes]
-
-        print("3D neighbors are in morton order")
 
     def test_slice(self):
         """test slice"""
@@ -70,11 +73,11 @@ class TestBoiling(unittest.TestCase):
         dataframes   = [box.create.dataset(filename) for filename in self.filenames]
         regionframes = [box.create.slice(dataset,{'zmin':0.01,'zmax':0.01}) for dataset in dataframes]
 
-        [self.assertEqual(int(len(region.blocklist)**(1/2)),16) for region in regionframes]
+        bar = Bar('Testing slices for 3D data...',max=len(regionframes)) 
+        [self.assertEqual(int(len(region.blocklist)**(1/2)),16) for region in regionframes if not bar.next()]
+        bar.finish()
 
         [dataset.close() for dataset in dataframes]
-
-        print("Slice blocklist length matches setup")
 
     def test_measure_bubbles(self):
 
@@ -82,15 +85,16 @@ class TestBoiling(unittest.TestCase):
 
         dataframes   = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [box.create.region(dataset) for dataset in dataframes]
-        bubbleframes = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes]
+
+        bar = Bar('Measuring 3D bubbles...',max=len(regionframes))
+        bubbleframes = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes if not bar.next()]
+        bar.finish()
 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
 
         [dataset.close() for dataset in dataframes]
 
         del os.environ['BUBBLEBOX_NPOOL_BACKEND']
-
-        print("Ran 3D bubble measurements on multiple blocks")
 
     def tearDown(self):
         """close files"""

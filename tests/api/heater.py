@@ -4,6 +4,7 @@ import bubblebox.api as box
 import unittest
 import pymorton
 import time
+from progress.bar import Bar
 
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""
@@ -30,12 +31,13 @@ class TestHeater(unittest.TestCase):
  
         self._setup('oneblk')
 
-        dataframes   = [box.create.dataset(filename)    for filename in self.filenames]
-        neigh_assert = [_test_neighbors_oneblk(dataset) for dataset  in dataframes]
-               
-        [dataset.close() for dataset in dataframes]
+        dataframes = [box.create.dataset(filename) for filename in self.filenames]
 
-        print("Single block returns None neigbhors")
+        bar = Bar('Testing neighbors for a single 2D block...',max=len(dataframes))
+        neigh_assert = [_test_neighbors_oneblk(dataset) for dataset in dataframes if not bar.next()] 
+        bar.finish()
+
+        [dataset.close() for dataset in dataframes]
 
     def test_neighbors_blocks(self):
         """test neighbors"""
@@ -50,7 +52,7 @@ class TestHeater(unittest.TestCase):
                              pymorton.interleave(iloc,jloc-1),
                              pymorton.interleave(iloc,jloc+1)]
 
-                neighlist = [None if   neighbor > block.data.nblocks
+                neighlist = [None if   neighbor > block.data.nblocks-1
                                   else neighbor
                                   for  neighbor in neighlist]
 
@@ -58,12 +60,13 @@ class TestHeater(unittest.TestCase):
 
         self._setup('blocks')
 
-        dataframes   = [box.create.dataset(filename)    for filename in self.filenames]
-        neigh_assert = [_test_neighbors_blocks(dataset) for dataset in dataframes]
+        dataframes = [box.create.dataset(filename) for filename in self.filenames]
+
+        bar = Bar('Testing morton order in 2D...',max=len(dataframes))
+        neigh_assert = [_test_neighbors_blocks(dataset) for dataset in dataframes if not bar.next()]
+        bar.finish()
 
         [dataset.close() for dataset in dataframes]
-
-        print("2D neighbors are in morton order")
 
     def test_measure_bubbles_oneblk(self):
         """test bubble measurement"""
@@ -72,15 +75,16 @@ class TestHeater(unittest.TestCase):
 
         dataframes    = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes  = [box.create.region(dataset) for dataset in dataframes]
-        bubbleframes  = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes]
 
-        numbubbles    = [len(listbubbles) for listbubbles in bubbleframes]
+        bar = Bar('Measuring bubbles in single 2D block...',max=len(regionframes))
+        bubbleframes = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes if not bar.next()]
+        bar.finish()
+
+        numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
         
         self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
 
         [dataset.close() for dataset in dataframes]
-
-        print("Single block bubble measurements successful")
 
     def test_measure_bubbles_blocks(self):
         """test neighbors"""
@@ -89,13 +93,14 @@ class TestHeater(unittest.TestCase):
 
         dataframes    = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes  = [box.create.region(dataset) for dataset in dataframes]
-        bubbleframes  = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes]
+
+        bar = Bar('Measuring bubbles in multiple 2D blocks...',max=len(regionframes))
+        bubbleframes = [box.measure.bubbles(region,['phi','bubble']) for region in regionframes if not bar.next()]
+        bar.finish()
 
         numbubbles    = [len(listbubbles) for listbubbles in bubbleframes]
 
         [dataset.close() for dataset in dataframes]
-
-        print("Ran 2D bubble measurements on multiple blocks")
 
     def tearDown(self):
         """

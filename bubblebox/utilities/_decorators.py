@@ -36,7 +36,7 @@ def blockparallel(target):
 
         npool = int(os.getenv('BUBBLEBOX_NPOOL_BACKEND') or 1)
 
-        listresult = joblib.Parallel(n_jobs=npool)(        
+        listresult = joblib.Parallel(n_jobs=npool)(
                          joblib.delayed(target)(block,*args) for block in blocklist)
 
         return listresult
