@@ -15,6 +15,8 @@ def regionprops(region,labelkey,nparallel=1):
 
     labelkey : variable containing label
 
+    nparallel : number of parallel jobs
+
     Returns
     -------
     listprops : list of properties
