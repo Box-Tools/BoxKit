@@ -37,6 +37,10 @@ class Dataset(object):
         """
         Private method for initialization
         """
+        self.blocklist = []
+        self.xmin,self.ymin,self.zmin = [None]*3
+        self.xmax,self.ymax,self.zmax = [None]*3
+
         if not blocklist: return
 
         self.blocklist  = blocklist
@@ -53,6 +57,10 @@ class Dataset(object):
         """
         Private method for initialization
         """
+        self.inputfile = None
+        self.listkeys  = []
+        self.memmap    = None
+
         if not data: return
 
         self.listkeys   = data.listkeys

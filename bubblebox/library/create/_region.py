@@ -60,6 +60,8 @@ class Region(object):
         """
         Private method for initialization
         """
+        self.blocklist = []
+
         if not blocklist: return
 
         self.blocklist = [block for block in blocklist if self._in_collision(block)]

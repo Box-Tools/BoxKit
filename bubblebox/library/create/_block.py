@@ -91,6 +91,9 @@ class Block(object):
         """
         Private method for initialization
         """
+        self.data = None
+        self.neighlist = []
+
         if not data: return
 
         self.data = data
