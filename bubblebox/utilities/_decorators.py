@@ -27,16 +27,16 @@ def blockparallel(target):
         then applies target operations to individual blocks in 
         parallel
 
-        Number of parallel tasks - npool - are inferred from the
-        environment variable 'BUBBLEBOX_NPOOL_BACKEND'
+        Number of parallel tasks - nthreads - are inferred from the
+        environment variable 'BUBBLEBOX_NTHREADS_BACKEND'
 
 
-        npool = 1 or None reverts to serial mode
+        nthreads = 1 or None reverts to serial mode
         """
 
-        npool = int(os.getenv('BUBBLEBOX_NPOOL_BACKEND') or 1)
+        nthreads = int(os.getenv('BUBBLEBOX_NTHREADS_BACKEND') or 1)
 
-        listresult = joblib.Parallel(n_jobs=npool)(
+        listresult = joblib.Parallel(n_jobs=nthreads)(
                          joblib.delayed(target)(block,*args) for block in blocklist)
 
         return listresult

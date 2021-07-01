@@ -38,7 +38,7 @@ class TestBoiling(unittest.TestCase):
         """      
         dataframes  = [box.create.dataset(filename) for filename in self.filenames]
 
-        bar = Bar('Dataframes',max=len(dataframes),fill='◾')
+        bar = Bar('Dataframes',max=len(dataframes))
         for dataset in dataframes:
             for block in dataset.blocklist:
                 self.assertTrue(block.data is dataset.blocklist[0].data,'Data pointers are inconsistent')
@@ -96,14 +96,14 @@ class TestBoiling(unittest.TestCase):
         dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [box.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NPOOL_BACKEND'] = '8'
+        os.environ['BUBBLEBOX_NTHREADS_BACKEND'] = '8'
         bubbleframes = []
         bar = Bar('Dataframes',max=len(regionframes))
         for region in regionframes:
             bubbleframes.append(box.measure.bubbles(region,['phi','bubble']))
             bar.next()
         bar.finish()
-        del os.environ['BUBBLEBOX_NPOOL_BACKEND']
+        del os.environ['BUBBLEBOX_NTHREADS_BACKEND']
 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
 
