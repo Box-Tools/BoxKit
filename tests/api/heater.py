@@ -79,9 +79,7 @@ class TestHeater(unittest.TestCase):
 
         bubbleframes = []
         bar = Bar('Dataframes',max=len(regionframes))
-        for region in regionframes:
-            bubbleframes.append(box.measure.bubbles(region,['phi','bubble']))
-            bar.next()
+        bubbleframes = box.measure.bubbles(bar,regionframes,['phi','bubble'])
         bar.finish()
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
@@ -98,11 +96,8 @@ class TestHeater(unittest.TestCase):
         regionframes = [box.create.region(dataset) for dataset in dataframes]
 
         os.environ['BUBBLEBOX_NTASKS_BACKEND'] = '1'
-        bubbleframes = []
         bar = Bar('Dataframes',max=len(regionframes))
-        for region in regionframes:
-            bubbleframes.append(box.measure.bubbles(region,['phi','bubble']))
-            bar.next()
+        bubbleframes=box.measure.bubbles(bar,regionframes,['phi','bubble'])
         bar.finish()
         del os.environ['BUBBLEBOX_NTASKS_BACKEND']
 

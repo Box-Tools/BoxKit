@@ -2,8 +2,9 @@
 
 from ...library.measure  import regionprops
 
-from ...utilities import blockparallel
+from ...utilities import blockparallel,regionparallel
 
+@regionparallel
 def bubbles(region,keys):
     """
     Create a list of bubbles in a region
@@ -24,12 +25,13 @@ def bubbles(region,keys):
 
     lsetkey,bubblekey = keys
 
-    blockparallel(target=_block_label)(region.blocklist,lsetkey,bubblekey)
+    _block_label(region.blocklist,lsetkey,bubblekey)
 
     listbubbles  = regionprops(region,bubblekey)
 
     return listbubbles
 
+@blockparallel
 def _block_label(block,lsetkey,bubblekey):
     """
     tag each block using level set function
