@@ -85,7 +85,7 @@ class TestHeater(unittest.TestCase):
         bar.finish()
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
-        #self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
+        self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
 
         [dataset.purge('memmap') for dataset in dataframes]
 
