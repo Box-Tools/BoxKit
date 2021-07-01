@@ -68,15 +68,15 @@ class Dataset(object):
         self.inputfile  = data.inputfile
         self.memmap     = data.memmap
 
-    def close(self):
+    def purge(self,purgeflag='all'):
         """
         Clean up the dataset and close it
         """
 
-        if self.memmap:
+        if self.memmap and (purgeflag == 'all' or purgeflag == 'memmap'):
             try:
                 shutil.rmtree(self.memmap)
             except:
                 pass
 
-        if self.inputfile: self.inputfile.close()
+        if self.inputfile and (purgeflag == 'all' or purgeflag == 'inputfile'): self.inputfile.close()

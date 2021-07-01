@@ -24,7 +24,7 @@ class TestBoiling(unittest.TestCase):
         self.timestart = time.time()
 
         basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/'
-        filetags = [*range(0,58,10)]
+        filetags = [*range(0,58,5)]
         prefix   = 'INS_Pool_Boiling_hdf5_'
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
@@ -45,7 +45,7 @@ class TestBoiling(unittest.TestCase):
             bar.next()
         bar.finish()
 
-        [dataset.close() for dataset in dataframes]
+        [dataset.purge('memmap') for dataset in dataframes]
 
     def test_neighbors_3D(self):
         """
@@ -72,7 +72,7 @@ class TestBoiling(unittest.TestCase):
             bar.next()
         bar.finish()
    
-        [dataset.close() for dataset in dataframes]
+        [dataset.purge('memmap') for dataset in dataframes]
 
     def test_slice_3D(self):
         """
@@ -87,7 +87,7 @@ class TestBoiling(unittest.TestCase):
             bar.next()
         bar.finish()
 
-        [dataset.close() for dataset in dataframes]
+        [dataset.purge('memmap') for dataset in dataframes]
 
     def test_measure_bubbles_3D(self):
         """
@@ -96,18 +96,18 @@ class TestBoiling(unittest.TestCase):
         dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [box.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTHREADS_BACKEND'] = '8'
+        os.environ['BUBBLEBOX_NTASKS_BACKEND'] = '8'
         bubbleframes = []
         bar = Bar('Dataframes',max=len(regionframes))
         for region in regionframes:
             bubbleframes.append(box.measure.bubbles(region,['phi','bubble']))
             bar.next()
         bar.finish()
-        del os.environ['BUBBLEBOX_NTHREADS_BACKEND']
-
+        del os.environ['BUBBLEBOX_NTASKS_BACKEND']
+ 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
 
-        [dataset.close() for dataset in dataframes]
+        [dataset.purge('memmap') for dataset in dataframes]
 
     def tearDown(self):
         """Clean up and timing"""

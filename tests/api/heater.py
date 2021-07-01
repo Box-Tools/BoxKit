@@ -42,7 +42,7 @@ class TestHeater(unittest.TestCase):
             bar.next()
         bar.finish()
 
-        [dataset.close() for dataset in dataframes]
+        [dataset.purge('memmap') for dataset in dataframes]
 
     def test_neighbors_blocks_2D(self):
         """
@@ -67,7 +67,7 @@ class TestHeater(unittest.TestCase):
             bar.next()
         bar.finish()
 
-        [dataset.close() for dataset in dataframes]
+        [dataset.purge('memmap') for dataset in dataframes]
 
     def test_measure_bubbles_oneblk_2D(self):
         """
@@ -87,7 +87,7 @@ class TestHeater(unittest.TestCase):
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
         #self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
 
-        [dataset.close() for dataset in dataframes]
+        [dataset.purge('memmap') for dataset in dataframes]
 
     def test_measure_bubbles_blocks_2D(self):
         """
@@ -97,18 +97,18 @@ class TestHeater(unittest.TestCase):
         dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [box.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTHREADS_BACKEND'] = '1'
+        os.environ['BUBBLEBOX_NTASKS_BACKEND'] = '1'
         bubbleframes = []
         bar = Bar('Dataframes',max=len(regionframes))
         for region in regionframes:
             bubbleframes.append(box.measure.bubbles(region,['phi','bubble']))
             bar.next()
         bar.finish()
-        del os.environ['BUBBLEBOX_NTHREADS_BACKEND']
+        del os.environ['BUBBLEBOX_NTASKS_BACKEND']
 
         numbubbles    = [len(listbubbles) for listbubbles in bubbleframes]
 
-        [dataset.close() for dataset in dataframes]
+        [dataset.purge('memmap') for dataset in dataframes]
 
     def tearDown(self):
         """Clean up and timing"""

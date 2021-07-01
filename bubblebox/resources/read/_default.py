@@ -18,7 +18,7 @@ def default(filename,uservars):
     """
 
     # Read the hdf5 file
-    inputfile = h5py.File(filename,'r',skip_cache=True)
+    inputfile = h5py.File(filename,'r',skip_cache=False)
 
     # Extract data
     nblocks   = inputfile['numbox'][0]*inputfile['numbox'][1]*inputfile['numbox'][2]
