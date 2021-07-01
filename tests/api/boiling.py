@@ -99,9 +99,12 @@ class TestBoiling(unittest.TestCase):
         os.environ['BUBBLEBOX_NTASKS_BLOCKS']='2'
         os.environ['BUBBLEBOX_NTASKS_REGIONS']='3'
 
+        _time_measure = time.time()
         bar = Bar('Dataframes',max=len(regionframes))
         bubbleframes = box.measure.bubbles(bar,regionframes,['phi','bubble'])
         bar.finish()
+        _time_measure = time.time() - _time_measure
+        print('%s: %.3fs' % ('box.measure.bubbles', _time_measure))
    
         del os.environ['BUBBLEBOX_NTASKS_BLOCKS']
         del os.environ['BUBBLEBOX_NTASKS_REGIONS']

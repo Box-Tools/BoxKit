@@ -62,7 +62,6 @@ def _block_props(block,labelkey):
     """
 
     listprops = skimage_measure.regionprops(block[labelkey].astype(int))
-
-    listprops = [{'area' : props['area']} for props in listprops]
+    listprops = [{'area' : props['area']*block.dx*block.dy*block.dz} for props in listprops]
 
     return listprops
