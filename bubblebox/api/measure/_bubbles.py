@@ -24,13 +24,12 @@ def bubbles(region,keys):
 
     lsetkey,bubblekey = keys
 
-    _block_label(region.blocklist,lsetkey,bubblekey)
+    blockparallel(target=_block_label)(region.blocklist,lsetkey,bubblekey)
 
     listbubbles  = regionprops(region,bubblekey)
 
     return listbubbles
 
-@blockparallel
 def _block_label(block,lsetkey,bubblekey):
     """
     tag each block using level set function

@@ -24,7 +24,7 @@ class TestBoiling(unittest.TestCase):
         self.timestart = time.time()
 
         basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/'
-        filetags = [*range(0,58,5)]
+        filetags = [*range(0,58,10)]
         prefix   = 'INS_Pool_Boiling_hdf5_'
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
