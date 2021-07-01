@@ -38,21 +38,22 @@ class Dataset(object):
         Private method for initialization
         """
         self.blocklist = []
-        self.xmin,self.ymin,self.zmin = [None]*3
-        self.xmax,self.ymax,self.zmax = [None]*3
+        self.xmin,self.ymin,self.zmin = [1e10]*3
+        self.xmax,self.ymax,self.zmax = [-1e10]*3
 
         if not blocklist: return
 
         self.blocklist  = blocklist
 
-        self.xmin = min([block.xmin for block in self.blocklist])
-        self.ymin = min([block.ymin for block in self.blocklist])
-        self.zmin = min([block.zmin for block in self.blocklist])
-
-        self.xmax = max([block.xmax for block in self.blocklist])
-        self.ymax = max([block.ymax for block in self.blocklist])
-        self.zmax = max([block.zmax for block in self.blocklist])
-
+        for block in self.blocklist:
+            self.xmin = min(self.xmin,block.xmin)
+            self.ymin = min(self.ymin,block.ymin)
+            self.zmin = min(self.zmin,block.zmin)
+         
+            self.xmax = max(self.xmax,block.xmax)
+            self.ymax = max(self.ymax,block.ymax)
+            self.zmax = max(self.zmax,block.zmax)
+ 
     def _map_data(self,data):
         """
         Private method for initialization

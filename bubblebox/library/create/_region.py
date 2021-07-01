@@ -86,14 +86,15 @@ class Region(object):
         """
         if not self.blocklist: raise ValueError('Region is empty and outside scope of Blocks\n')
 
-        self.xmin = min([block.xmin for block in self.blocklist])
-        self.ymin = min([block.ymin for block in self.blocklist])
-        self.zmin = min([block.zmin for block in self.blocklist])
-
-        self.xmax = max([block.xmax for block in self.blocklist])
-        self.ymax = max([block.ymax for block in self.blocklist])
-        self.zmax = max([block.zmax for block in self.blocklist])
-
+        for block in self.blocklist:
+            self.xmin = min(self.xmin,block.xmin)
+            self.ymin = min(self.ymin,block.ymin)
+            self.zmin = min(self.zmin,block.zmin)
+         
+            self.xmax = max(self.xmax,block.xmax)
+            self.ymax = max(self.ymax,block.ymax)
+            self.zmax = max(self.zmax,block.zmax)
+ 
         self.xcenter = (self.xmin + self.xmax)/2.
         self.ycenter = (self.ymin + self.ymax)/2.
         self.zcenter = (self.zmin + self.zmax)/2.
