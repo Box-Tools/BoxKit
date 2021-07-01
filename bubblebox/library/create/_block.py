@@ -78,14 +78,9 @@ class Block(object):
         self.ycenter = (self.ymin + self.ymax)/2.
         self.zcenter = (self.zmin + self.zmax)/2.
 
-        self.dx = abs(self.xmax - self.xmin) / self.nxb
-        self.dy = abs(self.ymax - self.ymin) / self.nyb
-        self.dz = abs(self.zmax - self.zmin) / self.nzb
-
-        [self.dx, self.dy, self.dz] = [1. if   grid_spacing == 0. 
-                                          else grid_spacing
-                                          for  grid_spacing in [self.dx, self.dy, self.dz]]
-
+        self.dx = 1 if self.nxb == 1 else abs(self.xmax - self.xmin) / self.nxb
+        self.dy = 1 if self.nyb == 1 else abs(self.ymax - self.ymin) / self.nyb
+        self.dz = 1 if self.nzb == 1 else abs(self.zmax - self.zmin) / self.nzb
 
     def _map_data(self,data):
         """
@@ -119,9 +114,7 @@ class Block(object):
                          pymorton.interleave(iloc,jloc-1),
                          pymorton.interleave(iloc,jloc+1)]
 
-            neighlist = [None if   neighbor > self.data.nblocks-1
-                              else neighbor
-                              for  neighbor in neighlist]
+            neighlist = [None if neighbor > self.data.nblocks-1 else neighbor for neighbor in neighlist]
 
         else:
             neighlist = [None]*4
@@ -145,9 +138,7 @@ class Block(object):
                          pymorton.interleave(xloc,yloc,zloc-1),
                          pymorton.interleave(xloc,yloc,zloc+1)]
  
-            neighlist = [None if   neighbor > self.data.nblocks-1
-                              else neighbor
-                              for  neighbor in neighlist]
+            neighlist = [None if neighbor > self.data.nblocks-1 else neighbor for neighbor in neighlist]
 
         else:
             neighlist = [None]*6

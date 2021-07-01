@@ -87,9 +87,12 @@ class Data(object):
         """
         Create a memory map for numpy arrays
         """
+        emptykeys = []
 
-        emptykeys = [varkey for varkey in self.listkeys if self.variables[varkey] == None]
-      
+        for varkey in self.listkeys:
+            if self.variables[varkey] == None:
+               emptykeys.append(varkey)
+     
         if not emptykeys: return
 
         namerandom  = ''.join(random.choice(string.ascii_lowercase) for i in range(5)) 

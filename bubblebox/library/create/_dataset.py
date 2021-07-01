@@ -45,13 +45,13 @@ class Dataset(object):
 
         self.blocklist  = blocklist
 
-        self.xmin,self.ymin,self.zmin = [min([block.xmin for block in self.blocklist]),
-                                         min([block.ymin for block in self.blocklist]),
-                                         min([block.zmin for block in self.blocklist])]
+        self.xmin = min([block.xmin for block in self.blocklist])
+        self.ymin = min([block.ymin for block in self.blocklist])
+        self.zmin = min([block.zmin for block in self.blocklist])
 
-        self.xmax,self.ymax,self.zmax = [max([block.xmax for block in self.blocklist]),
-                                         max([block.ymax for block in self.blocklist]),
-                                         max([block.zmax for block in self.blocklist])]
+        self.xmax = max([block.xmax for block in self.blocklist])
+        self.ymax = max([block.ymax for block in self.blocklist])
+        self.zmax = max([block.zmax for block in self.blocklist])
 
     def _map_data(self,data):
         """
