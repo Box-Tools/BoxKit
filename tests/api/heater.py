@@ -97,7 +97,7 @@ class TestHeater(unittest.TestCase):
         dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [box.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTHREADS_BACKEND'] = '2'
+        os.environ['BUBBLEBOX_NTHREADS_BACKEND'] = '1'
         bubbleframes = []
         bar = Bar('Dataframes',max=len(regionframes))
         for region in regionframes:
