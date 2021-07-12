@@ -2,12 +2,12 @@
 
 import skimage.measure as skimage_measure
 
-from ...utilities import blockparallel
+from ...utilities import serial
 
-@blockparallel
+@serial
 def blockprops(block,lsetkey,labelkey):
     """
-    Calculate regionprops for a block
+    Measure properties for a block
 
     Parameters
     ----------

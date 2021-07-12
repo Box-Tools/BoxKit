@@ -1,3 +1,5 @@
 """Initialization of measure unit"""
 
-from ._measure import blockprops
+from ._block import blockprops
+
+from ._region import regionprops

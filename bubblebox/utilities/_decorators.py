@@ -1,83 +1,72 @@
-"""Module with implementation of decorators"""
+"""Module with implementation of decorator utilities"""
 
 import joblib
 import functools
 import os
 
-def blockparallel(target):
+from progress.bar import Bar
+
+def serial(target):
     """
-    Decorator to parallelize a function operating on a block
-    using joblib   
+    Decorator to serially execute a function operating on an object
 
     Parameters
     ----------
-    target : function to parallelize - operates on a block
-             ['NUMEXPR_NUM_THREADS']
-             def target(block, *args)
-
-             actual call passes blocklist
-      
-             target(blocklist, *args)
-    """
-
-    @functools.wraps(target)
-    def parallel_wrapper(blocklist,*args):
-        """
-        Wrapper takes in blocklist and additional arguments and
-        then applies target operations to individual blocks in 
-        parallel
-
-        Number of parallel tasks - ntasks - are inferred from the
-        environment variable 'BUBBLEBOX_NTASKS_BLOCKS'
-
-        ntasks = 1 or None reverts to serial mode
-        """
-
-        ntasks  = int(os.getenv('BUBBLEBOX_NTASKS_BLOCKS') or 1)
-
-        with joblib.parallel_backend('loky'):
-            listresult = joblib.Parallel(n_jobs=ntasks)(
-                             joblib.delayed(target)(block,*args) for block in blocklist)
-
-        return listresult
-
-    return parallel_wrapper
-
-def regionparallel(target):
-    """
-    Decorator to parallelize a function operating on a region
-    using joblib   
-
-    Parameters
-    ----------
-    target : function to parallelize - operates on a region
+    target : function to parallelize - operates on an object
              
-             def target(region, *args)
+             def target(object, *args)
 
-             actual call passes regionframes
+             actual call passes objectlist
       
-             target(regionframes, *args)
+             target(objectlist, *args)
     """
-
     @functools.wraps(target)
-    def parallel_wrapper(progress,regionframes,*args): #TODO - find a better way to measure progress
+    def serial_wrapper(objectlist,*args):
         """
-        Wrapper takes in regionframes and additional arguments and
-        then applies target operations to individual regions in 
+        Wrapper takes in objectlist and additional arguments and
+        then applies target operations to individual objects in 
+        serial
+        """
+        listresult = [target(object,*args) for object in objectlist]
+        return listresult
+    return serial_wrapper
+
+def parallel(target):
+    """
+    Decorator to parallelize a function operating on an object
+    using joblib   
+
+    Parameters
+    ----------
+    target : function to parallelize - operates on an object
+             
+             def target(object, *args)
+
+             actual call passes objectlist
+      
+             target(objectlist, *args)
+    """
+    @functools.wraps(target)
+    def parallel_wrapper(objectlist,*args): #TODO remove progress
+        """
+        Wrapper takes in objectlist and additional arguments and
+        then applies target operations to individual objects in 
         parallel
 
         Number of parallel tasks - ntasks - are inferred from the
-        environment variable 'BUBBLEBOX_NTASKS_REGIONS'
+        environment variable 'BUBBLEBOX_NTASKS_PARALLEL'
 
         ntasks = 1 or None reverts to serial mode
         """
+        ntasks  = int(os.getenv('BUBBLEBOX_NTASKS_PARALLEL') or 1)
 
-        ntasks  = int(os.getenv('BUBBLEBOX_NTASKS_REGIONS') or 1)
+        bar = Bar('Dataframes',max=len(objectlist))
 
-        with joblib.parallel_backend('loky'):
-            listresult = joblib.Parallel(n_jobs=ntasks)(
-                             joblib.delayed(target)(region,*args) for region in regionframes if not progress.next())
+        listresult = joblib.Parallel(n_jobs=ntasks,backend='loky')(
+                         joblib.delayed(target)(object,*args) for object in objectlist 
+                                                               if not bar.next())
+
+        bar.finish()
 
         return listresult
-
     return parallel_wrapper

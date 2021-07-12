@@ -1,3 +1,3 @@
 """Initialization of measure unit"""
 
-from ._measure import bubbles
+from ._region import bubbles
