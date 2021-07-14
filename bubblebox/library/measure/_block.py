@@ -2,7 +2,7 @@
 
 import skimage.measure as skimage_measure
 
-from ...utilities import serial
+from ...utilities import serial,parallel
 
 @serial
 def blockprops(block,lsetkey,labelkey):

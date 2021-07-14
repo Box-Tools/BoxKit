@@ -4,6 +4,7 @@ import numpy
 import os
 import string
 import random
+import pyarrow
 
 class Data(object):
     """Default class to store data"""
@@ -80,8 +81,11 @@ class Data(object):
         """
 
         self.listkeys  = list(self.variables.keys())
+
         self.memmap = None
         self._create_memmap()
+
+        #self._create_tensor()
 
     def _create_memmap(self):
         """
@@ -107,3 +111,15 @@ class Data(object):
             outputfile  = os.path.join(self.memmap,varkey)
             outputshape = (self.nblocks,self.nxb,self.nyb,self.nzb)
             self.variables[varkey] = numpy.memmap(outputfile, dtype=float, shape=outputshape, mode='w+')
+
+    def _create_tensor(self):
+        """
+        Create a pyarrow tensor objects
+        """
+        for varkey in self.listkeys:
+            templist = []
+
+            for lblock in range(self.nblocks):
+                templist.append(pyarrow.Tensor.from_numpy(self.variables[varkey][lblock]))
+
+            self.variables[varkey] = templist

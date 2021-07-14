@@ -5,7 +5,7 @@ import unittest
 import pymorton
 import time
 import os
-from progress.bar import Bar
+from progress.bar import FillingSquaresBar as Bar
 
 class TestBoiling(unittest.TestCase):
     """bubblebox unit test for 3D boiling data"""
@@ -23,7 +23,7 @@ class TestBoiling(unittest.TestCase):
         """
         self.timestart = time.time()
 
-        basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/'
+        basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/not-chunked/'
         filetags = [*range(0,58,10)]
         prefix   = 'INS_Pool_Boiling_hdf5_'
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
@@ -38,7 +38,7 @@ class TestBoiling(unittest.TestCase):
         """      
         dataframes  = [box.create.dataset(filename) for filename in self.filenames]
 
-        bar = Bar('Dataframes',max=len(dataframes))
+        bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
             for block in dataset.blocklist:
                 self.assertTrue(block.data is dataset.blocklist[0].data,'Data pointers are inconsistent')
@@ -53,7 +53,7 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes   = [box.create.dataset(filename) for filename in self.filenames]
 
-        bar = Bar('Dataframes',max=len(dataframes))
+        bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
             for block in dataset.blocklist:
                 xloc,yloc,zloc  = pymorton.deinterleave3(block.tag)
@@ -81,7 +81,7 @@ class TestBoiling(unittest.TestCase):
         dataframes   = [box.create.dataset(filename) for filename in self.filenames]
         regionframes = [box.create.slice(dataset,{'zmin':0.01,'zmax':0.01}) for dataset in dataframes]
 
-        bar = Bar('Dataframes',max=len(regionframes))
+        bar = Bar('run:'+self.id(),max=len(regionframes),suffix = '%(percent)d%%')
         for region in regionframes:
             self.assertEqual(int(len(region.blocklist)**(1/2)),16)
             bar.next()
@@ -96,18 +96,13 @@ class TestBoiling(unittest.TestCase):
         dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [box.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTASKS_BLOCKS']='2'
-        os.environ['BUBBLEBOX_NTASKS_REGIONS']='3'
-
+        os.environ['BUBBLEBOX_NTASKS_PARALLEL']='3'
         _time_measure = time.time()
-        bar = Bar('Dataframes',max=len(regionframes))
-        bubbleframes = box.measure.bubbles(bar,regionframes,['phi','bubble'])
-        bar.finish()
+        bubbleframes = box.measure.bubbles(regionframes,['phi','bubble'])
         _time_measure = time.time() - _time_measure
         print('%s: %.3fs' % ('box.measure.bubbles', _time_measure))
    
-        del os.environ['BUBBLEBOX_NTASKS_BLOCKS']
-        del os.environ['BUBBLEBOX_NTASKS_REGIONS']
+        del os.environ['BUBBLEBOX_NTASKS_PARALLEL']
 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
         self.assertEqual(numbubbles,[1341, 1380, 1262, 1255, 1351, 1362])

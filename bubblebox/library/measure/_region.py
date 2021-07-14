@@ -2,7 +2,7 @@
 
 import itertools
 
-from ...utilities import parallel
+from ...utilities import serial,parallel
 
 from . import blockprops
 

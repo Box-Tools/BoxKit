@@ -48,13 +48,13 @@ class Block(object):
         """
         Get variable data
         """
-        return self.data[varkey][self.tag]
+        return self.data[varkey][self.tag] #.to_numpy()[:]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        self.data[varkey][self.tag] = value
+        self.data[varkey][self.tag] = value #.to_numpy()[:] = value
 
     def _set_attributes(self,attributes):
         """
@@ -150,6 +150,6 @@ class Block(object):
         Get neighbor data
         """
         if neighbor is not None:
-            return self.data[varkey][neighbor]
+            return self.data[varkey][neighbor] #.to_numpy()[:]
         else:
             return None

@@ -5,7 +5,7 @@ import unittest
 import pymorton
 import time
 import os
-from progress.bar import Bar
+from progress.bar import FillingSquaresBar as Bar
 
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""
@@ -35,7 +35,7 @@ class TestHeater(unittest.TestCase):
         self._setup('oneblk')
         dataframes = [box.create.dataset(filename) for filename in self.filenames]
 
-        bar = Bar('Dataframes',max=len(dataframes))
+        bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
             for block in dataset.blocklist:
                 self.assertEqual([None]*4,block.neighlist, 'Single block data structure has no neighbors')
@@ -51,7 +51,7 @@ class TestHeater(unittest.TestCase):
         self._setup('blocks')
         dataframes = [box.create.dataset(filename) for filename in self.filenames]
 
-        bar = Bar('Dataframes',max=len(dataframes))
+        bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
             for block in dataset.blocklist:
                 iloc,jloc   = pymorton.deinterleave2(block.tag)
@@ -77,10 +77,7 @@ class TestHeater(unittest.TestCase):
         dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [box.create.region(dataset) for dataset in dataframes]
 
-        bubbleframes = []
-        bar = Bar('Dataframes',max=len(regionframes))
-        bubbleframes = box.measure.bubbles(bar,regionframes,['phi','bubble'])
-        bar.finish()
+        bubbleframes = box.measure.bubbles(regionframes,['phi','bubble'])
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
         self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
@@ -95,13 +92,8 @@ class TestHeater(unittest.TestCase):
         dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [box.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTASKS_BACKEND'] = '1'
-        bar = Bar('Dataframes',max=len(regionframes))
-        bubbleframes=box.measure.bubbles(bar,regionframes,['phi','bubble'])
-        bar.finish()
-        del os.environ['BUBBLEBOX_NTASKS_BACKEND']
-
-        numbubbles    = [len(listbubbles) for listbubbles in bubbleframes]
+        bubbleframes = box.measure.bubbles(regionframes,['phi','bubble'])
+        numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
         [dataset.purge('memmap') for dataset in dataframes]
 

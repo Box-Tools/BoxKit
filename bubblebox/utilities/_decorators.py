@@ -4,7 +4,7 @@ import joblib
 import functools
 import os
 
-from progress.bar import Bar
+from progress.bar import FillingSquaresBar as Bar
 
 def serial(target):
     """
@@ -60,7 +60,7 @@ def parallel(target):
         """
         ntasks  = int(os.getenv('BUBBLEBOX_NTASKS_PARALLEL') or 1)
 
-        bar = Bar('Dataframes',max=len(objectlist))
+        bar = Bar('run-parallel:'+target.__module__+'.'+target.__name__,max=len(objectlist),suffix = '%(percent)d%%')
 
         listresult = joblib.Parallel(n_jobs=ntasks,backend='loky')(
                          joblib.delayed(target)(object,*args) for object in objectlist 
