@@ -1,6 +1,6 @@
 """ Module with implemenation of region methods"""
 
-from ...library.measure import regionprops
+from ....library.measure import regionprops
 
 def bubbles(regionlist,keys): #TODO find better way to deal with progress
     """

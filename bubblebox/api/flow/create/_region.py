@@ -1,6 +1,6 @@
 """ Module with implemenation of region methods"""
 
-from ...library.create import Region
+from ....library.create import Region
 
 def region(dataset,attributes={}):
     """

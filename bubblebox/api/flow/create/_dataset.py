@@ -1,8 +1,8 @@
 """Module with implemenetation of Dataset class and methods"""
 
-from ...library.create import Data,Block,Dataset
+from ....library.create import Data,Block,Dataset
 
-from ...resources.read import default,flash
+from ....resources.read import default,flash
 
 def dataset(filename,uservars=[],source='default'):
     """

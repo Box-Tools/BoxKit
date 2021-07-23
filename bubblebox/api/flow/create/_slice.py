@@ -1,6 +1,6 @@
 """ Module with implemenation of slice methods"""
 
-from ...library.create import Slice
+from ....library.create import Slice
 
 def slice(dataset,attributes={}):
     """

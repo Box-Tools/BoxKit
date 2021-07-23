@@ -1,6 +1,6 @@
 """Tests for `bubblebox/api/default`."""
 
-import bubblebox.api as box
+import bubblebox.api.flow as flowbox
 import unittest
 import pymorton
 import time
@@ -33,7 +33,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are morton order
         """
         self._setup('oneblk')
-        dataframes = [box.create.dataset(filename) for filename in self.filenames]
+        dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
         bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
@@ -49,7 +49,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are in morton order
         """
         self._setup('blocks')
-        dataframes = [box.create.dataset(filename) for filename in self.filenames]
+        dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
         bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
@@ -74,10 +74,10 @@ class TestHeater(unittest.TestCase):
         Test bubble measurement
         """
         self._setup('oneblk')
-        dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
-        regionframes = [box.create.region(dataset) for dataset in dataframes]
+        dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
+        regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
-        bubbleframes = box.measure.bubbles(regionframes,['phi','bubble'])
+        bubbleframes = flowbox.measure.bubbles(regionframes,['phi','bubble'])
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
         self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
@@ -89,10 +89,10 @@ class TestHeater(unittest.TestCase):
         Test bubble measurement
         """
         self._setup('blocks')
-        dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
-        regionframes = [box.create.region(dataset) for dataset in dataframes]
+        dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
+        regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
-        bubbleframes = box.measure.bubbles(regionframes,['phi','bubble'])
+        bubbleframes = flowbox.measure.bubbles(regionframes,['phi','bubble'])
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
         [dataset.purge('memmap') for dataset in dataframes]

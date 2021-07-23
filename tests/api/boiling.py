@@ -1,6 +1,6 @@
-"""Tests for `bubblebox/api/default`."""
+"""Tests for `bubblebox/api/flow`."""
 
-import bubblebox.api as box
+import bubblebox.api.flow as flowbox
 import unittest
 import pymorton
 import time
@@ -23,7 +23,7 @@ class TestBoiling(unittest.TestCase):
         """
         self.timestart = time.time()
 
-        basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/not-chunked/'
+        basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/'
         filetags = [*range(0,58,10)]
         prefix   = 'INS_Pool_Boiling_hdf5_'
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
@@ -36,7 +36,7 @@ class TestBoiling(unittest.TestCase):
         dataframes : list of Dataset objects
 
         """      
-        dataframes  = [box.create.dataset(filename) for filename in self.filenames]
+        dataframes  = [flowbox.create.dataset(filename) for filename in self.filenames]
 
         bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
@@ -51,7 +51,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        dataframes   = [box.create.dataset(filename) for filename in self.filenames]
+        dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
 
         bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
@@ -78,8 +78,8 @@ class TestBoiling(unittest.TestCase):
         """
         Test slice
         """
-        dataframes   = [box.create.dataset(filename) for filename in self.filenames]
-        regionframes = [box.create.slice(dataset,{'zmin':0.01,'zmax':0.01}) for dataset in dataframes]
+        dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
+        regionframes = [flowbox.create.slice(dataset,{'zmin':0.01,'zmax':0.01}) for dataset in dataframes]
 
         bar = Bar('run:'+self.id(),max=len(regionframes),suffix = '%(percent)d%%')
         for region in regionframes:
@@ -93,14 +93,14 @@ class TestBoiling(unittest.TestCase):
         """
         Test measure bubbles
         """
-        dataframes = [box.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
-        regionframes = [box.create.region(dataset) for dataset in dataframes]
+        dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
+        regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
         os.environ['BUBBLEBOX_NTASKS_PARALLEL']='3'
         _time_measure = time.time()
-        bubbleframes = box.measure.bubbles(regionframes,['phi','bubble'])
+        bubbleframes = flowbox.measure.bubbles(regionframes,['phi','bubble'])
         _time_measure = time.time() - _time_measure
-        print('%s: %.3fs' % ('box.measure.bubbles', _time_measure))
+        print('%s: %.3fs' % ('flowbox.measure.bubbles', _time_measure))
    
         del os.environ['BUBBLEBOX_NTASKS_PARALLEL']
 
