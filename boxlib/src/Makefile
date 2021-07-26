@@ -4,17 +4,18 @@ CC = g++
 
 COMPFLAGS = -shared -fPIC -fopenmp
 
-INCLUDE = -I/usr/include/python3.8 -I$(BASEDIR)
+INCLUDE = -I/usr/include/python3.8 -I$(BASEDIR)/../include
 
-BOXOBJS += parallelbox.o boxlib.o
+BOXOBJS = utilities.o bubblebox.o
 
-LIB = boxlib.so
+BOXLIB = libbubblebox.a
 
-$(LIB): $(BOXOBJS)
-	$(CC) $(COMPFLAGS) -o $(LIB) $(BOXOBJS)
+$(BOXLIB): $(BOXOBJS)
+	$(CC) $(COMPFLAGS) -o $(BOXLIB) $(BOXOBJS)
 
 %.o : %.cxx
 	$(CC) $(COMPFLAGS) $(INCLUDE) -c $<
 
 clean:
 	rm -f *.o
+	rm -f *.a

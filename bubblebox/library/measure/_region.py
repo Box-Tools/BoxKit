@@ -2,11 +2,11 @@
 
 import itertools
 
-from ...utilities import serial,parallel
+from ...utilities import serial, parallel
 
 from . import blockprops
 
-@parallel
+@parallel(backend='boxlib')
 def regionprops(region,lsetkey,labelkey):
     """
     Measure properties for a region

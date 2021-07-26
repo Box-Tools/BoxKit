@@ -96,7 +96,8 @@ class TestBoiling(unittest.TestCase):
         dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTASKS_PARALLEL']='3'
+        os.environ['BUBBLEBOX_NTASKS_PARALLEL']='4'
+
         _time_measure = time.time()
         bubbleframes = flowbox.measure.bubbles(regionframes,['phi','bubble'])
         _time_measure = time.time() - _time_measure

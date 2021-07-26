@@ -1,5 +1,6 @@
 """Module with implementation of decorator utilities"""
 
+import boxlib.api as boxapi
 import joblib
 import functools
 import os
@@ -31,7 +32,7 @@ def serial(target):
         return listresult
     return serial_wrapper
 
-def parallel(target):
+def parallel(target=None,backend='loky'):
     """
     Decorator to parallelize a function operating on an object
     using joblib   
@@ -45,28 +46,50 @@ def parallel(target):
              actual call passes objectlist
       
              target(objectlist, *args)
+
+    backend : 'loky'
+            : 'boxlib'
     """
-    @functools.wraps(target)
-    def parallel_wrapper(objectlist,*args): #TODO remove progress
+    def parallel_decorator(target):
         """
-        Wrapper takes in objectlist and additional arguments and
-        then applies target operations to individual objects in 
-        parallel
+        Arguments:
+        ----------
+        target : function to parallelize
 
-        Number of parallel tasks - ntasks - are inferred from the
-        environment variable 'BUBBLEBOX_NTASKS_PARALLEL'
-
-        ntasks = 1 or None reverts to serial mode
         """
-        ntasks  = int(os.getenv('BUBBLEBOX_NTASKS_PARALLEL') or 1)
+        @functools.wraps(target)
+        def parallel_wrapper(objectlist,*args): #TODO remove progress
+            """
+            Wrapper takes in objectlist and additional arguments and
+            then applies target operations to individual objects in 
+            parallel
 
-        bar = Bar('run-parallel:'+target.__module__+'.'+target.__name__,max=len(objectlist),suffix = '%(percent)d%%')
+            Number of parallel tasks - ntasks - are inferred from the
+            environment variable 'BUBBLEBOX_NTASKS_PARALLEL'
 
-        listresult = joblib.Parallel(n_jobs=ntasks,backend='loky')(
-                         joblib.delayed(target)(object,*args) for object in objectlist 
-                                                               if not bar.next())
+            ntasks = 1 or None reverts to serial mode
+            """
+            ntasks  = int(os.getenv('BUBBLEBOX_NTASKS_PARALLEL') or 1)
 
-        bar.finish()
+            bar = Bar('run-parallel:'+target.__module__+'.'+target.__name__,max=len(objectlist),
+                      suffix = '%(percent)d%%')
 
-        return listresult
-    return parallel_wrapper
+            if backend == 'loky':
+                listresult = joblib.Parallel(n_jobs=ntasks,backend='loky')(
+                                 joblib.delayed(target)(object,*args) for object in objectlist 
+                                                                       if not bar.next())
+
+            elif backend == 'boxlib':
+                listresult = boxapi.utilities.parallel_wrapper(bar,ntasks,target,objectlist,*args)
+
+            bar.finish()
+
+            return listresult
+
+        return parallel_wrapper
+
+    if target:
+        return parallel_decorator(target)
+
+    else:
+        return parallel_decorator
