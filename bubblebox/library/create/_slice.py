@@ -7,24 +7,24 @@ class Slice(Region):
 
     type_ = 'derived'
 
-    def __init__(self, attributes={}, blocklist=[]):
+    def __init__(self, blocklist=[], **kwargs):
         """Initialize the Slice object and allocate the data.
 
         Parameters
         ----------
-        attributes : dictionary
-                     { 'xmin' : low  bound in x dir
-                       'ymin' : low  bound in y dir
-                       'zmin' : low  bound in z dir
-                       'xmax' : high bound in x dir
-                       'ymax' : high bound in y dir
-                       'zmax' : high bound in z dir}
+        blocklist  : list of blocks
 
-        blocklist  : list of block objects
+        kwargs : dictionary
+               { 'xmin' : low  bound in x dir
+                 'ymin' : low  bound in y dir
+                 'zmin' : low  bound in z dir
+                 'xmax' : high bound in x dir
+                 'ymax' : high bound in y dir
+                 'zmax' : high bound in z dir}
 
         """
 
-        super().__init__(attributes,blocklist)       
+        super().__init__(blocklist, **kwargs) 
        
     def __repr__(self):
         """Return a representation of the object."""

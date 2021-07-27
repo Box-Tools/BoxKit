@@ -5,24 +5,24 @@ class Region(object):
 
     type_ = 'base'
 
-    def __init__(self, attributes={}, blocklist=[]):
+    def __init__(self, blocklist=[], **kwargs):
         """Initialize the Region object and allocate the data.
 
         Parameters
         ----------
-        attributes : dictionary
-                     { 'xmin' : low  bound in x dir
-                       'ymin' : low  bound in y dir
-                       'zmin' : low  bound in z dir
-                       'xmax' : high bound in x dir
-                       'ymax' : high bound in y dir
-                       'zmax' : high bound in z dir}
+        blocklist  : list of objects
 
-        blocklist  : list of block objects
+        kwargs : dictionary
+               { 'xmin' : low  bound in x dir
+                 'ymin' : low  bound in y dir
+                 'zmin' : low  bound in z dir
+                 'xmax' : high bound in x dir
+                 'ymax' : high bound in y dir
+                 'zmax' : high bound in z dir}
 
         """
        
-        self._set_attributes(attributes)
+        self._set_attributes(kwargs)
         self._map_blocklist(blocklist)
 
     def __repr__(self):
@@ -41,8 +41,9 @@ class Region(object):
         Private method for intialization
         """
 
-        default_attributes = {'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
-                              'xmax' : 0., 'ymax' : 0., 'zmax' : 0.}
+        default_attributes = {'xmin'    : 0., 'ymin' : 0., 'zmin' : 0.,
+                              'xmax'    : 0., 'ymax' : 0., 'zmax' : 0.,
+                              'backend' : 'loky'}
 
         for key in attributes:
             if key in default_attributes:

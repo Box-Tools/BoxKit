@@ -7,28 +7,28 @@ class Block(object):
 
     type_ = 'default'
 
-    def __init__(self, attributes={}, data=None):
+    def __init__(self, data=None, **kwargs):
         """Initialize the  object and allocate the data.
 
         Parameters
         ----------
-        attributes : dictionary
-                     { 'nxb'  : number of grid points per block in x dir
-                       'nyb'  : number of grid points per block in y dir
-                       'nzb'  : number of grid points per block in z dir
-                       'xmin' : low  bound in x dir
-                       'ymin' : low  bound in y dir
-                       'zmin' : low  bound in z dir
-                       'xmax' : high bound in x dir
-                       'ymax' : high bound in y dir
-                       'zmax' : high bound in z dir
-                       'tag'  : block ID }
-
         data : data object
+
+        kwargs : dictionary
+               { 'nxb'  : number of grid points per block in x dir
+                 'nyb'  : number of grid points per block in y dir
+                 'nzb'  : number of grid points per block in z dir
+                 'xmin' : low  bound in x dir
+                 'ymin' : low  bound in y dir
+                 'zmin' : low  bound in z dir
+                 'xmax' : high bound in x dir
+                 'ymax' : high bound in y dir
+                 'zmax' : high bound in z dir
+                 'tag'  : block ID }
 
         """
 
-        self._set_attributes(attributes)
+        self._set_attributes(kwargs)
         self._map_data(data)
 
     def __repr__(self):

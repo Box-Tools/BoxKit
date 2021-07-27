@@ -1,9 +1,11 @@
 """Module with implementation of the Data class."""
 
-import numpy
 import os
 import string
 import random
+
+import numpy
+import dask.array as dsarray
 import pyarrow
 
 class Data(object):
@@ -11,23 +13,23 @@ class Data(object):
 
     type_ = "default"
 
-    def __init__(self, attributes={}):
+    def __init__(self, **kwargs):
         """Initialize the class object
 
         Parameters
         ----------
-        attributes : dictionary
-                     { 'nblocks'   : total number of blocks
-                       'nxb'       : number of grid points per block in x dir
-                       'nyb'       : number of grid points per block in y dir
-                       'nzb'       : number of grid points per block in z dir}
-
-        variables  - dictionary of variables
+        kwargs : dictionary
+               { 'nblocks'   : total number of blocks,
+                 'nxb'       : number of grid points per block in x dir,
+                 'nyb'       : number of grid points per block in y dir,
+                 'nzb'       : number of grid points per block in z dir,
+                 'inputfile' : hdf5 inputfile default (None),
+                 'variables' : dictionary of variables default ({})}
 
         """
 
-        self._set_attributes(attributes)
-        self._set_data() 
+        self._set_attributes(kwargs)
+        self._set_data()
 
     def __repr__(self):
         """
@@ -64,8 +66,10 @@ class Data(object):
 
         default_attributes = {'nblocks'   : 1,              
                               'inputfile' : None,
+                              'memmap'    : None,
                               'variables' : {},
-                                    'nxb' : 1, 'nyb' : 1, 'nzb' : 1}
+                                    'nxb' : 1, 'nyb' : 1, 'nzb' : 1,
+                                'storage' : 'disk'}
 
         for key in attributes:
             if key in default_attributes:
@@ -80,16 +84,17 @@ class Data(object):
         Private method for setting new data
         """
 
-        self.listkeys  = list(self.variables.keys())
+        self.listkeys = list(self.variables.keys())
 
-        self.memmap = None
-        self._create_memmap()
+        if self.storage == 'disk':
+            self._create_numpy_memmap()
+ 
+        else:
+            raise NotImplementedError('Storage format "{}" not implemented'.format(self.storage))
 
-        #self._create_tensor()
-
-    def _create_memmap(self):
+    def _create_numpy_memmap(self):
         """
-        Create a memory map for numpy arrays
+        Create numpy memory maps for empty keys in variables dictionary
         """
         emptykeys = []
 
@@ -112,7 +117,32 @@ class Data(object):
             outputshape = (self.nblocks,self.nxb,self.nyb,self.nzb)
             self.variables[varkey] = numpy.memmap(outputfile, dtype=float, shape=outputshape, mode='w+')
 
-    def _create_tensor(self):
+    def _create_numpy_arrays(self):
+        """
+        Create numpy arrays for empty keys in variables dictionary
+        """
+        emptykeys = []
+
+        for varkey in self.listkeys:
+            if self.variables[varkey] == None:
+               emptykeys.append(varkey)
+     
+        if not emptykeys: return
+
+        for varkey in emptykeys:
+            outputshape = (self.nblocks,self.nxb,self.nyb,self.nzb)
+            self.variables[varkey] = numpy.ndarray(dtype=float, shape=outputshape)
+
+    def _create_dask_objects(self):
+        """
+        Create dask array representation of data
+        """
+
+        for varkey in self.listkeys:
+            self.variables[varkey] = dsarray.from_array(self.variables[varkey],
+                                                        chunks=(1,self.nxb,self.nyb,self.nzb))
+
+    def _create_pyarrow_tensor(self):
         """
         Create a pyarrow tensor objects
         """
@@ -123,3 +153,4 @@ class Data(object):
                 templist.append(pyarrow.Tensor.from_numpy(self.variables[varkey][lblock]))
 
             self.variables[varkey] = templist
+

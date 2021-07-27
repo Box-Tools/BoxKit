@@ -5,34 +5,36 @@ import sys
 import ctypes
 import progress
 
-libname = "../src/libbubblebox.a"
+libname = "../build/libbubblebox.a"
 libpath = os.path.dirname(os.path.abspath(__file__)) + os.path.sep + libname
-boxlib  = ctypes.cdll.LoadLibrary(libpath)
+bubbleboxlib = ctypes.cdll.LoadLibrary(libpath)
 
-def parallel_wrapper(bar,ntasks,target,objectlist,*args):
+def parallel_wrapper(target,objectlist,args,bar,ntasks):
     """
     Parallel wrapper
 
     Arguments:
     ----------
-    bar : progress bar object
-
-    ntasks : num tasks
-
     target : target function
 
     objectlist : list of objects
+
+    args : tuple of additional arguments
+
+    bar : progress bar object
+
+    ntasks : num tasks
 
     Returns:
     --------
     listresult : list of result
 
     """
-    boxlib.parallel_wrapper_pyobj.argtypes = [ctypes.py_object,ctypes.c_int,
-                                              ctypes.py_object,ctypes.py_object,ctypes.py_object]
+    bubbleboxlib.Parallel_PyWrapper.argtypes = [ctypes.py_object,ctypes.py_object,ctypes.py_object,
+                                          ctypes.py_object,ctypes.c_int]
 
-    boxlib.parallel_wrapper_pyobj.restype  = ctypes.py_object
+    bubbleboxlib.Parallel_PyWrapper.restype  = ctypes.py_object
 
-    listresult = boxlib.parallel_wrapper_pyobj(bar,ntasks,target,objectlist,args)
+    listresult = bubbleboxlib.Parallel_PyWrapper(target,objectlist,args,bar,ntasks)
 
     return listresult

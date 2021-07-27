@@ -37,7 +37,7 @@ with open('bubblebox/__meta__.py', mode='r') as source:
                             '__license__', '__description__']}
 
 # core dependancies
-DEPENDENCIES = ['numpy', 'h5py', 'h5pickle', 'pymorton', 'scikit-image', 'joblib', 'progress']
+DEPENDENCIES = ['numpy', 'h5py', 'h5pickle', 'pymorton', 'scikit-image', 'joblib', 'progress', 'dask', 'pyarrow']
 
 setup(
     name                 = metadata['__pkgname__'],

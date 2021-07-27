@@ -2,7 +2,7 @@
 
 from ....library.create import Slice
 
-def slice(dataset,attributes={}):
+def slice(dataset,**kwargs):
     """
     Create a slice from a dataset
 
@@ -11,13 +11,13 @@ def slice(dataset,attributes={}):
 
     dataset    : Dataset object
  
-    attributes : dictionary of attributes
-                 { 'xmin' : low x bound
-                   'ymin' : low y bound
-                   'zmin' : low z bound
-                   'xmax' : high x bound
-                   'ymax' : high y bound
-                   'zmax' : high z bound }
+    kwargs : dictionary of attributes
+           { 'xmin' : low x bound
+             'ymin' : low y bound
+             'zmin' : low z bound
+             'xmax' : high x bound
+             'ymax' : high y bound
+             'zmax' : high z bound }
 
     Returns
     -------
@@ -28,6 +28,6 @@ def slice(dataset,attributes={}):
     slice_attributes = {'xmin' : dataset.xmin, 'ymin' : dataset.ymin, 'zmin' : dataset.zmin,
                         'xmax' : dataset.xmax, 'ymax' : dataset.ymax, 'zmax' : dataset.zmax}
 
-    for key in attributes: slice_attributes[key] = attributes[key]
+    for key in kwargs: slice_attributes[key] = kwargs[key]
 
-    return Slice(slice_attributes,dataset.blocklist)
+    return Slice(dataset.blocklist, **slice_attributes)

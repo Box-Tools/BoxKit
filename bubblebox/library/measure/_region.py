@@ -6,7 +6,7 @@ from ...utilities import serial, parallel
 
 from . import blockprops
 
-@parallel(backend='boxlib')
+@parallel
 def regionprops(region,lsetkey,labelkey):
     """
     Measure properties for a region

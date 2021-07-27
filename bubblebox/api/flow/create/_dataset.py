@@ -19,6 +19,9 @@ def dataset(filename,uservars=[],source='default'):
                'sample' : method to create sample dataset for BubbleBox API tests
                'flash'  : method to create FLASH dataset
 
+    storage  : storage option 'disk', 'pyarrow', or 'dask'
+               default('disk')
+
     (see tests/boiling.py and tests/heater.py for references)
 
     Returns
@@ -31,7 +34,8 @@ def dataset(filename,uservars=[],source='default'):
 
     data_attributes,block_attributes = read[source](filename,uservars)
 
-    data      = Data(data_attributes) 
-    blocklist = [Block(attributes,data) for attributes in block_attributes]
+    data = Data(**data_attributes)
+
+    blocklist = [Block(data, **attributes) for attributes in block_attributes]
 
     return Dataset(blocklist,data)

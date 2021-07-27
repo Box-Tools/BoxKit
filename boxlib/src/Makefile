@@ -10,8 +10,12 @@ BOXOBJS = utilities.o bubblebox.o
 
 BOXLIB = libbubblebox.a
 
+BUILDDIR = $(BASEDIR)/../build
+
 $(BOXLIB): $(BOXOBJS)
 	$(CC) $(COMPFLAGS) -o $(BOXLIB) $(BOXOBJS)
+	mkdir -p $(BUILDDIR)
+	cp $(BOXLIB) $(BUILDDIR)
 
 %.o : %.cxx
 	$(CC) $(COMPFLAGS) $(INCLUDE) -c $<

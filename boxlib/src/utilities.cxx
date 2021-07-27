@@ -3,8 +3,8 @@
 
 namespace bubblebox{
 
-    PyObject* parallel_wrapper_pyobj (PyObject* progress_bar, int num_threads,
-                                      PyObject* target_function, PyObject* object_list, PyObject* args_tuple) {
+    PyObject* Parallel_PyWrapper (PyObject* target_function, PyObject* object_list, PyObject* args_tuple,
+                                  PyObject* progress_bar, int num_threads) {
 
         Py_ssize_t target_num_objs = PyList_Size(object_list);           
         Py_ssize_t target_num_args = PyTuple_Size(args_tuple) + 1;
@@ -14,7 +14,7 @@ namespace bubblebox{
         omp_set_dynamic(0);
         omp_set_num_threads(num_threads);
 
-        #pragma omp parallel default(shared)
+        //#pragma omp parallel default(shared)
         for (int i = 0; i < target_num_objs; i++) {
 
             PyObject* target_object = PyList_GetItem(object_list, i);

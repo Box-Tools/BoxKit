@@ -79,7 +79,7 @@ class TestBoiling(unittest.TestCase):
         Test slice
         """
         dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
-        regionframes = [flowbox.create.slice(dataset,{'zmin':0.01,'zmax':0.01}) for dataset in dataframes]
+        regionframes = [flowbox.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes]
 
         bar = Bar('run:'+self.id(),max=len(regionframes),suffix = '%(percent)d%%')
         for region in regionframes:
@@ -96,14 +96,12 @@ class TestBoiling(unittest.TestCase):
         dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTASKS_PARALLEL']='4'
-
+        os.environ['BUBBLEBOX_LOKY_TASKS']='4'
         _time_measure = time.time()
         bubbleframes = flowbox.measure.bubbles(regionframes,['phi','bubble'])
         _time_measure = time.time() - _time_measure
         print('%s: %.3fs' % ('flowbox.measure.bubbles', _time_measure))
-   
-        del os.environ['BUBBLEBOX_NTASKS_PARALLEL']
+        del os.environ['BUBBLEBOX_LOKY_TASKS']
 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
         self.assertEqual(numbubbles,[1341, 1380, 1262, 1255, 1351, 1362])
