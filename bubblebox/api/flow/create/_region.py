@@ -1,6 +1,6 @@
 """ Module with implemenation of region methods"""
 
-from ....library.create import Region
+from .... import library
 
 def region(dataset, **kwargs):
     """
@@ -30,4 +30,4 @@ def region(dataset, **kwargs):
 
     for key in kwargs: region_attributes[key] = kwargs[key]
 
-    return Region(dataset.blocklist, **region_attributes)
+    return library.create.Region(dataset.blocklist, **region_attributes)

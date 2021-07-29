@@ -1,6 +1,6 @@
 """Module with implemenetation of Dataset class and methods"""
 
-from ....library.create import Data,Block,Dataset
+from .... import library
 
 from ....resources.read import default,flash
 
@@ -34,8 +34,8 @@ def dataset(filename,uservars=[],source='default'):
 
     data_attributes,block_attributes = read[source](filename,uservars)
 
-    data = Data(**data_attributes)
+    data = library.create.Data(**data_attributes)
 
-    blocklist = [Block(data, **attributes) for attributes in block_attributes]
+    blocklist = [library.create.Block(data, **attributes) for attributes in block_attributes]
 
-    return Dataset(blocklist,data)
+    return library.create.Dataset(blocklist,data)

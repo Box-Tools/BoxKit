@@ -1,6 +1,6 @@
 """ Module with implemenation of slice methods"""
 
-from ....library.create import Slice
+from .... import library
 
 def slice(dataset,**kwargs):
     """
@@ -30,4 +30,4 @@ def slice(dataset,**kwargs):
 
     for key in kwargs: slice_attributes[key] = kwargs[key]
 
-    return Slice(dataset.blocklist, **slice_attributes)
+    return library.create.Slice(dataset.blocklist, **slice_attributes)

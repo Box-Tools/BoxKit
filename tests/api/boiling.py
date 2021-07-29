@@ -5,6 +5,7 @@ import unittest
 import pymorton
 import time
 import os
+
 from progress.bar import FillingSquaresBar as Bar
 
 class TestBoiling(unittest.TestCase):
@@ -96,12 +97,13 @@ class TestBoiling(unittest.TestCase):
         dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_LOKY_TASKS']='4'
         _time_measure = time.time()
-        bubbleframes = flowbox.measure.bubbles(regionframes,['phi','bubble'])
+        measure_bubbles = flowbox.measure.bubbles.clone()
+        measure_bubbles.actions.region.tasks = 2
+        measure_bubbles.actions.block.tasks = 2
+        bubbleframes = measure_bubbles(regionframes,'phi','bubble')
         _time_measure = time.time() - _time_measure
         print('%s: %.3fs' % ('flowbox.measure.bubbles', _time_measure))
-        del os.environ['BUBBLEBOX_LOKY_TASKS']
 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
         self.assertEqual(numbubbles,[1341, 1380, 1262, 1255, 1351, 1362])

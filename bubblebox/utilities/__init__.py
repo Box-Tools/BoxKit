@@ -1,3 +1,5 @@
 """Initialization of parallel interface"""
 
-from ._decorators import serial, parallel
+from ._backend import backend
+
+from ._decorators import Task, Process

@@ -77,9 +77,7 @@ class TestHeater(unittest.TestCase):
         dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTASKS_PARALLEL']='1'
-        bubbleframes = flowbox.measure.bubbles(regionframes,['phi','bubble'])
-        del os.environ['BUBBLEBOX_NTASKS_PARALLEL']
+        bubbleframes = flowbox.measure.bubbles(regionframes,'phi','bubble')
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
         self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
@@ -94,9 +92,7 @@ class TestHeater(unittest.TestCase):
         dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
-        os.environ['BUBBLEBOX_NTASKS_PARALLEL']='1'
-        bubbleframes = flowbox.measure.bubbles(regionframes,['phi','bubble'])
-        del os.environ['BUBBLEBOX_NTASKS_PARALLEL'] 
+        bubbleframes = flowbox.measure.bubbles(regionframes,'phi','bubble')
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 

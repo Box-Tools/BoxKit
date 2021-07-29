@@ -1,88 +1,49 @@
-"""Module with implementation of decorator utilities"""
+"""Module with implementation of decorators"""
 
-import joblib
-import functools
-import os
+import warnings
+import copy
 
-from progress.bar import FillingSquaresBar as Bar
+from . import backend
 
-def serial(target):
-    """
-    Decorator to serially execute a function operating on an object
+class Process(object):
+    def __init__(self, target=None, actions=None):    
+        self.target = target
+        self.actions = copy.deepcopy(actions)
 
-    Parameters
-    ----------
-    target : function to parallelize - operates on an object
-             
-             def target(object, *args)
+    def __call__(self,*args):
+        if self.target is None:
+            self.target = args[0]
+            return self
 
-             actual call passes objectlist
-      
-             target(objectlist, *args)
-    """
-    @functools.wraps(target)
-    def serial_wrapper(objectlist,*args):
-        """
-        Wrapper takes in objectlist and additional arguments and
-        then applies target operations to individual objects in 
-        serial
-        """
-        listresult = [target(object,*args) for object in objectlist]
-        return listresult
-    return serial_wrapper
+        else:
+            unitlist = args[0]
 
-def parallel(target):
-    """
-    Decorator to parallelize a function operating on an object
-    using joblib   
+            args = list(args)
+            args.pop(0)
+            args = tuple(args)
 
-    Parameters
-    ----------
-    target : function to parallelize - operates on an object
-             
-             def target(object, *args)
+            return self.target(self.actions,unitlist,*args)
 
-             actual call passes objectlist
-      
-             target(objectlist, *args)
+    def clone(self):
+        return copy.deepcopy(self)
 
-    """
-    @functools.wraps(target)
-    def parallel_wrapper(objectlist,*args): #TODO remove progress
-        """
-        Wrapper takes in objectlist and additional arguments and
-        then applies target operations to individual objects in 
-        parallel
+class Task(object):
+    def __init__(self, target=None, tasks=None, monitor=False, process='serial'):
+        self.target = target
+        self.tasks = tasks
+        self.monitor = monitor
+        self.process = process
 
-        Number of parallel tasks - ntasks - are inferred from the
-        environment variable 'BUBBLEBOX_NTASKS_PARALLEL'
+    def __call__(self, *args):
+        if self.target is None:
+            self.target = args[0]
+            return self
 
-        ntasks = 1 or None reverts to serial mode
-        """
+        else:
+            unitlist = args[0]
 
-        lokyobjects = []
+            args = list(args)
+            args.pop(0)
+            args = tuple(args)
 
-        for object in objectlist:
-
-            if object.backend == "loky":
-                lokyobjects.append(object)
-           
-            else:
-                raise ValueError('Cannot implement backend "{}"'.format(object.backend))
-
-        if lokyobjects: 
-
-            lokytasks = int(os.getenv('BUBBLEBOX_LOKY_TASKS') or 1)
-
-            bar = Bar('run-loky-parallel:'+target.__module__+'.'+target.__name__,max=len(lokyobjects),
-                  suffix = '%(percent)d%%')
-
-            lokyresult = joblib.Parallel(n_jobs=lokytasks,backend="loky")(
-                           joblib.delayed(target)(object,*args) for object in lokyobjects 
-                                                                if not bar.next())
-            bar.finish()
-
-        listresult = lokyresult
-
-        return listresult
-    return parallel_wrapper
+            return backend(self.target,self.tasks,self.monitor,self.process)(unitlist,*args)
