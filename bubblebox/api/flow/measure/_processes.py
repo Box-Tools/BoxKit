@@ -1,11 +1,11 @@
 """ Module with implemenation of region methods"""
 
-from .... import library
+from ....library.measure import skimeasure
 
 from ....utilities import Process
 
-@Process(actions=library.measure.Properties())
-def bubbles(actions,regionlist,lsetkey,bubblekey):
+@Process(actions=skimeasure.actions)
+def bubbles(self,regionlist,lsetkey,bubblekey):
     """
     Create a list of bubbles in a region
 
@@ -22,6 +22,6 @@ def bubbles(actions,regionlist,lsetkey,bubblekey):
     listbubbles : list of bubble properties
     """
  
-    listbubbles = actions.region(regionlist,lsetkey,bubblekey)
+    listbubbles = self.actions['region'](regionlist,lsetkey,bubblekey)
 
     return listbubbles

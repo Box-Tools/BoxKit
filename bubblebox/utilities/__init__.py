@@ -1,5 +1,7 @@
 """Initialization of parallel interface"""
 
-from ._backend import backend
+from ._backend import Backend
 
-from ._decorators import Task, Process
+from ._task import Task,TaskUnit
+
+from ._process import Process

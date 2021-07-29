@@ -5,7 +5,7 @@ class Region(object):
 
     type_ = 'base'
 
-    def __init__(self, blocklist=[], **kwargs):
+    def __init__(self, blocklist=None, **kwargs):
         """Initialize the Region object and allocate the data.
 
         Parameters
@@ -64,6 +64,7 @@ class Region(object):
         self.blocklist = []
 
         if not blocklist: return
+        if type(blocklist) is not list: raise TypeError('[Region] blocklist is not a list')
 
         self.blocklist = [block for block in blocklist if self._in_collision(block)]
 

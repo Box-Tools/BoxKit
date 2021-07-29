@@ -7,7 +7,7 @@ class Slice(Region):
 
     type_ = 'derived'
 
-    def __init__(self, blocklist=[], **kwargs):
+    def __init__(self, blocklist=None, **kwargs):
         """Initialize the Slice object and allocate the data.
 
         Parameters

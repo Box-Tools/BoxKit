@@ -99,8 +99,14 @@ class TestBoiling(unittest.TestCase):
 
         _time_measure = time.time()
         measure_bubbles = flowbox.measure.bubbles.clone()
-        measure_bubbles.actions.region.tasks = 2
-        measure_bubbles.actions.block.tasks = 2
+
+        measure_bubbles.actions['region'].nthreads = 2
+        measure_bubbles.actions['region'].backend = 'parallel'
+        measure_bubbles.actions['region'].monitor = True
+
+        measure_bubbles.actions['block'].nthreads = 2
+        measure_bubbles.actions['block'].backend = 'parallel'
+
         bubbleframes = measure_bubbles(regionframes,'phi','bubble')
         _time_measure = time.time() - _time_measure
         print('%s: %.3fs' % ('flowbox.measure.bubbles', _time_measure))

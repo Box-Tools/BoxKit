@@ -7,7 +7,7 @@ class Dataset(object):
 
     type_ = "default"
 
-    def __init__(self,blocklist=[],data=None):
+    def __init__(self,blocklist=None,data=None):
         """Constructor for Dataset
 
         Parameters
@@ -42,6 +42,7 @@ class Dataset(object):
         self.xmax,self.ymax,self.zmax = [-1e10]*3
 
         if not blocklist: return
+        if type(blocklist) is not list: raise TypeError('[Datset] blocklist is not a list')
 
         self.blocklist  = blocklist
 
@@ -61,12 +62,14 @@ class Dataset(object):
         self.inputfile = None
         self.listkeys  = []
         self.memmap    = None
+        self.nblocks   = None
 
         if not data: return
 
         self.listkeys   = data.listkeys
         self.inputfile  = data.inputfile
         self.memmap     = data.memmap
+        self.nblocks    = data.nblocks
 
     def purge(self,purgeflag='all'):
         """

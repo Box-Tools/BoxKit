@@ -53,15 +53,18 @@ class TestHeater(unittest.TestCase):
 
         bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
         for dataset in dataframes:
-            for block in dataset.blocklist:
-                iloc,jloc   = pymorton.deinterleave2(block.tag)
+
+            taglist = [*range(0,dataset.nblocks)]
+
+            for tag,block in zip(taglist,dataset.blocklist):
+                iloc,jloc   = pymorton.deinterleave2(tag)
 
                 neighlist = [pymorton.interleave(iloc-1,jloc),
                              pymorton.interleave(iloc+1,jloc),
                              pymorton.interleave(iloc,jloc-1),
                              pymorton.interleave(iloc,jloc+1)]
 
-                neighlist = [None if neighbor > block.data.nblocks-1 else neighbor for neighbor in neighlist]
+                neighlist = [None if neighbor > dataset.nblocks-1 else neighbor for neighbor in neighlist]
 
                 self.assertEqual(neighlist,block.neighlist, 'Neigbhors are inconsitent with morton order')
             bar.next()
@@ -77,6 +80,7 @@ class TestHeater(unittest.TestCase):
         dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
         regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
+        print(flowbox.measure.bubbles.actions['region'].nthreads)
         bubbleframes = flowbox.measure.bubbles(regionframes,'phi','bubble')
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        

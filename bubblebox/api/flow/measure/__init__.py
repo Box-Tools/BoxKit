@@ -1,3 +1,3 @@
 """Initialization of measure unit"""
 
-from ._process import bubbles
+from ._processes import bubbles
