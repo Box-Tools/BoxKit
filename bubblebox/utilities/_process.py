@@ -10,7 +10,7 @@ class Process(object):
         """
         self.target = target
 
-        self.actions = actions() 
+        self.actions = actions
 
         for task in self.actions.values():
             task.actions = self.actions
