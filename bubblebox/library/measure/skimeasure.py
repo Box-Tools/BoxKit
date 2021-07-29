@@ -27,7 +27,7 @@ def region(self,unit,lsetkey,labelkey):
     listprops : list of properties
 
     """
-    listprops = self.process.actions['block'](unit.blocklist,lsetkey,labelkey)
+    listprops = self.actions['block'](unit.blocklist,lsetkey,labelkey)
 
     listprops = list(itertools.chain.from_iterable(listprops))
 

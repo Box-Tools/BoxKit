@@ -6,12 +6,12 @@ from . import Backend
 class Task(object):
     """
     """
-    def __init__(self, target=None, nthreads=None, monitor=False, backend='serial', process=None):
+    def __init__(self, target=None, nthreads=None, monitor=False, backend='serial', actions=None):
         self.target = target
         self.nthreads = nthreads
         self.monitor = monitor
         self.backend = backend
-        self.process = process
+        self.actions = actions
  
     def __call__(self,*args):
         if self.target is None:

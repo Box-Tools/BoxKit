@@ -11,8 +11,9 @@ class Process(object):
         self.target = target
 
         self.actions = actions() 
-        for key in self.actions:
-            self.actions[key].process = self
+
+        for task in self.actions.values():
+            task.actions = self.actions
 
     def __call__(self,*args):
         if self.target is None:
