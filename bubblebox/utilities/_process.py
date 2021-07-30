@@ -9,11 +9,7 @@ class Process(object):
         """
         """
         self.target = target
-
         self.actions = actions
-
-        for task in self.actions.values():
-            task.actions = self.actions
 
     def __call__(self,*args):
         if self.target is None:
@@ -22,6 +18,19 @@ class Process(object):
 
         else:
             return self.target(self,*args)
+
+    @property
+    def actions(self):
+        return self._actions
+
+
+    @actions.setter
+    def actions(self,value):
+
+        self._actions = value
+
+        for task in self.actions.values():
+            task.actions = self._actions
 
     def clone(self):
         return copy.deepcopy(self)
