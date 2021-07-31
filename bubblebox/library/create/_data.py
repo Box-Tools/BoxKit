@@ -88,7 +88,11 @@ class Data(object):
 
         if self.storage == 'disk':
             self._create_numpy_memmap()
- 
+
+        elif self.storage == 'dask':
+            self._create_numpy_arrays()
+            self._create_dask_objects()
+  
         else:
             raise NotImplementedError('Storage format "{}" not implemented'.format(self.storage))
 

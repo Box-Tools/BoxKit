@@ -1,23 +1,26 @@
-"""Module with implementation of decorator utilities"""
+"""Module with implementation of Backend utility"""
 
-import joblib
 import functools
 import os
 
-from progress.bar import FillingSquaresBar as Bar
+import joblib
+from tqdm import tqdm
 
-def Backend(target=None,nthreads=None,monitor=False,backend_wrapper='serial'):
+import dask
+from dask.distributed import Client, progress
+
+def Backend(target=None,nthreads=None,monitor=False,label='serial'):
     """
     Parameters
     ----------
-    target : function/task operates on an unit ---> def target(unit, *args)
-             actual call passes unitlist ---> target(unitlist, *args)
+    target       : function/task operates on an unit ---> def target(unit, *args)
+                   actual call passes unitlist ---> target(unitlist, *args)
 
-    nthreads : number of nthreads (only relevant for parallel operations)
+    nthreads     : number of nthreads (only relevant for parallel operations)
 
-    monitor : flag (True or False) to show progress bar for task
+    monitor_flag : flag (True or False) to show progress bar for task
 
-    backend_wrapper : 'serial', 'parallel'
+    backend_key  : 'serial', 'loky', 'dask'
     """
     @functools.wraps(target)
     def serial_wrapper(self,unitlist,*args):
@@ -26,40 +29,60 @@ def Backend(target=None,nthreads=None,monitor=False,backend_wrapper='serial'):
         then applies target operations to individual units in 
         serial
         """
-        if monitor:
-            bar = Bar('run-serial:'+target.__module__+'.'+target.__name__,max=len(unitlist),
-                      suffix = '%(percent)d%%')
-            listresult = [target(self,unit,*args) for unit in unitlist if not bar.next()]
-            bar.finish()
-        else:
-            listresult = [target(self,unit,*args) for unit in unitlist]
+        if(monitor): unitlist = tqdm(unitlist)
+
+        listresult = [target(self,unit,*args) for unit in unitlist]
+
         return listresult
 
     @functools.wraps(target)
-    def parallel_wrapper(self,unitlist,*args):
+    def loky_wrapper(self,unitlist,*args):
         """
         Wrapper takes in unitlist and additional arguments and
         then applies target operations to individual units in 
-        parallel
+        parallel using joblib "loky" backend
 
         nthreads = 1 or None reverts to serial mode
         """
-        if monitor:
-            bar = Bar('run-loky-parallel:'+target.__module__+'.'+target.__name__,max=len(unitlist),
-                      suffix = '%(percent)d%%')
-            listresult = joblib.Parallel(n_jobs=nthreads,backend="loky")(
-                             joblib.delayed(target)(self,unit,*args) for unit in unitlist 
-                                                                      if not bar.next())
-            bar.finish()
-        else:
-            listresult = joblib.Parallel(n_jobs=nthreads,backend="loky")(
-                             joblib.delayed(target)(self,unit,*args) for unit in unitlist) 
+        if(monitor): unitlist = tqdm(unitlist)
+
+        listresult = joblib.Parallel(n_jobs=nthreads,backend="loky")(
+                         joblib.delayed(target)(self,unit,*args) for unit in unitlist) 
+
+        return listresult
+
+    @functools.wraps(target)
+    def dask_wrapper(self,unitlist,*args):
+        """
+        Wrapper takes in unitlist and additional arguments and
+        then applies target operations to individual units in 
+        using dask parallel backend
+
+        nthreads = 1 or None reverts to serial mode
+        """
+        client = Client(threads_per_worker=nthreads,n_workers=1,processes=False)
+
+        #if monitor: unitlist = tqdm(unitlist)
+        #lazy_results = [dask.delayed(target)(self,unit,*args) for unit in unitlist]
+        #futures = dask.persist(*lazy_results)
+        #listresult = dask.compute(*futures)
+
+        biglist = client.scatter(unitlist)
+        futures = client.map(target, [self]*len(biglist), biglist, 
+                                    *[[arg]*len(biglist) for arg in args]) 
+
+        if(monitor): progress(futures)
+
+        listresult = client.gather(futures)
 
         return listresult
 
     nthreads = nthreads or 1
 
-    wrapper_dict = {'serial'   : serial_wrapper,
-                    'parallel' : parallel_wrapper};
+    backends = {'serial' : serial_wrapper,
+                'loky'   : loky_wrapper,
+                'dask'   : dask_wrapper}
 
-    return parallel_wrapper
+    if(monitor): print('run-'+label+':'+target.__module__+'.'+target.__name__)
+
+    return backends[label]

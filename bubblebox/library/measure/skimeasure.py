@@ -9,7 +9,7 @@ from ...utilities import Task, TaskUnit
 def actions():
     return {task: eval(task) for task in ['region','block']}
 
-@TaskUnit
+@TaskUnit(monitor=True)
 def region(self,unit,lsetkey,labelkey):
     """
     Measure properties for a region

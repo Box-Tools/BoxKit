@@ -4,7 +4,7 @@ from .... import library
 
 from ....resources.read import default,flash
 
-def dataset(filename,uservars=[],source='default'):
+def dataset(filename,uservars=[],source='default',storage='disk'):
     """
     Create a dataset from a file
 
@@ -33,6 +33,8 @@ def dataset(filename,uservars=[],source='default'):
     read = {'default' : default, 'flash' : flash}
 
     data_attributes,block_attributes = read[source](filename,uservars)
+
+    data_attributes['storage'] = storage
 
     data = library.create.Data(**data_attributes)
 

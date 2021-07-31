@@ -1,4 +1,4 @@
-"""Module with implementation of Process decorator"""
+"""Module with implementation of Process utility"""
 
 import copy
 

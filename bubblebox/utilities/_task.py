@@ -1,4 +1,5 @@
-"""Module with implementation of Task decorator"""
+"""Module with implementation of Task utility"""
+
 import copy
 
 from . import Backend
@@ -12,7 +13,7 @@ class Task(object):
         self.monitor = monitor
         self.backend = backend
         self.actions = actions
- 
+
     def __call__(self,*args):
         if self.target is None:
             self.target = args[0]
@@ -37,9 +38,6 @@ class Task(object):
 class TaskUnit(Task):
     """
     """
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-
     def CustomCall(self,*args):
         unitlist,args = self.TopArg(*args)
         return Backend(self.target,self.nthreads,self.monitor,self.backend)(self,unitlist,*args)

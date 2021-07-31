@@ -94,18 +94,19 @@ class TestBoiling(unittest.TestCase):
         """
         Test measure bubbles
         """
-        dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
+        dataframes = [flowbox.create.dataset(filename,uservars=['bubble'],storage='disk') 
+                                         for filename in self.filenames]
+
         regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
 
         _time_measure = time.time()
         measure_bubbles = flowbox.measure.bubbles.clone()
 
-        measure_bubbles.actions['region'].nthreads = 2
-        measure_bubbles.actions['region'].backend = 'parallel'
-        measure_bubbles.actions['region'].monitor = True
+        measure_bubbles.actions['region'].nthreads = 4
+        measure_bubbles.actions['region'].backend = 'dask'
 
-        measure_bubbles.actions['block'].nthreads = 2
-        measure_bubbles.actions['block'].backend = 'parallel'
+        measure_bubbles.actions['block'].nthreads = None
+        measure_bubbles.actions['block'].backend = 'serial'
 
         bubbleframes = measure_bubbles(regionframes,'phi','bubble')
         _time_measure = time.time() - _time_measure
