@@ -6,10 +6,9 @@ import skimage.measure as skimage_measure
 
 from ...utilities import Task, TaskUnit
 
-def actions():
-    return {task: eval(task) for task in ['region','block']}
+def actions(): return {task: eval(task) for task in ['region','block']}
 
-@TaskUnit(monitor=True)
+@TaskUnit
 def region(self,unit,lsetkey,labelkey):
     """
     Measure properties for a region

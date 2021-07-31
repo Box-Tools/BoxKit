@@ -104,6 +104,7 @@ class TestBoiling(unittest.TestCase):
 
         measure_bubbles.actions['region'].nthreads = 4
         measure_bubbles.actions['region'].backend = 'dask'
+        measure_bubbles.actions['region'].monitor = True
 
         measure_bubbles.actions['block'].nthreads = None
         measure_bubbles.actions['block'].backend = 'serial'
