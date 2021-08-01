@@ -2,6 +2,6 @@
 
 from ._backend import Backend
 
-from ._task import Task,TaskUnit
+from ._task import Task
 
 from ._process import Process

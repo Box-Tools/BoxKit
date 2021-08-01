@@ -24,7 +24,7 @@ class TestBoiling(unittest.TestCase):
         """
         self.timestart = time.time()
 
-        basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/'
+        basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/chunked/'
         filetags = [*range(0,58,10)]
         prefix   = 'INS_Pool_Boiling_hdf5_'
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
@@ -103,11 +103,11 @@ class TestBoiling(unittest.TestCase):
         measure_bubbles = flowbox.measure.bubbles.clone()
 
         measure_bubbles.actions['region'].nthreads = 4
-        measure_bubbles.actions['region'].backend = 'dask'
+        measure_bubbles.actions['region'].backend = 'loky'
         measure_bubbles.actions['region'].monitor = True
 
-        measure_bubbles.actions['block'].nthreads = None
-        measure_bubbles.actions['block'].backend = 'serial'
+        measure_bubbles.actions['block'].nthreads = 2
+        measure_bubbles.actions['block'].backend = 'loky'
 
         bubbleframes = measure_bubbles(regionframes,'phi','bubble')
         _time_measure = time.time() - _time_measure

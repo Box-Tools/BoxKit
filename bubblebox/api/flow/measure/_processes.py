@@ -4,7 +4,7 @@ from ....library.measure import skimeasure
 
 from ....utilities import Process
 
-@Process(actions=skimeasure.actions())
+@Process(actions=skimeasure.Actions())
 def bubbles(self,regionlist,lsetkey,bubblekey):
     """
     Create a list of bubbles in a region

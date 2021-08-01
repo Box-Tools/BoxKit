@@ -4,11 +4,17 @@ import itertools
 
 import skimage.measure as skimage_measure
 
-from ...utilities import Task, TaskUnit
+from ...utilities import Task
 
-def actions(): return {task: eval(task) for task in ['region','block']}
+from ..create import Region,Block
 
-@TaskUnit
+def Actions(): 
+
+    tasklist = ['region','block']
+
+    return {task: eval(task) for task in tasklist}
+
+@Task(unit=Region)
 def region(self,unit,lsetkey,labelkey):
     """
     Measure properties for a region
@@ -32,7 +38,7 @@ def region(self,unit,lsetkey,labelkey):
 
     return listprops
 
-@TaskUnit
+@Task(unit=Block)
 def block(self,unit,lsetkey,labelkey):
     """
     Measure properties for a unit

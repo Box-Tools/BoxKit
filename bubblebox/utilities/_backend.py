@@ -4,10 +4,10 @@ import functools
 import os
 
 import joblib
-from tqdm import tqdm
-
+import tqdm
 import dask
-from dask.distributed import Client, progress
+
+import dask.distributed as distributed
 
 def Backend(target=None,nthreads=None,monitor=False,label='serial'):
     """
@@ -29,7 +29,7 @@ def Backend(target=None,nthreads=None,monitor=False,label='serial'):
         then applies target operations to individual units in 
         serial
         """
-        if(monitor): unitlist = tqdm(unitlist)
+        if(monitor): unitlist = tqdm.tqdm(unitlist)
 
         listresult = [target(self,unit,*args) for unit in unitlist]
 
@@ -44,10 +44,11 @@ def Backend(target=None,nthreads=None,monitor=False,label='serial'):
 
         nthreads = 1 or None reverts to serial mode
         """
-        if(monitor): unitlist = tqdm(unitlist)
+        if(monitor): unitlist = tqdm.tqdm(unitlist)
 
-        listresult = joblib.Parallel(n_jobs=nthreads,backend="loky")(
-                         joblib.delayed(target)(self,unit,*args) for unit in unitlist) 
+        with joblib.parallel_backend(n_jobs=nthreads,backend="loky"):
+
+            listresult = joblib.Parallel()(joblib.delayed(target)(self,unit,*args) for unit in unitlist) 
 
         return listresult
 
@@ -60,20 +61,22 @@ def Backend(target=None,nthreads=None,monitor=False,label='serial'):
 
         nthreads = 1 or None reverts to serial mode
         """
-        client = Client(threads_per_worker=nthreads,n_workers=1,processes=False)
+        with distributed.LocalCluster(threads_per_worker=nthreads, 
+                                      n_workers=1,
+                                      processes=False) as cluster, distributed.Client(cluster) as client:
 
-        #if monitor: unitlist = tqdm(unitlist)
-        #lazy_results = [dask.delayed(target)(self,unit,*args) for unit in unitlist]
-        #futures = dask.persist(*lazy_results)
-        #listresult = dask.compute(*futures)
+            #if monitor: unitlist = tqdm.tqdm(unitlist)
+            #lazy_results = [dask.delayed(target)(self,unit,*args) for unit in unitlist]
+            #futures = dask.persist(*lazy_results)
+            #listresult = dask.compute(*futures)
 
-        biglist = client.scatter(unitlist)
-        futures = client.map(target, [self]*len(biglist), biglist, 
-                                    *[[arg]*len(biglist) for arg in args]) 
-
-        if(monitor): progress(futures)
-
-        listresult = client.gather(futures)
+            biglist = client.scatter(unitlist)
+            futures = client.map(target, [self]*len(biglist), biglist, 
+                                        *[[arg]*len(biglist) for arg in args]) 
+            
+            if(monitor): distributed.progress(futures)
+            
+            listresult = client.gather(futures)
 
         return listresult
 

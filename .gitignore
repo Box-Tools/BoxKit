@@ -4,3 +4,4 @@ memmap*
 *.o
 *.a
 build
+dask-worker-space
