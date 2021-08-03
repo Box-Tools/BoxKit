@@ -3,6 +3,7 @@
 import os
 import string
 import random
+import shutil
 
 import numpy
 import dask.array as dsarray
@@ -48,7 +49,6 @@ class Data(object):
         else:
             return self.variables[varkey]
 
-
     def __setitem__(self,varkey,value):
         """
         Set variable data
@@ -66,7 +66,7 @@ class Data(object):
 
         default_attributes = {'nblocks'   : 1,              
                               'inputfile' : None,
-                              'memmap'    : None,
+                              'memmap'    : {},
                               'variables' : {},
                                     'nxb' : 1, 'nyb' : 1, 'nzb' : 1,
                                 'storage' : 'disk'}
@@ -100,16 +100,13 @@ class Data(object):
         """
         Create numpy memory maps for empty keys in variables dictionary
         """
-        emptykeys = []
-
-        for varkey in self.listkeys:
-            if self.variables[varkey] == None:
-               emptykeys.append(varkey)
-     
+        emptykeys = [key for key,value in self.variables.items() if type(value) is type(None)]
+    
         if not emptykeys: return
 
-        namerandom  = ''.join(random.choice(string.ascii_lowercase) for i in range(5)) 
-        self.memmap = "".join(['./memmap_',namerandom])
+        if not self.memmap:
+            namerandom  = ''.join(random.choice(string.ascii_lowercase) for i in range(5)) 
+            self.memmap = "".join(['./memmap_',namerandom])
 
         try:
             os.mkdir(self.memmap)
@@ -127,9 +124,7 @@ class Data(object):
         """
         emptykeys = []
 
-        for varkey in self.listkeys:
-            if self.variables[varkey] == None:
-               emptykeys.append(varkey)
+        emptykeys = [key for key,value in self.variables.items() if type(value) is type(None)]
      
         if not emptykeys: return
 
@@ -141,20 +136,52 @@ class Data(object):
         """
         Create dask array representation of data
         """
-
         for varkey in self.listkeys:
-            self.variables[varkey] = dsarray.from_array(self.variables[varkey],
-                                                        chunks=(1,self.nxb,self.nyb,self.nzb))
+            if type(self.variables[varkey]) is not dsarray.core.Array:
+                self.variables[varkey] = dsarray.from_array(self.variables[varkey],
+                                                            chunks=(1,self.nxb,self.nyb,self.nzb))
 
     def _create_pyarrow_tensor(self):
         """
         Create a pyarrow tensor objects
         """
         for varkey in self.listkeys:
-            templist = []
 
-            for lblock in range(self.nblocks):
-                templist.append(pyarrow.Tensor.from_numpy(self.variables[varkey][lblock]))
+            if type(self.variables[varkey]) is not pyarrow.lib.Tensor:
 
-            self.variables[varkey] = templist
+                templist = []
 
+                for lblock in range(self.nblocks):
+                    templist.append(pyarrow.Tensor.from_numpy(self.variables[varkey][lblock]))
+
+                self.variables[varkey] = templist
+   
+    def purge(self,purgeflag='all'):
+        """
+        Clean up data and close it
+        """
+        if self.memmap and (purgeflag == 'all' or purgeflag == 'memmap'):
+            try:
+                shutil.rmtree(self.memmap)
+            except:
+                pass
+
+        if self.inputfile and (purgeflag == 'all' or purgeflag == 'inputfile'): 
+            self.inputfile.close()
+
+    def addvar(self,varkey):
+
+        self.variables[varkey] = None
+        self._set_data()
+
+    def delvar(self,varkey):
+
+        del self.variables[varkey]
+       
+        if self.memmap: 
+            outputfile  = os.path.join(self.memmap,varkey)
+
+            try:
+                shutil.rmtree(outputfile)
+            except:
+                pass           

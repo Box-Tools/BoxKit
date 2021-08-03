@@ -1,7 +1,5 @@
 """Module with implemenetation of Dataset class"""
 
-import shutil
-
 class Dataset(object):
     """API class for storing Dataset info"""
 
@@ -59,27 +57,24 @@ class Dataset(object):
         """
         Private method for initialization
         """
-        self.inputfile = None
-        self.listkeys  = []
-        self.memmap    = None
-        self.nblocks   = 1
+        self.data = None
 
         if not data: return
 
-        self.listkeys   = data.listkeys
-        self.inputfile  = data.inputfile
-        self.memmap     = data.memmap
-        self.nblocks    = data.nblocks
+        self.data = data
+
+    @property
+    def nblocks(self):
+        return self.data.nblocks
+
+    def addvar(self,varkey):
+        self.data.addvar(varkey)
+
+    def delvar(self,varkey):
+        self.data.delvar(varkey)
 
     def purge(self,purgeflag='all'):
         """
         Clean up the dataset and close it
         """
-
-        if self.memmap and (purgeflag == 'all' or purgeflag == 'memmap'):
-            try:
-                shutil.rmtree(self.memmap)
-            except:
-                pass
-
-        if self.inputfile and (purgeflag == 'all' or purgeflag == 'inputfile'): self.inputfile.close()
+        self.data.purge(purgeflag)

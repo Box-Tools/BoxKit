@@ -46,7 +46,8 @@ class TestBoiling(unittest.TestCase):
             bar.next()
         bar.finish()
 
-        [dataset.purge('memmap') for dataset in dataframes]
+        for dataset in dataframes:
+            dataset.purge('memmap')
 
     def test_neighbors_3D(self):
         """
@@ -73,7 +74,8 @@ class TestBoiling(unittest.TestCase):
             bar.next()
         bar.finish()
    
-        [dataset.purge('memmap') for dataset in dataframes]
+        for dataset in dataframes:
+            dataset.purge('memmap')
 
     def test_slice_3D(self):
         """
@@ -88,16 +90,14 @@ class TestBoiling(unittest.TestCase):
             bar.next()
         bar.finish()
 
-        [dataset.purge('memmap') for dataset in dataframes]
+        for dataset in dataframes:
+            dataset.purge('memmap')
 
     def test_measure_bubbles_3D(self):
         """
         Test measure bubbles
         """
-        dataframes = [flowbox.create.dataset(filename,uservars=['bubble'],storage='disk') 
-                                         for filename in self.filenames]
-
-        regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
+        dataframes = [flowbox.create.dataset(filename,storage='disk') for filename in self.filenames]
 
         _time_measure = time.time()
         measure_bubbles = flowbox.measure.bubbles.clone()
@@ -106,18 +106,20 @@ class TestBoiling(unittest.TestCase):
         measure_bubbles.actions['region'].backend = 'loky'
         measure_bubbles.actions['region'].monitor = True
 
-        measure_bubbles.actions['block'].nthreads = None
-        measure_bubbles.actions['block'].backend = 'serial'
+        measure_bubbles.actions['block'].nthreads = 2
+        measure_bubbles.actions['block'].backend = 'loky'
 
-        bubbleframes = measure_bubbles(regionframes,'phi','bubble')
+        bubbleframes = measure_bubbles(dataframes,'phi')
 
         _time_measure = time.time() - _time_measure
         print('%s: %.3fs' % ('flowbox.measure.bubbles', _time_measure))
 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
+
         self.assertEqual(numbubbles,[1341, 1380, 1262, 1255, 1351, 1362])
 
-        [dataset.purge('memmap') for dataset in dataframes]
+        for dataset in dataframes:
+            dataset.purge('memmap')
 
     def tearDown(self):
         """Clean up and timing"""

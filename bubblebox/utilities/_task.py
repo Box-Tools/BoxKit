@@ -43,7 +43,7 @@ class Task(object):
             return self
 
         else: 
-            return self.CustomCall(*args)
+            return self.customCall(*args)
 
     def _check_unitlist(self,unitlist):
         """
@@ -56,7 +56,7 @@ class Task(object):
                 raise ValueError('[Task] Unit type not consistent.' +
                                  'Expected "{}" but got "{}"'.format(self.unit,type(unit)))
 
-    def TopArg(self,*args):
+    def topArg(self,*args):
         """
         Method to get top argument from *args
         """
@@ -70,11 +70,11 @@ class Task(object):
 
         return top_arg,args
 
-    def CustomCall(self,*args):
+    def customCall(self,*args):
         """
         Custom call signature 
         """
-        unitlist,args = self.TopArg(*args)
+        unitlist,args = self.topArg(*args)
         return Backend(self.target,self.nthreads,self.monitor,self.backend)(self,unitlist,*args)
 
     def copy(self):

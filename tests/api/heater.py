@@ -10,7 +10,7 @@ from progress.bar import FillingSquaresBar as Bar
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""
 
-    def _setup(self,prefix):
+    def customSetUp(self,prefix):
         """
         Setup test parameters
 
@@ -32,7 +32,7 @@ class TestHeater(unittest.TestCase):
         """
         Test if neighbors are morton order
         """
-        self._setup('oneblk')
+        self.customSetUp('oneblk')
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
         bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
@@ -42,13 +42,14 @@ class TestHeater(unittest.TestCase):
             bar.next()
         bar.finish()
 
-        [dataset.purge('memmap') for dataset in dataframes]
+        for dataset in dataframes:
+            dataset.purge('memmap')
 
     def test_neighbors_blocks_2D(self):
         """
         Test if neighbors are in morton order
         """
-        self._setup('blocks')
+        self.customSetUp('blocks')
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
         bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
@@ -70,39 +71,44 @@ class TestHeater(unittest.TestCase):
             bar.next()
         bar.finish()
 
-        [dataset.purge('memmap') for dataset in dataframes]
+        for dataset in dataframes:
+            dataset.purge('memmap')
 
     def test_measure_bubbles_oneblk_2D(self):
         """
         Test bubble measurement
         """
-        self._setup('oneblk')
-        dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
-        regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
+        self.customSetUp('oneblk')
 
-        print(flowbox.measure.bubbles.actions['region'].nthreads)
+        dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
+
         flowbox.measure.bubbles.actions['region'].monitor = True
-        bubbleframes = flowbox.measure.bubbles(regionframes,'phi','bubble')
+        print(flowbox.measure.bubbles.actions['region'].nthreads)
+
+        bubbleframes = flowbox.measure.bubbles(dataframes,'phi')
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
+
         self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
 
-        [dataset.purge('memmap') for dataset in dataframes]
+        for dataset in dataframes:
+            dataset.purge('memmap')
 
     def test_measure_bubbles_blocks_2D(self):
         """
         Test bubble measurement
         """
-        self._setup('blocks')
-        dataframes = [flowbox.create.dataset(filename,uservars=['bubble']) for filename in self.filenames]
-        regionframes = [flowbox.create.region(dataset) for dataset in dataframes]
+        self.customSetUp('blocks')
+
+        dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
         flowbox.measure.bubbles.actions['region'].monitor = True
-        bubbleframes = flowbox.measure.bubbles(regionframes,'phi','bubble')
+        bubbleframes = flowbox.measure.bubbles(dataframes,'phi')
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
-        [dataset.purge('memmap') for dataset in dataframes]
+        for dataset in dataframes:
+            dataset.purge('memmap')
 
     def tearDown(self):
         """Clean up and timing"""
