@@ -5,7 +5,7 @@ class Region(object):
 
     type_ = 'base'
 
-    def __init__(self, blocklist=None, **kwargs):
+    def __init__(self, blocklist=[], **kwargs):
         """Initialize the Region object and allocate the data.
 
         Parameters

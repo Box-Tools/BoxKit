@@ -1,3 +1,3 @@
 """Initialization of measure unit"""
 
-from . import skimeasure
+from ._skimeasure import skimeasure

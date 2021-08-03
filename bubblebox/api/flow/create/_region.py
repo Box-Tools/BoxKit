@@ -2,7 +2,7 @@
 
 from .... import library
 
-def region(dataset, **kwargs):
+def region(dataset, **attributes):
     """
     Create a region from a dataset
 
@@ -11,13 +11,13 @@ def region(dataset, **kwargs):
 
     dataset    : Dataset object
  
-    kwargs : dictionary of attributes
-           { 'xmin' : low x bound
-             'ymin' : low y bound
-             'zmin' : low z bound
-             'xmax' : high x bound
-             'ymax' : high y bound
-             'zmax' : high z bound }
+    attributes : dictionary of attributes
+                 { 'xmin' : low x bound
+                   'ymin' : low y bound
+                   'zmin' : low z bound
+                   'xmax' : high x bound
+                   'ymax' : high y bound
+                   'zmax' : high z bound }
 
     Returns
     -------
@@ -28,6 +28,6 @@ def region(dataset, **kwargs):
     region_attributes = {'xmin' : dataset.xmin, 'ymin' : dataset.ymin, 'zmin' : dataset.zmin,
                          'xmax' : dataset.xmax, 'ymax' : dataset.ymax, 'zmax' : dataset.zmax}
 
-    for key in kwargs: region_attributes[key] = kwargs[key]
+    for key in attributes: region_attributes[key] = attributes[key]
 
     return library.create.Region(dataset.blocklist, **region_attributes)

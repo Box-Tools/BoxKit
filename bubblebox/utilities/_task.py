@@ -5,17 +5,39 @@ import copy
 from . import Backend
 
 class Task(object):
-    """
-    """
+    """Default class for a Task."""
+
+    type_ = 'default'
+
     def __init__(self, target=None, nthreads=None, monitor=False, backend='serial', actions=None, unit=None):
-        self.target = target
+        """Initialize the  object and allocate the data.
+
+        Parameters
+        ----------
+        target   : function/task operates on an unit ---> def target(unit, *args)
+                   actual call passes unitlist ---> target(unitlist, *args)
+
+        nthreads : number of nthreads (only relevant for parallel operations)
+
+        monitor  : flag (True or False) to show progress bar for task
+
+        backend  : 'serial', 'loky', 'dask'
+ 
+        actions  : dictionary of actions
+
+        unit     : unit type
+        """
+        self.target   = target
         self.nthreads = nthreads
-        self.monitor = monitor
-        self.backend = backend
-        self.actions = actions
-        self.unit = unit
+        self.monitor  = monitor
+        self.backend  = backend
+        self.actions  = actions
+        self.unit     = unit
 
     def __call__(self,*args):
+        """
+        Call wrapper
+        """
         if self.target is None:
             self.target = args[0]
             return self
@@ -23,26 +45,10 @@ class Task(object):
         else: 
             return self.CustomCall(*args)
 
-    def TopArg(self,*args):
-        top_arg = args[0]
-
-        args = list(args)
-        args.pop(0)
-        args = tuple(args)
-
-        self._unit_check(top_arg)
-
-        return top_arg,args
-
-    def CustomCall(self,*args):
-        unitlist,args = self.TopArg(*args)
-        return Backend(self.target,self.nthreads,self.monitor,self.backend)(self,unitlist,*args)
-
-    def clone(self):
-        return copy.copy(self)
-
-    def _unit_check(self,unitlist):
-        
+    def _check_unitlist(self,unitlist):
+        """
+        Check if unitlist matches the unit type
+        """
         if(type(unitlist) is not list): raise ValueError('[Task] Top argument must be a list of units')
 
         for unit in unitlist:
@@ -50,3 +56,29 @@ class Task(object):
                 raise ValueError('[Task] Unit type not consistent.' +
                                  'Expected "{}" but got "{}"'.format(self.unit,type(unit)))
 
+    def TopArg(self,*args):
+        """
+        Method to get top argument from *args
+        """
+        top_arg = args[0]
+
+        args = list(args)
+        args.pop(0)
+        args = tuple(args)
+
+        self._check_unitlist(top_arg)
+
+        return top_arg,args
+
+    def CustomCall(self,*args):
+        """
+        Custom call signature 
+        """
+        unitlist,args = self.TopArg(*args)
+        return Backend(self.target,self.nthreads,self.monitor,self.backend)(self,unitlist,*args)
+
+    def copy(self):
+        """
+        custom copy method
+        """
+        return copy.copy(self)

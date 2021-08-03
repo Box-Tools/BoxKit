@@ -8,11 +8,17 @@ from ...utilities import Task
 
 from ..create import Region,Block
 
-def Actions(): 
-
+def skimeasure():
+    """
+    Public method to create a dictionary of actions
+    """
     tasklist = ['region','block']
 
-    return {task: eval(task) for task in tasklist}
+    actions = {task: eval(task).copy() for task in tasklist}
+
+    for task in actions.values(): task.actions = actions
+
+    return actions
 
 @Task(unit=Region)
 def region(self,unit,lsetkey,labelkey):

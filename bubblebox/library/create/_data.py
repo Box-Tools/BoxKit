@@ -13,12 +13,12 @@ class Data(object):
 
     type_ = "default"
 
-    def __init__(self, **kwargs):
+    def __init__(self, **attributes):
         """Initialize the class object
 
         Parameters
         ----------
-        kwargs : dictionary
+        attributes : dictionary
                { 'nblocks'   : total number of blocks,
                  'nxb'       : number of grid points per block in x dir,
                  'nyb'       : number of grid points per block in y dir,
@@ -28,7 +28,7 @@ class Data(object):
 
         """
 
-        self._set_attributes(kwargs)
+        self._set_attributes(attributes)
         self._set_data()
 
     def __repr__(self):

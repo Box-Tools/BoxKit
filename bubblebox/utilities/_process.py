@@ -3,15 +3,28 @@
 import copy
 
 class Process(object):
-    """
-    """
-    def __init__(self, target=None, actions=None):    
-        """
+    """Default class for a Process."""
+
+    type_ = 'default'
+
+    def __init__(self, target=None, actions=None):
+        """Initialize the  object and allocate the data.
+
+        Parameters
+        ----------
+        target  : target function
+
+        actions : dictionary of actions
         """
         self.target = target
         self.actions = actions
 
     def __call__(self,*args):
+        """
+        Call wrapper for process
+
+        If target is None, define the target, else call the target
+        """
         if self.target is None:
             self.target = args[0]
             return self
@@ -19,18 +32,8 @@ class Process(object):
         else:
             return self.target(self,*args)
 
-    @property
-    def actions(self):
-        return self._actions
-
-
-    @actions.setter
-    def actions(self,value):
-
-        self._actions = value
-
-        for task in self.actions.values():
-            task.actions = self._actions
-
     def clone(self):
+        """
+        Clone process
+        """
         return copy.deepcopy(self)

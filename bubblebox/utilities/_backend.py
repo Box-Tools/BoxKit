@@ -62,7 +62,7 @@ def Backend(target=None,nthreads=None,monitor=False,label='serial'):
         nthreads = 1 or None reverts to serial mode
         """
         with distributed.LocalCluster(threads_per_worker=nthreads, 
-                                      n_workers=1,
+                                      n_workers=None,
                                       processes=False) as cluster, distributed.Client(cluster) as client:
 
             #if monitor: unitlist = tqdm.tqdm(unitlist)

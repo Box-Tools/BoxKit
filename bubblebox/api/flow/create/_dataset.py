@@ -34,9 +34,7 @@ def dataset(filename,uservars=[],source='default',storage='disk'):
 
     data_attributes,block_attributes = read[source](filename,uservars)
 
-    data_attributes['storage'] = storage
-
-    data = library.create.Data(**data_attributes)
+    data = library.create.Data(storage=storage, **data_attributes)
 
     blocklist = [library.create.Block(data, **attributes) for attributes in block_attributes]
 

@@ -7,7 +7,7 @@ class Dataset(object):
 
     type_ = "default"
 
-    def __init__(self,blocklist=None,data=None):
+    def __init__(self,blocklist=[],data=None):
         """Constructor for Dataset
 
         Parameters
@@ -62,7 +62,7 @@ class Dataset(object):
         self.inputfile = None
         self.listkeys  = []
         self.memmap    = None
-        self.nblocks   = None
+        self.nblocks   = 1
 
         if not data: return
 
