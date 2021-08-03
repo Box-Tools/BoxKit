@@ -7,17 +7,17 @@ class Process(object):
 
     type_ = 'default'
 
-    def __init__(self, target=None, actions=None):
+    def __init__(self, target=None, tasks=None):
         """Initialize the  object and allocate the data.
 
         Parameters
         ----------
-        target  : target function
+        target : target function
 
-        actions : dictionary of actions
+        tasks  : dictionary of tasks
         """
         self.target = target
-        self.actions = actions
+        self.tasks = tasks
 
     def __call__(self,*args):
         """

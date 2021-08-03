@@ -102,12 +102,12 @@ class TestBoiling(unittest.TestCase):
         _time_measure = time.time()
         measure_bubbles = flowbox.measure.bubbles.clone()
 
-        measure_bubbles.actions['region'].nthreads = 4
-        measure_bubbles.actions['region'].backend = 'loky'
-        measure_bubbles.actions['region'].monitor = True
+        measure_bubbles.tasks['region'].nthreads = 4
+        measure_bubbles.tasks['region'].backend = 'loky'
+        measure_bubbles.tasks['region'].monitor = True
 
-        measure_bubbles.actions['block'].nthreads = 2
-        measure_bubbles.actions['block'].backend = 'loky'
+        measure_bubbles.tasks['block'].nthreads = 2
+        measure_bubbles.tasks['block'].backend = 'loky'
 
         bubbleframes = measure_bubbles(dataframes,'phi')
 

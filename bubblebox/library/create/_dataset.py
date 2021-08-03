@@ -57,24 +57,24 @@ class Dataset(object):
         """
         Private method for initialization
         """
-        self.data = None
+        self._data = None
 
         if not data: return
 
-        self.data = data
+        self._data = data
 
     @property
     def nblocks(self):
-        return self.data.nblocks
+        return self._data.nblocks
 
     def addvar(self,varkey):
-        self.data.addvar(varkey)
+        self._data.addvar(varkey)
 
     def delvar(self,varkey):
-        self.data.delvar(varkey)
+        self._data.delvar(varkey)
 
     def purge(self,purgeflag='all'):
         """
         Clean up the dataset and close it
         """
-        self.data.purge(purgeflag)
+        self._data.purge(purgeflag)

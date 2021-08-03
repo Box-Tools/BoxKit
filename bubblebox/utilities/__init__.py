@@ -2,6 +2,6 @@
 
 from ._backend import Backend
 
-from ._task import Task
+from ._action import Action
 
 from ._process import Process

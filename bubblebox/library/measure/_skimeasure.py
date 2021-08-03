@@ -4,7 +4,7 @@ import itertools
 
 import skimage.measure as skimage_measure
 
-from ...utilities import Task
+from ...utilities import Action
 
 from ..create import Region,Block
 
@@ -12,15 +12,15 @@ def skimeasure():
     """
     Public method to create a dictionary of actions
     """
-    tasklist = ['region','block']
+    actionlist = ['region','block']
 
-    actions = {task: eval(task).copy() for task in tasklist}
+    tasks = {action: eval(action).copy() for action in actionlist}
 
-    for task in actions.values(): task.actions = actions
+    for action in tasks.values(): action.tasks = tasks
 
-    return actions
+    return tasks
 
-@Task(unit=Region)
+@Action(unit=Region)
 def region(self,unit,lsetkey,labelkey):
     """
     Measure properties for a region
@@ -38,13 +38,13 @@ def region(self,unit,lsetkey,labelkey):
     listprops : list of properties
 
     """
-    listprops = self.actions['block'](unit.blocklist,lsetkey,labelkey)
+    listprops = self.tasks['block'](unit.blocklist,lsetkey,labelkey)
 
     listprops = list(itertools.chain.from_iterable(listprops))
 
     return listprops
 
-@Task(unit=Block)
+@Action(unit=Block)
 def block(self,unit,lsetkey,labelkey):
     """
     Measure properties for a unit

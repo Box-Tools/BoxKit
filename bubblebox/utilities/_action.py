@@ -1,11 +1,11 @@
-"""Module with implementation of Task utility"""
+"""Module with implementation of Action utility"""
 
 import copy
 
 from . import Backend
 
-class Task(object):
-    """Default class for a Task."""
+class Action(object):
+    """Default class for a Action."""
 
     type_ = 'default'
 
@@ -49,11 +49,11 @@ class Task(object):
         """
         Check if unitlist matches the unit type
         """
-        if(type(unitlist) is not list): raise ValueError('[Task] Top argument must be a list of units')
+        if(type(unitlist) is not list): raise ValueError('[Action] Top argument must be a list of units')
 
         for unit in unitlist:
             if(type(unit) is not self.unit): 
-                raise ValueError('[Task] Unit type not consistent.' +
+                raise ValueError('[Action] Unit type not consistent.' +
                                  'Expected "{}" but got "{}"'.format(self.unit,type(unit)))
 
     def topArg(self,*args):
