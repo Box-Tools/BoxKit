@@ -83,7 +83,7 @@ class TestHeater(unittest.TestCase):
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
         flowbox.measure.bubbles.tasks['region'].monitor = True
-        print(flowbox.measure.bubbles.tasks['region'].nthreads)
+        print(flowbox.measure.bubbles.tasks['region'].backend)
 
         bubbleframes = flowbox.measure.bubbles(dataframes,'phi')
 

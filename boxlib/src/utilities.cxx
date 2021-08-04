@@ -1,49 +1,63 @@
 #include <bubblebox.h>
 #include <omp.h>
+/*
+*
+*
+*/
+namespace bubblebox::utilities{
 
-namespace bubblebox{
+    PyObject* executePyTask (PyObject* progressBar, PyObject* action, PyObject* unitList, PyObject* argsTuple) {
+        // Set target 
+        Py_ssize_t numUnits = PyList_Size(unitList);           
+        Py_ssize_t numArgs = PyTuple_Size(argsTuple) + 2;
 
-    PyObject* Parallel_PyWrapper (PyObject* target_function, PyObject* object_list, PyObject* args_tuple,
-                                  PyObject* progress_bar, int num_threads) {
+        PyObject* resultList = PyList_New(numUnits);
+        PyObject* target = PyObject_GetAttrString(action,"target");
 
-        Py_ssize_t target_num_objs = PyList_Size(object_list);           
-        Py_ssize_t target_num_args = PyTuple_Size(args_tuple) + 1;
+        int numThreads = PyLong_AsLong(PyObject_GetAttrString(action,"nthreads"));
+        bool monitor = PyObject_IsTrue(PyObject_GetAttrString(action,"monitor"));
 
-        PyObject* result_list = PyList_New(target_num_objs);
+        PyObject* targetArgs = PyTuple_New(numArgs);
+        PyObject *arg, *result, *progressItor, *unit;
+
+        PyGILState_STATE gstate;
 
         omp_set_dynamic(0);
-        omp_set_num_threads(num_threads);
+        omp_set_num_threads(numThreads);
 
         //#pragma omp parallel default(shared)
-        for (int i = 0; i < target_num_objs; i++) {
+        for (int i = 0; i < numUnits; i++) {
 
-            PyObject* target_object = PyList_GetItem(object_list, i);
-            PyObject* target_args_tuple = PyTuple_New(target_num_args);
-            PyObject *target_arg, *target_result, *progress_itor, *progress_result;
-            PyGILState_STATE gstate;
+            unit = PyList_GetItem(unitList, i);
 
-            PyTuple_SetItem(target_args_tuple, 0, target_object);
-      
-            for (int j = 1; j < target_num_args; j++) { 
-                target_arg = PyTuple_GetItem(args_tuple, j-1);
-                PyTuple_SetItem(target_args_tuple, j, target_arg);         
+            Py_INCREF(action);
+            PyTuple_SetItem(targetArgs, 0, action);
+
+            Py_INCREF(unit);
+            PyTuple_SetItem(targetArgs, 1, unit);
+ 
+            for (int j = 2; j < numArgs; j++) { 
+                arg = PyTuple_GetItem(argsTuple, j-2);
+
+                Py_INCREF(arg);
+                PyTuple_SetItem(targetArgs, j, arg);         
             }     
 
             gstate = PyGILState_Ensure();
-            target_result = PyObject_CallObject(target_function, target_args_tuple);
+            result = PyObject_CallObject(target, targetArgs);
             PyGILState_Release(gstate);
 
-            PyList_SetItem(result_list, i, target_result);
+            Py_INCREF(result);
+            PyList_SetItem(resultList, i, result);
 
-            progress_itor = PyObject_GetAttrString(progress_bar,"next");
+            progressItor = PyObject_GetAttrString(progressBar,"next");
             
             gstate = PyGILState_Ensure();
-            progress_result = PyObject_CallObject(progress_itor,NULL);
+            result = PyObject_CallObject(progressItor,NULL);
             PyGILState_Release(gstate);
 
         }
 
-        return result_list;
-
+        return resultList;
     };
 }

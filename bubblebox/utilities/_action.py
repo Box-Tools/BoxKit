@@ -2,7 +2,7 @@
 
 import copy
 
-from . import Backend
+from .. import utilities
 
 class Action(object):
     """Default class for a Action."""
@@ -43,42 +43,44 @@ class Action(object):
             return self
 
         else: 
-            return self.customCall(*args)
-
-    def _check_unitlist(self,unitlist):
-        """
-        Check if unitlist matches the unit type
-        """
-        if(type(unitlist) is not list): raise ValueError('[Action] Top argument must be a list of units')
-
-        for unit in unitlist:
-            if(type(unit) is not self.unit): 
-                raise ValueError('[Action] Unit type not consistent.' +
-                                 'Expected "{}" but got "{}"'.format(self.unit,type(unit)))
-
-    def topArg(self,*args):
-        """
-        Method to get top argument from *args
-        """
-        top_arg = args[0]
-
-        args = list(args)
-        args.pop(0)
-        args = tuple(args)
-
-        self._check_unitlist(top_arg)
-
-        return top_arg,args
-
-    def customCall(self,*args):
-        """
-        Custom call signature 
-        """
-        unitlist,args = self.topArg(*args)
-        return Backend(self.target,self.nthreads,self.monitor,self.backend)(self,unitlist,*args)
+            return self.execute(*args)
 
     def copy(self):
         """
         custom copy method
         """
         return copy.copy(self)
+
+    def toparg(self,*args):
+        """
+        Method to get top argument from *args
+        """
+        top = args[0]
+
+        args = list(args)
+        args.pop(0)
+        args = tuple(args)
+
+        return top,args
+
+    def execute(self,*args):
+        """
+        Custom call signature 
+        """
+        unitlist,args = self.toparg(*args)
+
+        self._check_unitlist(unitlist)
+
+        return utilities.exectask(self,unitlist,*args)
+
+    def _check_unitlist(self,unitlist):
+        """
+        Check if unitlist matches the unit type
+        """
+        if(type(unitlist) is not list):
+            raise ValueError('[bubblebox.utilities.Action] Top argument must be a list of units')
+
+        for unit in unitlist:
+            if(type(unit) is not self.unit): 
+                raise ValueError('[bubblebox.utilities.Action] Unit type not consistent.' +
+                                 'Expected "{}" but got "{}"'.format(self.unit,type(unit)))

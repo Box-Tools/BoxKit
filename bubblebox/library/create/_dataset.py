@@ -40,7 +40,6 @@ class Dataset(object):
         self.xmax,self.ymax,self.zmax = [-1e10]*3
 
         if not blocklist: return
-        if type(blocklist) is not list: raise TypeError('[Datset] blocklist is not a list')
 
         self.blocklist  = blocklist
 

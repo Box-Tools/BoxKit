@@ -45,7 +45,8 @@ class Data(object):
         Get variable data
         """
         if not varkey in self.listkeys: 
-            raise ValueError('Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
+            raise ValueError('[bubblebox.library.create.Data] '+
+                             'Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
         else:
             return self.variables[varkey]
 
@@ -54,7 +55,8 @@ class Data(object):
         Set variable data
         """
         if not varkey in self.listkeys:
-            raise ValueError('Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
+            raise ValueError('[bubblebox.library.create.Data] '+
+                             'Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
 
         else:
             self.variables[varkey] = value
@@ -75,7 +77,8 @@ class Data(object):
             if key in default_attributes:
                 default_attributes[key] = attributes[key]
             else:
-                raise ValueError('Attribute "{}" not present in class Data'.format(key))
+                raise ValueError('[bubblebox.library.create.Data] '+
+                                 'Attribute "{}" not present in class Data'.format(key))
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 
@@ -94,7 +97,8 @@ class Data(object):
             self._create_dask_objects()
   
         else:
-            raise NotImplementedError('Storage format "{}" not implemented'.format(self.storage))
+            raise NotImplementedError('[bubblebox.library.create.Data] '+
+                                      'Storage format "{}" not implemented'.format(self.storage))
 
     def _create_numpy_memmap(self):
         """

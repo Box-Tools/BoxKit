@@ -1,15 +1,15 @@
 #include <Python.h>
 
-namespace bubblebox {
+namespace bubblebox::utilities {
 
-    PyObject* Parallel_PyWrapper (PyObject* target_function, PyObject* object_list, PyObject* args_tuple,
-                                  PyObject* progress_bar, int num_threads);
+    PyObject* executePyTask (PyObject* progressBar, 
+                             PyObject* action, PyObject* unitList, PyObject* argsTuple);
 
 }
 
 extern "C" {
 
-    PyObject* Parallel_PyWrapper (PyObject* target_function, PyObject* object_list, PyObject* args_tuple,
-                                  PyObject* progress_bar, int num_threads);
+    PyObject* utilities_executePyTask (PyObject* progressBar, 
+                                       PyObject* action, PyObject* unitList, PyObject* argsTuple);
 
 }

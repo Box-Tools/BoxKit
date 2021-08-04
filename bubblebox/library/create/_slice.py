@@ -7,14 +7,14 @@ class Slice(Region):
 
     type_ = 'derived'
 
-    def __init__(self, blocklist=[], **kwargs):
+    def __init__(self, blocklist=[], **attributes):
         """Initialize the Slice object and allocate the data.
 
         Parameters
         ----------
         blocklist  : list of blocks
 
-        kwargs : dictionary
+        attributes : dictionary
                { 'xmin' : low  bound in x dir
                  'ymin' : low  bound in y dir
                  'zmin' : low  bound in z dir
@@ -24,7 +24,7 @@ class Slice(Region):
 
         """
 
-        super().__init__(blocklist, **kwargs) 
+        super().__init__(blocklist, **attributes) 
        
     def __repr__(self):
         """Return a representation of the object."""

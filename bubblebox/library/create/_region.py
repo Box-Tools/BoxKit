@@ -5,14 +5,14 @@ class Region(object):
 
     type_ = 'base'
 
-    def __init__(self, blocklist=[], **kwargs):
+    def __init__(self, blocklist=[], **attributes):
         """Initialize the Region object and allocate the data.
 
         Parameters
         ----------
         blocklist  : list of objects
 
-        kwargs : dictionary
+        attributes : dictionary
                { 'xmin' : low  bound in x dir
                  'ymin' : low  bound in y dir
                  'zmin' : low  bound in z dir
@@ -22,7 +22,7 @@ class Region(object):
 
         """
        
-        self._set_attributes(kwargs)
+        self._set_attributes(attributes)
         self._map_blocklist(blocklist)
 
     def __repr__(self):
@@ -42,14 +42,14 @@ class Region(object):
         """
 
         default_attributes = {'xmin'    : 0., 'ymin' : 0., 'zmin' : 0.,
-                              'xmax'    : 0., 'ymax' : 0., 'zmax' : 0.,
-                              'backend' : 'loky'}
+                              'xmax'    : 0., 'ymax' : 0., 'zmax' : 0.}
 
         for key in attributes:
             if key in default_attributes:
                 default_attributes[key] = attributes[key]
             else:
-                raise ValueError('Attribute "{}" not present in class Region'.format(key))
+                raise ValueError('[bubblebox.library.create.Region] '+
+                                 'Attribute "{}" not present in class Region'.format(key))
 
         for key, value in default_attributes.items(): setattr(self, key, value)
 
@@ -64,7 +64,6 @@ class Region(object):
         self.blocklist = []
 
         if not blocklist: return
-        if type(blocklist) is not list: raise TypeError('[Region] blocklist is not a list')
 
         self.blocklist = [block for block in blocklist if self._in_collision(block)]
 
@@ -86,7 +85,8 @@ class Region(object):
         """
         Update block bounds using the blocklist
         """
-        if not self.blocklist: raise ValueError('Region is empty and outside scope of Blocks\n')
+        if not self.blocklist: raise ValueError('[bubblebox.library.create.Region] ' +
+                                                'is empty and outside scope of Blocks\n')
 
         for block in self.blocklist:
             self.xmin = min(self.xmin,block.xmin)

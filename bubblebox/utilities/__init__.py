@@ -1,6 +1,6 @@
 """Initialization of parallel interface"""
 
-from ._backend import Backend
+from ._execute import exectask
 
 from ._action import Action
 
