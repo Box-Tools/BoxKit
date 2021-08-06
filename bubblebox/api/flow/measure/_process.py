@@ -4,7 +4,7 @@ from ....library import measure
 
 from .. import create
 
-from ....utilities import Process
+from boxlib.api.utilities import Process
 
 @Process(tasks=measure.skimeasure())
 def bubbles(self,dataframes,lsetkey,**attributes):

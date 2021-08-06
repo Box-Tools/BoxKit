@@ -102,8 +102,8 @@ class TestBoiling(unittest.TestCase):
         _time_measure = time.time()
         measure_bubbles = flowbox.measure.bubbles.clone()
 
-        measure_bubbles.tasks['region'].nthreads = None
-        measure_bubbles.tasks['region'].backend = 'boxlib'
+        measure_bubbles.tasks['region'].nthreads = 1
+        measure_bubbles.tasks['region'].backend = 'bubblebox'
         measure_bubbles.tasks['region'].monitor = True
 
         measure_bubbles.tasks['block'].nthreads = None

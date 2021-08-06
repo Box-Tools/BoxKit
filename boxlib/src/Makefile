@@ -4,9 +4,9 @@ CC = g++
 
 COMPFLAGS = -shared -fPIC -fopenmp
 
-INCLUDE = -I/usr/include/python3.8 -I$(BASEDIR)/../include
+INCLUDE = -I/usr/include/python3.8 -I$(BASEDIR)/../include -I$(BASEDIR)/../include/external
 
-BOXOBJS = utilities.o bubblebox.o
+BOXOBJS = monitor.o action.o execute.o bubblebox.o
 
 BOXLIB = libbubblebox.a
 
@@ -17,7 +17,7 @@ $(BOXLIB): $(BOXOBJS)
 	mkdir -p $(BUILDDIR)
 	cp $(BOXLIB) $(BUILDDIR)
 
-%.o : %.cxx
+%.o : %.cpp
 	$(CC) $(COMPFLAGS) $(INCLUDE) -c $<
 
 clean:

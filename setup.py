@@ -14,7 +14,8 @@ with open('boxlib/__meta__.py', mode='r') as source:
     metadata = {key: re.search(key + r'\s*=\s*[\'"]([^\'"]*)[\'"]', content).group(1)
                 for key in ['__pkgname__', '__version__', '__authors__',
                             '__license__', '__description__']}
-DEPENDENCIES = []
+
+DEPENDENCIES = ['joblib', 'dask', 'distributed', 'tqdm']
 
 setup(
     name                 = metadata['__pkgname__'],
@@ -37,8 +38,7 @@ with open('bubblebox/__meta__.py', mode='r') as source:
                             '__license__', '__description__']}
 
 # core dependancies
-DEPENDENCIES = ['numpy', 'h5py', 'h5pickle', 'pymorton', 'scikit-image', 
-                'joblib', 'progress', 'dask', 'pyarrow', 'tqdm', 'distributed']
+DEPENDENCIES = ['numpy', 'h5py', 'h5pickle', 'pymorton', 'scikit-image', 'progress', 'dask', 'pyarrow']
 
 setup(
     name                 = metadata['__pkgname__'],

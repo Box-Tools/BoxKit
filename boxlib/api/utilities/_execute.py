@@ -5,10 +5,14 @@ import os
 import joblib
 import tqdm
 
-import boxlib.api as boxapi
-
 import dask
 import dask.distributed as distributed
+
+import ctypes
+
+libname = "../../build/libbubblebox.a"
+libpath = os.path.dirname(os.path.abspath(__file__)) + os.path.sep + libname
+bubbleboxlib = ctypes.cdll.LoadLibrary(libpath)
 
 def exectask(action,unitlist,*args):
     """
@@ -32,10 +36,10 @@ def exectask(action,unitlist,*args):
     """
     action.nthreads = action.nthreads or 1
 
-    backends = {'serial' : _serial_wrapper,
-                'loky'   : _loky_wrapper,
-                'dask'   : _dask_wrapper,
-                'boxlib' : _boxlib_wrapper}
+    backends = {'serial'    : _serial_wrapper,
+                'loky'      : _loky_wrapper,
+                'dask'      : _dask_wrapper,
+                'bubblebox' : _bubblebox_wrapper}
 
     if(action.monitor): print('run-'+action.backend+':'+action.target.__module__+'.'+action.target.__name__)
 
@@ -68,12 +72,15 @@ def _loky_wrapper(action,unitlist,*args):
 
     return listresult
 
-def _boxlib_wrapper(action,unitlist,*args):
+def _bubblebox_wrapper(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """    
-    listresult = boxapi.utilities.exectask(action,unitlist,*args)
+    bubbleboxlib.executePyTask.argtypes = [ctypes.py_object]*3
+    bubbleboxlib.executePyTask.restype  = ctypes.py_object
+
+    listresult = bubbleboxlib.executePyTask(action,unitlist,args)
 
     return listresult
 

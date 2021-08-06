@@ -4,7 +4,7 @@ import itertools
 
 import skimage.measure as skimage_measure
 
-from ...utilities import Action
+from boxlib.api.utilities import Action
 
 from ..create import Region,Block
 
