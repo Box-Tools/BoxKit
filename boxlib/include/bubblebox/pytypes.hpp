@@ -1,5 +1,5 @@
-#ifndef PYTYPES_H
-#define PYTYPES_H
+#ifndef BUBBLEBOX_PYTYPES_H
+#define BUBBLEBOX_PYTYPES_H
 #pragma once
 
 #include <Python.h>

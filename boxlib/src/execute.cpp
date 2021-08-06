@@ -1,4 +1,4 @@
-#include <bubblebox.h>
+#include <bubblebox/bubblebox.h>
 #include <omp.h>
 /*
 *
@@ -21,7 +21,7 @@ namespace bubblebox::utilities{
         omp_set_dynamic(0);
         omp_set_num_threads(action.nthreads);
 
-        Monitor bar(numUnits);
+        action.setbar(numUnits);
 
         //#pragma omp parallel default(shared) private(targetArgs,arg,unit,result)
         for (Py_ssize_t i = 0; i < numUnits; i++) 
@@ -54,7 +54,7 @@ namespace bubblebox::utilities{
             PyGILState_Release(gstate);
 
             //#pragma omp critical
-            if(action.monitor) bar.update();
+            action.updatebar();
 
         }
 

@@ -36,16 +36,16 @@ def exectask(action,unitlist,*args):
     """
     action.nthreads = action.nthreads or 1
 
-    backends = {'serial'    : _serial_wrapper,
-                'loky'      : _loky_wrapper,
-                'dask'      : _dask_wrapper,
-                'bubblebox' : _bubblebox_wrapper}
+    backends = {'serial'    : serial_wrapper,
+                'loky'      : loky_wrapper,
+                'dask'      : dask_wrapper,
+                'bubblebox' : bubblebox_wrapper}
 
     if(action.monitor): print('run-'+action.backend+':'+action.target.__module__+'.'+action.target.__name__)
 
     return backends[action.backend](action,unitlist,*args)
 
-def _serial_wrapper(action,unitlist,*args):
+def serial_wrapper(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 
@@ -57,7 +57,7 @@ def _serial_wrapper(action,unitlist,*args):
 
     return listresult
 
-def _loky_wrapper(action,unitlist,*args):
+def loky_wrapper(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 
@@ -72,7 +72,7 @@ def _loky_wrapper(action,unitlist,*args):
 
     return listresult
 
-def _bubblebox_wrapper(action,unitlist,*args):
+def bubblebox_wrapper(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
@@ -84,7 +84,7 @@ def _bubblebox_wrapper(action,unitlist,*args):
 
     return listresult
 
-def _dask_wrapper(action,unitlist,*args):
+def dask_wrapper(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 

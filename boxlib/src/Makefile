@@ -4,9 +4,9 @@ CC = g++
 
 COMPFLAGS = -shared -fPIC -fopenmp
 
-INCLUDE = -I/usr/include/python3.8 -I$(BASEDIR)/../include -I$(BASEDIR)/../include/external
+INCLUDE = -I/usr/include/python3.8 -I$(BASEDIR)/../include
 
-BOXOBJS = monitor.o action.o execute.o bubblebox.o
+BOXOBJS = action.o execute.o bubblebox.o
 
 BOXLIB = libbubblebox.a
 
