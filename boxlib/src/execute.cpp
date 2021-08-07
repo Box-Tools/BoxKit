@@ -1,4 +1,4 @@
-#include <bubblebox/bubblebox.h>
+#include <bubblebox/utilities.h>
 #include <omp.h>
 /*
 *

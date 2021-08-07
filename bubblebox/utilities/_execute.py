@@ -10,7 +10,7 @@ import dask.distributed as distributed
 
 import ctypes
 
-libname = "../../build/libbubblebox.a"
+libname = "../../boxlib/build/libbubblebox.a"
 libpath = os.path.dirname(os.path.abspath(__file__)) + os.path.sep + libname
 bubbleboxlib = ctypes.cdll.LoadLibrary(libpath)
 
