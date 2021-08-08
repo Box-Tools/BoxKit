@@ -21,7 +21,8 @@ namespace bubblebox::utilities{
         omp_set_dynamic(0);
         omp_set_num_threads(action.nthreads);
 
-        action.setbar(numUnits);
+        Monitor actionMonitor("action");
+        actionMonitor.setIterLimit(numUnits);
 
         //#pragma omp parallel default(shared) private(targetArgs,arg,unit,result)
         for (Py_ssize_t i = 0; i < numUnits; i++) 
@@ -53,9 +54,11 @@ namespace bubblebox::utilities{
 
             PyGILState_Release(gstate);
 
-            //#pragma omp critical
-            action.updatebar();
-
+            if(action.monitor)
+            {
+                //#pragma omp critical
+                actionMonitor.updateBar();
+            }
         }
 
         resultList.AddPyRef();

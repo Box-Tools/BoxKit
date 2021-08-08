@@ -1,18 +1,13 @@
 """Module with implementation of ExecuteTask utility"""
 
-import os
-
 import joblib
 import tqdm
 
 import dask
 import dask.distributed as distributed
 
+import boxlib
 import ctypes
-
-libname = "../../boxlib/build/libbubblebox.a"
-libpath = os.path.dirname(os.path.abspath(__file__)) + os.path.sep + libname
-bubbleboxlib = ctypes.cdll.LoadLibrary(libpath)
 
 def exectask(action,unitlist,*args):
     """
@@ -77,10 +72,10 @@ def bubblebox_wrapper(action,unitlist,*args):
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """    
-    bubbleboxlib.executePyTask.argtypes = [ctypes.py_object]*3
-    bubbleboxlib.executePyTask.restype  = ctypes.py_object
+    boxlib.utilities.executePyTask.argtypes = [ctypes.py_object]*3
+    boxlib.utilities.executePyTask.restype  = ctypes.py_object
 
-    listresult = bubbleboxlib.executePyTask(action,unitlist,args)
+    listresult = boxlib.utilities.executePyTask(action,unitlist,args)
 
     return listresult
 

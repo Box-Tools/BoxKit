@@ -4,6 +4,7 @@
 #include <bubblebox/pytypes.hpp>
 #include <indicators/progress_bar.hpp>
 
+
 using namespace bubblebox::pytypes;
 
 namespace bubblebox::utilities
@@ -27,27 +28,6 @@ namespace bubblebox::utilities
         int nthreads;
         bool monitor;
         PyObject* target;
-
-        //methods
-        void setbar(int iterlimit);
-        void updatebar();
-
-    private:
-
-        //private attributes
-        int max_progress;
-        int progress;
-
-        indicators::ProgressBar bar{indicators::option::BarWidth{50},
-                                    indicators::option::Start{"["},
-                                    indicators::option::Fill{"="},
-                                    indicators::option::Lead{">"},
-                                    indicators::option::Remainder{" "},
-                                    indicators::option::End{" ]"},
-                                    indicators::option::ShowPercentage{true},
-                                    indicators::option::ForegroundColor{indicators::Color::green},
-                                    indicators::option::FontStyles{std::vector<indicators::FontStyle>
-                                                                       {indicators::FontStyle::bold}}};
     };
    /*
     *
@@ -58,6 +38,31 @@ namespace bubblebox::utilities
     *
     *
     */
+    class Monitor
+    {
+    public:
 
+        //constructors
+        Monitor() {}
+        Monitor(const char *bartype);
+
+        //destructors
+        virtual ~Monitor() {}
+
+        //methods
+        void setIterLimit(int iterlimit);
+        void updateBar();
+
+    private:
+
+        //private attributes
+        int max_progress;
+        int progress;
+        indicators::ProgressBar progressBar;
+
+    };
+   /*
+    *
+    */
 }
 #endif

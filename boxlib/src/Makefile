@@ -1,25 +1,26 @@
-BASEDIR = $(PWD)
+#---------------------------------------------------------
+# BubbleBox C++ library Makefile
+#---------------------------------------------------------
 
-CC = g++
+basedir = $(PWD)
+include = -I/usr/include/python3.8 -I$(basedir)/../include
 
-COMPFLAGS = -shared -fPIC -fopenmp
+cc = g++
+compflags = -shared -fPIC -fopenmp
 
-INCLUDE = -I/usr/include/python3.8 -I$(BASEDIR)/../include
+util = monitor.o action.o execute.o utilities.o
+libutil = utilities.lib
 
-BOXOBJS = action.o execute.o bubblebox.o
+libdir = $(basedir)/../lib
 
-BOXLIB = libbubblebox.a
-
-BUILDDIR = $(BASEDIR)/../build
-
-$(BOXLIB): $(BOXOBJS)
-	$(CC) $(COMPFLAGS) -o $(BOXLIB) $(BOXOBJS)
-	mkdir -p $(BUILDDIR)
-	cp $(BOXLIB) $(BUILDDIR)
+$(libutil): $(util)
+	$(cc) $(compflags) -o $(libutil) $(util)
+	mkdir -p $(libdir)
+	cp $(libutil) $(libdir)
 
 %.o : %.cpp
-	$(CC) $(COMPFLAGS) $(INCLUDE) -c $<
+	$(cc) $(compflags) $(include) -c $<
 
 clean:
 	rm -f *.o
-	rm -f *.a
+	rm -f *.lib
