@@ -3,7 +3,7 @@
 
 #include <bubblebox/pytypes.hpp>
 #include <indicators/progress_bar.hpp>
-
+#include <indicators/progress_spinner.hpp>
 
 using namespace bubblebox::pytypes;
 
@@ -44,21 +44,23 @@ namespace bubblebox::utilities
 
         //constructors
         Monitor() {}
-        Monitor(const char *bartype);
+        Monitor(const char *_type);
 
         //destructors
         virtual ~Monitor() {}
 
         //methods
-        void setIterLimit(int iterlimit);
-        void updateBar();
+        void setlimit(int iterlimit);
+        void update(std::string _msg="", int _progress=0);
 
     private:
 
         //private attributes
         int max_progress;
         int progress;
-        indicators::ProgressBar progressBar;
+        const char *type;
+        indicators::ProgressBar bar;
+        indicators::ProgressSpinner spinner;
 
     };
    /*

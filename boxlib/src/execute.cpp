@@ -21,8 +21,8 @@ namespace bubblebox::utilities{
         omp_set_dynamic(0);
         omp_set_num_threads(action.nthreads);
 
-        Monitor actionMonitor("action");
-        actionMonitor.setIterLimit(numUnits);
+        Monitor monitor("action");
+        monitor.setlimit(numUnits);
 
         //#pragma omp parallel default(shared) private(targetArgs,arg,unit,result)
         for (Py_ssize_t i = 0; i < numUnits; i++) 
@@ -57,7 +57,7 @@ namespace bubblebox::utilities{
             if(action.monitor)
             {
                 //#pragma omp critical
-                actionMonitor.updateBar();
+                monitor.update("Executing Py Task from C++");
             }
         }
 
