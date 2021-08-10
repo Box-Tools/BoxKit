@@ -25,12 +25,12 @@ namespace bubblebox::pytypes
     class CPyObject
     {
     protected:
-        PyObject *pyObject;
+        PyObject *pyObj;
     public:
-        CPyObject() : pyObject(NULL)
+        CPyObject() : pyObj(NULL)
         {}
 
-        CPyObject(PyObject* _p) : pyObject(_p)
+        CPyObject(PyObject* _p) : pyObj(_p)
 	{}
 	
         virtual ~CPyObject()
@@ -40,57 +40,57 @@ namespace bubblebox::pytypes
 
 	PyObject* getPyObject()
 	{
-	    return pyObject;
+	    return this->pyObj;
 	}
 
 	PyObject* setPyObject(PyObject* _p)
 	{
-	    return (pyObject=_p);
+	    return (this->pyObj=_p);
 	}
 
 	PyObject* AddPyRef()
 	{
-	    if(pyObject)
+	    if(this->pyObj)
 	    {
-	        Py_INCREF(pyObject);
+	        Py_INCREF(this->pyObj);
 	    }
-	    return pyObject;
+	    return this->pyObj;
 	}
 
 	void DelPyRef()
 	{
-	    if(pyObject)
+	    if(this->pyObj)
 	    {
-	        Py_DECREF(pyObject);
+	        Py_DECREF(this->pyObj);
 	    }
 
-	    pyObject = NULL;
+	    this->pyObj = NULL;
 	}
 
 	PyObject* operator ->()
 	{
-	    return pyObject;
+	    return this->pyObj;
 	}
 
 	bool is()
 	{
-	    return pyObject ? true : false;
+	    return this->pyObj ? true : false;
 	}
 
 	operator PyObject*()
 	{
-	    return pyObject;
+	    return this->pyObj;
 	}
 
 	PyObject* operator = (PyObject* pp)
 	{
-		pyObject = pp;
-		return pyObject;
+		this->pyObj = pp;
+		return this->pyObj;
 	}
 
 	operator bool()
 	{
-	    return pyObject ? true : false;
+	    return this->pyObj ? true : false;
 	}
     };
 
@@ -106,9 +106,9 @@ namespace bubblebox::pytypes
 
         Py_ssize_t len()
         {
-            if(pyObject)
+            if(this->pyObj)
             {
-                return PyList_Size(pyObject);
+                return PyList_Size(this->pyObj);
             } else { 
                 return 0;
             }
@@ -116,9 +116,9 @@ namespace bubblebox::pytypes
 
         PyObject* getItem(Py_ssize_t loc)
         {
-            if(pyObject)
+            if(this->pyObj)
             {
-                return PyList_GetItem(pyObject, loc);
+                return PyList_GetItem(this->pyObj, loc);
             } else { 
                 return NULL;
             }
@@ -126,16 +126,16 @@ namespace bubblebox::pytypes
 
         void setItem(Py_ssize_t loc, PyObject* value)
         {
-            if(pyObject)
+            if(this->pyObj)
             {
-                PyList_SetItem(pyObject, loc, value);
+                PyList_SetItem(this->pyObj, loc, value);
             }
         }
 
 	PyObject* operator = (PyObject* pp)
 	{
-		pyObject = pp;
-		return pyObject;
+		this->pyObj = pp;
+		return this->pyObj;
 	}
     };
 
@@ -151,9 +151,9 @@ namespace bubblebox::pytypes
 
         Py_ssize_t len()
         {
-            if(pyObject)
+            if(this->pyObj)
             {
-                return PyTuple_Size(pyObject);
+                return PyTuple_Size(this->pyObj);
             } else { 
                 return 0;
             }
@@ -161,9 +161,9 @@ namespace bubblebox::pytypes
 
         PyObject* getItem(Py_ssize_t loc)
         {
-            if(pyObject)
+            if(this->pyObj)
             {
-                return PyTuple_GetItem(pyObject, loc);
+                return PyTuple_GetItem(this->pyObj, loc);
             } else { 
                 return NULL;
             }
@@ -171,16 +171,16 @@ namespace bubblebox::pytypes
 
         void setItem(Py_ssize_t loc, PyObject* value)
         {
-            if(pyObject)
+            if(this->pyObj)
             {
-                PyTuple_SetItem(pyObject, loc, value);
+                PyTuple_SetItem(this->pyObj, loc, value);
             }            
         }
 
 	PyObject* operator = (PyObject* pp)
 	{
-		pyObject = pp;
-		return pyObject;
+		this->pyObj = pp;
+		return this->pyObj;
 	}
     };
 

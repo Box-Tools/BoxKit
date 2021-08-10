@@ -19,7 +19,7 @@ namespace bubblebox::utilities
 
         //constructors
 	Action() {}
-	Action(PyObject* _pyObject);
+	Action(PyObject* _pyObj);
 
         //destructors
 	virtual ~Action() {}
@@ -44,14 +44,14 @@ namespace bubblebox::utilities
 
         //constructors
         Monitor() {}
-        Monitor(const char *_type);
+        Monitor(const char *type);
 
         //destructors
         virtual ~Monitor() {}
 
         //methods
         void setlimit(int iterlimit);
-        void update(std::string _msg="", int _progress=0);
+        void update(std::string msg="", int progress=0);
 
     private:
 
@@ -59,8 +59,8 @@ namespace bubblebox::utilities
         int max_progress;
         int progress;
         const char *type;
-        indicators::ProgressBar bar;
-        indicators::ProgressSpinner spinner;
+        indicators::ProgressBar *bar = new indicators::ProgressBar;
+        indicators::ProgressSpinner *spinner = new indicators::ProgressSpinner;
 
     };
    /*

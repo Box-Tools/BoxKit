@@ -2,25 +2,43 @@
 # BubbleBox C++ library Makefile
 #---------------------------------------------------------
 
-basedir = $(PWD)
-include = -I/usr/include/python3.8 -I$(basedir)/../include
+BASEDIR = $(PWD)
 
-cc = g++
-compflags = -shared -fPIC -fopenmp
+CC = g++
 
-util = monitor.o action.o execute.o utilities.o
-libutil = utilities.lib
+FLAGS_BUBBLEBOX = -shared -fPIC -fopenmp --std=c++11 -Wl,--export-dynamic
 
-libdir = $(basedir)/../lib
+INC_BUBBLEBOX = -I$(BASEDIR)/../include
+INC_PYTHON = -I/usr/include/python3.8
 
-$(libutil): $(util)
-	$(cc) $(compflags) -o $(libutil) $(util)
-	mkdir -p $(libdir)
-	cp $(libutil) $(libdir)
+LINK_PYTHON = -L/usr/lib/python3.8/config -lpython3.8
+LINK_BOOST = -lboost_python38
+
+LIB_EXTERN = utilities_extern.so
+LIB_BOOST = utilities_boost.so
+
+all: $(LIB_EXTERN) $(LIB_BOOST)
+
+$(LIB_EXTERN): %_extern.so: %.o %_extern.o
+	$(CC) $(FLAGS_BUBBLEBOX) -o $@ $^ $(LINK_PYTHON)
+	mkdir -p $(BASEDIR)/../lib/extern
+	cp $@ $(BASEDIR)/../lib/extern
+
+$(LIB_BOOST): %_boost.so : %.o %_boost.o
+	$(CC) $(FLAGS_BUBBLEBOX) -o $@ $^ $(LINK_BOOST) $(LINK_PYTHON)
+	mkdir -p $(BASEDIR)/../lib/boost
+	cp $@ $(BASEDIR)/../lib/boost
 
 %.o : %.cpp
-	$(cc) $(compflags) $(include) -c $<
+	$(CC) $(FLAGS_BUBBLEBOX) $(INC_BUBBLEBOX) $(INC_PYTHON) -c $<
+
+%_extern.o : %_extern.cpp
+	$(CC) $(FLAGS_BUBBLEBOX) $(INC_BUBBLEBOX) $(INC_PYTHON) -c $<
+
+
+%_boost.o : %_boost.cpp
+	$(CC) $(FLAGS_BUBBLEBOX) $(INC_BUBBLEBOX) $(INC_PYTHON) -c $<
 
 clean:
-	rm -f *.o
-	rm -f *.lib
+	rm -rf *.o
+	rm -rf *.so

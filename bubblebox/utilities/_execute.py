@@ -6,7 +6,7 @@ import tqdm
 import dask
 import dask.distributed as distributed
 
-import boxlib
+import boxlib.extern as boxlib
 import ctypes
 
 def exectask(action,unitlist,*args):
