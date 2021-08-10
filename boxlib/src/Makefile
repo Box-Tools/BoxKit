@@ -21,13 +21,13 @@ all: $(LIB_EXTERN) $(LIB_BOOST)
 
 $(LIB_EXTERN): %_extern.so: %.o %_extern.o
 	$(CC) $(FLAGS_BUBBLEBOX) -o $@ $^ $(LINK_PYTHON)
-	mkdir -p $(BASEDIR)/../lib/extern
-	cp $@ $(BASEDIR)/../lib/extern
+	mkdir -p $(BASEDIR)/../extern
+	cp $@ $(BASEDIR)/../extern
 
 $(LIB_BOOST): %_boost.so : %.o %_boost.o
 	$(CC) $(FLAGS_BUBBLEBOX) -o $@ $^ $(LINK_BOOST) $(LINK_PYTHON)
-	mkdir -p $(BASEDIR)/../lib/boost
-	cp $@ $(BASEDIR)/../lib/boost
+	mkdir -p $(BASEDIR)/../boost
+	cp $@ $(BASEDIR)/../boost
 
 %.o : %.cpp
 	$(CC) $(FLAGS_BUBBLEBOX) $(INC_BUBBLEBOX) $(INC_PYTHON) -c $<

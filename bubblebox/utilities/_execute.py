@@ -6,7 +6,9 @@ import tqdm
 import dask
 import dask.distributed as distributed
 
-import boxlib.extern as boxlib
+import boxlib.extern as externBox
+import boxlib.boost as boostBox
+
 import ctypes
 
 def exectask(action,unitlist,*args):
@@ -72,10 +74,10 @@ def bubblebox_wrapper(action,unitlist,*args):
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """    
-    boxlib.utilities.executePyTask.argtypes = [ctypes.py_object]*3
-    boxlib.utilities.executePyTask.restype  = ctypes.py_object
+    externBox.utilities.executePyTask.argtypes = [ctypes.py_object]*3
+    externBox.utilities.executePyTask.restype  = ctypes.py_object
 
-    listresult = boxlib.utilities.executePyTask(action,unitlist,args)
+    listresult = externBox.utilities.executePyTask(action,unitlist,args)
 
     return listresult
 

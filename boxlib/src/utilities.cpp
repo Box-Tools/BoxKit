@@ -5,7 +5,8 @@
 *
 *
 */
-using namespace bubblebox::pytypes;
+namespace pytypes = bubblebox::pytypes;
+namespace python = boost::python;
 
 namespace bubblebox::utilities
 {
@@ -13,7 +14,7 @@ namespace bubblebox::utilities
     *
     *
     */
-    Action::Action(PyObject* pyObj) : CPyObject(pyObj)
+    ActionExtern::ActionExtern(PyObject* pyObj) : pytypes::CPyObject(pyObj)
     {
         this->nthreads = PyLong_AsLong(PyObject_GetAttrString(this->pyObj,"nthreads"));
         this->monitor  = PyObject_IsTrue(PyObject_GetAttrString(this->pyObj,"monitor"));
@@ -23,15 +24,15 @@ namespace bubblebox::utilities
     *
     *
     */
-    CPyList executePyTask (Action& action, CPyList& unitList, CPyTuple& argsTuple) 
+    pytypes::CPyList executeExternTask (ActionExtern& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple) 
     {
         Py_ssize_t numUnits = unitList.len();
         Py_ssize_t numArgs = argsTuple.len() + 2;
 
-        CPyList resultList = PyList_New(numUnits);
+        pytypes::CPyList resultList = PyList_New(numUnits);
 
-        CPyTuple targetArgs;
-        CPyObject arg, unit, result;
+        pytypes::CPyTuple targetArgs;
+        pytypes::CPyObject arg, unit, result;
 
         omp_set_dynamic(0);
         omp_set_num_threads(action.nthreads);
@@ -122,4 +123,13 @@ namespace bubblebox::utilities
             this->bar->tick();
         }
     }
+   /*
+    *
+    *
+    */
+    void executeBoostTask (Monitor& monitor)
+    {
+        std::cout<<"C++ call"<<std::endl;
+    }
+
 }

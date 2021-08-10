@@ -3,16 +3,18 @@
 *
 *
 */
-using namespace bubblebox;
+
+namespace utilities = bubblebox::utilities;
+namespace pytypes = bubblebox::pytypes;
 
 extern "C" 
 {
     PyObject* executePyTask (PyObject* py_action, PyObject* py_unitList, PyObject* py_argsTuple)
     {
-        utilities::Action action = py_action;
+        utilities::ActionExtern action = py_action;
         pytypes::CPyList unitList = py_unitList;
         pytypes::CPyTuple argsTuple = py_argsTuple;
 
-        return utilities::executePyTask(action, unitList, argsTuple);
+        return utilities::executeExternTask(action, unitList, argsTuple);
     }
 }

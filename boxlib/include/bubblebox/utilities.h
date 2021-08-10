@@ -4,8 +4,10 @@
 #include <bubblebox/pytypes.hpp>
 #include <indicators/progress_bar.hpp>
 #include <indicators/progress_spinner.hpp>
+#include <boost/python.hpp>
 
-using namespace bubblebox::pytypes;
+namespace pytypes = bubblebox::pytypes;
+namespace python = boost::python;
 
 namespace bubblebox::utilities
 {
@@ -13,16 +15,16 @@ namespace bubblebox::utilities
     *
     *
     */
-    class Action: public CPyObject
+    class ActionExtern: public pytypes::CPyObject
     {
     public:
 
         //constructors
-	Action() {}
-	Action(PyObject* _pyObj);
+	ActionExtern() {}
+	ActionExtern(PyObject* _pyObj);
 
         //destructors
-	virtual ~Action() {}
+	virtual ~ActionExtern() {}
 
         //attributes
         int nthreads;
@@ -33,7 +35,7 @@ namespace bubblebox::utilities
     *
     *
     */
-    CPyList executePyTask (Action& action, CPyList& unitList, CPyTuple& argsTuple);
+    pytypes::CPyList executeExternTask (ActionExtern& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple);
    /*
     *
     *
@@ -66,5 +68,6 @@ namespace bubblebox::utilities
    /*
     *
     */
+    void executeBoostTask (Monitor& monitor);
 }
 #endif
