@@ -123,6 +123,12 @@ namespace bubblebox::utilities
             this->bar->tick();
         }
     }
+
+
+    const char *Monitor::gettype()
+    {
+        return this->type;
+    }
    /*
     *
     *
@@ -130,6 +136,7 @@ namespace bubblebox::utilities
     void executeBoostTask (Monitor& monitor)
     {
         std::cout<<"C++ call"<<std::endl;
+        std::cout<<"Monitor type: "<<monitor.gettype()<<std::endl;
     }
 
 }

@@ -54,6 +54,7 @@ namespace bubblebox::utilities
         //methods
         void setlimit(int iterlimit);
         void update(std::string msg="", int progress=0);
+        const char *gettype();
 
     private:
 
