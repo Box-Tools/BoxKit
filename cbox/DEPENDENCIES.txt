@@ -1,0 +1,4 @@
+# External libraries
+-  python 3.8 or newer
+-  boost/boost python
+-  indicators ---> include/indicators

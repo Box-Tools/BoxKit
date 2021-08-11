@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 with open('README.rst', mode='r') as readme:
     long_description = readme.read()
 
-with open('boxlib/__meta__.py', mode='r') as source:
+with open('cbox/__meta__.py', mode='r') as source:
     content = source.read().strip()
     metadata = {key: re.search(key + r'\s*=\s*[\'"]([^\'"]*)[\'"]', content).group(1)
                 for key in ['__pkgname__', '__version__', '__authors__',

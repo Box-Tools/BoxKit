@@ -1,0 +1,31 @@
+"""Module with implementaion of Monitor class"""
+
+import cbox.boost as cbox
+
+class CboxMonitor(cbox.utilities.Monitor):
+    """
+    Dervied class of a Boost.Python.Class
+    """
+    def __init__(self,_type):
+        """
+        Initialize and create object
+        """
+        super().__init__(_type)
+
+    def setlimit(self,iterlimit):
+        """
+        set max progress for monitor
+        """
+        self._setlimit(iterlimit)
+
+    def update(self,msg="",progress=0):
+        """
+        update monitor
+        """
+        self._update(msg,progress)
+        
+    def gettype(self):
+        """
+        Get type
+        """
+        return self._gettype

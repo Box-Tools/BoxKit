@@ -1,6 +1,7 @@
 """Tests for `bubblebox/api/flow`."""
 
 import bubblebox.api.flow as flowbox
+from   bubblebox.utilities import CboxMonitor as Monitor
 import unittest
 import pymorton
 import time
@@ -39,12 +40,14 @@ class TestBoiling(unittest.TestCase):
         """      
         dataframes  = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
+        monitorTest = Monitor("test")
+        monitorTest.setlimit(len(dataframes))
+        monitorMsg = 'run:'+self.id()+': '
+
         for dataset in dataframes:
             for block in dataset.blocklist:
                 self.assertTrue(block.data is dataset.blocklist[0].data,'Data pointers are inconsistent')
-            bar.next()
-        bar.finish()
+            monitorTest.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge('memmap')
@@ -103,7 +106,7 @@ class TestBoiling(unittest.TestCase):
         measure_bubbles = flowbox.measure.bubbles.clone()
 
         measure_bubbles.tasks['region'].nthreads = 1
-        measure_bubbles.tasks['region'].backend = 'bubblebox'
+        measure_bubbles.tasks['region'].backend = 'cbox' 
         measure_bubbles.tasks['region'].monitor = True
 
         measure_bubbles.tasks['block'].nthreads = None

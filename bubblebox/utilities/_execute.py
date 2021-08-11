@@ -6,9 +6,7 @@ import tqdm
 import dask
 import dask.distributed as distributed
 
-import boxlib.extern as externBox
-import boxlib.boost as boostBox
-
+import cbox
 import ctypes
 
 def exectask(action,unitlist,*args):
@@ -33,10 +31,10 @@ def exectask(action,unitlist,*args):
     """
     action.nthreads = action.nthreads or 1
 
-    backends = {'serial'    : serial_wrapper,
-                'loky'      : loky_wrapper,
-                'dask'      : dask_wrapper,
-                'bubblebox' : bubblebox_wrapper}
+    backends = {'serial' : serial_wrapper,
+                'loky'   : loky_wrapper,
+                'dask'   : dask_wrapper,
+                'cbox'   : cbox_extern_wrapper}
 
     if(action.monitor): print('run-'+action.backend+':'+action.target.__module__+'.'+action.target.__name__)
 
@@ -69,15 +67,15 @@ def loky_wrapper(action,unitlist,*args):
 
     return listresult
 
-def bubblebox_wrapper(action,unitlist,*args):
+def cbox_extern_wrapper(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """    
-    externBox.utilities.executePyTask.argtypes = [ctypes.py_object]*3
-    externBox.utilities.executePyTask.restype  = ctypes.py_object
+    cbox.extern.utilities.executePyTask.argtypes = [ctypes.py_object]*3
+    cbox.extern.utilities.executePyTask.restype  = ctypes.py_object
 
-    listresult = externBox.utilities.executePyTask(action,unitlist,args)
+    listresult = cbox.extern.utilities.executePyTask(action,unitlist,args)
 
     return listresult
 

@@ -7,7 +7,7 @@
 #include <boost/python.hpp>
 
 namespace pytypes = bubblebox::pytypes;
-namespace python = boost::python;
+namespace python  = boost::python;
 
 namespace bubblebox::utilities
 {
@@ -15,27 +15,22 @@ namespace bubblebox::utilities
     *
     *
     */
-    class ActionExtern: public pytypes::CPyObject
+    class CPyAction: public pytypes::CPyObject
     {
     public:
 
         //constructors
-	ActionExtern() {}
-	ActionExtern(PyObject* _pyObj);
+	CPyAction() {}
+	CPyAction(PyObject* _pyObj);
 
         //destructors
-	virtual ~ActionExtern() {}
+	virtual ~CPyAction() {}
 
         //attributes
         int nthreads;
         bool monitor;
         PyObject* target;
     };
-   /*
-    *
-    *
-    */
-    pytypes::CPyList executeExternTask (ActionExtern& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple);
    /*
     *
     *
@@ -69,6 +64,11 @@ namespace bubblebox::utilities
    /*
     *
     */
-    void executeBoostTask (Monitor& monitor);
+    pytypes::CPyList executePyTask (CPyAction& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple);
+    pytypes::CPyList executePyTask (Monitor& monitor);
+   /*
+    *
+    *
+    */
 }
 #endif
