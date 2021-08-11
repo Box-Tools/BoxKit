@@ -6,7 +6,7 @@ import pymorton
 import time
 import os
 
-from bubblebox.utilities import CboxMonitor as Monitor
+from bubblebox.utilities import Monitor
 
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""
@@ -36,8 +36,8 @@ class TestHeater(unittest.TestCase):
         self.customSetUp('oneblk')
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        monitorTest = Monitor("test")
-        monitorTest.setlimit(len(dataframes))
+        testMonitor = Monitor("test")
+        testMonitor.setlimit(len(dataframes))
         monitorMsg = 'run:'+self.id()+': '
 
         for dataset in dataframes:
@@ -45,7 +45,7 @@ class TestHeater(unittest.TestCase):
             for block in dataset.blocklist:
                 self.assertEqual([None]*4,block.neighlist, 'Single block data structure has no neighbors')
 
-            monitorTest.update(monitorMsg)
+            testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge('memmap')
@@ -57,8 +57,8 @@ class TestHeater(unittest.TestCase):
         self.customSetUp('blocks')
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        monitorTest = Monitor("test")
-        monitorTest.setlimit(len(dataframes))
+        testMonitor = Monitor("test")
+        testMonitor.setlimit(len(dataframes))
         monitorMsg = 'run:'+self.id()+': '
 
         for dataset in dataframes:
@@ -77,7 +77,7 @@ class TestHeater(unittest.TestCase):
 
                 self.assertEqual(neighlist,block.neighlist, 'Neigbhors are inconsitent with morton order')
 
-            monitorTest.update(monitorMsg)
+            testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge('memmap')

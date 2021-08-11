@@ -75,7 +75,7 @@ def cbox_wrapper(action,unitlist,*args):
     cbox.extern.utilities.executePyTask.argtypes = [ctypes.py_object]*3
     cbox.extern.utilities.executePyTask.restype  = ctypes.py_object
 
-    listresult = cbox.extern.utilities.executePyTask(action,unitlist,args)
+    listresult = cbox.boost.utilities.executePyTask(action,unitlist,args)
 
     return listresult
 

@@ -1,14 +1,14 @@
-#include <bubblebox/utilities.h>
+#include <cbox/utilities.h>
 #include <string.h>
 #include <omp.h>
 /*
-*
-*
-*/
-namespace pytypes = bubblebox::pytypes;
+ *
+ *
+ */
+namespace pytypes = cbox::pytypes;
 namespace python  = boost::python;
 
-namespace bubblebox::utilities
+namespace cbox::utilities
 {
    /*
     *
@@ -83,6 +83,12 @@ namespace bubblebox::utilities
     {
         return this->type;
     }
+
+
+    void Monitor::settype(const char *type)
+    {
+        this->type = type;
+    }
    /*
     *
     *
@@ -147,10 +153,11 @@ namespace bubblebox::utilities
     *
     *
     */
-    pytypes::CPyList executePyTask (Monitor& monitor)
+    pytypes::CPyList executePyTask (Action& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple)
     {
         std::cout<<"C++ call"<<std::endl;
-        std::cout<<"Monitor type: "<<monitor.gettype()<<std::endl;
+        std::cout<<"Action threads: "<<action.nthreads<<std::endl;
+        std::cout<<"Action monitor: "<<action.monitor<<std::endl;
 
         pytypes::CPyList resultList;
 

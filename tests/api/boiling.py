@@ -6,7 +6,7 @@ import pymorton
 import time
 import os
 
-from bubblebox.utilities import CboxMonitor as Monitor
+from bubblebox.utilities import Monitor
 
 class TestBoiling(unittest.TestCase):
     """bubblebox unit test for 3D boiling data"""
@@ -39,14 +39,14 @@ class TestBoiling(unittest.TestCase):
         """      
         dataframes  = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        monitorTest = Monitor("test")
-        monitorTest.setlimit(len(dataframes))
+        testMonitor = Monitor("test")
+        testMonitor.setlimit(len(dataframes))
         monitorMsg = 'run:'+self.id()+': '
 
         for dataset in dataframes:
             for block in dataset.blocklist:
                 self.assertTrue(block.data is dataset.blocklist[0].data,'Data pointers are inconsistent')
-            monitorTest.update(monitorMsg)
+            testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge('memmap')
@@ -57,8 +57,8 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        monitorTest = Monitor("test")
-        monitorTest.setlimit(len(dataframes))
+        testMonitor = Monitor("test")
+        testMonitor.setlimit(len(dataframes))
         monitorMsg = 'run:'+self.id()+': '
 
         for dataset in dataframes:
@@ -75,7 +75,7 @@ class TestBoiling(unittest.TestCase):
                 neighlist = [None if neighbor > block.data.nblocks-1 else neighbor for neighbor in neighlist]
 
                 self.assertEqual(neighlist,block.neighlist, 'Neigbhors are inconsitent with morton order')
-            monitorTest.update(monitorMsg)
+            testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge('memmap')
@@ -87,13 +87,13 @@ class TestBoiling(unittest.TestCase):
         dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
         regionframes = [flowbox.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes]
 
-        monitorTest = Monitor("test")
-        monitorTest.setlimit(len(regionframes))
+        testMonitor = Monitor("test")
+        testMonitor.setlimit(len(regionframes))
         monitorMsg = 'run:'+self.id()+': '
 
         for region in regionframes:
             self.assertEqual(int(len(region.blocklist)**(1/2)),16)
-            monitorTest.update(monitorMsg)
+            testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge('memmap')
@@ -108,10 +108,10 @@ class TestBoiling(unittest.TestCase):
         measure_bubbles = flowbox.measure.bubbles.clone()
 
         measure_bubbles.tasks['region'].nthreads = 4
-        measure_bubbles.tasks['region'].backend = 'loky' 
+        measure_bubbles.tasks['region'].backend = 'cbox' 
         measure_bubbles.tasks['region'].monitor = True
 
-        measure_bubbles.tasks['block'].nthreads = None
+        measure_bubbles.tasks['block'].nthreads = 1
         measure_bubbles.tasks['block'].backend = 'serial'
 
         bubbleframes = measure_bubbles(dataframes,'phi')

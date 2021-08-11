@@ -1,10 +1,10 @@
-#ifndef BUBBLEBOX_PYTYPES_H
-#define BUBBLEBOX_PYTYPES_H
+#ifndef CBOX_PYTYPES_H
+#define CBOX_PYTYPES_H
 #pragma once
 
 #include <Python.h>
 
-namespace bubblebox::pytypes
+namespace cbox::pytypes
 {
 
     class CPyInstance

@@ -12,16 +12,15 @@ def skimeasure():
     """
     Public method to create a dictionary of actions
     """
-    actionlist = ['region','block']
-
-    tasks = {action: eval(action).copy() for action in actionlist}
+    tasks = {'region' : skimeasure_region.copy(),
+             'block'  : skimeasure_block.copy() }
 
     for action in tasks.values(): action.tasks = tasks
 
     return tasks
 
 @Action(unit=Region)
-def region(self,unit,lsetkey,labelkey):
+def skimeasure_region(self,unit,lsetkey,labelkey):
     """
     Measure properties for a region
 
@@ -45,7 +44,7 @@ def region(self,unit,lsetkey,labelkey):
     return listprops
 
 @Action(unit=Block)
-def block(self,unit,lsetkey,labelkey):
+def skimeasure_block(self,unit,lsetkey,labelkey):
     """
     Measure properties for a unit
 

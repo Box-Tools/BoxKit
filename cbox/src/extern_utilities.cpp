@@ -1,10 +1,10 @@
-#include <bubblebox/utilities.h>
+#include <cbox/utilities.h>
 /*
-*
-*
-*/
-namespace utilities = bubblebox::utilities;
-namespace pytypes   = bubblebox::pytypes;
+ *
+ *
+ */
+namespace utilities = cbox::utilities;
+namespace pytypes   = cbox::pytypes;
 
 extern "C" 
 {

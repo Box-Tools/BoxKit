@@ -1,15 +1,16 @@
 """Module with implementation of Action utility"""
 
 import copy
+import cbox.boost as cbox
 
 from .. import utilities
 
-class Action(object):
+class Action(cbox.utilities.Action):
     """Default class for a Action."""
 
     type_ = 'default'
 
-    def __init__(self, target=None, nthreads=None, monitor=False, backend='serial', actions=None, unit=None):
+    def __init__(self, target=None, nthreads=1, monitor=False, backend='serial', actions=None, unit=None):
         """Initialize the  object and allocate the data.
 
         Parameters
@@ -27,6 +28,7 @@ class Action(object):
 
         unit     : unit type
         """
+        super().__init__()
         self.target   = target
         self.nthreads = nthreads
         self.monitor  = monitor

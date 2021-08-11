@@ -2,7 +2,7 @@
 
 import cbox.boost as cbox
 
-class CboxMonitor(cbox.utilities.Monitor):
+class Monitor(cbox.utilities.Monitor):
     """
     Dervied class of a Boost.Python.Class
     """
