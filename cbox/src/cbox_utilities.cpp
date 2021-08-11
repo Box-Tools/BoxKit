@@ -51,8 +51,10 @@ namespace bubblebox::utilities
             this->bar->set_option(indicators::option::Lead{""});
             this->bar->set_option(indicators::option::Remainder{""});
             this->bar->set_option(indicators::option::End{""});
-            this->bar->set_option(indicators::option::ForegroundColor{indicators::Color::white});
+            this->bar->set_option(indicators::option::ForegroundColor{indicators::Color::green});
             this->bar->set_option(indicators::option::ShowPercentage{true});
+            this->bar->set_option(indicators::option::FontStyles{std::vector<indicators::FontStyle>
+                                                                {indicators::FontStyle::bold}});
         }
 
     }

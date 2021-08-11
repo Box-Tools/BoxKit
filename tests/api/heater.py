@@ -5,7 +5,8 @@ import unittest
 import pymorton
 import time
 import os
-from progress.bar import FillingSquaresBar as Bar
+
+from bubblebox.utilities import CboxMonitor as Monitor
 
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""
@@ -35,12 +36,16 @@ class TestHeater(unittest.TestCase):
         self.customSetUp('oneblk')
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
+        monitorTest = Monitor("test")
+        monitorTest.setlimit(len(dataframes))
+        monitorMsg = 'run:'+self.id()+': '
+
         for dataset in dataframes:
+
             for block in dataset.blocklist:
                 self.assertEqual([None]*4,block.neighlist, 'Single block data structure has no neighbors')
-            bar.next()
-        bar.finish()
+
+            monitorTest.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge('memmap')
@@ -52,7 +57,10 @@ class TestHeater(unittest.TestCase):
         self.customSetUp('blocks')
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        bar = Bar('run:'+self.id(),max=len(dataframes),suffix = '%(percent)d%%')
+        monitorTest = Monitor("test")
+        monitorTest.setlimit(len(dataframes))
+        monitorMsg = 'run:'+self.id()+': '
+
         for dataset in dataframes:
 
             taglist = [*range(0,dataset.nblocks)]
@@ -68,8 +76,8 @@ class TestHeater(unittest.TestCase):
                 neighlist = [None if neighbor > dataset.nblocks-1 else neighbor for neighbor in neighlist]
 
                 self.assertEqual(neighlist,block.neighlist, 'Neigbhors are inconsitent with morton order')
-            bar.next()
-        bar.finish()
+
+            monitorTest.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge('memmap')

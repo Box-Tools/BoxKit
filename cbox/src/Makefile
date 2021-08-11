@@ -2,41 +2,30 @@
 # BubbleBox C++ library Makefile
 #---------------------------------------------------------
 
-BASEDIR = $(PWD)
+basedir = $(PWD)/..
 
-CC = g++
-FLAGS = -shared -fPIC -fopenmp --std=c++11 -Wl,--export-dynamic
-INCLUDE = -I$(BASEDIR)/../include -I/usr/include/python3.8 -I/usr/include
+cc      = g++
+flags   = -shared -fPIC -fopenmp --std=c++11 -Wl,--export-dynamic -Wdeprecated-declarations
+link    = -L/usr/lib/python3.8/config -lpython3.8 -lboost_python38
+include = -I$(basedir)/include -I/usr/include/python3.8 -I/usr/include -I$(INDICATORS_HOME)/include
 
-LINK_PYTHON = -L/usr/lib/python3.8/config -lpython3.8
-LINK_BOOST = -lboost_python38
+extern = extern_utilities.so
+boost  = boost_utilities.so
 
-LIB_EXTERN = utilities_extern.so
-LIB_BOOST = utilities_boost.so
+cbox = cbox_utilities.o
 
-all: $(LIB_EXTERN) $(LIB_BOOST)
+all: $(extern) $(boost)
 
-extern: $(LIB_EXTERN)
+$(extern): extern_%.so: $(cbox) extern_%.o
+	$(cc) $(flags) -o $@ $^ $(link)
+	cp $@ $(basedir)/extern/$*.so
 
-boost: $(LIB_BOOST)
-
-$(LIB_EXTERN): %_extern.so: %.o %_extern.o
-	$(CC) $(FLAGS) -o $@ $^ $(LINK_PYTHON)
-	cp $@ $(BASEDIR)/../extern/$*.so
-
-$(LIB_BOOST): %_boost.so : %.o %_boost.o
-	$(CC) $(FLAGS) -o $@ $^ $(LINK_BOOST) $(LINK_PYTHON)
-	cp $@ $(BASEDIR)/../boost/$*.so
+$(boost): boost_%.so : $(cbox) boost_%.o
+	$(cc) $(flags) -o $@ $^ $(link)
+	cp $@ $(basedir)/boost/$*.so
 
 %.o : %.cpp
-	$(CC) $(FLAGS) $(INCLUDE) -c $<
-
-%_extern.o : %_extern.cpp
-	$(CC) $(FLAGS) $(INCLUDE) -c $<
-
-
-%_boost.o : %_boost.cpp
-	$(CC) $(FLAGS) $(INCLUDE) -c $<
+	$(cc) $(flags) $(include) -c $<
 
 clean:
 	rm -rf *.o

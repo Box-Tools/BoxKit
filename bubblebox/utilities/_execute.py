@@ -34,7 +34,7 @@ def exectask(action,unitlist,*args):
     backends = {'serial' : serial_wrapper,
                 'loky'   : loky_wrapper,
                 'dask'   : dask_wrapper,
-                'cbox'   : cbox_extern_wrapper}
+                'cbox'   : cbox_wrapper}
 
     if(action.monitor): print('run-'+action.backend+':'+action.target.__module__+'.'+action.target.__name__)
 
@@ -67,7 +67,7 @@ def loky_wrapper(action,unitlist,*args):
 
     return listresult
 
-def cbox_extern_wrapper(action,unitlist,*args):
+def cbox_wrapper(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
