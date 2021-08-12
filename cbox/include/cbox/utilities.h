@@ -21,7 +21,7 @@ namespace cbox::utilities
     public:
 
         //constructors
-        Action() {}
+        Action() : pytypes::CPyObject() {}
         Action(PyObject *ptrAction) : pytypes::CPyObject(ptrAction) {}
 
         //destructors

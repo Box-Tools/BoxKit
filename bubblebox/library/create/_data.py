@@ -31,7 +31,6 @@ class Data(cbox.create.Data):
 
         """
         super().__init__()
-
         self._set_attributes(attributes)
         self._set_data()
 

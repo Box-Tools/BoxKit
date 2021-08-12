@@ -23,4 +23,21 @@ BOOST_PYTHON_MODULE(create)
    /*
     *
     */
+    python::class_<create::Block>("Block")
+        .enable_pickling()
+        .def(python::init<>())
+        .def_readwrite("tag",  &create::Block::tag)
+        .def_readwrite("nxb",  &create::Block::nxb)
+        .def_readwrite("nyb",  &create::Block::nyb)
+        .def_readwrite("nzb",  &create::Block::nzb)
+        .def_readwrite("xmin", &create::Block::xmin)
+        .def_readwrite("ymin", &create::Block::ymin)
+        .def_readwrite("zmin", &create::Block::zmin)
+        .def_readwrite("xmax", &create::Block::xmax)
+        .def_readwrite("ymax", &create::Block::ymax)
+        .def_readwrite("zmax", &create::Block::zmax)
+    ;
+   /*
+    *
+    */
 }

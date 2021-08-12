@@ -2,6 +2,8 @@
 
 import pymorton
 
+import cbox.boost as cbox
+
 class Block(object):
     """Default class for a Block."""
 
@@ -27,7 +29,7 @@ class Block(object):
                  'tag'  : block ID }
 
         """
-
+        super().__init__()
         self._set_attributes(attributes)
         self._map_data(data)
 

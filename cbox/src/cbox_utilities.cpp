@@ -132,6 +132,8 @@ namespace cbox::utilities
             }
         }
 
+        //PyObject_SetAttrString(action,"nthreads",Py_BuildValue("i", 42));
+
         resultList.AddPyRef();
         return resultList;
     }
