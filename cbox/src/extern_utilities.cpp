@@ -10,7 +10,7 @@ extern "C"
 {
     PyObject* executePyTask (PyObject* PyAction, PyObject* PyUnitList, PyObject* PyArgsTuple)
     {
-        utilities::CPyAction action = PyAction;
+        utilities::Action action = PyAction;
         pytypes::CPyList unitList = PyUnitList;
         pytypes::CPyTuple argsTuple = PyArgsTuple;
 

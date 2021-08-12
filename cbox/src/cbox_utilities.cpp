@@ -6,7 +6,6 @@
  *
  */
 namespace pytypes = cbox::pytypes;
-namespace python  = boost::python;
 
 namespace cbox::utilities
 {
@@ -14,22 +13,12 @@ namespace cbox::utilities
     *
     *
     */
-    CPyAction::CPyAction(PyObject* pyObj) : pytypes::CPyObject(pyObj)
-    {
-        this->nthreads = PyLong_AsLong(PyObject_GetAttrString(this->pyObj,"nthreads"));
-        this->monitor  = PyObject_IsTrue(PyObject_GetAttrString(this->pyObj,"monitor"));
-        this->target   = PyObject_GetAttrString(this->pyObj,"target");
-    }
-   /*
-    *
-    *
-    */
     Monitor::Monitor(const char *type): max_progress(0), progress(0)
     {
-        if (strcmp(type,"action") == 0)
-        {
-            this->type = "action";
+        this->type = type;
 
+        if (strcmp(this->type,"action") == 0)
+        {
             this->bar->set_option(indicators::option::Start{"["});
             this->bar->set_option(indicators::option::Fill{"■"});
             this->bar->set_option(indicators::option::Lead{"■"});
@@ -41,10 +30,8 @@ namespace cbox::utilities
             this->bar->set_option(indicators::option::FontStyles{std::vector<indicators::FontStyle>
                                                                 {indicators::FontStyle::bold}});
 
-        } else if (strcmp(type,"test") == 0) {
-       
-            this-> type = "test";
-
+        } else if (strcmp(this->type,"test") == 0) 
+        {       
             this->bar->set_option(indicators::option::BarWidth{0});
             this->bar->set_option(indicators::option::Start{""});
             this->bar->set_option(indicators::option::Fill{""});
@@ -70,7 +57,7 @@ namespace cbox::utilities
 
     void Monitor::update(std::string msg,int progress)
     {
-        if(strcmp(type,"action") == 0 || strcmp(type,"test") == 0)
+        if(strcmp(this->type,"action") == 0 || strcmp(this->type,"test") == 0)
         {
             ++this->progress;
             this->bar->set_option(indicators::option::PrefixText{msg});
@@ -83,18 +70,17 @@ namespace cbox::utilities
     {
         return this->type;
     }
-
-
-    void Monitor::settype(const char *type)
-    {
-        this->type = type;
-    }
    /*
     *
     *
     */
-    pytypes::CPyList executePyTask (CPyAction& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple) 
+    pytypes::CPyList executePyTask (Action& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple) 
     {
+
+        int nthreads = PyLong_AsLong(PyObject_GetAttrString(action,"nthreads"));
+        bool monitor  = PyObject_IsTrue(PyObject_GetAttrString(action,"monitor"));
+        pytypes::CPyObject target = PyObject_GetAttrString(action,"target");
+
         Py_ssize_t numUnits = unitList.len();
         Py_ssize_t numArgs = argsTuple.len() + 2;
 
@@ -104,10 +90,10 @@ namespace cbox::utilities
         pytypes::CPyObject arg, unit, result;
 
         omp_set_dynamic(0);
-        omp_set_num_threads(action.nthreads);
+        omp_set_num_threads(nthreads);
 
-        Monitor monitor("action");
-        monitor.setlimit(numUnits);
+        Monitor actionMonitor("action");
+        actionMonitor.setlimit(numUnits);
 
         //#pragma omp parallel default(shared) private(targetArgs,arg,unit,result)
         for (Py_ssize_t i = 0; i < numUnits; i++) 
@@ -132,34 +118,19 @@ namespace cbox::utilities
             PyGILState_STATE gstate = PyGILState_Ensure();
 
             targetArgs.AddPyRef();
-            result = PyObject_CallObject(action.target, targetArgs);
+            result = PyObject_CallObject(target, targetArgs);
 
             result.AddPyRef();
             resultList.setItem(i,result);
 
             PyGILState_Release(gstate);
 
-            if(action.monitor)
+            if(monitor)
             {
                 //#pragma omp critical
-                monitor.update();
+                actionMonitor.update();
             }
         }
-
-        resultList.AddPyRef();
-        return resultList;
-    }
-   /*
-    *
-    *
-    */
-    pytypes::CPyList executePyTask (Action& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple)
-    {
-        std::cout<<"C++ call"<<std::endl;
-        std::cout<<"Action threads: "<<action.nthreads<<std::endl;
-        std::cout<<"Action monitor: "<<action.monitor<<std::endl;
-
-        pytypes::CPyList resultList;
 
         resultList.AddPyRef();
         return resultList;

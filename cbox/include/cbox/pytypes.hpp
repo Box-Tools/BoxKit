@@ -10,43 +10,38 @@ namespace cbox::pytypes
     class CPyInstance
     {
     public:
-        CPyInstance()
-        {
-	    Py_Initialize();
-        }
 
-        ~CPyInstance()
-        {
-	    Py_Finalize();
-        }
+        //constructors
+        CPyInstance() { Py_Initialize(); }
+
+        //destructors
+        ~CPyInstance() { Py_Finalize(); }
     };
-
 
     class CPyObject
     {
-    protected:
+    private:
+
+        //private attributes
         PyObject *pyObj;
+
     public:
-        CPyObject() : pyObj(NULL)
-        {}
 
-        CPyObject(PyObject* _p) : pyObj(_p)
-	{}
+        //constructors
+        CPyObject() : pyObj(NULL) {}
+        CPyObject(PyObject* ptrObj) : pyObj(ptrObj) {}
 	
-        virtual ~CPyObject()
-        {
-            DelPyRef();
-	}
+        //destructors
+        virtual ~CPyObject() { DelPyRef();}
+ 
+        //methods
+	PyObject* getPyObject() { return this->pyObj; }
 
-	PyObject* getPyObject()
-	{
-	    return this->pyObj;
-	}
-
-	PyObject* setPyObject(PyObject* _p)
-	{
-	    return (this->pyObj=_p);
-	}
+	PyObject* setPyObject(PyObject* ptrObj) 
+        { 
+            this->pyObj = ptrObj;
+            return this->pyObj; 
+        }
 
 	PyObject* AddPyRef()
 	{
@@ -67,6 +62,7 @@ namespace cbox::pytypes
 	    this->pyObj = NULL;
 	}
 
+        //operators
 	PyObject* operator ->()
 	{
 	    return this->pyObj;
@@ -82,9 +78,9 @@ namespace cbox::pytypes
 	    return this->pyObj;
 	}
 
-	PyObject* operator = (PyObject* pp)
+	PyObject* operator = (PyObject* ptrObj)
 	{
-		this->pyObj = pp;
+		this->pyObj = ptrObj;
 		return this->pyObj;
 	}
 
@@ -98,27 +94,33 @@ namespace cbox::pytypes
     class CPyList: public CPyObject
     {
     public:
+
+        //constructors
         CPyList() {}
+        CPyList(PyObject* listPtr) : CPyObject(listPtr) {}
 
-        CPyList(PyObject* _p) : CPyObject(_p) {}
-
+        //destructors
         virtual ~CPyList() {}
+
+        //methods
+	PyObject* pyList() { return this->getPyObject();}
 
         Py_ssize_t len()
         {
-            if(this->pyObj)
+            if(this->pyList())
             {
-                return PyList_Size(this->pyObj);
-            } else { 
+                return PyList_Size(this->pyList());
+            } else 
+            { 
                 return 0;
             }
         }
 
         PyObject* getItem(Py_ssize_t loc)
         {
-            if(this->pyObj)
+            if(this->pyList())
             {
-                return PyList_GetItem(this->pyObj, loc);
+                return PyList_GetItem(this->pyList(), loc);
             } else { 
                 return NULL;
             }
@@ -126,16 +128,17 @@ namespace cbox::pytypes
 
         void setItem(Py_ssize_t loc, PyObject* value)
         {
-            if(this->pyObj)
+            if(this->pyList())
             {
-                PyList_SetItem(this->pyObj, loc, value);
+                PyList_SetItem(this->pyList(), loc, value);
             }
         }
 
-	PyObject* operator = (PyObject* pp)
+        //operators
+	PyObject* operator = (PyObject* listPtr)
 	{
-		this->pyObj = pp;
-		return this->pyObj;
+		this->setPyObject(listPtr);
+		return this->pyList();
 	}
     };
 
@@ -143,17 +146,22 @@ namespace cbox::pytypes
     class CPyTuple: public CPyObject
     {
     public:
+
+        //constructors
         CPyTuple() {}
+        CPyTuple(PyObject* tuplePtr) : CPyObject(tuplePtr) {}
 
-        CPyTuple(PyObject* _p) : CPyObject(_p) {}
-
+        //destructors
         virtual ~CPyTuple() {}
+
+        //methods
+	PyObject* pyTuple() { return this->getPyObject();}
 
         Py_ssize_t len()
         {
-            if(this->pyObj)
+            if(this->pyTuple())
             {
-                return PyTuple_Size(this->pyObj);
+                return PyTuple_Size(this->pyTuple());
             } else { 
                 return 0;
             }
@@ -161,9 +169,9 @@ namespace cbox::pytypes
 
         PyObject* getItem(Py_ssize_t loc)
         {
-            if(this->pyObj)
+            if(this->pyTuple())
             {
-                return PyTuple_GetItem(this->pyObj, loc);
+                return PyTuple_GetItem(this->pyTuple(), loc);
             } else { 
                 return NULL;
             }
@@ -171,16 +179,17 @@ namespace cbox::pytypes
 
         void setItem(Py_ssize_t loc, PyObject* value)
         {
-            if(this->pyObj)
+            if(this->pyTuple())
             {
-                PyTuple_SetItem(this->pyObj, loc, value);
+                PyTuple_SetItem(this->pyTuple(), loc, value);
             }            
         }
 
-	PyObject* operator = (PyObject* pp)
+        //operators
+	PyObject* operator = (PyObject* tuplePtr)
 	{
-		this->pyObj = pp;
-		return this->pyObj;
+		this->setPyObject(tuplePtr);
+		return this->pyTuple();
 	}
     };
 

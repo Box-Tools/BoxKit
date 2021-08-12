@@ -108,7 +108,7 @@ class TestBoiling(unittest.TestCase):
         measure_bubbles = flowbox.measure.bubbles.clone()
 
         measure_bubbles.tasks['region'].nthreads = 4
-        measure_bubbles.tasks['region'].backend = 'cbox' 
+        measure_bubbles.tasks['region'].backend = 'loky' 
         measure_bubbles.tasks['region'].monitor = True
 
         measure_bubbles.tasks['block'].nthreads = 1

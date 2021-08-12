@@ -37,17 +37,17 @@ def default(filename,uservars):
     variables.update(inputfile['quantities'])
 
     # Create data object
-    data_attributes = {'nblocks'   : nblocks,
-                       'nxb'       : nxb,
-                       'nyb'       : nyb,
-                       'nzb'       : nzb,
+    data_attributes = {'nblocks'   : int(nblocks),
+                       'nxb'       : int(nxb),
+                       'nyb'       : int(nyb),
+                       'nzb'       : int(nzb),
                        'inputfile' : inputfile,
                        'variables' : variables}
 
     # Create block objects
-    block_attributes = [{'nxb'  : nxb,
-                         'nyb'  : nyb,
-                         'nzb'  : nzb,
+    block_attributes = [{'nxb'  : int(nxb),
+                         'nyb'  : int(nyb),
+                         'nzb'  : int(nzb),
                          'xmin' : xmin[lblock],
                          'ymin' : ymin[lblock],
                          'zmin' : zmin[lblock],

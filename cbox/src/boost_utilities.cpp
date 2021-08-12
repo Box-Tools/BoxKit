@@ -4,19 +4,14 @@
  *
  */
 namespace utilities = cbox::utilities;
-namespace pytypes   = cbox::pytypes;
-
 namespace python    = boost::python;
-
+/*
+ *
+ *
+ */
 namespace cbox::boost
 {
-    PyObject* executePyTask(utilities::Action& action, PyObject* PyUnitList, PyObject* PyArgsTuple)
-    {
-        pytypes::CPyList unitList = PyUnitList;
-        pytypes::CPyTuple argsTuple = PyArgsTuple;
-
-        return utilities::executePyTask(action,unitList,argsTuple);
-    }
+    //add boost implementation here
 }
 /*
  *
@@ -38,11 +33,12 @@ BOOST_PYTHON_MODULE(utilities)
     python::class_<utilities::Action>("Action")
         .enable_pickling()
         .def(python::init<>())
+        .def(python::init<PyObject *>())
         .def_readwrite("nthreads", &utilities::Action::nthreads)
         .def_readwrite("monitor", &utilities::Action::monitor)
+        .def_readwrite("target", &utilities::Action::pyTarget)
     ;
    /*
     *
     */
-    python::def("executePyTask", &cbox::boost::executePyTask);
 }

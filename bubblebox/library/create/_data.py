@@ -9,7 +9,9 @@ import numpy
 import dask.array as dsarray
 import pyarrow
 
-class Data(object):
+import cbox.boost as cbox
+
+class Data(cbox.create.Data):
     """Default class to store data"""
 
     type_ = "default"
@@ -28,6 +30,7 @@ class Data(object):
                  'variables' : dictionary of variables default ({})}
 
         """
+        super().__init__()
 
         self._set_attributes(attributes)
         self._set_data()

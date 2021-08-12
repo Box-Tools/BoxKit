@@ -5,8 +5,8 @@ import cbox.boost as cbox
 
 from .. import utilities
 
-class Action(cbox.utilities.Action):
-    """Default class for a Action."""
+class Action(object):
+    """Default class for an action."""
 
     type_ = 'default'
 
@@ -28,7 +28,6 @@ class Action(cbox.utilities.Action):
 
         unit     : unit type
         """
-        super().__init__()
         self.target   = target
         self.nthreads = nthreads
         self.monitor  = monitor
@@ -86,3 +85,18 @@ class Action(cbox.utilities.Action):
             if(type(unit) is not self.unit): 
                 raise ValueError('[bubblebox.utilities.Action] Unit type not consistent.' +
                                  'Expected "{}" but got "{}"'.format(self.unit,type(unit)))
+
+
+def CBoxAction(py_action=Action()):
+    """
+    Convert a python action to cbox Action
+    """
+    
+    cbox_action = cbox.utilities.Action()
+
+    attrlist = ['nthreads','monitor','target']
+
+    for key in attrlist:
+        if key in py_action.__dict__: setattr(cbox_action,key,py_action.__dict__[key])
+
+    return cbox_action

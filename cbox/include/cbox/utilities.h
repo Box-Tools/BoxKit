@@ -7,7 +7,8 @@
 #include <boost/python.hpp>
 
 namespace pytypes = cbox::pytypes;
-namespace python  = boost::python;
+namespace indicators = indicators;
+namespace python = boost::python;
 
 namespace cbox::utilities
 {
@@ -15,39 +16,25 @@ namespace cbox::utilities
     *
     *
     */
-    class CPyAction: public pytypes::CPyObject
-    {
-    public:
-
-        //constructors
-	CPyAction() {}
-	CPyAction(PyObject* _pyObj);
-
-        //destructors
-	virtual ~CPyAction() {}
-
-        //attributes
-        int nthreads;
-        bool monitor;
-        PyObject* target;
-    };
-   /*
-    *
-    *
-    */
-    class Action
+    class Action: public pytypes::CPyObject
     {
     public:
 
         //constructors
         Action() {}
+        Action(PyObject *ptrAction) : pytypes::CPyObject(ptrAction) {}
 
         //destructors
         virtual ~Action() {}
 
         //attributes
-        int nthreads;
-        bool monitor;
+        int nthreads = 1;
+        bool monitor = false;
+        PyObject* pyTarget = NULL;
+
+        //methods
+        PyObject* pyAction() { return this->getPyObject();}
+
     };
    /*
     *
@@ -68,13 +55,12 @@ namespace cbox::utilities
         void setlimit(int iterlimit);
         void update(std::string msg="", int progress=0);
         const char *gettype();
-        void settype(const char* type);
 
     private:
 
         //private attributes
-        int max_progress;
-        int progress;
+        int max_progress = 0;
+        int progress = 0;
         const char *type = "none";
         indicators::ProgressBar *bar = new indicators::ProgressBar;
         indicators::ProgressSpinner *spinner = new indicators::ProgressSpinner;
@@ -83,11 +69,23 @@ namespace cbox::utilities
    /*
     *
     */
-    pytypes::CPyList executePyTask (CPyAction& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple);
     pytypes::CPyList executePyTask (Action& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple);
    /*
     *
     *
     */
+}
+#endif
+/*
+ *
+ *
+ *
+ */
+#ifndef CBOX_BOOST_UTILITIES_H
+#define CBOX_BOOST_UTILITIES_H
+
+namespace cbox::boost
+{
+    //add boost headers here
 }
 #endif
