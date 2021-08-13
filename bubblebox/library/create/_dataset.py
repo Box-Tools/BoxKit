@@ -15,6 +15,7 @@ class Dataset(object):
         data      : Data object
 
         """
+        super().__init__()
         self._map_blocklist(blocklist)
         self._map_data(data)
 

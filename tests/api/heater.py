@@ -6,7 +6,7 @@ import pymorton
 import time
 import os
 
-from bubblebox.utilities import Monitor
+from bubblebox.library.utilities import Monitor
 
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""

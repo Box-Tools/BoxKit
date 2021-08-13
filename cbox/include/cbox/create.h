@@ -12,13 +12,13 @@ namespace cbox::create
     public:
 
         //constructors
-	Data() : nblocks(1), nxb(1), nyb(1), nzb(1) {}
+	Data() {}
 
         //destructors
 	virtual ~Data() {}
 
         //attributes
-        int nxb,nyb,nzb,nblocks;
+        int nxb=1, nyb=1, nzb=1, nblocks=1;
     };
    /*
     *
@@ -29,17 +29,16 @@ namespace cbox::create
     public:
 
         //constructors
-	Block() : nxb(1), nyb(1), nzb(1), 
-                  xmin(0.0), ymin(0.0), zmin(0.0),
-                  xmax(0.0), ymax(0.0), zmax(0.0),
-                  tag(0) {}
+	Block() {}
 
         //destructors
 	virtual ~Block() {}
 
         //attributes
-        int tag,nxb,nyb,nzb;
-        float xmin,ymin,zmin,xmax,ymax,zmax;
+        int   tag=0;
+        int   nxb=1,  nyb=1,  nzb=1;
+        float xmin=0, ymin=0, zmin=0;
+        float xmax=0, ymax=0, zmax=0;
     };
    /*
     *
@@ -50,14 +49,14 @@ namespace cbox::create
     public:
 
         //constructors
-        Region() : xmin(0.0), ymin(0.0), zmin(0.0),
-                   xmax(0.0), ymax(0.0), zmax(0.0) {}
+        Region() {}
 
         //destructors
 	virtual ~Region() {}
 
         //attributes
-        float xmin,ymin,zmin,xmax,ymax,zmax;
+        float xmin=0, ymin=0, zmin=0;
+        float xmax=0, ymax=0, zmax=0;
     };
    /*
     *

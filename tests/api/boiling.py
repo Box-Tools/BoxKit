@@ -6,7 +6,7 @@ import pymorton
 import time
 import os
 
-from bubblebox.utilities import Monitor
+from bubblebox.library.utilities import Monitor
 
 class TestBoiling(unittest.TestCase):
     """bubblebox unit test for 3D boiling data"""

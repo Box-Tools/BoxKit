@@ -28,6 +28,7 @@ class Action(object):
 
         unit     : unit type
         """
+        super().__init__()
         self.target   = target
         self.nthreads = nthreads
         self.monitor  = monitor

@@ -16,6 +16,7 @@ class Process(object):
 
         tasks  : dictionary of tasks
         """
+        super().__init__()
         self.target = target
         self.tasks = tasks
 

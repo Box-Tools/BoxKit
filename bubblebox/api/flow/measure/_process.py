@@ -1,12 +1,12 @@
 """ Module with implemenation of region methods"""
 
-from ....library import measure
+from ....library import algorithms
 
 from .. import create
 
-from ....utilities import Process
+from ....library.utilities import Process
 
-@Process(tasks=measure.skimeasure())
+@Process(tasks=algorithms.skimeasure())
 def bubbles(self,dataframes,lsetkey,**attributes):
     """
     Create a list of bubbles in a region
