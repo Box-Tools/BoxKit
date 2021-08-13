@@ -40,4 +40,17 @@ BOOST_PYTHON_MODULE(create)
    /*
     *
     */
+    python::class_<create::Region>("Region")
+        .enable_pickling()
+        .def(python::init<>())
+        .def_readwrite("xmin", &create::Region::xmin)
+        .def_readwrite("ymin", &create::Region::ymin)
+        .def_readwrite("zmin", &create::Region::zmin)
+        .def_readwrite("xmax", &create::Region::xmax)
+        .def_readwrite("ymax", &create::Region::ymax)
+        .def_readwrite("zmax", &create::Region::zmax)
+    ;
+   /*
+    *
+    */
 }

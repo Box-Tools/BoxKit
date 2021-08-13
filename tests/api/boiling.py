@@ -111,8 +111,8 @@ class TestBoiling(unittest.TestCase):
         measure_bubbles.tasks['region'].backend = 'loky' 
         measure_bubbles.tasks['region'].monitor = True
 
-        measure_bubbles.tasks['block'].nthreads = 1
-        measure_bubbles.tasks['block'].backend = 'serial'
+        measure_bubbles.tasks['block'].nthreads = 2
+        measure_bubbles.tasks['block'].backend = 'loky'
 
         bubbleframes = measure_bubbles(dataframes,'phi')
 

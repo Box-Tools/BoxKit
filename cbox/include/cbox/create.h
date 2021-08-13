@@ -45,5 +45,23 @@ namespace cbox::create
     *
     *
     */
+    class Region
+    {
+    public:
+
+        //constructors
+        Region() : xmin(0.0), ymin(0.0), zmin(0.0),
+                   xmax(0.0), ymax(0.0), zmax(0.0) {}
+
+        //destructors
+	virtual ~Region() {}
+
+        //attributes
+        float xmin,ymin,zmin,xmax,ymax,zmax;
+    };
+   /*
+    *
+    *
+    */
 }
 #endif

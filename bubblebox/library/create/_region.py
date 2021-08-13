@@ -1,5 +1,7 @@
 """Module with implementation of the Region class."""
 
+import cbox.boost as cbox
+
 class Region(object):
     """Base class for a Region."""
 
@@ -21,7 +23,7 @@ class Region(object):
                  'zmax' : high bound in z dir}
 
         """
-       
+        super().__init__()
         self._set_attributes(attributes)
         self._map_blocklist(blocklist)
 
