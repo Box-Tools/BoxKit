@@ -2,15 +2,11 @@
 # Bubblebox C++ Makefile include
 # -------------------------------
 
-basedir := /home/akash/Desktop/Akash/Postdoc/bubblebox/cbox
-
-cc      := g++
-
-flags   := -shared -fPIC -fopenmp --std=c++11 -Wl,--export-dynamic
-
-linkers := -L/usr/lib/python3.8/config -lpython3.8 -lboost_python38
-
-headers := -I$(basedir)/include -I/usr/include/python3.8 -I/usr/include -I$(INDICATORS_HOME)/include
+basedir = /home/akash/Desktop/Akash/Postdoc/bubblebox/cbox
+cc      = g++
+flags   = -shared -fPIC -fopenmp --std=c++11 -Wl,--export-dynamic
+linkers = -L/usr/lib/python3.8/config -lpython3.8 -lboost_python38
+headers = -I$(basedir)/include -I/usr/include/python3.8 -I/usr/include -I$(INDICATORS_HOME)/include
 
 %.so: %.o
 	$(cc) $(flags) -o $@ $^ $(linkers)

@@ -2,7 +2,7 @@
 # Bubblebox C++ Makefile
 # ----------------------
 
-modules := create utilities
+modules = create utilities
 
 .PHONY: all clean $(modules)
 

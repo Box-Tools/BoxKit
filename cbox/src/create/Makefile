@@ -2,8 +2,8 @@
 # Bubblebox C++ Makefile
 # ----------------------
 
-lib := create.so
-objects := data.o block.o region.o
+lib = create.so
+objects = data.o block.o region.o
 
 all: $(lib)
 

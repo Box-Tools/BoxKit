@@ -2,8 +2,8 @@
 # Bubblebox C++ Makefile
 # ----------------------
 
-lib := utilities.so
-objects := action.o monitor.o execute.o
+lib = utilities.so
+objects = action.o monitor.o execute.o
 
 all: $(lib)
 
