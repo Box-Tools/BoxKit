@@ -2,7 +2,7 @@
 
 import pymorton
 
-import cbox.boost as cbox
+import cbox.lib.boost as cbox
 
 class Block(object):
     """Default class for a Block."""

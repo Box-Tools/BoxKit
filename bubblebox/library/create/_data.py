@@ -9,7 +9,7 @@ import numpy
 import dask.array as dsarray
 import pyarrow
 
-import cbox.boost as cbox
+import cbox.lib.boost as cbox
 
 class Data(cbox.create.Data):
     """Default class to store data"""

@@ -1,9 +1,6 @@
 #include <cbox/create.h>
 #include <boost/python.hpp>
-/*
- *
- *
- */
+
 namespace create = cbox::create;
 namespace python = boost::python;
 /*
@@ -21,7 +18,6 @@ BOOST_PYTHON_MODULE(create)
         .def_readwrite("nzb", &create::Data::nzb)
     ;
    /*
-    *
     */
     python::class_<create::Block>("Block")
         .enable_pickling()
@@ -38,7 +34,6 @@ BOOST_PYTHON_MODULE(create)
         .def_readwrite("zmax", &create::Block::zmax)
     ;
    /*
-    *
     */
     python::class_<create::Region>("Region")
         .enable_pickling()
@@ -51,6 +46,8 @@ BOOST_PYTHON_MODULE(create)
         .def_readwrite("zmax", &create::Region::zmax)
     ;
    /*
-    *
     */
 }
+/*
+ *
+ */

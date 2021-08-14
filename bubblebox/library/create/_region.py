@@ -1,6 +1,6 @@
 """Module with implementation of the Region class."""
 
-import cbox.boost as cbox
+import cbox.lib.boost as cbox
 
 class Region(object):
     """Base class for a Region."""

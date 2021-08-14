@@ -1,5 +1,5 @@
-#ifndef CBOX_PYTYPES_H
-#define CBOX_PYTYPES_H
+#ifndef CBOX_PYTYPES_HPP
+#define CBOX_PYTYPES_HPP
 #pragma once
 
 #include <Python.h>

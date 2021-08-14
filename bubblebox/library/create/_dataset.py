@@ -23,8 +23,8 @@ class Dataset(object):
         """Return a representation of the object."""
         return ("Dataset:\n" +
                 " - type  : {}\n".format(type(self)) +
-                " - file  : {}\n".format(self.inputfile)+
-                " - keys  : {}\n".format(self.listkeys) +
+                " - file  : {}\n".format(self._data.inputfile)+
+                " - keys  : {}\n".format(self._data.listkeys) +
                 " - bound : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
                                                                      self.xmax,
                                                                      self.ymin,

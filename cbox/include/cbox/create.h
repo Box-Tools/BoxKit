@@ -1,11 +1,13 @@
 #ifndef CBOX_CREATE_H
 #define CBOX_CREATE_H
 
+#include <cbox/pytypes.hpp>
+
+namespace pytypes = cbox::pytypes;
+
 namespace cbox::create
 {
    /*
-    *
-    *
     */
     class Data
     {
@@ -21,8 +23,6 @@ namespace cbox::create
         int nxb=1, nyb=1, nzb=1, nblocks=1;
     };
    /*
-    *
-    *
     */
     class Block
     {
@@ -41,8 +41,6 @@ namespace cbox::create
         float xmax=0, ymax=0, zmax=0;
     };
    /*
-    *
-    *
     */
     class Region
     {
@@ -59,8 +57,6 @@ namespace cbox::create
         float xmax=0, ymax=0, zmax=0;
     };
    /*
-    *
-    *
     */
 }
 #endif

@@ -1,17 +1,23 @@
 #include <cbox/utilities.h>
-/*
- *
- *
- */
+#include <boost/python.hpp>
+
 namespace utilities = cbox::utilities;
-namespace python    = boost::python;
+namespace pytypes = cbox::pytypes;
+namespace python  = boost::python;
 /*
  *
  *
  */
-namespace cbox::boost
+extern "C" 
 {
-    //add boost implementation here
+    PyObject* executePyTask (PyObject* PyAction, PyObject* PyUnitList, PyObject* PyArgsTuple)
+    {
+        utilities::Action action = PyAction;
+        cbox::pytypes::CPyList unitList = PyUnitList;
+        cbox::pytypes::CPyTuple argsTuple = PyArgsTuple;
+
+        return utilities::executePyTask(action, unitList, argsTuple);
+    }
 }
 /*
  *
@@ -19,9 +25,6 @@ namespace cbox::boost
  */
 BOOST_PYTHON_MODULE(utilities)
 {
-   /*
-    *
-    */
     python::class_<utilities::Monitor>("Monitor")
         .enable_pickling()
         .def(python::init<>())
@@ -31,7 +34,6 @@ BOOST_PYTHON_MODULE(utilities)
         .def("_update", &utilities::Monitor::update)
     ;
    /*
-    *
     */
     python::class_<utilities::Action>("Action")
         .enable_pickling()
@@ -41,7 +43,7 @@ BOOST_PYTHON_MODULE(utilities)
         .def_readwrite("monitor", &utilities::Action::monitor)
         .def_readwrite("target", &utilities::Action::pyTarget)
     ;
-   /*
-    *
-    */
 }
+/*
+ *
+ */

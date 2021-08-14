@@ -2,20 +2,18 @@
 #define CBOX_UTILITIES_H
 
 #include <cbox/pytypes.hpp>
+
 #include <indicators/progress_bar.hpp>
 #include <indicators/progress_spinner.hpp>
-#include <boost/python.hpp>
 
 namespace pytypes = cbox::pytypes;
 namespace indicators = indicators;
-namespace python = boost::python;
-
+/*
+ *
+ *
+ */
 namespace cbox::utilities
 {
-   /*
-    *
-    *
-    */
     class Action: public pytypes::CPyObject
     {
     public:
@@ -28,17 +26,15 @@ namespace cbox::utilities
         virtual ~Action() {}
 
         //attributes
-        int nthreads = 1;
-        bool monitor = false;
-        PyObject* pyTarget = NULL;
+        int  nthreads = 1;
+        bool monitor  = false;
+
+        PyObject *pyTarget = NULL;
 
         //methods
-        PyObject* pyAction() { return this->getPyObject();}
-
+        PyObject *pyAction() { return this->getPyObject();}
     };
    /*
-    *
-    *
     */
     class Monitor
     {
@@ -67,25 +63,13 @@ namespace cbox::utilities
 
     };
    /*
-    *
     */
     pytypes::CPyList executePyTask (Action& action, pytypes::CPyList& unitList, pytypes::CPyTuple& argsTuple);
    /*
-    *
-    *
     */
 }
 #endif
 /*
  *
  *
- *
  */
-#ifndef CBOX_BOOST_UTILITIES_H
-#define CBOX_BOOST_UTILITIES_H
-
-namespace cbox::boost
-{
-    //add boost headers here
-}
-#endif

@@ -1,2 +1,1 @@
-from . import extern
-from . import boost
+from . import lib

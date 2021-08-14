@@ -1,6 +1,6 @@
 """Module to read attributes from FLASH output files"""
 
-import h5py
+import h5pickle as h5py
 
 def flash(filename,uservars):
     """

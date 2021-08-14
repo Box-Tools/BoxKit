@@ -1,7 +1,7 @@
 """Module with implementation of Action utility"""
 
 import copy
-import cbox.boost as cbox
+import cbox.lib.boost as cbox
 
 from .. import utilities
 
@@ -37,9 +37,8 @@ class Action(object):
         self.unit     = unit
 
     def __call__(self,*args):
-        """
-        Call wrapper
-        """
+        """Call wrapper"""
+
         if self.target is None:
             self.target = args[0]
             return self
@@ -48,15 +47,13 @@ class Action(object):
             return self.execute(*args)
 
     def copy(self):
-        """
-        custom copy method
-        """
+        """Custom copy method"""
+
         return copy.copy(self)
 
     def toparg(self,*args):
-        """
-        Method to get top argument from *args
-        """
+        """Method to get top argument from *args"""
+
         top = args[0]
 
         args = list(args)
@@ -66,9 +63,8 @@ class Action(object):
         return top,args
 
     def execute(self,*args):
-        """
-        Custom call signature 
-        """
+        """ Custom call signature """
+
         unitlist,args = self.toparg(*args)
 
         self._check_unitlist(unitlist)
@@ -76,9 +72,8 @@ class Action(object):
         return utilities.exectask(self,unitlist,*args)
 
     def _check_unitlist(self,unitlist):
-        """
-        Check if unitlist matches the unit type
-        """
+        """ Check if unitlist matches the unit type"""
+
         if(type(unitlist) is not list):
             raise ValueError('[bubblebox.utilities.Action] Top argument must be a list of units')
 
@@ -88,16 +83,17 @@ class Action(object):
                                  'Expected "{}" but got "{}"'.format(self.unit,type(unit)))
 
 
-def CBoxAction(py_action=Action()):
-    """
-    Convert a python action to cbox Action
-    """
-    
-    cbox_action = cbox.utilities.Action()
+class CBoxAction(cbox.utilities.Action):
+    """Derived class for an action."""
 
-    attrlist = ['nthreads','monitor','target']
+    type_ = 'derived'
 
-    for key in attrlist:
-        if key in py_action.__dict__: setattr(cbox_action,key,py_action.__dict__[key])
+    def __init__(self,pyAction=Action()):
+        """Constructor"""
 
-    return cbox_action
+        super().__init__(pyAction)
+
+        attrlist = ['nthreads','monitor','target']
+
+        for key in attrlist:
+            if key in pyAction.__dict__: setattr(self,key,pyAction.__dict__[key])

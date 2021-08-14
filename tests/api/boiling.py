@@ -1,6 +1,6 @@
 """Tests for `bubblebox/api/flow`."""
 
-import bubblebox.api.flow as flowbox
+import bubblebox.api as boxapi
 import unittest
 import pymorton
 import time
@@ -37,7 +37,7 @@ class TestBoiling(unittest.TestCase):
         dataframes : list of Dataset objects
 
         """      
-        dataframes  = [flowbox.create.dataset(filename) for filename in self.filenames]
+        dataframes  = [boxapi.create.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -55,7 +55,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
+        dataframes   = [boxapi.create.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -84,8 +84,8 @@ class TestBoiling(unittest.TestCase):
         """
         Test slice
         """
-        dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
-        regionframes = [flowbox.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes]
+        dataframes   = [boxapi.create.dataset(filename) for filename in self.filenames]
+        regionframes = [boxapi.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(regionframes))
@@ -102,22 +102,22 @@ class TestBoiling(unittest.TestCase):
         """
         Test measure bubbles
         """
-        dataframes = [flowbox.create.dataset(filename,storage='disk') for filename in self.filenames]
+        dataframes = [boxapi.create.dataset(filename,storage='disk') for filename in self.filenames]
 
         _time_measure = time.time()
-        measure_bubbles = flowbox.measure.bubbles.clone()
+        measure_bubbles = boxapi.measure.bubbles.clone()
 
-        measure_bubbles.tasks['region'].nthreads = 4
-        measure_bubbles.tasks['region'].backend = 'loky' 
+        measure_bubbles.tasks['region'].nthreads = 1
+        measure_bubbles.tasks['region'].backend = 'cbox' 
         measure_bubbles.tasks['region'].monitor = True
 
-        measure_bubbles.tasks['block'].nthreads = 2
-        measure_bubbles.tasks['block'].backend = 'loky'
+        measure_bubbles.tasks['block'].nthreads = 1
+        measure_bubbles.tasks['block'].backend = 'serial'
 
         bubbleframes = measure_bubbles(dataframes,'phi')
 
         _time_measure = time.time() - _time_measure
-        print('%s: %.3fs' % ('flowbox.measure.bubbles', _time_measure))
+        print('%s: %.3fs' % ('boxapi.measure.bubbles', _time_measure))
 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
 

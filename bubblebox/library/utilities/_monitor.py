@@ -1,6 +1,6 @@
 """Module with implementaion of Monitor class"""
 
-import cbox.boost as cbox
+import cbox.lib.boost as cbox
 
 class Monitor(cbox.utilities.Monitor):
     """

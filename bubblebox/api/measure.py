@@ -1,10 +1,10 @@
 """ Module with implemenation of region methods"""
 
-from ....library import algorithms
+from ..library import algorithms
 
-from .. import create
+from ..library.utilities import Process
 
-from ....library.utilities import Process
+from . import create
 
 @Process(tasks=algorithms.skimeasure())
 def bubbles(self,dataframes,lsetkey,**attributes):
@@ -14,7 +14,6 @@ def bubbles(self,dataframes,lsetkey,**attributes):
     Parameters
     ----------
     dataframes : list of Dataset objects
-
     lsetkey    : key containing level-set/binary data
 
     Returns

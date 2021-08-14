@@ -1,6 +1,6 @@
 """Tests for `bubblebox/api/default`."""
 
-import bubblebox.api.flow as flowbox
+import bubblebox.api as boxapi
 import unittest
 import pymorton
 import time
@@ -34,7 +34,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are morton order
         """
         self.customSetUp('oneblk')
-        dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
+        dataframes = [boxapi.create.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -55,7 +55,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are in morton order
         """
         self.customSetUp('blocks')
-        dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
+        dataframes = [boxapi.create.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -88,12 +88,12 @@ class TestHeater(unittest.TestCase):
         """
         self.customSetUp('oneblk')
 
-        dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
+        dataframes = [boxapi.create.dataset(filename) for filename in self.filenames]
 
-        flowbox.measure.bubbles.tasks['region'].monitor = True
-        print(flowbox.measure.bubbles.tasks['region'].backend)
+        boxapi.measure.bubbles.tasks['region'].monitor = True
+        print(boxapi.measure.bubbles.tasks['region'].backend)
 
-        bubbleframes = flowbox.measure.bubbles(dataframes,'phi')
+        bubbleframes = boxapi.measure.bubbles(dataframes,'phi')
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
 
@@ -108,10 +108,10 @@ class TestHeater(unittest.TestCase):
         """
         self.customSetUp('blocks')
 
-        dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
+        dataframes = [boxapi.create.dataset(filename) for filename in self.filenames]
 
-        flowbox.measure.bubbles.tasks['region'].monitor = True
-        bubbleframes = flowbox.measure.bubbles(dataframes,'phi')
+        boxapi.measure.bubbles.tasks['region'].monitor = True
+        bubbleframes = boxapi.measure.bubbles(dataframes,'phi')
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
