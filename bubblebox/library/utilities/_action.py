@@ -77,18 +77,3 @@ class Action(object):
                 raise ValueError('[bubblebox.utilities.Action] Unit type not consistent.' +
                                  'Expected "{}" but got "{}"'.format(self.unit,type(unit)))
 
-
-class CBoxAction(cbox.utilities.Action):
-    """Derived class for an action."""
-
-    type_ = 'derived'
-
-    def __init__(self,pyAction=Action()):
-        """Initialize the  object and allocate the data.
-
-        Parameters
-        ----------
-        pyAction : python Action object
-
-        """
-        super().__init__(pyAction)
