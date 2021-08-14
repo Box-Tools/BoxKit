@@ -19,11 +19,11 @@ namespace cbox::utilities
     public:
 
         //constructors
-        Action() : pytypes::CPyObject() {}
-        Action(PyObject *ptrAction) : pytypes::CPyObject(ptrAction) {}
+        Action();
+        Action(PyObject *ptrAction);
 
         //destructors
-        virtual ~Action() {}
+        virtual ~Action();
 
         //attributes
         int  nthreads = 1;

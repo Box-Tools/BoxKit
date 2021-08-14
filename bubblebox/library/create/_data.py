@@ -22,12 +22,12 @@ class Data(cbox.create.Data):
         Parameters
         ----------
         attributes : dictionary
-               { 'nblocks'   : total number of blocks,
-                 'nxb'       : number of grid points per block in x dir,
-                 'nyb'       : number of grid points per block in y dir,
-                 'nzb'       : number of grid points per block in z dir,
-                 'inputfile' : hdf5 inputfile default (None),
-                 'variables' : dictionary of variables default ({})}
+                     { 'nblocks'   : total number of blocks,
+                       'nxb'       : number of grid points per block in x dir,
+                       'nyb'       : number of grid points per block in y dir,
+                       'nzb'       : number of grid points per block in z dir,
+                       'inputfile' : hdf5 inputfile default (None),
+                       'variables' : dictionary of variables default ({})}
 
         """
         super().__init__()

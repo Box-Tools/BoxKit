@@ -15,14 +15,11 @@ def exectask(action,unitlist,*args):
     ----------
     action   : action object contains following attributes
 
-             target : function/action operates on an unit ---> def target(unit, *args)
-                      actual call passes unitlist ---> target(unitlist, *args)
-
-             nthreads : number of nthreads (only relevant for parallel operations)
-
-             monitor  : flag (True or False) to show progress bar for action
-
-             backend  : 'serial', 'loky', 'dask'
+               target   : function/action operates on an unit ---> def target(unit, *args)
+                          actual call passes unitlist ---> target(unitlist, *args)
+               nthreads : number of nthreads (only relevant for parallel operations)
+               monitor  : flag (True or False) to show progress bar for action
+               backend  : 'serial', 'loky', 'dask'
 
     unitlist : list of units
 

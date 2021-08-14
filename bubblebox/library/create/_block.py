@@ -14,19 +14,18 @@ class Block(object):
 
         Parameters
         ----------
-        data : data object
-
+        data       : data object
         attributes : dictionary
-               { 'nxb'  : number of grid points per block in x dir
-                 'nyb'  : number of grid points per block in y dir
-                 'nzb'  : number of grid points per block in z dir
-                 'xmin' : low  bound in x dir
-                 'ymin' : low  bound in y dir
-                 'zmin' : low  bound in z dir
-                 'xmax' : high bound in x dir
-                 'ymax' : high bound in y dir
-                 'zmax' : high bound in z dir
-                 'tag'  : block ID }
+                     { 'nxb'  : number of grid points per block in x dir
+                       'nyb'  : number of grid points per block in y dir
+                       'nzb'  : number of grid points per block in z dir
+                       'xmin' : low  bound in x dir
+                       'ymin' : low  bound in y dir
+                       'zmin' : low  bound in z dir
+                       'xmax' : high bound in x dir
+                       'ymax' : high bound in y dir
+                       'zmax' : high bound in z dir
+                       'tag'  : block ID }
 
         """
         super().__init__()

@@ -11,7 +11,6 @@ class Dataset(object):
         Parameters
         ----------
         blocklist : list of block objects
-
         data      : Data object
 
         """

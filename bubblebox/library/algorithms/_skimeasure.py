@@ -27,16 +27,14 @@ def skimeasure_region(self,unit,lsetkey,labelkey):
     Parameters
     ----------
     unit     : Region object
-
     lsetkey  : key to the level-set/binary data
-
     labelkey : key to store stratch data
 
     Returns
     -------
     listprops : list of properties
-
     """
+
     listprops = self.tasks['block'](unit.blocklist,lsetkey,labelkey)
 
     listprops = list(itertools.chain.from_iterable(listprops))
@@ -51,16 +49,14 @@ def skimeasure_block(self,unit,lsetkey,labelkey):
     Parameters
     ----------
     unit     : Block object
-
     lsetkey  : key to the level-set/binary data
-
     labelkey : key to store stratch data
 
     Returns
     -------
     listprops : list of properties
-
     """
+
     unit[labelkey] = skimage_measure.label(unit[lsetkey] >= 0)
 
     listprops = skimage_measure.regionprops(unit[labelkey].astype(int))

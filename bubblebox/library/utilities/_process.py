@@ -13,7 +13,6 @@ class Process(object):
         Parameters
         ----------
         target : target function
-
         tasks  : dictionary of tasks
         """
         super().__init__()

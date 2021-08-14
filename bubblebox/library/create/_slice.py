@@ -13,15 +13,13 @@ class Slice(Region):
         Parameters
         ----------
         blocklist  : list of blocks
-
         attributes : dictionary
-               { 'xmin' : low  bound in x dir
-                 'ymin' : low  bound in y dir
-                 'zmin' : low  bound in z dir
-                 'xmax' : high bound in x dir
-                 'ymax' : high bound in y dir
-                 'zmax' : high bound in z dir}
-
+                     { 'xmin' : low  bound in x dir
+                       'ymin' : low  bound in y dir
+                       'zmin' : low  bound in z dir
+                       'xmax' : high bound in x dir
+                       'ymax' : high bound in y dir
+                       'zmax' : high bound in z dir}
         """
 
         super().__init__(blocklist, **attributes) 

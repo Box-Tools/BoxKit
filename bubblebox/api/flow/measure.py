@@ -1,8 +1,8 @@
 """ Module with implemenation of region methods"""
 
-from ..library import algorithms
+from ...library import algorithms
 
-from ..library.utilities import Process
+from ...library.utilities import Process
 
 from . import create
 

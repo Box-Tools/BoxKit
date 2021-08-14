@@ -17,15 +17,10 @@ class Action(object):
         ----------
         target   : function/task operates on an unit ---> def target(unit, *args)
                    actual call passes unitlist ---> target(unitlist, *args)
-
         nthreads : number of nthreads (only relevant for parallel operations)
-
         monitor  : flag (True or False) to show progress bar for task
-
         backend  : 'serial', 'loky', 'dask'
- 
         actions  : dictionary of actions
-
         unit     : unit type
         """
         super().__init__()
@@ -89,11 +84,11 @@ class CBoxAction(cbox.utilities.Action):
     type_ = 'derived'
 
     def __init__(self,pyAction=Action()):
-        """Constructor"""
+        """Initialize the  object and allocate the data.
 
+        Parameters
+        ----------
+        pyAction : python Action object
+
+        """
         super().__init__(pyAction)
-
-        attrlist = ['nthreads','monitor','target']
-
-        for key in attrlist:
-            if key in pyAction.__dict__: setattr(self,key,pyAction.__dict__[key])
