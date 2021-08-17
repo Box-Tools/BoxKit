@@ -28,16 +28,16 @@ def exectask(action,unitlist,*args):
     """
     action.nthreads = action.nthreads or 1
 
-    backends = {'serial' : serial_wrapper,
-                'loky'   : loky_wrapper,
-                'dask'   : dask_wrapper,
-                'cbox'   : cbox_wrapper}
+    backends = {'serial' : serial_execute,
+                'loky'   : loky_execute,
+                'dask'   : dask_execute,
+                'cbox'   : cbox_execute}
 
     if(action.monitor): print('run-'+action.backend+':'+action.target.__module__+'.'+action.target.__name__)
 
     return backends[action.backend](action,unitlist,*args)
 
-def serial_wrapper(action,unitlist,*args):
+def serial_execute(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 
@@ -49,7 +49,7 @@ def serial_wrapper(action,unitlist,*args):
 
     return listresult
 
-def loky_wrapper(action,unitlist,*args):
+def loky_execute(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 
@@ -64,19 +64,19 @@ def loky_wrapper(action,unitlist,*args):
 
     return listresult
 
-def cbox_wrapper(action,unitlist,*args):
+def cbox_execute(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """    
-    cbox.extern.utilities.executePyTask.argtypes = [ctypes.py_object]*3
-    cbox.extern.utilities.executePyTask.restype  = ctypes.py_object
+    cbox.extern.utilities.execute_pyTask.argtypes = [ctypes.py_object]*3
+    cbox.extern.utilities.execute_pyTask.restype  = ctypes.py_object
 
-    listresult = cbox.extern.utilities.executePyTask(action,unitlist,args)
+    listresult = cbox.extern.utilities.execute_pyTask(action,unitlist,args)
 
     return listresult
 
-def dask_wrapper(action,unitlist,*args):
+def dask_execute(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 

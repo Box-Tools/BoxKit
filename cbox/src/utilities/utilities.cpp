@@ -10,13 +10,13 @@ namespace python  = boost::python;
  */
 extern "C" 
 {
-    PyObject* executePyTask (PyObject* PyAction, PyObject* PyUnitList, PyObject* PyArgsTuple)
+    PyObject* execute_pyTask (PyObject* PyAction, PyObject* PyUnitList, PyObject* PyArgsTuple)
     {
         utilities::Action action = PyAction;
         cbox::pytypes::CPyList unitList = PyUnitList;
         cbox::pytypes::CPyTuple argsTuple = PyArgsTuple;
 
-        return utilities::executePyTask(action, unitList, argsTuple);
+        return utilities::execute_pyTask(action, unitList, argsTuple);
     }
 }
 /*
