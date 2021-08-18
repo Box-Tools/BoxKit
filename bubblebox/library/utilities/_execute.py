@@ -28,16 +28,16 @@ def exectask(action,unitlist,*args):
     """
     action.nthreads = action.nthreads or 1
 
-    backends = {'serial' : serial_execute,
-                'loky'   : loky_execute,
-                'dask'   : dask_execute,
-                'cbox'   : cbox_execute}
+    backends = {'serial' : execute_serial,
+                'loky'   : execute_loky,
+                'dask'   : execute_dask,
+                'cbox'   : execute_cbox}
 
     if(action.monitor): print('run-'+action.backend+':'+action.target.__module__+'.'+action.target.__name__)
 
     return backends[action.backend](action,unitlist,*args)
 
-def serial_execute(action,unitlist,*args):
+def execute_serial(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 
@@ -49,7 +49,7 @@ def serial_execute(action,unitlist,*args):
 
     return listresult
 
-def loky_execute(action,unitlist,*args):
+def execute_loky(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 
@@ -64,7 +64,7 @@ def loky_execute(action,unitlist,*args):
 
     return listresult
 
-def cbox_execute(action,unitlist,*args):
+def execute_cbox(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
@@ -76,7 +76,7 @@ def cbox_execute(action,unitlist,*args):
 
     return listresult
 
-def dask_execute(action,unitlist,*args):
+def execute_dask(action,unitlist,*args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units in 
