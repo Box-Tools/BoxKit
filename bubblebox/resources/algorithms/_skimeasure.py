@@ -1,12 +1,10 @@
 """Module with implementation of measure methods"""
 
 import itertools
-
 import skimage.measure as skimage_measure
 
-from ..utilities import Action
-
-from ..create import Region,Block
+from ...library.utilities import Action
+from ...library.create    import Region,Block
 
 def skimeasure():
     """

@@ -26,9 +26,7 @@ def dataset(filename,uservars=[],source='default',storage='disk'):
 
     """
 
-    read_dict = {'default' : read.default, 'flash' : read.flash}
-
-    data_attributes,block_attributes = read_dict[source](filename,uservars)
+    data_attributes,block_attributes = read.options[source](filename,uservars)
 
     data = library.create.Data(storage=storage, **data_attributes)
 

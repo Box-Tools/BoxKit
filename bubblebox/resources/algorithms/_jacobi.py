@@ -1,8 +1,7 @@
 """Module with implementation of Jacobi algorithm"""
 
-from ..utilities import Action
-
-from ..create import Region,Block
+from ...library.utilities import Action
+from ...library.create    import Region,Block
 
 def jacobi():
     """
