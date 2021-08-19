@@ -2,14 +2,13 @@
 
 import h5pickle as h5py
 
-def flash(filename,uservars):
+def read_flash(filename):
     """
     Read dataset from FLASH output file
 
     Parameters
     ----------
     filename : string containing file name
-    uservars : list of user variables that need to be created
 
     Returns
     -------

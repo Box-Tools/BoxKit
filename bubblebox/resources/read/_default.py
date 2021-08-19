@@ -2,14 +2,13 @@
 
 import h5pickle as h5py
 
-def default(filename,uservars):
+def read_default(filename):
     """
     Read dataset from BubbleBox default file
 
     Parameters
     ----------
     filename : string containing file name
-    uservars : list of user variables that need to be created
 
     Returns
     -------
@@ -32,8 +31,7 @@ def default(filename,uservars):
     ymax      = inputfile['boundbox/max'][:,1]
     zmax      = inputfile['boundbox/max'][:,2]
 
-    variables = dict(zip(uservars,[None]*len(uservars)))
-
+    variables = dict()
     variables.update(inputfile['quantities'])
 
     # Create data object
