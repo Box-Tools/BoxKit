@@ -1,1 +1,1 @@
-Bubble Box AI
+Bubble Box AI/ML utility
