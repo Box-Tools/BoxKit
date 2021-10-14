@@ -1,4 +1,4 @@
-"""Module with implementation of Jacobi algorithm"""
+"""Module with implementation of Jacobi solver"""
 
 from ...library.utilities import Action
 from ...library.create    import Region,Block
@@ -8,13 +8,10 @@ def jacobi():
     Public method to create a dictionary of actions
     """
 
-    tasks = dict()
+    tasks = {'jacobi' : {'region' : jacobi_region.copy(),
+                         'block'  : jacobi_block.copy() }}
 
-    tasks['jacobi'] = {'region' : jacobi_region.copy(),
-                       'block'  : jacobi_block.copy() }
-
-    for algorithm in tasks.values():
-        for action in algorithm.values(): action.tasks = tasks
+    for action in tasks['jacobi'].values(): action.tasks = tasks
 
     return tasks
 

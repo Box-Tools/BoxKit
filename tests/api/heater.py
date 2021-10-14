@@ -90,9 +90,9 @@ class TestHeater(unittest.TestCase):
 
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        for algorithm in flowbox.measure.bubbles.tasks.values():
-            algorithm['region'].monitor = True
-            print(algorithm['region'].backend)
+        process = flowbox.measure.bubbles    
+        process.tasks['skimeasure']['region'].monitor = True
+        print(process.tasks['skimeasure']['region'].backend)
 
         bubbleframes = flowbox.measure.bubbles(dataframes,'phi')
 
@@ -111,9 +111,9 @@ class TestHeater(unittest.TestCase):
 
         dataframes = [flowbox.create.dataset(filename) for filename in self.filenames]
 
-        for algorithm in flowbox.measure.bubbles.tasks.values():
-            algorithm['region'].monitor = True
-
+        process = flowbox.measure.bubbles    
+        process.tasks['skimeasure']['region'].monitor = True
+ 
         bubbleframes = flowbox.measure.bubbles(dataframes,'phi')
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]

@@ -105,16 +105,15 @@ class TestBoiling(unittest.TestCase):
         dataframes = [flowbox.create.dataset(filename,storage='disk') for filename in self.filenames]
 
         _time_measure = time.time()
-        measure_bubbles = flowbox.measure.bubbles.clone()
+        process = flowbox.measure.bubbles.clone()
 
-        for algorithm in measure_bubbles.tasks.values():
-            algorithm['region'].nthreads = 4
-            algorithm['region'].backend  = 'loky' 
-            algorithm['region'].monitor  = True
-            algorithm['block'].nthreads  = 2
-            algorithm['block'].backend   = 'loky'
+        process.tasks['skimeasure']['region'].nthreads = 4
+        process.tasks['skimeasure']['region'].backend  = 'loky' 
+        process.tasks['skimeasure']['region'].monitor  = True
+        process.tasks['skimeasure']['block'].nthreads  = 2
+        process.tasks['skimeasure']['block'].backend   = 'loky'
 
-        bubbleframes = measure_bubbles(dataframes,'phi')
+        bubbleframes = process(dataframes,'phi')
 
         _time_measure = time.time() - _time_measure
         print('%s: %.3fs' % ('flowbox.measure.bubbles', _time_measure))

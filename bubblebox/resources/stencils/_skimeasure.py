@@ -11,13 +11,10 @@ def skimeasure():
     Public method to create a dictionary of actions
     """
 
-    tasks = dict()
+    tasks = {'skimeasure' : {'region' : skimeasure_region.copy(),
+                             'block'  : skimeasure_block.copy() }}
 
-    tasks['skimeasure'] = {'region' : skimeasure_region.copy(),
-                           'block'  : skimeasure_block.copy() }
-
-    for algorithm in tasks.values():
-        for action in algorithm.values(): action.tasks = tasks
+    for action in tasks['skimeasure'].values(): action.tasks = tasks
 
     return tasks
 
