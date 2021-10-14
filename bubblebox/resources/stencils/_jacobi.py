@@ -7,10 +7,14 @@ def jacobi():
     """
     Public method to create a dictionary of actions
     """
-    tasks = {'region' : jacobi_region.copy(),
-             'block'  : jacobi_block.copy() }
 
-    for action in tasks.values(): action.tasks = tasks
+    tasks = dict()
+
+    tasks['jacobi'] = {'region' : jacobi_region.copy(),
+                       'block'  : jacobi_block.copy() }
+
+    for algorithm in tasks.values():
+        for action in algorithm.values(): action.tasks = tasks
 
     return tasks
 

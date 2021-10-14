@@ -27,7 +27,8 @@ class Data(cbox.create.Data):
                        'nyb'       : number of grid points per block in y dir,
                        'nzb'       : number of grid points per block in z dir,
                        'inputfile' : hdf5 inputfile default (None),
-                       'variables' : dictionary of variables default ({})}
+                       'variables' : dictionary of variables default ({})
+                       'storage'   : 'disk' }
 
         """
         super().__init__()
@@ -190,4 +191,7 @@ class Data(cbox.create.Data):
             try:
                 shutil.rmtree(outputfile)
             except:
-                pass           
+                pass 
+
+        self.listkeys = list(self.variables.keys())
+         

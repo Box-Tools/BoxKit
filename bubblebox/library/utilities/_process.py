@@ -7,7 +7,7 @@ class Process(object):
 
     type_ = 'default'
 
-    def __init__(self, target=None, tasks=None):
+    def __init__(self, target=None, stencils=None):
         """Initialize the  object and allocate the data.
 
         Parameters
@@ -17,8 +17,11 @@ class Process(object):
         """
         super().__init__()
         self.target = target
-        self.tasks = tasks
 
+        self.tasks = dict()
+
+        [self.tasks.update(module()) for module in stencils]
+       
     def __call__(self,*args):
         """
         Call wrapper for process

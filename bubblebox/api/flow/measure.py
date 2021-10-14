@@ -1,12 +1,12 @@
 """ Module with implemenation of region methods"""
 
-from ...resources import algorithms
+from ...resources import stencils
 
 from ...library.utilities import Process
 
 from . import create
 
-@Process(tasks=algorithms.skimeasure())
+@Process(stencils=[stencils.skimeasure])
 def bubbles(self,dataframes,lsetkey,**attributes):
     """
     Create a list of bubbles in a region
@@ -28,7 +28,7 @@ def bubbles(self,dataframes,lsetkey,**attributes):
         dataset.addvar(bubblekey)
         regionlist.append(create.region(dataset, **attributes))
 
-    listbubbles = self.tasks['region'](regionlist,lsetkey,bubblekey)
+    listbubbles = self.tasks['skimeasure']['region'](regionlist,lsetkey,bubblekey)
 
     for dataset in dataframes:
         dataset.delvar(bubblekey)

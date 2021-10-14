@@ -1,4 +1,4 @@
 """Initialize resources"""
 
 from . import read
-from . import algorithms
+from . import stencils
