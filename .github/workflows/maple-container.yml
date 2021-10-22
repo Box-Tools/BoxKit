@@ -39,13 +39,13 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule update --init tools/maple
           git submodule update --init tools/indicators
-    - name: Setup Flash-X env
+    - name: Setup BubbleBox env
       run: |   
           ./tools/maple/maple build
-    - name: Run Flash-X tests
+    - name: Run BubbleBox tests
       run: |
           ./tools/maple/maple run
-    - name: Clean Flash-X env
+    - name: Clean BubbleBox env
       run: |
           ./tools/maple/maple drain
           ./tools/maple/maple clean
