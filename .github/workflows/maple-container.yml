@@ -19,7 +19,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   ubuntu-latest:
-    name: ""
+    name: "maple-container"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2      
