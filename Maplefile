@@ -1,0 +1,8 @@
+# Maplefile
+
+maple_container="bubblebox_container"
+maple_image="akashdhruv/bubblebox:dev"
+maple_target="/home/bubblebox"
+maple_src="$PWD"
+maple_user="$(id -u)"
+maple_group="$(id -g)"
