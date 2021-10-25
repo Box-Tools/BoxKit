@@ -3,19 +3,12 @@ name: maple-container
 on:
   pull_request:
     branches: 
-      - master
-      - staged
-      - development
- 
+      - main
+
   push:
     branches: 
-      - master
-      - staged
-      - development      
-    
-  # Allows to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
+      - main
+   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   ubuntu-latest:
@@ -30,7 +23,7 @@ jobs:
           sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu `lsb_release -cs` test"
           sudo apt update
           sudo apt install docker-ce
-          sudo docker run hello-world
+          docker run hello-world
     - uses: actions/checkout@v2 # checkout root
     - name: Checkout submodules # checkout rest
       run: |
@@ -40,13 +33,16 @@ jobs:
           git submodule update --init tools/maple
           git submodule update --init tools/indicators
     - name: Setup BubbleBox env
-      run: |   
-          ./tools/maple/maple build
+      run: |
+          cd container   
+          ../tools/maple/maple build
     - name: Run BubbleBox tests
       run: |
-          ./tools/maple/maple run
+          cd container
+          ../tools/maple/maple run
     - name: Clean BubbleBox env
       run: |
-          ./tools/maple/maple drain
-          ./tools/maple/maple clean
-          ./tools/maple/maple delete
+          cd container
+          ../tools/maple/maple drain
+          ../tools/maple/maple clean
+          ../tools/maple/maple delete
