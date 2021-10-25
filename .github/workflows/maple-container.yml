@@ -34,7 +34,7 @@ jobs:
           git submodule update --init tools/indicators
     - name: Setup BubbleBox env
       run: |
-          cd container   
+          cd container
           ../tools/maple/maple build
     - name: Run BubbleBox tests
       run: |
