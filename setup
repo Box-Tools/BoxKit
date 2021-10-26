@@ -1,6 +1,11 @@
 #!/bin/bash
 
-cd cbox/src && make
-cd ../../ && python3 setup.py develop --user
-rm -rf *.egg-info
-cd cbox/src && make clean
+if [ $1 = "develop" ]; then
+    cd cbox/src && make
+    cd ../../ && python3 setup.py develop --user
+fi
+
+if [ $1 = "clean" ]; then
+    rm -rf *.egg-info
+    cd cbox/src && make clean
+fi
