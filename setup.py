@@ -5,7 +5,7 @@ import re
 from setuptools import setup, find_packages
 
 # get long description from README
-with open('README', mode='r') as readme:
+with open('README.md', mode='r') as readme:
     long_description = readme.read()
 
 with open('cbox/__meta__.py', mode='r') as source:
