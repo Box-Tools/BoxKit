@@ -1,11 +1,11 @@
-### BubbleBox
+## BubbleBox
 BubbleBox is a data analysis and ML tool
 
-#### BubbleBox Installation
+### BubbleBox Installation
 Installation instructions
 
-#### BubbleBox Containers
+### BubbleBox Containers
 Description for using MAPLE containers
 
-#### BubbleBox Examples
+### BubbleBox Examples
 Example tests/scripts
