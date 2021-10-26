@@ -3,4 +3,6 @@ __pycache__
 memmap*
 *.o
 *.so
+build/
+dist/
 dask-worker-space

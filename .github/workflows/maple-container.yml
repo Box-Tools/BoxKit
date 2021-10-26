@@ -43,6 +43,5 @@ jobs:
     - name: Clean BubbleBox env
       run: |
           cd container
-          ../tools/maple/maple drain
           ../tools/maple/maple clean
-          ../tools/maple/maple delete
+          ../tools/maple/maple remove
