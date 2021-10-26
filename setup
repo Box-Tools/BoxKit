@@ -1,12 +1,5 @@
 #!/bin/bash
 
-if [ $1 = "all" ]; then
-    cd cbox/src && make clean && make
-    cd ../../ && python3 setup.py develop --user
-    rm -rf *.egg-info
-fi
-
-if [ $1 = "cbox" ]; then
-    cd cbox/src && make clean && make
-    cd ../../
-fi
+cd cbox/src && make clean && make
+cd ../../ && python3 setup.py develop --user
+rm -rf *.egg-info
