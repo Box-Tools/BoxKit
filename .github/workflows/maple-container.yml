@@ -1,0 +1,91 @@
+name: maple-container
+#
+on:
+  pull_request:
+    branches: 
+      - main
+#
+  push:
+    branches: 
+      - development
+#   
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+#
+jobs:
+  #
+  # Job 1
+  #
+  bubblebox-latest:
+    name: "bubblebox-latest"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2      
+    - name: Dependencies1
+      run: |
+          sudo apt install apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu `lsb_release -cs` test"
+          sudo apt update
+          sudo apt install docker-ce
+          docker run hello-world
+    - uses: actions/checkout@v2 # checkout root
+    - name: Checkout submodules # checkout rest
+      run: |
+          # If your submodules are configured to use SSH instead of HTTPS
+          # please uncomment the following line
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule update --init tools/maple
+          git submodule update --init tools/indicators
+    - name: Setup BubbleBox env
+      run: |
+          cd container
+          ../tools/maple/maple build
+    - name: Run BubbleBox tests
+      run: |
+          cd container
+          ../tools/maple/maple run
+    - name: Clean BubbleBox env
+      run: |
+          cd container
+          ../tools/maple/maple clean
+          ../tools/maple/maple remove
+  #
+  #Job 2
+  #
+  ubuntu-latest:
+    name: "ubuntu-latest"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2      
+    - name: Dependencies1
+      run: |
+          sudo apt install apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu `lsb_release -cs` test"
+          sudo apt update
+          sudo apt install docker-ce
+          docker run hello-world
+    - uses: actions/checkout@v2 # checkout root
+    - name: Checkout submodules # checkout rest
+      run: |
+          # If your submodules are configured to use SSH instead of HTTPS 
+          # please uncomment the following line
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule update --init tools/maple
+          git submodule update --init tools/indicators
+    - name: Setup BubbleBox env
+      run: |
+          cd container
+          ../tools/maple/maple build --image akashdhruv/ubuntu:latest
+    - name: Run BubbleBox tests
+      run: |
+          cd container
+          ../tools/maple/maple run
+    - name: Clean BubbleBox env
+      run: |
+          cd container
+          ../tools/maple/maple clean
+          ../tools/maple/maple remove --image akashdhruv/ubuntu:latest
+
