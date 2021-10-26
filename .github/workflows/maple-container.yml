@@ -11,6 +11,7 @@ on:
    
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # Job 1
   ubuntu-latest:
     name: "bubblebox-latest"
     runs-on: ubuntu-latest
@@ -46,7 +47,7 @@ jobs:
           ../tools/maple/maple clean
           ../tools/maple/maple remove
 
-jobs:
+  # Job 2
   ubuntu-latest:
     name: "ubuntu-latest"
     runs-on: ubuntu-latest
