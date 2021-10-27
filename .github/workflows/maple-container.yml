@@ -38,7 +38,7 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule update --init tools/maple
           git submodule update --init tools/indicators
-          cd tools/maple
+          cd tools/maple/pymaple
           ./setup develop
           ./setup clean
     - name: Setup BubbleBox env
@@ -80,7 +80,7 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule update --init tools/maple
           git submodule update --init tools/indicators
-          cd tools/maple
+          cd tools/maple/pymaple
           ./setup develop
           ./setup clean
     - name: Setup BubbleBox env
