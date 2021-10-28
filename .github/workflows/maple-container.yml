@@ -1,5 +1,5 @@
 name: maple-container
-#
+
 on:
   pull_request:
     branches: 
@@ -8,7 +8,7 @@ on:
       - '**.md'
       - 'LICENSE'
       - 'CITATION'
-#
+
   push:
     branches: 
       - development
@@ -16,12 +16,9 @@ on:
       - '**.md'
       - 'LICENSE'
       - 'CITATION'
-#   
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-#
+
 jobs:
-  #
-  # Job 1
+  #Job 1
   #
   bubblebox-latest:
     name: "bubblebox-latest"
@@ -30,13 +27,6 @@ jobs:
     - uses: actions/checkout@v2      
     - name: Dependencies1
       run: |
-          sudo apt install apt-transport-https ca-certificates curl software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-                                   `lsb_release -cs` test"
-          sudo apt update
-          sudo apt install docker-ce
-          docker run hello-world
           mkdir -p $HOME/.local/bin
           export PATH="PATH:$HOME/.local/bin" 
     - uses: actions/checkout@v2 # checkout root
@@ -64,7 +54,6 @@ jobs:
           cd container
           maple clean
           maple remove
-  #
   #Job 2
   #
   ubuntu-latest:
@@ -74,13 +63,6 @@ jobs:
     - uses: actions/checkout@v2      
     - name: Dependencies1
       run: |
-          sudo apt install apt-transport-https ca-certificates curl software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-                                   `lsb_release -cs` test"
-          sudo apt update
-          sudo apt install docker-ce
-          docker run hello-world
           mkdir -p $HOME/.local/bin
           export PATH="PATH:$HOME/.local/bin"
     - uses: actions/checkout@v2 # checkout root
