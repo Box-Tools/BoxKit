@@ -4,10 +4,18 @@ on:
   pull_request:
     branches: 
       - main
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'CITATION'
 #
   push:
     branches: 
       - development
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'CITATION'
 #   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 #
@@ -29,6 +37,8 @@ jobs:
           sudo apt update
           sudo apt install docker-ce
           docker run hello-world
+          mkdir -p $HOME/.local/bin
+          export PATH="PATH:$HOME/.local/bin" 
     - uses: actions/checkout@v2 # checkout root
     - name: Checkout submodules # checkout rest
       run: |
@@ -38,22 +48,22 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule update --init tools/maple
           git submodule update --init tools/indicators
-          cd tools/maple/pymaple
+          cd tools/maple
           ./setup develop
           ./setup clean
     - name: Setup BubbleBox env
       run: |
           cd container
-          ../tools/maple/maple build
+          maple build
     - name: Run BubbleBox tests
       run: |
           cd container
-          ../tools/maple/maple run && ../tools/maple/maple rinse
+          maple run && maple rinse
     - name: Clean BubbleBox env
       run: |
           cd container
-          ../tools/maple/maple clean
-          ../tools/maple/maple remove
+          maple clean
+          maple remove
   #
   #Job 2
   #
@@ -71,6 +81,8 @@ jobs:
           sudo apt update
           sudo apt install docker-ce
           docker run hello-world
+          mkdir -p $HOME/.local/bin
+          export PATH="PATH:$HOME/.local/bin"
     - uses: actions/checkout@v2 # checkout root
     - name: Checkout submodules # checkout rest
       run: |
@@ -80,19 +92,19 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule update --init tools/maple
           git submodule update --init tools/indicators
-          cd tools/maple/pymaple
+          cd tools/maple
           ./setup develop
           ./setup clean
     - name: Setup BubbleBox env
       run: |
           cd container
-          ../tools/maple/maple build --image akashdhruv/ubuntu:latest
+          maple build --image akashdhruv/ubuntu:latest
     - name: Run BubbleBox tests
       run: |
           cd container
-          ../tools/maple/maple run && ../tools/maple/maple rinse
+          maple run && maple rinse
     - name: Clean BubbleBox env
       run: |
           cd container
-          ../tools/maple/maple clean
-          ../tools/maple/maple remove --image akashdhruv/ubuntu:latest
+          maple clean
+          maple remove --image akashdhruv/ubuntu:latest
