@@ -1,6 +1,6 @@
 """Tests for `bubblebox/api/flow`."""
 
-import bubblebox.api.flow as flowbox
+import bubblebox.api.physics as bubblebox
 import unittest
 import pymorton
 import time
@@ -37,7 +37,7 @@ class TestBoiling(unittest.TestCase):
         dataframes : list of Dataset objects
 
         """      
-        dataframes  = [flowbox.create.dataset(filename) for filename in self.filenames]
+        dataframes  = [bubblebox.create.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -55,7 +55,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
+        dataframes   = [bubblebox.create.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -84,8 +84,8 @@ class TestBoiling(unittest.TestCase):
         """
         Test slice
         """
-        dataframes   = [flowbox.create.dataset(filename) for filename in self.filenames]
-        regionframes = [flowbox.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes]
+        dataframes   = [bubblebox.create.dataset(filename) for filename in self.filenames]
+        regionframes = [bubblebox.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(regionframes))
@@ -102,10 +102,10 @@ class TestBoiling(unittest.TestCase):
         """
         Test measure bubbles
         """
-        dataframes = [flowbox.create.dataset(filename,storage='disk') for filename in self.filenames]
+        dataframes = [bubblebox.create.dataset(filename,storage='disk') for filename in self.filenames]
 
         _time_measure = time.time()
-        process = flowbox.measure.bubbles.clone()
+        process = bubblebox.measure.bubbles.clone()
 
         process.tasks['skimeasure']['region'].nthreads = 4
         process.tasks['skimeasure']['region'].backend  = 'loky' 
@@ -116,7 +116,7 @@ class TestBoiling(unittest.TestCase):
         bubbleframes = process(dataframes,'phi')
 
         _time_measure = time.time() - _time_measure
-        print('%s: %.3fs' % ('flowbox.measure.bubbles', _time_measure))
+        print('%s: %.3fs' % ('bubblebox.measure.bubbles', _time_measure))
 
         numbubbles   = [len(listbubbles) for listbubbles in bubbleframes]
 
