@@ -48,7 +48,7 @@ jobs:
     - name: Run BubbleBox tests
       run: |
           cd container
-          maple run && maple rinse
+          maple run
     - name: Clean BubbleBox env
       run: |
           cd container
@@ -84,7 +84,7 @@ jobs:
     - name: Run BubbleBox tests
       run: |
           cd container
-          maple run && maple rinse
+          maple run
     - name: Clean BubbleBox env
       run: |
           cd container
