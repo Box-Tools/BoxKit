@@ -88,7 +88,7 @@ jobs:
           cd container
           maple run
     - name: Clean BubbleBox env
-       run: |
+      run: |
           cd container
           maple clean
           maple remove --image akashdhruv/ubuntu:latest
