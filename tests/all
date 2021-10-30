@@ -1,4 +1,0 @@
-#!/bin/bash
-
-python3 sedona
-python3 container
