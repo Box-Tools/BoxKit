@@ -1,5 +1,5 @@
 ## BubbleBox
-BubbleBox is a data analysis and ML tool
+BubbleBox is a library that provides building blocks to parallelize and scale HPC applications
 
 ### Installation
 Installation instructions
