@@ -1,4 +1,4 @@
-name: ubuntu-latest
+name: ubuntu-container
 
 on:
   pull_request:
@@ -9,19 +9,20 @@ on:
       - 'LICENSE'
       - 'CITATION'
 
-  push:
-    branches: 
-      - development
-    paths-ignore:
-      - '**.md'
-      - 'LICENSE'
-      - 'CITATION'
+  #push:
+  #  branches: 
+  #    - development
+  #  paths-ignore:
+  #    - '**.md'
+  #    - 'LICENSE'
+  #    - 'CITATION'
 
 jobs:
-   #Job 1
   #
-  bubblebox-tests:
-    name: "bubblebox/tests"
+  #Job 1
+  #
+  latest:
+    name: "latest" 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2      
