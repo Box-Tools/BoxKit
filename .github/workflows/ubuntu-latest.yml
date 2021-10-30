@@ -1,4 +1,4 @@
-name: maple-container
+name: ubuntu-container
 
 on:
   pull_request:
@@ -18,46 +18,10 @@ on:
       - 'CITATION'
 
 jobs:
-  #Job 1
+   #Job 1
   #
-  bubblebox-latest:
-    name: "bubblebox-latest"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2      
-    - name: Dependencies1
-      run: |
-          mkdir -p $HOME/.local/bin
-          export PATH="PATH:$HOME/.local/bin" 
-    - uses: actions/checkout@v2 # checkout root
-    - name: Checkout submodules # checkout rest
-      run: |
-          # If your submodules are configured to use SSH instead of HTTPS
-          # please uncomment the following line
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule update --init tools/maple
-          git submodule update --init tools/indicators
-          cd tools/maple
-          ./setup develop
-          ./setup clean
-    - name: Setup BubbleBox env
-      run: |
-          cd container
-          maple build
-    - name: Run BubbleBox tests
-      run: |
-          cd container
-          maple run
-    - name: Clean BubbleBox env
-      run: |
-          cd container
-          maple clean
-          maple remove
-  #Job 2
-  #
-  ubuntu-latest:
-    name: "ubuntu-latest"
+  latest:
+    name: "latest"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2      
