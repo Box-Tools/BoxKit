@@ -21,7 +21,7 @@ jobs:
   #Job 1
   #
   bubblebox-tests:
-    name: "bubblebox-tests"
+    name: "bubblebox/tests"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2      

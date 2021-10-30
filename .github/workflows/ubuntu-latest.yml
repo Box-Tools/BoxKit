@@ -20,7 +20,7 @@ on:
 jobs:
    #Job 1
   #
-  bubblebox/tests:
+  bubblebox-tests:
     name: "bubblebox/tests"
     runs-on: ubuntu-latest
     steps:
