@@ -41,6 +41,7 @@ jobs:
           cd tools/maple
           ./setup develop
           ./setup clean
+          echo $PWD
           python3 dependencies.py
     - name: Setup BubbleBox env
       run: |
