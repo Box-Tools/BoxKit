@@ -38,10 +38,10 @@ jobs:
           git config --global url."https://github.com/".insteadOf "git@github.com:"
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule update --init tools/maple
-          git submodule update --init tools/indicators
           cd tools/maple
           ./setup develop
           ./setup clean
+          python3 dependencies.py
     - name: Setup BubbleBox env
       run: |
           cd container
