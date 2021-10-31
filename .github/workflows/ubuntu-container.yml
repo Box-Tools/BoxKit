@@ -9,31 +9,20 @@ on:
       - 'LICENSE'
       - 'CITATION'
 
-  #push:
-  #  branches: 
-  #    - development
-  #  paths-ignore:
-  #    - '**.md'
-  #    - 'LICENSE'
-  #    - 'CITATION'
-
 jobs:
-  #
-  #Job 1
-  #
   latest:
     name: "latest" 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2      
-    - name: Dependencies1
+    - name: Create local bin
       run: |
           mkdir -p $HOME/.local/bin
-          export PATH="PATH:$HOME/.local/bin"
+          export PATH="PATH:$HOME/.local/bin" 
     - uses: actions/checkout@v2 # checkout root
-    - name: Checkout submodules # checkout rest
+    - name: Install maple # checkout rest
       run: |
-          # If your submodules are configured to use SSH instead of HTTPS 
+          # If your submodules are configured to use SSH instead of HTTPS
           # please uncomment the following line
           git config --global url."https://github.com/".insteadOf "git@github.com:"
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
@@ -41,7 +30,8 @@ jobs:
           cd tools/maple
           ./setup develop
           ./setup clean
-          echo $PWD
+    - name: Install dependencies
+      run: |
           python3 dependencies.py
     - name: Setup BubbleBox env
       run: |
