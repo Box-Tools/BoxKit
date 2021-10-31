@@ -20,19 +20,16 @@ jobs:
           mkdir -p $HOME/.local/bin
           export PATH="PATH:$HOME/.local/bin" 
     - uses: actions/checkout@v2 # checkout root
-    - name: Install maple # checkout rest
+    - name: Checkout submodules # checkout rest
       run: |
           # If your submodules are configured to use SSH instead of HTTPS
           # please uncomment the following line
           git config --global url."https://github.com/".insteadOf "git@github.com:"
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule update --init tools/maple
+          git submodule update --init --recursive
           cd tools/maple
           ./setup develop
           ./setup clean
-    - name: Install dependencies
-      run: |
-          python3 dependencies.py
     - name: Setup BubbleBox env
       run: |
           cd container
