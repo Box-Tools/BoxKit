@@ -38,6 +38,9 @@ jobs:
       run: |
           cd container
           maple run
+          maple pour
+          maple execute --command='"python3 tests/container"'
+          maple rinse
     - name: Clean BubbleBox env
       run: |
           cd container

@@ -11,7 +11,7 @@ from bubblebox.library.utilities import Monitor
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""
 
-    def customSetUp(self,prefix):
+    def customSetUp(self):
         """
         Setup test parameters
 
@@ -24,37 +24,16 @@ class TestHeater(unittest.TestCase):
         """
         self.timestart= time.time()
 
-        basedir  = '/home/akash/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/heater2D/'
+        basedir  = '/home/user/jarvis'
         filetags = [*range(0,60,5)]
-        prefix   = "".join([prefix,'/INS_Pool_Boiling_Heater_hdf5_'])
+        prefix   = '/INS_Pool_Boiling_Heater_hdf5_'
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
-
-    def test_neighbors_oneblk_2D(self):
-        """
-        Test if neighbors are morton order
-        """
-        self.customSetUp('oneblk')
-        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
-
-        testMonitor = Monitor("test")
-        testMonitor.setlimit(len(dataframes))
-        monitorMsg = 'run:'+self.id()+': '
-
-        for dataset in dataframes:
-
-            for block in dataset.blocklist:
-                self.assertEqual([None]*4,block.neighlist, 'Single block data structure has no neighbors')
-
-            testMonitor.update(monitorMsg)
-
-        for dataset in dataframes:
-            dataset.purge('memmap')
 
     def test_neighbors_blocks_2D(self):
         """
         Test if neighbors are in morton order
         """
-        self.customSetUp('blocks')
+        self.customSetUp()
         dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
@@ -82,32 +61,11 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge('memmap')
 
-    def test_measure_bubbles_oneblk_2D(self):
-        """
-        Test bubble measurement
-        """
-        self.customSetUp('oneblk')
-
-        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
-
-        process = bubblebox.measure.bubbles    
-        process.tasks['skimeasure']['region'].monitor = True
-        print(process.tasks['skimeasure']['region'].backend)
-
-        bubbleframes = bubblebox.measure.bubbles(dataframes,'phi')
-
-        numbubbles = [len(listbubbles) for listbubbles in bubbleframes]        
-
-        self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
-
-        for dataset in dataframes:
-            dataset.purge('memmap')
-
     def test_measure_bubbles_blocks_2D(self):
         """
         Test bubble measurement
         """
-        self.customSetUp('blocks')
+        self.customSetUp()
 
         dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
