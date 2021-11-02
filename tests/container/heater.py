@@ -11,7 +11,7 @@ from bubblebox.library.utilities import Monitor
 class TestHeater(unittest.TestCase):
     """bubblebox unit test for 2D Heater Data"""
 
-    def customSetUp(self):
+    def customSetUp(self,prefix):
         """
         Setup test parameters
 
@@ -24,16 +24,16 @@ class TestHeater(unittest.TestCase):
         """
         self.timestart= time.time()
 
-        basedir  = '/home/user/jarvis'
+        basedir  = os.getenv('HOME')+'/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/heater2D/'
         filetags = [*range(0,60,5)]
-        prefix   = '/INS_Pool_Boiling_Heater_hdf5_'
+        prefix   = "".join([prefix,'/INS_Pool_Boiling_Heater_hdf5_'])
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
 
     def test_neighbors_blocks_2D(self):
         """
         Test if neighbors are in morton order
         """
-        self.customSetUp()
+        self.customSetUp('blocks')
         dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
@@ -65,7 +65,7 @@ class TestHeater(unittest.TestCase):
         """
         Test bubble measurement
         """
-        self.customSetUp()
+        self.customSetUp('blocks')
 
         dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
 

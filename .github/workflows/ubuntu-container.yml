@@ -37,7 +37,10 @@ jobs:
     - name: Run BubbleBox tests
       run: |
           cd container
-          maple run
+          maple pour
+          maple execute --command='"./setup develop && ./setup clean && \
+                                    python3 tests/container/create.py"'
+          maple rinse 
     - name: Clean BubbleBox env
       run: |
           cd container
