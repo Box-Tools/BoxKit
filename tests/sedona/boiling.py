@@ -37,7 +37,7 @@ class TestBoiling(unittest.TestCase):
         dataframes : list of Dataset objects
 
         """      
-        dataframes  = [bubblebox.create.dataset(filename) for filename in self.filenames]
+        dataframes  = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -55,7 +55,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        dataframes   = [bubblebox.create.dataset(filename) for filename in self.filenames]
+        dataframes   = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -84,7 +84,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test slice
         """
-        dataframes   = [bubblebox.create.dataset(filename) for filename in self.filenames]
+        dataframes   = [bubblebox.read.dataset(filename) for filename in self.filenames]
         regionframes = [bubblebox.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes]
 
         testMonitor = Monitor("test")
@@ -102,7 +102,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test measure bubbles
         """
-        dataframes = [bubblebox.create.dataset(filename,storage='disk') for filename in self.filenames]
+        dataframes = [bubblebox.read.dataset(filename,storage='disk') for filename in self.filenames]
 
         _time_measure = time.time()
         process = bubblebox.measure.bubbles.clone()

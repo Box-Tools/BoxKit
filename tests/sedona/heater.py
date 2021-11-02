@@ -34,7 +34,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are morton order
         """
         self.customSetUp('oneblk')
-        dataframes = [bubblebox.create.dataset(filename) for filename in self.filenames]
+        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -55,7 +55,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are in morton order
         """
         self.customSetUp('blocks')
-        dataframes = [bubblebox.create.dataset(filename) for filename in self.filenames]
+        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -88,7 +88,7 @@ class TestHeater(unittest.TestCase):
         """
         self.customSetUp('oneblk')
 
-        dataframes = [bubblebox.create.dataset(filename) for filename in self.filenames]
+        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
         process = bubblebox.measure.bubbles    
         process.tasks['skimeasure']['region'].monitor = True
@@ -109,7 +109,7 @@ class TestHeater(unittest.TestCase):
         """
         self.customSetUp('blocks')
 
-        dataframes = [bubblebox.create.dataset(filename) for filename in self.filenames]
+        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
 
         process = bubblebox.measure.bubbles    
         process.tasks['skimeasure']['region'].monitor = True
