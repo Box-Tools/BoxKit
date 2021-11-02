@@ -122,7 +122,7 @@ class Data(cbox.create.Data):
 
         for varkey in emptykeys:
             outputfile  = os.path.join(self.memmap,varkey)
-            outputshape = (self.nblocks,self.nxb,self.nyb,self.nzb)
+            outputshape = (self.nblocks,self.nzb,self.nyb,self.nxb)
             self.variables[varkey] = numpy.memmap(outputfile, dtype=float, shape=outputshape, mode='w+')
 
     def _create_numpy_arrays(self):
@@ -136,7 +136,7 @@ class Data(cbox.create.Data):
         if not emptykeys: return
 
         for varkey in emptykeys:
-            outputshape = (self.nblocks,self.nxb,self.nyb,self.nzb)
+            outputshape = (self.nblocks,self.nzb,self.nyb,self.nxb)
             self.variables[varkey] = numpy.ndarray(dtype=float, shape=outputshape)
 
     def _create_dask_objects(self):
@@ -146,7 +146,7 @@ class Data(cbox.create.Data):
         for varkey in self.listkeys:
             if type(self.variables[varkey]) is not dsarray.core.Array:
                 self.variables[varkey] = dsarray.from_array(self.variables[varkey],
-                                                            chunks=(1,self.nxb,self.nyb,self.nzb))
+                                                            chunks=(1,self.nzb,self.nyb,self.nxb))
 
     def _create_pyarrow_tensor(self):
         """
