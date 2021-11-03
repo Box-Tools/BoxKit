@@ -16,9 +16,9 @@ class Block(object):
         ----------
         data       : data object
         attributes : dictionary
-                     { 'nxb'  : number of grid points per block in x dir
-                       'nyb'  : number of grid points per block in y dir
-                       'nzb'  : number of grid points per block in z dir
+                     { 'dx'   : grid spacing in x dir
+                       'dy'   : grid spacing in y dir
+                       'dz'   : grid spacing in z dir
                        'xmin' : low  bound in x dir
                        'ymin' : low  bound in y dir
                        'zmin' : low  bound in z dir
@@ -36,7 +36,7 @@ class Block(object):
         """Return a representation of the object."""
         return ("Block:\n" +
                 " - type   : {}\n".format(type(self)) +
-                " - size   : {} x {} x {}\n".format(self.nxb, self.nyb, self.nzb) +
+                " - deltas : {} x {} x {}\n".format(self.dx, self.dy, self.dz) +
                 " - bound  : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
                                                                          self.xmax,
                                                                          self.ymin,
@@ -49,20 +49,20 @@ class Block(object):
         """
         Get variable data
         """
-        return self.data[varkey][self.tag] #.to_numpy()[:]
+        return self._data[varkey][self.tag] #.to_numpy()[:]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        self.data[varkey][self.tag] = value #.to_numpy()[:] = value
+        self._data[varkey][self.tag] = value #.to_numpy()[:] = value
 
     def _set_attributes(self,attributes):
         """
         Private method for intialization
         """        
 
-        default_attributes = {'nxb'  : 1 , 'nyb'  : 1 , 'nzb'  : 1 ,
+        default_attributes = {'dx'   : 1 , 'dy'   : 1 , 'dz'   : 1 ,
                               'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
                               'xmax' : 0., 'ymax' : 0., 'zmax' : 0.,
                               'tag'  : 0}
@@ -80,22 +80,18 @@ class Block(object):
         self.ycenter = (self.ymin + self.ymax)/2.
         self.zcenter = (self.zmin + self.zmax)/2.
 
-        self.dx = 1 if self.nxb == 1 else abs(self.xmax - self.xmin) / self.nxb
-        self.dy = 1 if self.nyb == 1 else abs(self.ymax - self.ymin) / self.nyb
-        self.dz = 1 if self.nzb == 1 else abs(self.zmax - self.zmin) / self.nzb
-
     def _map_data(self,data):
         """
         Private method for initialization
         """
-        self.data = None
+        self._data = None
         self.neighlist = []
 
         if not data: return
 
-        self.data = data
+        self._data = data
 
-        if 1 in [self.nxb,self.nyb,self.nzb]:
+        if 1 in [self.dx,self.dy,self.dz]:
             self.neighlist = self._get_neighlist_2D()
         else:
             self.neighlist = self._get_neighlist_3D()
@@ -108,7 +104,7 @@ class Block(object):
         order - imins,iplus,jmins,jplus
         """
           
-        if self.data.nblocks > 1:
+        if self._data.nblocks > 1:
             iloc,jloc = pymorton.deinterleave2(self.tag)
 
             neighlist = [pymorton.interleave(iloc-1,jloc),
@@ -116,7 +112,7 @@ class Block(object):
                          pymorton.interleave(iloc,jloc-1),
                          pymorton.interleave(iloc,jloc+1)]
 
-            neighlist = [None if neighbor > self.data.nblocks-1 else neighbor for neighbor in neighlist]
+            neighlist = [None if neighbor > self._data.nblocks-1 else neighbor for neighbor in neighlist]
 
         else:
             neighlist = [None]*4
@@ -130,7 +126,7 @@ class Block(object):
         order - xmins,xplus,ymins,yplus,zmins,zplus        
         """
 
-        if self.data.nblocks > 1:
+        if self._data.nblocks > 1:
             xloc,yloc,zloc = pymorton.deinterleave3(self.tag)
 
             neighlist = [pymorton.interleave(xloc-1,yloc,zloc),
@@ -140,7 +136,7 @@ class Block(object):
                          pymorton.interleave(xloc,yloc,zloc-1),
                          pymorton.interleave(xloc,yloc,zloc+1)]
  
-            neighlist = [None if neighbor > self.data.nblocks-1 else neighbor for neighbor in neighlist]
+            neighlist = [None if neighbor > self._data.nblocks-1 else neighbor for neighbor in neighlist]
 
         else:
             neighlist = [None]*6
@@ -152,6 +148,6 @@ class Block(object):
         Get neighbor data
         """
         if neighbor is not None:
-            return self.data[varkey][neighbor] #.to_numpy()[:]
+            return self._data[varkey][neighbor] #.to_numpy()[:]
         else:
             return None

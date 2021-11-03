@@ -34,7 +34,7 @@ def read_default(filename):
     variables = dict()
     variables.update(inputfile['quantities'])
 
-    # Create data object
+    # Create data attributes
     data_attributes = {'nblocks'   : int(nblocks),
                        'nxb'       : int(nxb),
                        'nyb'       : int(nyb),
@@ -42,10 +42,10 @@ def read_default(filename):
                        'inputfile' : inputfile,
                        'variables' : variables}
 
-    # Create block objects
-    block_attributes = [{'nxb'  : int(nxb),
-                         'nyb'  : int(nyb),
-                         'nzb'  : int(nzb),
+    # Create block attributes
+    block_attributes = [{'dx'   : 1 if nxb == 1 else abs(xmax[lblock]-xmin[lblock])/int(nxb),
+                         'dy'   : 1 if nyb == 1 else abs(ymax[lblock]-ymin[lblock])/int(nyb),
+                         'dz'   : 1 if nzb == 1 else abs(zmax[lblock]-zmin[lblock])/int(nzb),
                          'xmin' : xmin[lblock],
                          'ymin' : ymin[lblock],
                          'zmin' : zmin[lblock],

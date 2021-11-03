@@ -45,7 +45,7 @@ class TestBoiling(unittest.TestCase):
 
         for dataset in dataframes:
             for block in dataset.blocklist:
-                self.assertTrue(block.data is dataset.blocklist[0].data,'Data pointers are inconsistent')
+                self.assertTrue(block._data is dataset.blocklist[0]._data,'Data pointers are inconsistent')
             testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
@@ -72,7 +72,7 @@ class TestBoiling(unittest.TestCase):
                              pymorton.interleave(xloc,yloc,zloc-1),
                              pymorton.interleave(xloc,yloc,zloc+1)]
 
-                neighlist = [None if neighbor > block.data.nblocks-1 else neighbor for neighbor in neighlist]
+                neighlist = [None if neighbor > dataset.nblocks-1 else neighbor for neighbor in neighlist]
 
                 self.assertEqual(neighlist,block.neighlist, 'Neigbhors are inconsitent with morton order')
             testMonitor.update(monitorMsg)

@@ -66,6 +66,18 @@ class Dataset(object):
     def nblocks(self):
         return self._data.nblocks
 
+    @property
+    def nxb(self):
+        return self._data.nxb
+
+    @property
+    def nyb(self):
+        return self._data.nyb
+
+    @property
+    def nzb(self):
+        return self._data.nzb
+
     def addvar(self,varkey):
         self._data.addvar(varkey)
 
