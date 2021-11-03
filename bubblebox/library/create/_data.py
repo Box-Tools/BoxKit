@@ -47,22 +47,21 @@ class Data(cbox.create.Data):
         """
         Get variable data
         """
-        if not varkey in self.listkeys: 
-            raise ValueError('[bubblebox.library.create.Data] '+
-                             'Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
-        else:
-            return self.variables[varkey]
+        #if not varkey in self.listkeys: 
+        #    raise ValueError('[bubblebox.library.create.Data] '+
+        #                     'Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
+        #else:
+        return self.variables[varkey]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        if not varkey in self.listkeys:
-            raise ValueError('[bubblebox.library.create.Data] '+
-                             'Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
-
-        else:
-            self.variables[varkey] = value
+        #if not varkey in self.listkeys:
+        #    raise ValueError('[bubblebox.library.create.Data] '+
+        #                     'Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
+        #else:
+        self.variables[varkey] = value
 
     def _set_attributes(self,attributes):
         """
