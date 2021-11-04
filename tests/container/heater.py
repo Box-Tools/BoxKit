@@ -54,7 +54,7 @@ class TestHeater(unittest.TestCase):
 
                 neighlist = [None if neighbor > dataset.nblocks-1 else neighbor for neighbor in neighlist]
 
-                self.assertEqual(neighlist,block.neighlist, 'Neigbhors are inconsitent with morton order')
+                self.assertEqual(neighlist,list(block.neighdict.values()), 'Neigbhors are inconsitent with morton order')
 
             testMonitor.update(monitorMsg)
 

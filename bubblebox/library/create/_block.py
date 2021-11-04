@@ -85,24 +85,25 @@ class Block(object):
         Private method for initialization
         """
         self._data = None
-        self.neighlist = []
+        self.neighdict = []
 
         if not data: return
 
         self._data = data
 
         if 1 in [self.dx,self.dy,self.dz]:
-            self.neighlist = self._get_neighlist_2D()
+            self.neighdict = self._get_neighdict_2D()
         else:
-            self.neighlist = self._get_neighlist_3D()
+            self.neighdict = self._get_neighdict_3D()
 
 
-    def _get_neighlist_2D(self):
+    def _get_neighdict_2D(self):
         """class property python
         Return neighbor tags
 
         order - imins,iplus,jmins,jplus
         """
+        locations = ['ilow','ihigh','jlow','jhigh']
           
         if self._data.nblocks > 1:
             iloc,jloc = pymorton.deinterleave2(self.tag)
@@ -117,14 +118,15 @@ class Block(object):
         else:
             neighlist = [None]*4
 
-        return neighlist
+        return dict(zip(locations,neighlist))
 
-    def _get_neighlist_3D(self):
+    def _get_neighdict_3D(self):
         """
         Return neighbor tags
 
         order - xmins,xplus,ymins,yplus,zmins,zplus        
         """
+        locations = ['xlow','xhigh','ylow','yhigh','zlow','zhigh']
 
         if self._data.nblocks > 1:
             xloc,yloc,zloc = pymorton.deinterleave3(self.tag)
@@ -141,13 +143,13 @@ class Block(object):
         else:
             neighlist = [None]*6
 
-        return neighlist
+        return dict(zip(locations,neighlist))
 
-    def neighdata(self,varkey,neighbor):
+    def neighdata(self,varkey,neighkey):
         """
         Get neighbor data
         """
-        if neighbor is not None:
-            return self._data[varkey][neighbor] #.to_numpy()[:]
+        if self.neighdict[neighkey] is not None:
+            return self._data[varkey][self.neighdict[neighkey]] #.to_numpy()[:]
         else:
             return None

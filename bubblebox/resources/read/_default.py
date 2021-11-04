@@ -30,7 +30,10 @@ def read_default(filename):
     xmax      = inputfile['boundbox/max'][:,0]
     ymax      = inputfile['boundbox/max'][:,1]
     zmax      = inputfile['boundbox/max'][:,2]
-
+    dx        = inputfile['deltas'][0]
+    dy        = inputfile['deltas'][1]
+    dz        = inputfile['deltas'][2]
+    
     variables = dict()
     variables.update(inputfile['quantities'])
 
@@ -43,9 +46,9 @@ def read_default(filename):
                        'variables' : variables}
 
     # Create block attributes
-    block_attributes = [{'dx'   : 1 if nxb == 1 else abs(xmax[lblock]-xmin[lblock])/int(nxb),
-                         'dy'   : 1 if nyb == 1 else abs(ymax[lblock]-ymin[lblock])/int(nyb),
-                         'dz'   : 1 if nzb == 1 else abs(zmax[lblock]-zmin[lblock])/int(nzb),
+    block_attributes = [{'dx'   : dx,
+                         'dy'   : dy,
+                         'dz'   : dz,
                          'xmin' : xmin[lblock],
                          'ymin' : ymin[lblock],
                          'zmin' : zmin[lblock],
