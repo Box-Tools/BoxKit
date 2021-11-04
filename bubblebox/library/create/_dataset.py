@@ -21,15 +21,17 @@ class Dataset(object):
     def __repr__(self):
         """Return a representation of the object."""
         return ("Dataset:\n" +
-                " - type  : {}\n".format(type(self)) +
-                " - file  : {}\n".format(self._data.inputfile)+
-                " - keys  : {}\n".format(self._data.listkeys) +
-                " - bound : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
+                " - type    : {}\n".format(type(self)) +
+                " - file    : {}\n".format(self._data.inputfile) +
+                " - keys    : {}\n".format(self._data.varlist) +
+                " - bound   : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
                                                                      self.xmax,
                                                                      self.ymin,
                                                                      self.ymax,
                                                                      self.zmin,
-                                                                     self.zmax))
+                                                                     self.zmax) +
+                " - size    : {} x {} x {}\n".format(self.nxb,self.nyb,self.nzb) +
+                " - nblocks : {}".format(self.nblocks))
 
     def _map_blocklist(self,blocklist):
         """
@@ -77,6 +79,10 @@ class Dataset(object):
     @property
     def nzb(self):
         return self._data.nzb
+
+    @property
+    def varlist(self):
+        return self._data.varlist
 
     def addvar(self,varkey):
         self._data.addvar(varkey)

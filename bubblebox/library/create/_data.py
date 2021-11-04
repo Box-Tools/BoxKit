@@ -41,15 +41,15 @@ class Data(cbox.create.Data):
         """
         return ("Data:\n" +
                 " - type   : {}\n".format(type(self)) +
-                " - keys   : {}\n".format(self.listkeys))
+                " - keys   : {}\n".format(self.varlist))
 
     def __getitem__(self,varkey):
         """
         Get variable data
         """
-        #if not varkey in self.listkeys: 
+        #if not varkey in self.varlist: 
         #    raise ValueError('[bubblebox.library.create.Data] '+
-        #                     'Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
+        #                     'Variable "{}" does not exist in "{}"'.format(varkey,self.varlist))
         #else:
         return self.variables[varkey]
 
@@ -57,9 +57,9 @@ class Data(cbox.create.Data):
         """
         Set variable data
         """
-        #if not varkey in self.listkeys:
+        #if not varkey in self.varlist:
         #    raise ValueError('[bubblebox.library.create.Data] '+
-        #                     'Variable "{}" does not exist in "{}"'.format(varkey,self.listkeys))
+        #                     'Variable "{}" does not exist in "{}"'.format(varkey,self.varlist))
         #else:
         self.variables[varkey] = value
 
@@ -89,7 +89,7 @@ class Data(cbox.create.Data):
         Private method for setting new data
         """
 
-        self.listkeys = list(self.variables.keys())
+        self.varlist = list(self.variables.keys())
 
         if self.storage == 'disk':
             self._create_numpy_memmap()
@@ -142,7 +142,7 @@ class Data(cbox.create.Data):
         """
         Create dask array representation of data
         """
-        for varkey in self.listkeys:
+        for varkey in self.varlist:
             if type(self.variables[varkey]) is not dsarray.core.Array:
                 self.variables[varkey] = dsarray.from_array(self.variables[varkey],
                                                             chunks=(1,self.nzb,self.nyb,self.nxb))
@@ -151,7 +151,7 @@ class Data(cbox.create.Data):
         """
         Create a pyarrow tensor objects
         """
-        for varkey in self.listkeys:
+        for varkey in self.varlist:
 
             if type(self.variables[varkey]) is not pyarrow.lib.Tensor:
 
@@ -192,5 +192,5 @@ class Data(cbox.create.Data):
             except:
                 pass 
 
-        self.listkeys = list(self.variables.keys())
+        self.varlist = list(self.variables.keys())
          
