@@ -33,6 +33,12 @@ class Dataset(object):
                 " - size    : {} x {} x {}\n".format(self.nxb,self.nyb,self.nzb) +
                 " - nblocks : {}".format(self.nblocks))
 
+    def __getitem__(self,varkey):
+        """
+        Get variable data
+        """
+        return self._data[varkey]
+
     def _map_blocklist(self,blocklist):
         """
         Private method for initialization
