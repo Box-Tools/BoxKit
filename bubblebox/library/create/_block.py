@@ -96,15 +96,19 @@ class Block(object):
         else:
             self.neighdict = self._get_neighdict_3D()
 
-
     def _get_neighdict_2D(self):
         """class property python
         Return neighbor tags
 
         order - imins,iplus,jmins,jplus
         """
-        locations = ['ilow','ihigh','jlow','jhigh']
-          
+        if self.dz == 1:
+            locations = ['xlow','xhigh','ylow','yhigh']
+        elif self.dy == 1:
+            locations = ['xlow','xhigh','zlow','zhigh']          
+        else:
+            locations = ['ylow','yhigh','zlow','zhigh']
+
         if self._data.nblocks > 1:
             iloc,jloc = pymorton.deinterleave2(self.tag)
 
