@@ -4,7 +4,7 @@ from .. import library
 
 from ..resources import read
 
-def dataset(data_attributes={},block_attributes=[{}],storage='disk'):
+def dataset(data_attributes={},block_attributes=[{}],storage='numpy'):
     """
     Create a dataset from a file
 

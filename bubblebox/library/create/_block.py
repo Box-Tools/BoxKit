@@ -157,3 +157,24 @@ class Block(object):
             return self._data[varkey][self.neighdict[neighkey]] #.to_numpy()[:]
         else:
             return None
+
+    def exchange_neighdata(self,varkey,neighkey):
+        """
+        Exchange information
+        """
+        blockdata = self._data[varkey][self.tag]
+
+        if location == 'xlow':
+            blockdata[:,:,0] = self.neighdata(varkey,neighkey)[:,:,-2]
+        elif location == 'xhigh':
+            blockdata[:,:,-1] = self.neighdata(varkey,neighkey)[:,:,1]
+        elif location == 'ylow':
+            blockdata[:,0,:] = self.neighdata(varkey,neighkey)[:,-2,:]
+        elif location == 'yhigh':
+            blockdata[:,-1,:] = self.neighdata(varkey,neighkey)[:,1,:]
+        elif location == 'zlow':
+            blockdata[0,:,:] = self.neighdata(varkey,neighkey)[-2,:,:]
+        elif location == 'zhigh':
+            blockdata[-1,:,:] = self.neighdata(varkey,neighkey)[1,:,:]
+        else:
+            raise ValueError('Unknown neighbor "{}"'.format(neighkey))

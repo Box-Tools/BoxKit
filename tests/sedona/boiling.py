@@ -49,7 +49,7 @@ class TestBoiling(unittest.TestCase):
             testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
-            dataset.purge('memmap')
+            dataset.purge('boxmem')
 
     def test_neighbors_3D(self):
         """
@@ -78,7 +78,7 @@ class TestBoiling(unittest.TestCase):
             testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
-            dataset.purge('memmap')
+            dataset.purge('boxmem')
 
     def test_slice_3D(self):
         """
@@ -96,22 +96,23 @@ class TestBoiling(unittest.TestCase):
             testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
-            dataset.purge('memmap')
+            dataset.purge('boxmem')
 
     def test_measure_bubbles_3D(self):
         """
         Test measure bubbles
         """
-        dataframes = [bubblebox.read.dataset(filename,storage='disk') for filename in self.filenames]
+        dataframes = [bubblebox.read.dataset(filename,storage='numpy') for filename in self.filenames]
 
         _time_measure = time.time()
         process = bubblebox.measure.bubbles.clone()
 
-        process.tasks['skimeasure']['region'].nthreads = 4
-        process.tasks['skimeasure']['region'].backend  = 'loky' 
-        process.tasks['skimeasure']['region'].monitor  = True
-        process.tasks['skimeasure']['block'].nthreads  = 2
+        process.tasks['skimeasure']['region'].nthreads = 1
+        process.tasks['skimeasure']['region'].backend  = 'serial' 
+        process.tasks['skimeasure']['region'].monitor  = False
+        process.tasks['skimeasure']['block'].nthreads  = 8
         process.tasks['skimeasure']['block'].backend   = 'loky'
+        process.tasks['skimeasure']['block'].monitor   = True
 
         bubbleframes = process(dataframes,'phi')
 
@@ -123,7 +124,7 @@ class TestBoiling(unittest.TestCase):
         self.assertEqual(numbubbles,[1341, 1380, 1262, 1255, 1351, 1362])
 
         for dataset in dataframes:
-            dataset.purge('memmap')
+            dataset.purge('boxmem')
 
     def tearDown(self):
         """Clean up and timing"""
