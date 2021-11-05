@@ -48,7 +48,7 @@ class TestHeater(unittest.TestCase):
             testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
-            dataset.purge('memmap')
+            dataset.purge('boxmem')
 
     def test_measure_bubbles_oneblk_2D(self):
         """
@@ -69,7 +69,7 @@ class TestHeater(unittest.TestCase):
         self.assertEqual(numbubbles,[488,163,236,236,242,234,257,223,259,291,235,223])
 
         for dataset in dataframes:
-            dataset.purge('memmap')
+            dataset.purge('boxmem')
 
     def tearDown(self):
         """Clean up and timing"""

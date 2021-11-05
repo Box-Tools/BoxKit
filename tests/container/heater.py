@@ -59,7 +59,7 @@ class TestHeater(unittest.TestCase):
             testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
-            dataset.purge('memmap')
+            dataset.purge('boxmem')
 
     def test_measure_bubbles_blocks_2D(self):
         """
@@ -77,7 +77,7 @@ class TestHeater(unittest.TestCase):
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
         for dataset in dataframes:
-            dataset.purge('memmap')
+            dataset.purge('boxmem')
 
     def tearDown(self):
         """Clean up and timing"""

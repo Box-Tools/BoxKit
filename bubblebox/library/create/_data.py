@@ -8,6 +8,7 @@ import shutil
 import numpy
 import dask.array as dsarray
 import pyarrow
+import zarr
 
 import cbox.lib.boost as cbox
 
@@ -28,7 +29,7 @@ class Data(cbox.create.Data):
                        'nzb'       : number of grid points per block in z dir,
                        'inputfile' : hdf5 inputfile default (None),
                        'variables' : dictionary of variables default ({})
-                       'storage'   : 'disk' }
+                       'storage'   : 'numpy', 'zarr', 'dask', 'pyarrow' }
 
         """
         super().__init__()
@@ -70,10 +71,10 @@ class Data(cbox.create.Data):
 
         default_attributes = {'nblocks'   : 1,              
                               'inputfile' : None,
-                              'memmap'    : {},
+                              'boxmem'    : None,
                               'variables' : {},
                                     'nxb' : 1, 'nyb' : 1, 'nzb' : 1,
-                                'storage' : 'disk'}
+                                'storage' : 'numpy'}
 
         for key in attributes:
             if key in default_attributes:
@@ -88,16 +89,15 @@ class Data(cbox.create.Data):
         """
         Private method for setting new data
         """
-
         self.varlist = list(self.variables.keys())
 
-        if self.storage == 'disk':
+        if self.storage == 'numpy':
             self._create_numpy_memmap()
-
+        elif self.storage == 'zarr':
+            self._create_zarr_objects()
         elif self.storage == 'dask':
-            self._create_numpy_arrays()
+            self._create_numpy_memmap()
             self._create_dask_objects()
-  
         else:
             raise NotImplementedError('[bubblebox.library.create.Data] '+
                                       'Storage format "{}" not implemented'.format(self.storage))
@@ -107,31 +107,47 @@ class Data(cbox.create.Data):
         Create numpy memory maps for empty keys in variables dictionary
         """
         emptykeys = [key for key,value in self.variables.items() if type(value) is type(None)]
-    
         if not emptykeys: return
 
-        if not self.memmap:
+        if not self.boxmem:
             namerandom  = ''.join(random.choice(string.ascii_lowercase) for i in range(5)) 
-            self.memmap = "".join(['./memmap_',namerandom])
-
+            self.boxmem = "".join(['./boxmem_',namerandom])
         try:
-            os.mkdir(self.memmap)
+            os.mkdir(self.boxmem)
         except FileExistsError:
             pass
 
         for varkey in emptykeys:
-            outputfile  = os.path.join(self.memmap,varkey)
+            outputfile = os.path.join(self.boxmem,varkey)
             outputshape = (self.nblocks,self.nzb,self.nyb,self.nxb)
             self.variables[varkey] = numpy.memmap(outputfile, dtype=float, shape=outputshape, mode='w+')
+
+    def _create_zarr_objects(self):
+        """
+        Create zarr objects
+        """
+        emptykeys = [key for key,value in self.variables.items() if type(value) is type(None)]
+        if not emptykeys: return
+
+        if not self.boxmem:
+            namerandom  = ''.join(random.choice(string.ascii_lowercase) for i in range(5)) 
+            self.boxmem = "".join(['./boxmem_',namerandom])
+        try:
+            os.mkdir(self.boxmem)
+        except FileExistsError:
+            pass
+
+        for varkey in emptykeys:
+            outputfile = os.path.join(self.boxmem,varkey)
+            outputshape = (self.nblocks,self.nzb,self.nyb,self.nxb)
+            self.variables[varkey] = zarr.open(outputfile, mode='w', shape=outputshape, 
+                                                           chunks=(1,self.nzb,self.nyb,self.nxb),dtype=float)
 
     def _create_numpy_arrays(self):
         """
         Create numpy arrays for empty keys in variables dictionary
         """
-        emptykeys = []
-
         emptykeys = [key for key,value in self.variables.items() if type(value) is type(None)]
-     
         if not emptykeys: return
 
         for varkey in emptykeys:
@@ -142,33 +158,35 @@ class Data(cbox.create.Data):
         """
         Create dask array representation of data
         """
-        for varkey in self.varlist:
+        emptykeys = [key for key,value in self.variables.items() if type(value) is type(None)]
+        if not emptykeys: return
+
+        for varkey in emptykeys:
             if type(self.variables[varkey]) is not dsarray.core.Array:
                 self.variables[varkey] = dsarray.from_array(self.variables[varkey],
                                                             chunks=(1,self.nzb,self.nyb,self.nxb))
 
-    def _create_pyarrow_tensor(self):
+    def _create_pyarrow_objects(self):
         """
         Create a pyarrow tensor objects
         """
-        for varkey in self.varlist:
+        emptykeys = [key for key,value in self.variables.items() if type(value) is type(None)] 
+        if not emptykeys: return
 
+        for varkey in emptykeys:
             if type(self.variables[varkey]) is not pyarrow.lib.Tensor:
-
                 templist = []
-
                 for lblock in range(self.nblocks):
                     templist.append(pyarrow.Tensor.from_numpy(self.variables[varkey][lblock]))
-
                 self.variables[varkey] = templist
    
     def purge(self,purgeflag='all'):
         """
         Clean up data and close it
         """
-        if self.memmap and (purgeflag == 'all' or purgeflag == 'memmap'):
+        if self.boxmem and (purgeflag == 'all' or purgeflag == 'boxmem'):
             try:
-                shutil.rmtree(self.memmap)
+                shutil.rmtree(self.boxmem)
             except:
                 pass
 
@@ -176,21 +194,23 @@ class Data(cbox.create.Data):
             self.inputfile.close()
 
     def addvar(self,varkey):
-
+        """
+        Add a variables to data
+        """
         self.variables[varkey] = None
         self._set_data()
 
     def delvar(self,varkey):
-
+        """
+        Delete a variable
+        """
         del self.variables[varkey]
        
-        if self.memmap: 
-            outputfile  = os.path.join(self.memmap,varkey)
-
+        if self.boxmem: 
+            outputfile  = os.path.join(self.boxmem,varkey)
             try:
                 shutil.rmtree(outputfile)
             except:
                 pass 
 
         self.varlist = list(self.variables.keys())
-         
