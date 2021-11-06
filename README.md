@@ -4,7 +4,7 @@
 ![ubuntu-container](https://github.com/akashdhruv/BubbleBox/workflows/ubuntu-container/badge.svg)
 
 ### Introduction
-BubbleBox is a library that provides building blocks to parallelize and scale HPC applications
+BubbleBox is a library that provides building blocks to parallelize and scale data science applications
 
 ### Installation
 Installation instructions
