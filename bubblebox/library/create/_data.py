@@ -27,6 +27,9 @@ class Data(cbox.create.Data):
                        'nxb'       : number of grid points per block in x dir,
                        'nyb'       : number of grid points per block in y dir,
                        'nzb'       : number of grid points per block in z dir,
+                       'xguard'    : number of guard cells in x dir,
+                       'yguard'    : number of guard cells in y dir,
+                       'zguard'    : number of guard cells in z dir,
                        'inputfile' : hdf5 inputfile default (None),
                        'variables' : dictionary of variables default ({})
                        'storage'   : 'numpy', 'zarr', 'dask', 'pyarrow' }
@@ -73,7 +76,8 @@ class Data(cbox.create.Data):
                               'inputfile' : None,
                               'boxmem'    : None,
                               'variables' : {},
-                                    'nxb' : 1, 'nyb' : 1, 'nzb' : 1,
+                                    'nxb' : 1, 'nyb'    : 1, 'nzb'    : 1,
+                                 'xguard' : 0, 'yguard' : 0, 'zguard' : 0,
                                 'storage' : 'numpy'}
 
         for key in attributes:
@@ -119,7 +123,7 @@ class Data(cbox.create.Data):
 
         for varkey in emptykeys:
             outputfile = os.path.join(self.boxmem,varkey)
-            outputshape = (self.nblocks,self.nzb,self.nyb,self.nxb)
+            outputshape = (self.nblocks, self.nzb+2*self.zguard, self.nyb+2*self.yguard, self.nxb+2*self.xguard)
             self.variables[varkey] = numpy.memmap(outputfile, dtype=float, shape=outputshape, mode='w+')
 
     def _create_zarr_objects(self):
@@ -139,9 +143,10 @@ class Data(cbox.create.Data):
 
         for varkey in emptykeys:
             outputfile = os.path.join(self.boxmem,varkey)
-            outputshape = (self.nblocks,self.nzb,self.nyb,self.nxb)
+            outputshape = (self.nblocks, self.nzb+2*self.zguard, self.nyb+2*self.yguard, self.nxb+2*self.xguard)
             self.variables[varkey] = zarr.open(outputfile, mode='w', shape=outputshape, 
-                                                           chunks=(1,self.nzb,self.nyb,self.nxb),dtype=float)
+                                         chunks=(1, self.nzb+2*self.zguard, 
+                                                    self.nyb+2*self.yguard, self.nxb+2*self.xguard),dtype=float)
 
     def _create_numpy_arrays(self):
         """
@@ -151,7 +156,7 @@ class Data(cbox.create.Data):
         if not emptykeys: return
 
         for varkey in emptykeys:
-            outputshape = (self.nblocks,self.nzb,self.nyb,self.nxb)
+            outputshape = (self.nblocks, self.nzb+2*self.zguard, self.nyb+2*self.yguard, self.nxb+2*self.xguard)
             self.variables[varkey] = numpy.ndarray(dtype=float, shape=outputshape)
 
     def _create_dask_objects(self):
@@ -163,8 +168,8 @@ class Data(cbox.create.Data):
 
         for varkey in emptykeys:
             if type(self.variables[varkey]) is not dsarray.core.Array:
-                self.variables[varkey] = dsarray.from_array(self.variables[varkey],
-                                                            chunks=(1,self.nzb,self.nyb,self.nxb))
+                self.variables[varkey] = dsarray.from_array(self.variables[varkey], 
+                                             chunks=(1, self.nzb+2*self.zguard, self.nyb+2*self.yguard, self.nxb+2*self.xguard))
 
     def _create_pyarrow_objects(self):
         """

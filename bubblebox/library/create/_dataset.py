@@ -21,23 +21,27 @@ class Dataset(object):
     def __repr__(self):
         """Return a representation of the object."""
         return ("Dataset:\n" +
-                " - type    : {}\n".format(type(self)) +
-                " - file    : {}\n".format(self._data.inputfile) +
-                " - keys    : {}\n".format(self._data.varlist) +
-                " - bound   : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
-                                                                     self.xmax,
-                                                                     self.ymin,
-                                                                     self.ymax,
-                                                                     self.zmin,
-                                                                     self.zmax) +
-                " - size    : {} x {} x {}\n".format(self.nxb,self.nyb,self.nzb) +
-                " - nblocks : {}".format(self.nblocks))
+                " - type         : {}\n".format(type(self)) +
+                " - file         : {}\n".format(self._data.inputfile) +
+                " - keys         : {}\n".format(self._data.varlist) +
+                " - bound(z-y-x) : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.zmin,self.zmax,
+                                                                            self.ymin,self.ymax,
+                                                                            self.xmin,self.xmax) +
+                " - shape(z-y-x) : {} x {} x {}\n".format(self.nzb,self.nyb,self.nxb) +
+                " - guard(z-y-x) : {} x {} x {}\n".format(self.zguard,self.yguard,self.xguard) +
+                " - nblocks      : {}".format(self.nblocks))
 
     def __getitem__(self,varkey):
         """
         Get variable data
         """
         return self._data[varkey]
+
+    def __setitem__(self,varkey,value):
+        """
+        Set variable data
+        """
+        self._data[varkey] = value
 
     def _map_blocklist(self,blocklist):
         """
@@ -85,6 +89,18 @@ class Dataset(object):
     @property
     def nzb(self):
         return self._data.nzb
+
+    @property
+    def xguard(self):
+        return self._data.xguard
+
+    @property
+    def yguard(self):
+        return self._data.yguard
+
+    @property
+    def zguard(self):
+        return self._data.zguard
 
     @property
     def varlist(self):
