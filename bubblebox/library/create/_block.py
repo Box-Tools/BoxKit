@@ -35,15 +35,12 @@ class Block(object):
     def __repr__(self):
         """Return a representation of the object."""
         return ("Block:\n" +
-                " - type   : {}\n".format(type(self)) +
-                " - deltas : {} x {} x {}\n".format(self.dx, self.dy, self.dz) +
-                " - bound  : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.xmin,
-                                                                         self.xmax,
-                                                                         self.ymin,
-                                                                         self.ymax,
-                                                                         self.zmin,
-                                                                         self.zmax) +
-                " - tag    : {}\n".format(self.tag))
+                " - type         : {}\n".format(type(self)) +
+                " - deltas       : {} x {} x {}\n".format(self.dx, self.dy, self.dz) +
+                " - bound(z-y-x) : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.zmin,self.zmax,
+                                                                            self.ymin,self.ymax,
+                                                                            self.xmin,self.xmax) +
+                " - tag          : {}\n".format(self.tag))
 
     def __getitem__(self,varkey):
         """
@@ -162,19 +159,4 @@ class Block(object):
         """
         Exchange information
         """
-        blockdata = self._data[varkey][self.tag]
-
-        if location == 'xlow':
-            blockdata[:,:,0] = self.neighdata(varkey,neighkey)[:,:,-2]
-        elif location == 'xhigh':
-            blockdata[:,:,-1] = self.neighdata(varkey,neighkey)[:,:,1]
-        elif location == 'ylow':
-            blockdata[:,0,:] = self.neighdata(varkey,neighkey)[:,-2,:]
-        elif location == 'yhigh':
-            blockdata[:,-1,:] = self.neighdata(varkey,neighkey)[:,1,:]
-        elif location == 'zlow':
-            blockdata[0,:,:] = self.neighdata(varkey,neighkey)[-2,:,:]
-        elif location == 'zhigh':
-            blockdata[-1,:,:] = self.neighdata(varkey,neighkey)[1,:,:]
-        else:
-            raise ValueError('Unknown neighbor "{}"'.format(neighkey))
+        pass
