@@ -35,13 +35,13 @@ class Dataset(object):
         """
         Get variable data
         """
-        return self._data[varkey]
+        return self._data[varkey][:,:,:,:]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        self._data[varkey] = value
+        self._data[varkey][:,:,:,:] = value
 
     def _map_blocklist(self,blocklist):
         """
