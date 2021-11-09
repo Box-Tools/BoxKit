@@ -92,6 +92,9 @@ class Block(object):
             self.neighdict = self._get_neighdict_2D()
         else:
             self.neighdict = self._get_neighdict_3D()
+ 
+        self.nxb,self.nyb,self.nzb = self._data.nxb,self._data.nyb,self._data.nzb,
+        self.xguard,self.yguard,self.zguard = self._data.xguard,self._data.yguard,self._data.zguard
 
     def _get_neighdict_2D(self):
         """class property python
@@ -145,30 +148,6 @@ class Block(object):
             neighlist = [None]*6
 
         return dict(zip(locations,neighlist))
-
-    @property
-    def nxb(self):
-        return self._data.nxb
-
-    @property
-    def nyb(self):
-        return self._data.nyb
-
-    @property
-    def nzb(self):
-        return self._data.nzb
-
-    @property
-    def xguard(self):
-        return self._data.xguard
-
-    @property
-    def yguard(self):
-        return self._data.yguard
-
-    @property
-    def zguard(self):
-        return self._data.zguard
 
     def neighdata(self,varkey,neighkey):
         """
