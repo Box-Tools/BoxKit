@@ -26,7 +26,7 @@ namespace cbox::utilities
         virtual ~Action();
 
         //attributes
-        int  nthreads = 1;
+        unsigned int nthreads = 1;
         bool monitor  = false;
 
         PyObject *pyTarget = NULL;

@@ -20,7 +20,8 @@ namespace cbox::create
 	virtual ~Data() {}
 
         //attributes
-        int nxb=1, nyb=1, nzb=1, nblocks=1;
+        unsigned int nxb=1, nyb=1, nzb=1, nblocks=1;
+        unsigned int xguard=0, yguard=0, zguard=0;
     };
    /*
     */
@@ -30,15 +31,22 @@ namespace cbox::create
 
         //constructors
 	Block() {}
+        Block(Data &data);
 
         //destructors
 	virtual ~Block() {}
 
         //attributes
-        int   tag=0;
-        int   nxb=1,  nyb=1,  nzb=1;
+        unsigned int tag=0;
+        unsigned int nxb=1,  nyb=1,  nzb=1;
         float xmin=0, ymin=0, zmin=0;
         float xmax=0, ymax=0, zmax=0;
+        float dx=0, dy=0, dz=0;
+        unsigned int xguard=0, yguard=0, zguard=0;
+
+    private:
+        Data data;
+
     };
    /*
     */

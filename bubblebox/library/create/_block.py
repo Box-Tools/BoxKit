@@ -1,7 +1,7 @@
 """Module with implementation of the Block class."""
 
 import pymorton
-
+import numpy
 import cbox.lib.boost as cbox
 
 class Block(object):
@@ -29,6 +29,7 @@ class Block(object):
 
         """
         super().__init__()
+
         self._set_attributes(attributes)
         self._map_data(data)
 
@@ -93,8 +94,9 @@ class Block(object):
         else:
             self.neighdict = self._get_neighdict_3D()
  
-        self.nxb,self.nyb,self.nzb = self._data.nxb,self._data.nyb,self._data.nzb,
-        self.xguard,self.yguard,self.zguard = self._data.xguard,self._data.yguard,self._data.zguard
+        self.nxb, self.xguard = self._data.nxb, self._data.xguard
+        self.nyb, self.yguard = self._data.nyb, self._data.yguard
+        self.nzb, self.zguard = self._data.nzb, self._data.zguard
 
     def _get_neighdict_2D(self):
         """class property python
