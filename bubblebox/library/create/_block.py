@@ -46,13 +46,13 @@ class Block(object):
         """
         Get variable data
         """
-        return self._data[varkey][self.tag] #.to_numpy()[:]
+        return self._data[varkey][self.tag][:,:,:] #.to_numpy()[:]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        self._data[varkey][self.tag] = value #.to_numpy()[:] = value
+        self._data[varkey][self.tag][:,:,:] = value #.to_numpy()[:] = value
 
     def _set_attributes(self,attributes):
         """
@@ -145,6 +145,30 @@ class Block(object):
             neighlist = [None]*6
 
         return dict(zip(locations,neighlist))
+
+    @property
+    def nxb(self):
+        return self._data.nxb
+
+    @property
+    def nyb(self):
+        return self._data.nyb
+
+    @property
+    def nzb(self):
+        return self._data.nzb
+
+    @property
+    def xguard(self):
+        return self._data.xguard
+
+    @property
+    def yguard(self):
+        return self._data.yguard
+
+    @property
+    def zguard(self):
+        return self._data.zguard
 
     def neighdata(self,varkey,neighkey):
         """
