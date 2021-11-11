@@ -142,4 +142,4 @@ def halo_exchange_block(self,unit,varkey):
     """
     Halo exchange
     """
-    pass
+    unit.exchange_neighdata(varkey)

@@ -167,13 +167,20 @@ class Block(object):
         blockdata = self._data[varkey][self.tag]
 
         for guard in range(self.xguard):
-            blockdata[:,:,guard] = self.neighdata(varkey,neighkey)[:,:,self.nxb+guard]
-            blockdata[:,:,self.nxb+self.xguard+guard] = self.neighdata(varkey,neighkey)[:,:,self.xguard+guard]
+            if self.neighdict['xlow']:
+                blockdata[:,:,guard] = self.neighdata(varkey,'xlow')[:,:,self.nxb+guard]
+            if self.neighdict['xhigh']:
+                blockdata[:,:,self.nxb+self.xguard+guard] = self.neighdata(varkey,'xhigh')[:,:,self.xguard+guard]
 
         for guard in range(self.yguard):
-            blockdata[:,guard,:] = self.neighdata(varkey,neighkey)[:,self.nyb+guard,:]
-            blockdata[:,self.nyb+self.yguard+guard,:] = self.neighdata(varkey,neighkey)[:,self.yguard+guard,:]
+            if self.neighdict['ylow']:
+                blockdata[:,guard,:] = self.neighdata(varkey,'ylow')[:,self.nyb+guard,:]
+            if self.neighdict['yhigh']:
+                blockdata[:,self.nyb+self.yguard+guard,:] = self.neighdata(varkey,'yhigh')[:,self.yguard+guard,:]
 
         for guard in range(self.zguard):
-            blockdata[guard,:,:] = self.neighdata(varkey,neighkey)[self.nzb+guard,:,:]
-            blockdata[self.nzb+self.zguard+guard,:,:] = self.neighdata(varkey,neighkey)[self.zguard+guard,:,:]
+            if self.neighdict['zlow']:
+                blockdata[guard,:,:] = self.neighdata(varkey,'zlow')[self.nzb+guard,:,:]
+            if self.neighdit['zhigh']:
+                blockdata[self.nzb+self.zguard+guard,:,:] = self.neighdata(varkey,'zhigh')[self.zguard+guard,:,:]
+
