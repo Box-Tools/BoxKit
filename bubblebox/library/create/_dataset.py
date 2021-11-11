@@ -1,5 +1,8 @@
 """Module with implemenetation of Dataset class"""
 
+from . import Block
+from ..utilities import Action
+
 class Dataset(object):
     """API class for storing Dataset info"""
 
@@ -35,13 +38,13 @@ class Dataset(object):
         """
         Get variable data
         """
-        return self._data[varkey][:,:,:,:]
+        return self._data[varkey]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        self._data[varkey][:,:,:,:] = value
+        self._data[varkey] = value
 
     def _map_blocklist(self,blocklist):
         """
@@ -117,3 +120,26 @@ class Dataset(object):
         Clean up the dataset and close it
         """
         self._data.purge(purgeflag)
+
+    def halo_exchange(self,varlist,nthreads=1,batch='auto',backend='serial',monitor=False):
+        """
+        Perform halo exchange
+        """
+        # Convert single string to a list
+        if type(varlist) is str:
+            varlist = [varlist]
+
+        halo_exchange_block.nthreads = nthreads
+        halo_exchange_block.batch = batch
+        halo_exchange_block.backend = backend
+        halo_exchange_block.monitor = monitor
+
+        for varkey in varlist:
+            halo_exchange_block(self.blocklist,varkey)         
+
+@Action(unit=Block)
+def halo_exchange_block(self,unit,varkey):
+    """
+    Halo exchange
+    """
+    pass

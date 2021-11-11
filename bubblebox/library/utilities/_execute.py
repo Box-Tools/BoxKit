@@ -60,7 +60,8 @@ def execute_loky(action,unitlist,*args):
     if(action.monitor): unitlist = tqdm.tqdm(unitlist)
 
     with joblib.parallel_backend(n_jobs=action.nthreads,backend="loky"):
-        listresult = joblib.Parallel()(joblib.delayed(action.target)(action,unit,*args) for unit in unitlist) 
+        listresult = joblib.Parallel(batch_size=action.batch) \
+                         (joblib.delayed(action.target)(action,unit,*args) for unit in unitlist) 
 
     return listresult
 

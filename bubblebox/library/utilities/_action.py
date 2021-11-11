@@ -30,6 +30,7 @@ class Action(object):
         self.backend  = backend
         self.actions  = actions
         self.unit     = unit
+        self.batch    = 'auto'
 
     def __call__(self,*args):
         """Call wrapper"""
