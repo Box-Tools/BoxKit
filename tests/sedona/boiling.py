@@ -1,6 +1,6 @@
 """Tests for `bubblebox/api/flow`."""
 
-import bubblebox.api.physics as bubblebox
+import bubblebox.api as bubblebox
 import unittest
 import pymorton
 import time
@@ -113,6 +113,7 @@ class TestBoiling(unittest.TestCase):
         process.tasks['skimeasure']['block'].nthreads  = 8
         process.tasks['skimeasure']['block'].backend   = 'loky'
         process.tasks['skimeasure']['block'].monitor   = True
+        process.tasks['skimeasure']['block'].batch     = 'auto'
 
         bubbleframes = process(dataframes,'phi')
 

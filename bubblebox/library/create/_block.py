@@ -47,13 +47,13 @@ class Block(object):
         """
         Get variable data
         """
-        return self._data[varkey][self.tag][:,:,:] #.to_numpy()[:]
+        return self._data[varkey][self.tag] #.to_numpy()[:]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        self._data[varkey][self.tag][:,:,:] = value #.to_numpy()[:] = value
+        self._data[varkey][self.tag] = value #.to_numpy()[:] = value
 
     def _set_attributes(self,attributes):
         """
@@ -160,8 +160,20 @@ class Block(object):
         else:
             return None
 
-    def exchange_neighdata(self,varkey,neighkey):
+    def exchange_neighdata(self,varkey):
         """
         Exchange information
         """
-        pass
+        blockdata = self._data[varkey][self.tag]
+
+        for guard in range(self.xguard):
+            blockdata[:,:,guard] = self.neighdata(varkey,neighkey)[:,:,self.nxb+guard]
+            blockdata[:,:,self.nxb+self.xguard+guard] = self.neighdata(varkey,neighkey)[:,:,self.xguard+guard]
+
+        for guard in range(self.yguard):
+            blockdata[:,guard,:] = self.neighdata(varkey,neighkey)[:,self.nyb+guard,:]
+            blockdata[:,self.nyb+self.yguard+guard,:] = self.neighdata(varkey,neighkey)[:,self.yguard+guard,:]
+
+        for guard in range(self.zguard):
+            blockdata[guard,:,:] = self.neighdata(varkey,neighkey)[self.nzb+guard,:,:]
+            blockdata[self.nzb+self.zguard+guard,:,:] = self.neighdata(varkey,neighkey)[self.zguard+guard,:,:]

@@ -1,6 +1,6 @@
 """Tests for `bubblebox/api/flow`."""
 
-import bubblebox.api.physics as bubblebox
+import bubblebox.api as bubblebox
 import unittest
 import pymorton
 import time

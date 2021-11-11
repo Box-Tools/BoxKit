@@ -51,20 +51,12 @@ class Data(cbox.create.Data):
         """
         Get variable data
         """
-        #if not varkey in self.varlist: 
-        #    raise ValueError('[bubblebox.library.create.Data] '+
-        #                     'Variable "{}" does not exist in "{}"'.format(varkey,self.varlist))
-        #else:
         return self.variables[varkey]
 
     def __setitem__(self,varkey,value):
         """
         Set variable data
         """
-        #if not varkey in self.varlist:
-        #    raise ValueError('[bubblebox.library.create.Data] '+
-        #                     'Variable "{}" does not exist in "{}"'.format(varkey,self.varlist))
-        #else:
         self.variables[varkey] = value
 
     def _set_attributes(self,attributes):
@@ -169,7 +161,8 @@ class Data(cbox.create.Data):
         for varkey in emptykeys:
             if type(self.variables[varkey]) is not dsarray.core.Array:
                 self.variables[varkey] = dsarray.from_array(self.variables[varkey], 
-                                             chunks=(1, self.nzb+2*self.zguard, self.nyb+2*self.yguard, self.nxb+2*self.xguard))
+                                             chunks=(1, self.nzb+2*self.zguard, 
+                                                        self.nyb+2*self.yguard, self.nxb+2*self.xguard))
 
     def _create_pyarrow_objects(self):
         """
