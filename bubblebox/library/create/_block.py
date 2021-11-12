@@ -4,6 +4,8 @@ import pymorton
 import numpy
 import cbox.lib.boost as cbox
 
+from . import Data
+
 class Block(object):
     """Default class for a Block."""
 
@@ -83,22 +85,25 @@ class Block(object):
         Private method for initialization
         """
         self._data = None
-        self.neighdict = []
+
+        self.neighdict = {'xlow':None, 'xhigh':None, 
+                          'ylow':None, 'yhigh':None, 
+                          'zlow':None, 'zhigh':None}
 
         if not data: return
 
         self._data = data
 
         if 1 in [self.dx,self.dy,self.dz]:
-            self.neighdict = self._get_neighdict_2D()
+            self._set_neighdict_2D()
         else:
-            self.neighdict = self._get_neighdict_3D()
+            self._set_neighdict_3D()
  
         self.nxb, self.xguard = self._data.nxb, self._data.xguard
         self.nyb, self.yguard = self._data.nyb, self._data.yguard
         self.nzb, self.zguard = self._data.nzb, self._data.zguard
 
-    def _get_neighdict_2D(self):
+    def _set_neighdict_2D(self):
         """class property python
         Return neighbor tags
 
@@ -123,10 +128,10 @@ class Block(object):
 
         else:
             neighlist = [None]*4
+ 
+        self.neighdict.update(dict(zip(locations,neighlist))) 
 
-        return dict(zip(locations,neighlist))
-
-    def _get_neighdict_3D(self):
+    def _set_neighdict_3D(self):
         """
         Return neighbor tags
 
@@ -149,7 +154,19 @@ class Block(object):
         else:
             neighlist = [None]*6
 
-        return dict(zip(locations,neighlist))
+        self.neighdict.update(dict(zip(locations,neighlist)))
+
+    def write_neighbuffer(self,varkey):
+        """
+        Write block data to buffer for halo exchange
+        """
+        pass
+
+    def read_neighbuffer(self,varkey):
+        """
+        Read neighbor buffer and perform halo exchange
+        """
+        pass
 
     def neighdata(self,varkey,neighkey):
         """
