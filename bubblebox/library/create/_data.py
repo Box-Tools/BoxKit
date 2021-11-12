@@ -70,7 +70,7 @@ class Data(cbox.create.Data):
                               'variables' : {},
                                     'nxb' : 1, 'nyb'    : 1, 'nzb'    : 1,
                                  'xguard' : 0, 'yguard' : 0, 'zguard' : 0,
-                                'storage' : 'numpy'}
+                                'storage' : 'numpy-memmap'}
 
         for key in attributes:
             if key in default_attributes:
@@ -88,6 +88,8 @@ class Data(cbox.create.Data):
         self.varlist = list(self.variables.keys())
 
         if self.storage == 'numpy':
+            self._create_numpy_arrays()
+        elif self.storage == 'numpy-memmap':
             self._create_numpy_memmap()
         elif self.storage == 'zarr':
             self._create_zarr_objects()

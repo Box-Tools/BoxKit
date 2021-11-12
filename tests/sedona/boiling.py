@@ -102,7 +102,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test measure bubbles
         """
-        dataframes = [bubblebox.read.dataset(filename,storage='numpy') for filename in self.filenames]
+        dataframes = [bubblebox.read.dataset(filename,storage='numpy-memmap') for filename in self.filenames]
 
         _time_measure = time.time()
         process = bubblebox.measure.bubbles.clone()

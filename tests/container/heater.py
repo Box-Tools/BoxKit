@@ -45,6 +45,10 @@ class TestHeater(unittest.TestCase):
             taglist = [*range(0,dataset.nblocks)]
 
             for tag,block in zip(taglist,dataset.blocklist):
+
+                locations = ['xlow','xhigh','ylow','yhigh','zlow','zhigh']
+                neighdict = dict(zip(locations,[None]*6))
+
                 iloc,jloc   = pymorton.deinterleave2(tag)
 
                 neighlist = [pymorton.interleave(iloc-1,jloc),
@@ -54,7 +58,12 @@ class TestHeater(unittest.TestCase):
 
                 neighlist = [None if neighbor > dataset.nblocks-1 else neighbor for neighbor in neighlist]
 
-                self.assertEqual(neighlist,list(block.neighdict.values()), 'Neigbhors are inconsitent with morton order')
+                neighdict['xlow'] = neighlist[0]
+                neighdict['xhigh'] = neighlist[1]
+                neighdict['zlow'] = neighlist[2]
+                neighdict['zhigh'] = neighlist[3]
+
+                self.assertEqual(neighdict, block.neighdict, 'Neigbhors are inconsitent with morton order')
 
             testMonitor.update(monitorMsg)
 

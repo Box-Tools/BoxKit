@@ -43,7 +43,7 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
 
             for block in dataset.blocklist:
-                self.assertEqual([None]*4,list(block.neighdict.values()), 'Single block data structure has no neighbors')
+                self.assertEqual([None]*6,list(block.neighdict.values()), 'Single block data structure has no neighbors')
 
             testMonitor.update(monitorMsg)
 
