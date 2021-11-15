@@ -56,7 +56,7 @@ def skimeasure_block(self,unit,lsetkey,labelkey):
     listprops : list of properties
     """
 
-    unit[labelkey] = skimage_measure.label(unit[lsetkey] >= 0)
+    unit[labelkey][:,:,:] = skimage_measure.label(unit[lsetkey] >= 0)
 
     listprops = skimage_measure.regionprops(unit[labelkey].astype(int))
 
