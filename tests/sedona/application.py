@@ -31,7 +31,7 @@ class TestApplication(unittest.TestCase):
 
         self.assertEqual(ites,262144)
 
-        print("Search time: ",end-start,"Iterations: ")
+        print("Search time: ",end-start)
 
         grid.addvar('eror')
         grid.addvar('gamma')
@@ -39,7 +39,7 @@ class TestApplication(unittest.TestCase):
         grid['gamma'][:,:,:,:] = grid['phi'][:,:,:,:]
 
         start = time.time()
-        grid.fill_guard_cells('phi')
+        grid.halo_exchange('phi')
         end = time.time()
 
         grid.compute_error('eror','phi','gamma')
@@ -48,7 +48,7 @@ class TestApplication(unittest.TestCase):
         expected_errors = numpy.zeros((grid.nblocks, grid.nzb+2*grid.zguard, 
                                                      grid.nyb+2*grid.yguard, grid.nxb+2*grid.xguard))
 
-        #self.assertTrue(numpy.allclose(errors, expected_errors, atol=1e-12))
+        self.assertTrue(numpy.allclose(errors, expected_errors, atol=1e-12))
 
         print("Fill guardcells time: ",end-start)
 
