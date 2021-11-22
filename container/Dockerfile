@@ -9,4 +9,4 @@ ARG maple_target
 WORKDIR ${maple_target}
 
 CMD ["sh", "-c", "./setup develop && ./setup clean && python3 tests/container && \
-                   nohup /home/user/.local/bin/jupyter notebook --port=8888 --no-browser --ip=0.0.0.0"]
+                   /home/user/.local/bin/jupyter notebook --port=8888 --no-browser --ip=0.0.0.0"]
