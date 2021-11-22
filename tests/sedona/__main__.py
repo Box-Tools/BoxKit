@@ -4,7 +4,7 @@ import sys
 import unittest
 
 def main():
-    tests = ['boiling','heater']
+    tests = ['boiling','heater','application']
 
     suite = unittest.TestSuite()
 
