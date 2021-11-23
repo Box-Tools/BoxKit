@@ -9,7 +9,7 @@ def run_container(basedir):
 
     bubblebox.build()
     bubblebox.pour()
-    bubblebox.execute('"./setup develop && ./setup clean && python3 tests/container && \
+    bubblebox.execute('"./setup develop && ./setup clean && \
                          /home/user/.local/bin/jupyter notebook --port=8888 --no-browser --ip=0.0.0.0"')
     bubblebox.clean()
 
