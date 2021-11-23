@@ -1,14 +1,21 @@
 #!/bin/bash
 
-# At present bubblebox should only be installed in development mode
-# 
+#
 if [ $1 = "develop" ]; then
     cd cbox/source && make && cd ../../
     python3 setup.py develop --user
 fi
 
+# 
+if [ $1 = "install" ]; then
+    cd cbox/source && make && cd ../../
+    python3 setup.py build
+    python3 setup.py install --user
+fi
+
 # Clean after installation
 if [ $1 = "clean" ]; then
     rm -rf *.egg-info
+    rm -rf build dist
     cd cbox/source && make clean && cd ../../
 fi

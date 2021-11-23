@@ -22,6 +22,7 @@ setup(
     license              = metadata['__license__'],
     packages             = find_packages(where='./'),
     package_dir          = {'': './'},
+    package_data         = {'': ['*.so']},
     include_package_data = True,
     long_description     = long_description)
 
