@@ -1,19 +1,24 @@
 import pymaple
 import os
 
-def publish_image(basedir):
+if __name__ == "__main__":
+    """
+    Publish container
+    """
+    basedir = os.getenv('PWD')+'/..'
 
     # Publish container for use with other applications
-    bubblebox = pymaple.Maple(image='akashdhruv/bubblebox:latest',container='bubblebox',
+    bubblebox = pymaple.Maple(image='akashdhruv/ubuntu:user',container='bubblebox',
                           source=basedir,target='/home/mount/bubblebox')
 
     bubblebox.build()
+
     bubblebox.pour()
-    bubblebox.execute('"./setup develop && ./setup build && ./setup install && ./setup clean"')
+    bubblebox.execute('./setup develop && ./setup build && ./setup install && ./setup clean && \
+                       pip3 install jupyter')
     bubblebox.commit()
+    bubblebox.rinse()
+
     bubblebox.push('akashdhruv/bubblebox:publish')
     bubblebox.clean()
-
-if __name__ == "__main__":
-    basedir = os.getenv('PWD')+'/..'
-    publish_image(basedir)
+    bubblebox.remove()
