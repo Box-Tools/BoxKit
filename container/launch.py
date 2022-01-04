@@ -15,7 +15,7 @@ if __name__ == "__main__":
     bubblebox.build()
     bubblebox.pour()
     bubblebox.execute('./setup develop && ./setup clean && \
-                       /home/user/.local/bin/jupyter notebook --port=8888 --no-browser --ip=0.0.0.0')
+                       jupyter notebook --port=8888 --no-browser --ip=0.0.0.0')
     bubblebox.rinse()
     bubblebox.clean()
     bubblebox.remove()
