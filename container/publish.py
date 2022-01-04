@@ -8,7 +8,7 @@ if __name__ == "__main__":
     basedir = os.getenv('PWD')+'/..'
 
     # Publish container for use with other applications
-    bubblebox = pymaple.Maple(image='akashdhruv/ubuntu:user',container='bubblebox',
+    bubblebox = pymaple.Maple(image='akashdhruv/ubuntu:latest',container='bubblebox',
                           source=basedir,target='/home/mount/bubblebox')
 
     bubblebox.build()

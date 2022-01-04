@@ -24,7 +24,7 @@ class TestHeater(unittest.TestCase):
         """
         self.timestart= time.time()
 
-        basedir  = os.getenv('HOME')+'/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/heater2D/'
+        basedir  = '/home/box/boiling-earth/heater2D/'
         filetags = [*range(0,60,5)]
         prefix   = "".join([prefix,'/INS_Pool_Boiling_Heater_hdf5_'])
         self.filenames = ["".join([basedir,prefix,str(filetag).zfill(4)]) for filetag in filetags]
