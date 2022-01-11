@@ -42,4 +42,4 @@ jobs:
     - name: Clean BubbleBox env
       run: |
           maple clean
-          maple remove --image akashdhruv/ubuntu:latest
+          maple remove akashdhruv/ubuntu:latest
