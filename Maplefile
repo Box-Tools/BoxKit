@@ -1,6 +1,6 @@
-# Maplefile
-
+# Maplefile for bubblebox
+#
 maple_container="bubblebox"
 maple_image="akashdhruv/bubblebox:latest"
 maple_target="/home/mount/bubblebox"
-maple_source="$PWD/.."
+maple_port="2000"
