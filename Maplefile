@@ -3,4 +3,5 @@
 maple_container="bubblebox"
 maple_image="akashdhruv/bubblebox:latest"
 maple_target="/home/mount/bubblebox"
+maple_backend="docker"
 maple_port="2000"

@@ -35,10 +35,8 @@ jobs:
           maple build --image akashdhruv/ubuntu:latest
     - name: Run BubbleBox tests
       run: |
-          maple pour
           maple execute "./setup develop && ./setup clean && \
                          python3 tests/container/create.py"
-          maple rinse 
     - name: Clean BubbleBox env
       run: |
           maple clean
