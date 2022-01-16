@@ -32,12 +32,12 @@ jobs:
           ./setup clean
     - name: Setup BubbleBox env
       run: |
-          maple build --image akashdhruv/ubuntu:latest
+          maple image build --remote=akashdhruv/ubuntu:latest
     - name: Run BubbleBox tests
       run: |
-          maple execute "./setup develop && ./setup clean && \
-                         python3 tests/container/create.py"
+          maple container execute "./setup develop && ./setup clean && \
+                                   python3 tests/container/create.py"
     - name: Clean BubbleBox env
       run: |
-          maple clean
-          maple remove akashdhruv/ubuntu:latest
+          maple image clean
+          maple image remove akashdhruv/ubuntu:latest
