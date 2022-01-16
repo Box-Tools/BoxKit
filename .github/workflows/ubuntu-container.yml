@@ -32,7 +32,7 @@ jobs:
           ./setup clean
     - name: Setup BubbleBox env
       run: |
-          maple image build --image akashdhruv/ubuntu:latest
+          maple image build --remote=akashdhruv/ubuntu:latest
     - name: Run BubbleBox tests
       run: |
           maple container execute "./setup develop && ./setup clean && \
