@@ -1,4 +1,4 @@
-name: tests-container
+name: tests
 
 on:
   pull_request:
@@ -10,8 +10,8 @@ on:
       - 'CITATION'
 
 jobs:
-  bubblebox:
-    name: "bubblebox"
+  bubblebox-container:
+    name: "bubblebox-container"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2      
@@ -19,14 +19,13 @@ jobs:
     - uses: ./.github/actions/install
     - name: Run BubbleBox tests
       run: |
+          maple image build
           maple container execute "python3 tests/container"
-    - name: Clean BubbleBox env
-      run: |
           maple container clean
           maple image remove
 
-  ubuntu:
-    name: "ubuntu" 
+  ubuntu-container:
+    name: "ubuntu-container" 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2      
@@ -36,8 +35,7 @@ jobs:
         base-image: akashdhruv/ubuntu:latest
     - name: Run BubbleBox tests
       run: |
+          maple image build --base=akashdhruv/ubuntu:latest
           maple container execute "python3 tests/container/create.py"
-    - name: Clean BubbleBox env
-      run: |
           maple container clean
           maple image remove akashdhruv/ubuntu:latest

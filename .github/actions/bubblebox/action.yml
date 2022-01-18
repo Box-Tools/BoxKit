@@ -3,14 +3,8 @@ name: bubblebox
 
 inputs:
   base-image: 
-    description: 'Docker base image'
-    required: true
+    description: 'Base image for bubblebox'
     default: 'akashdhruv/bubblebox:latest'
-
-  output-image:
-    discription: 'Docker output image'
-    required: true
-    default: 'akashdruv/bubblebox:latest'
 
 runs:
   using: "composite"
@@ -21,9 +15,9 @@ runs:
       shell: bash
     - run: cd ~/BubbleBox && maple container execute --commit "./setup develop && ./setup install"
       shell: bash
-    - run: cd ~/BubbleBox && maple image tag ${{ inputs.output-image }}
+    - run: cd ~/BubbleBox && maple image tag ${{ inputs.base-image }}
       shell: bash
-    - run: cd ~/BubbleBox && maple container clean && maple image remove
+    - run: cd ~/BubbleBox && maple container clean
       shell: bash
     - run: rm -rf ~/BubbleBox
       shell: bash

@@ -13,3 +13,7 @@ runs:
       shell: bash
     - run: maple container execute --commit "./setup develop && ./setup install && ./setup clean"
       shell: bash
+    - run: maple image tag ${{ inputs.base-image }}
+      shell: bash
+    - run: maple container clean
+      shell: bash
