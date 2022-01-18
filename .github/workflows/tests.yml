@@ -25,7 +25,6 @@ jobs:
           maple container clean
           maple image remove
 
-jobs:
   ubuntu:
     name: "ubuntu" 
     runs-on: ubuntu-latest
