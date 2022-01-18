@@ -1,0 +1,29 @@
+# Name of the composite action
+name: bubblebox
+
+inputs:
+  base-image: 
+    description: 'Docker base image'
+    required: true
+    default: 'akashdhruv/bubblebox:latest'
+
+  output-image:
+    discription: 'Docker output image'
+    required: true
+    default: 'akashdruv/bubblebox:latest'
+
+runs:
+  using: "composite"
+  steps:
+    - run: cd ~/. && git clone https://github.com/akashdhruv/BubbleBox.git
+      shell: bash
+    - run: cd ~/BubbleBox && maple image build --base ${{ inputs.base-image }}
+      shell: bash
+    - run: cd ~/BubbleBox && maple container execute --commit "./setup develop && ./setup install"
+      shell: bash
+    - run: cd ~/BubbleBox && maple image tag ${{ inputs.output-image }}
+      shell: bash
+    - run: cd ~/BubbleBox && maple container clean && maple image remove
+      shell: bash
+    - run: rm -rf ~/BubbleBox
+      shell: bash

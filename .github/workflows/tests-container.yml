@@ -1,0 +1,44 @@
+name: tests-container
+
+on:
+  pull_request:
+    branches: 
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'CITATION'
+
+jobs:
+  bubblebox:
+    name: "bubblebox"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2      
+    - uses: akashdhruv/Maple/.github/actions/maple@main
+    - uses: ./.github/actions/install
+    - name: Run BubbleBox tests
+      run: |
+          maple container execute "python3 tests/container"
+    - name: Clean BubbleBox env
+      run: |
+          maple container clean
+          maple image remove
+
+jobs:
+  ubuntu:
+    name: "ubuntu" 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2      
+    - uses: akashdhruv/Maple/.github/actions/maple@main
+    - uses: ./.github/actions/install
+      with:
+        base-image: akashdhruv/ubuntu:latest
+    - name: Run BubbleBox tests
+      run: |
+          maple container execute "python3 tests/container/create.py"
+    - name: Clean BubbleBox env
+      run: |
+          maple container clean
+          maple image remove akashdhruv/ubuntu:latest
