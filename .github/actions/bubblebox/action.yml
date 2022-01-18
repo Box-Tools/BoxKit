@@ -13,7 +13,8 @@ runs:
       shell: bash
     - run: cd ~/BubbleBox && maple image tag --get ${{ inputs.base-image }}
       shell: bash
-    - run: cd ~/BubbleBox && maple container execute --commit "./setup develop && ./setup install"
+    - run: cd ~/BubbleBox && maple container execute --commit "cd /home/mount/bubblebox && \
+                                                               ./setup develop && ./setup install"
       shell: bash
     - run: cd ~/BubbleBox && maple image tag --set ${{ inputs.base-image }}
       shell: bash
