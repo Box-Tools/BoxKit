@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#
+# Development mode
 if [ $1 = "develop" ]; then
     cd cbox/source && make && cd ../../
     python3 setup.py develop --user
 fi
 
-# 
+# Install mode
 if [ $1 = "install" ]; then
     cd cbox/source && make && cd ../../
     python3 setup.py build

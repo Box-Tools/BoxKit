@@ -1,6 +1,0 @@
-[submodule "tools/maple"]
-	path = tools/maple
-	url = git@github.com:akashdhruv/maple.git
-[submodule "tools/indicators"]
-	path = tools/indicators
-	url = git@github.com:p-ranav/indicators.git

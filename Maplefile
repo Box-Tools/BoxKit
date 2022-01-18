@@ -1,7 +1,7 @@
 # Maplefile for bubblebox
 #
-maple_container="bubblebox"
-maple_image="akashdhruv/bubblebox:latest"
-maple_target="/home/mount/bubblebox"
-maple_backend="docker"
-maple_port="2000"
+container="bubblebox"
+base="akashdhruv/bubblebox:latest"
+target="/home/mount/bubblebox"
+backend="docker"
+port="2000"
