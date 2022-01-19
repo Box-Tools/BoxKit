@@ -9,12 +9,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: maple container pour ${{ inputs.image }}
+    - run: maple container run --image=${{inputs.image}} "./setup develop && ./setup install && ./setup clean"
       shell: bash
-    - run: maple container execute "./setup develop && ./setup install && ./setup clean"
-      shell: bash
-    - run: maple container commit ${{ input.image }}
-      shell: bash
-    - run: maple container rinse
-      shell: bash 
 
