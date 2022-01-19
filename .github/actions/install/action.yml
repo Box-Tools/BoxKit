@@ -9,6 +9,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: maple container run --image=${{inputs.image}} "./setup develop && ./setup install && ./setup clean"
+    - run: maple container run --image=${{inputs.image}} --commit "./setup develop && \
+                                                                   ./setup install && ./setup clean"
       shell: bash
 
