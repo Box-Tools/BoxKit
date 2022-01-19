@@ -18,13 +18,16 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build
+          maple image build local
     - uses: ./.github/actions/install
+      with:
+        image: local
     - name: Run BubbleBox tests
       run: |
+          maple container pour --image=local
           maple container execute "python3 tests/container"
-          maple container clean
-          maple image remove
+          maple container rinse
+          maple image delete local
 
   ubuntu-container:
     name: "ubuntu-container" 
@@ -34,10 +37,14 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build --base=akashdhruv/ubuntu:latest
+          maple image build local --base=akashdhruv/ubuntu:latest
     - uses: ./.github/actions/install
+      with:
+        image: local
     - name: Run BubbleBox tests
       run: |
+          maple container pour --image=local
           maple container execute "python3 tests/container/create.py"
-          maple container clean
-          maple image remove akashdhruv/ubuntu:latest
+          maple container rinse
+          maple image delete akashdhruv/ubuntu:latest
+          maple image delete local

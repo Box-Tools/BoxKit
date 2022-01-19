@@ -1,9 +1,14 @@
 # Name of the composite action
 name: install
 
+inputs:
+  image: 
+    description: 'Input image for bubblebox'
+    required: true
+
 runs:
   using: "composite"
   steps:
-    - run: maple container execute --commit "./setup develop && ./setup install && ./setup clean"
+    - run: maple container run --image=${{inputs.image}} "./setup develop && ./setup install && ./setup clean"
       shell: bash
 

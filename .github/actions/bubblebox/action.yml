@@ -2,8 +2,8 @@
 name: bubblebox
 
 inputs:
-  base-image: 
-    description: 'Base image for bubblebox'
+  image: 
+    description: 'Input image for bubblebox'
     required: true
 
 runs:
@@ -11,14 +11,7 @@ runs:
   steps:
     - run: cd ~/. && git clone https://github.com/akashdhruv/BubbleBox.git
       shell: bash
-    - run: cd ~/BubbleBox && maple image tag --get ${{ inputs.base-image }}
-      shell: bash
-    - run: cd ~/BubbleBox && maple container execute --commit "cd /home/mount/bubblebox && \
-                                                               ./setup develop && ./setup install"
-      shell: bash
-    - run: cd ~/BubbleBox && maple image tag --set ${{ inputs.base-image }}
-      shell: bash
-    - run: cd ~/BubbleBox && maple container clean
+    - run: cd ~/BubbleBox && maple container run --image=${{inputs.image}} "./setup develop && ./setup install"
       shell: bash
     - run: rm -rf ~/BubbleBox
       shell: bash
