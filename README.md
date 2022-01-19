@@ -1,7 +1,6 @@
 ## BubbleBox
 
-![bubblebox-container](https://github.com/akashdhruv/BubbleBox/workflows/bubblebox-container/badge.svg)
-![ubuntu-container](https://github.com/akashdhruv/BubbleBox/workflows/ubuntu-container/badge.svg)
+![bubblebox-tests](https://github.com/akashdhruv/BubbleBox/workflows/tests/badge.svg)
 
 ### Introduction
 BubbleBox is a library that provides building blocks to parallelize and scale data science, HPC, and ML applications

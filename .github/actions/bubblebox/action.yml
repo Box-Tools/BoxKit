@@ -11,7 +11,7 @@ runs:
   steps:
     - run: cd ~/. && git clone https://github.com/akashdhruv/BubbleBox.git
       shell: bash
-    - run: cd ~/BubbleBox && maple container run --image=${{inputs.image}} "./setup develop && ./setup install"
+    - run: cd ~/BubbleBox && maple container run --commit --image=${{inputs.image}} "./setup develop && ./setup install"
       shell: bash
     - run: rm -rf ~/BubbleBox
       shell: bash
