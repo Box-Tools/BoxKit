@@ -1,0 +1,37 @@
+name: flashx
+
+on:
+  pull_request:
+    branches: 
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'CITATION'
+
+jobs:
+  pool-boiling:
+    name: "pool-boiling"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to Docker Hub
+      run: |
+          echo "::add-mask::${{secrets.DOCKER_HUB_PSK}}"
+    - uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PSK }}
+    - uses: actions/checkout@v2      
+    - uses: akashdhruv/Maple/.github/actions/maple@main
+    - name: Build Container
+      run: |
+          maple image build local
+    - uses: ./.github/actions/install
+      with:
+        image: local
+    - name: Run BubbleBox tests
+      run: |
+          maple container pour --image=local
+          maple container execute "python3 tests/container/heater.py"
+          maple container rinse
+          maple image delete local
