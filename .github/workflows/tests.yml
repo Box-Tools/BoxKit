@@ -24,8 +24,7 @@ jobs:
     - uses: actions/checkout@v2      
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
-      run: |
-          maple image build local
+      run: maple image build local
     - uses: ./.github/actions/install
       with:
         image: local
@@ -46,11 +45,10 @@ jobs:
     - with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_PSK }}
-     - uses: actions/checkout@v2      
+    - uses: actions/checkout@v2      
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
-      run: |
-          maple image build local --base=akashdhruv/ubuntu:latest
+      run: maple image build local --base=akashdhruv/ubuntu:latest
     - uses: ./.github/actions/install
       with:
         image: local
