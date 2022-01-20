@@ -10,7 +10,7 @@ on:
       - 'CITATION'
 
 jobs:
-  pool-boiling:
+  pool_boiling:
     name: "pool-boiling"
     runs-on: ubuntu-latest
     steps:
