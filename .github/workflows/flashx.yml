@@ -25,7 +25,7 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build local
+          maple image build local ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:latest
     - uses: ./.github/actions/install
       with:
         image: local
