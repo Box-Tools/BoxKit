@@ -9,7 +9,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: cd ~/. && git clone https://github.com/akashdhruv/BubbleBox.git
+    - run: cd ~/ && git clone https://github.com/akashdhruv/BubbleBox.git
       shell: bash
     - run: cd ~/BubbleBox && maple container pour --image=${{inputs.image}} 
       shell: bash
