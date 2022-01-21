@@ -10,7 +10,8 @@ Welcome to BubbleBox's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   modules
+   bubblebox
+   cbox
 
 Indices and tables
 ==================

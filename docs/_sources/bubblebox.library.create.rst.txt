@@ -1,6 +1,54 @@
 bubblebox.library.create package
 ================================
 
+Submodules
+----------
+
+bubblebox.library.create.\_block module
+---------------------------------------
+
+.. automodule:: bubblebox.library.create._block
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+bubblebox.library.create.\_data module
+--------------------------------------
+
+.. automodule:: bubblebox.library.create._data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+bubblebox.library.create.\_dataset module
+-----------------------------------------
+
+.. automodule:: bubblebox.library.create._dataset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+bubblebox.library.create.\_region module
+----------------------------------------
+
+.. automodule:: bubblebox.library.create._region
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+bubblebox.library.create.\_slice module
+---------------------------------------
+
+.. automodule:: bubblebox.library.create._slice
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
 Module contents
 ---------------
 
@@ -8,3 +56,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -1,6 +1,27 @@
 bubblebox.resources.read package
 ================================
 
+Submodules
+----------
+
+bubblebox.resources.read.\_default module
+-----------------------------------------
+
+.. automodule:: bubblebox.resources.read._default
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+bubblebox.resources.read.\_flash module
+---------------------------------------
+
+.. automodule:: bubblebox.resources.read._flash
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
 Module contents
 ---------------
 
@@ -8,3 +29,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:
