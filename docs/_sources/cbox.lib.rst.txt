@@ -11,6 +11,7 @@ cbox.lib.boost module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:
 
 cbox.lib.create module
 ----------------------
@@ -19,6 +20,7 @@ cbox.lib.create module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:
 
 cbox.lib.extern module
 ----------------------
@@ -27,6 +29,7 @@ cbox.lib.extern module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:
 
 cbox.lib.utilities module
 -------------------------
@@ -35,6 +38,7 @@ cbox.lib.utilities module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:
 
 Module contents
 ---------------
@@ -43,3 +47,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

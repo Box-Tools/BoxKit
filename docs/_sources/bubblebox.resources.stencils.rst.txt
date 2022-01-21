@@ -1,6 +1,27 @@
 bubblebox.resources.stencils package
 ====================================
 
+Submodules
+----------
+
+bubblebox.resources.stencils.\_jacobi module
+--------------------------------------------
+
+.. automodule:: bubblebox.resources.stencils._jacobi
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+bubblebox.resources.stencils.\_skimeasure module
+------------------------------------------------
+
+.. automodule:: bubblebox.resources.stencils._skimeasure
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
 Module contents
 ---------------
 
@@ -8,3 +29,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:
