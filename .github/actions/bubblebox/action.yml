@@ -9,11 +9,15 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: cd ~/work/_actions/akashdhruv/BubbleBox && maple container pour --image=${{inputs.image}} 
+    - run: cd ~/ && git clone git@github.com:akashdhruv/BubbleBox.git
       shell: bash
-    - run: cd ~/work/_actions/akashdhruv/BubbleBox && maple container execute "./setup develop && ./setup install"
+    - run: cd ~/BubbleBox && maple container pour --image=${{inputs.image}} 
       shell: bash
-    - run: cd ~/work/_actions/akashdhruv/BubbleBox && maple container commit --image=${{inputs.image}}
+    - run: cd ~/BubbleBox && maple container execute "./setup develop && ./setup install"
       shell: bash
-    - run: cd ~/work/_actions/akashdhruv/BubbleBox && maple container rinse
+    - run: cd ~/BubbleBox && maple container commit --image=${{inputs.image}}
+      shell: bash
+    - run: cd ~/BubbleBox && maple container rinse
+      shell: bash
+    - run: rm -rf ~/BubbleBox
       shell: bash
