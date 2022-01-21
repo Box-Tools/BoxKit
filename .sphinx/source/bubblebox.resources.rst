@@ -1,0 +1,19 @@
+bubblebox.resources package
+===========================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   bubblebox.resources.read
+   bubblebox.resources.stencils
+
+Module contents
+---------------
+
+.. automodule:: bubblebox.resources
+   :members:
+   :undoc-members:
+   :show-inheritance:

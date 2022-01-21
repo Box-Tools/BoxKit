@@ -1,0 +1,45 @@
+cbox.lib package
+================
+
+Submodules
+----------
+
+cbox.lib.boost module
+---------------------
+
+.. automodule:: cbox.lib.boost
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cbox.lib.create module
+----------------------
+
+.. automodule:: cbox.lib.create
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cbox.lib.extern module
+----------------------
+
+.. automodule:: cbox.lib.extern
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cbox.lib.utilities module
+-------------------------
+
+.. automodule:: cbox.lib.utilities
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: cbox.lib
+   :members:
+   :undoc-members:
+   :show-inheritance:

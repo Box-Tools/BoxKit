@@ -1,6 +1,5 @@
 # Maplefile for bubblebox
 #
 container="bubblebox"
-base="akashdhruv/bubblebox:latest"
 target="/home/mount/bubblebox"
 backend="docker"

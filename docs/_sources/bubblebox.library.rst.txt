@@ -1,0 +1,19 @@
+bubblebox.library package
+=========================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   bubblebox.library.create
+   bubblebox.library.utilities
+
+Module contents
+---------------
+
+.. automodule:: bubblebox.library
+   :members:
+   :undoc-members:
+   :show-inheritance:
