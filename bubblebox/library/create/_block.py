@@ -7,28 +7,28 @@ import cbox.lib.boost as cbox
 from . import Data
 
 class Block(object):
-    """Default class for a Block."""
+    """Default class for a Block.
+
+    Parameters
+    ----------
+    data       : data object
+    attributes : dictionary
+               { 'dx'   : grid spacing in x dir
+                 'dy'   : grid spacing in y dir
+                 'dz'   : grid spacing in z dir
+                 'xmin' : low  bound in x dir
+                 'ymin' : low  bound in y dir
+                 'zmin' : low  bound in z dir
+                 'xmax' : high bound in x dir
+                 'ymax' : high bound in y dir
+                 'zmax' : high bound in z dir
+                 'tag'  : block ID }
+    """
 
     type_ = 'default'
 
     def __init__(self, data=None, **attributes):
         """Initialize the  object and allocate the data.
-
-        Parameters
-        ----------
-        data       : data object
-        attributes : dictionary
-                     { 'dx'   : grid spacing in x dir
-                       'dy'   : grid spacing in y dir
-                       'dz'   : grid spacing in z dir
-                       'xmin' : low  bound in x dir
-                       'ymin' : low  bound in y dir
-                       'zmin' : low  bound in z dir
-                       'xmax' : high bound in x dir
-                       'ymax' : high bound in y dir
-                       'zmax' : high bound in z dir
-                       'tag'  : block ID }
-
         """
         super().__init__()
 
