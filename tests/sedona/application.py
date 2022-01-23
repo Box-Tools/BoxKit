@@ -19,7 +19,7 @@ class TestApplication(unittest.TestCase):
         varlist = ['phi']
         grid = flowx.domain.Grid("cell-centered",varlist,nx,ny,xmin,xmax,ymin,ymax,xblocks,yblocks)
                  
-        particle_file = '/home/akash/Desktop/Akash/Postdoc/FlowX/examples/imbound/levelset_mapping/sm_tshape.h5'
+        particle_file = '/home/akash/Desktop/Akash/Workbench/FlowX/examples/imbound/levelset_mapping/sm_tshape.h5'
         particle_info = dict(input='HDF5', file=particle_file)
         particle = flowx.domain.Particles(particle_info,xmin,xmax,ymin,ymax,scalars=None)
 
