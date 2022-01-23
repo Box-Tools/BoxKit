@@ -19,19 +19,19 @@ jobs:
           echo "::add-mask::${{secrets.DOCKER_HUB_PSK}}"
     - uses: docker/login-action@v1
       with:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_PSK }}
+        username: ${{secrets.DOCKER_HUB_USERNAME}}
+        password: ${{secrets.DOCKER_HUB_PSK}}
     - uses: actions/checkout@v2      
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build local ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:data
+          maple image build flashx ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:data
     - uses: ./.github/actions/install
       with:
-        image: local
+        image: flashx
     - name: Run BubbleBox tests
       run: |
-          maple container pour --image=local
+          maple container pour --image=flashx
           maple container execute "python3 tests/container/heater.py"
           maple container rinse
-          maple image delete local
+          maple image delete flashx
