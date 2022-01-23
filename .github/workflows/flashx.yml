@@ -10,8 +10,9 @@ on:
       - 'CITATION'
 
 jobs:
-  pool-boiling:
-    name: "PoolBoiling"
+
+  Heater:
+    name: "Heater"
     runs-on: ubuntu-latest
     steps:
     - name: Login to Docker Hub

@@ -10,7 +10,8 @@ on:
       - 'CITATION'
 
 jobs:
-  create:
+
+  Create:
     name: "Create" 
     runs-on: ubuntu-latest
     steps:
