@@ -25,14 +25,13 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build local ${{secrets.DOCKER_HUB_USERNAME}}/ubuntu:latest
+          maple image build bubblebox
     - uses: ./.github/actions/install
       with:
-        image: local
+        image: bubblebox
     - name: Run BubbleBox tests
       run: |
-          maple container pour --image=local
+          maple container pour --image=bubblebox
           maple container execute "python3 tests/container/create.py"
           maple container rinse
-          maple image delete ${{secrets.DOCKER_HUB_USERNAME}}/ubuntu:latest
-          maple image delete local
+          maple image delete bubblebox 
