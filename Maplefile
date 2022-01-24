@@ -1,6 +1,11 @@
-# Maplefile for bubblebox
+# Maplefile for BubbleBox
 #
+# VARIABLE            DESCRIPTION
+# ----------------------------------------------------------------
+# base                Name of the base image
+# container           Name of the local container
+# backend             Container backend (docker/singularity)
+
 base="akashdhruv/ubuntu:latest"
 container="bubblebox"
-target="/home/mount/BubbleBox"
 backend="docker"
