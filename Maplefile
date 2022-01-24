@@ -6,6 +6,6 @@
 # container           Name of the local container
 # backend             Container backend (docker/singularity)
 
-base="akashdhruv/ubuntu:latest"
+base="ubuntu"
 container="bubblebox"
 backend="docker"
