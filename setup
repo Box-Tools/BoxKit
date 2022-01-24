@@ -19,15 +19,3 @@ if [ $1 = "clean" ]; then
     rm -rf build dist
     cd cbox/source && make clean && cd ../../
 fi
-
-#Publish image
-if [ $1 = "publish" ]; then
-    maple image build --as-root bubblebox
-    maple container pour --image=bubblebox
-    maple container execute "cd cbox/source && make"
-    maple container execute "python3 setup.py develop && python3 setup.py install && ./setup clean"
-    maple container commit --image=bubblebox
-    maple container rinse
-    maple push bubblebox akashdhruv/bubblebox:latest
-    maple image delete bubblebox
-fi
