@@ -1,11 +1,14 @@
 # Maplefile for BubbleBox
-#
-# VARIABLE            DESCRIPTION
-# ----------------------------------------------------------------
-# base                Name of the base image
-# container           Name of the local container
-# backend             Container backend (docker/singularity)
 
+# Name of the base image
 base="ubuntu"
+
+# Name of the local container
 container="bubblebox"
+
+# Container backend
 backend="docker"
+
+# Default command for execute
+execute=["cd cbox/source && make",
+         "python3 setup.py develop && python3 setup.py install && ./setup clean"]
