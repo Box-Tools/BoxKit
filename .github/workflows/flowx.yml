@@ -1,4 +1,4 @@
-name: FlashX
+name: FlowX
 
 on:
   pull_request:
@@ -11,8 +11,8 @@ on:
 
 jobs:
 
-  API:
-    name: "API"
+  Application:
+    name: "Application"
     runs-on: ubuntu-latest
     steps:
     - name: Login to Docker Hub
@@ -26,13 +26,13 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build flashx --base=${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:testing
+          maple image build flowx --base=${{secrets.DOCKER_HUB_USERNAME}}/flowx:latest
     - uses: ./.github/actions/install
       with:
-        image: flashx
+        image: flowx
     - name: Run BubbleBox tests
       run: |
-          maple container pour --image=flashx
-          maple container execute "python3 tests/container/heater.py"
+          maple container pour --image=flowx
+          maple container execute "python3 tests/container/application.py"
           maple container rinse
-          maple image delete flashx
+          maple image delete flowx

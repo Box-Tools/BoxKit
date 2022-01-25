@@ -28,4 +28,4 @@
  RUN apt-get install -y libboost-all-dev
 
 # Install vim and jupyter - do not install when building production images to reduce size
-# RUN apt-get install -y vim git && pip3 install jupyter
+ RUN apt-get install -y vim git && pip3 install jupyter
