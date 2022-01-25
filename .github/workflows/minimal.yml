@@ -1,4 +1,4 @@
-name: Library
+name: Minimal
 
 on:
   pull_request:
@@ -11,8 +11,8 @@ on:
 
 jobs:
 
-  Create:
-    name: "Create" 
+  Library:
+    name: "Library" 
     runs-on: ubuntu-latest
     steps:
     - name: Login to Docker Hub
