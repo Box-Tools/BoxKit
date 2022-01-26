@@ -31,5 +31,4 @@ jobs:
           maple container execute
           maple container commit --image=bubblebox
           maple container rinse
-          maple tag bubblebox ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:latest
-          docker push ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox --all-tags
+          maple push bubblebox ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:latest
