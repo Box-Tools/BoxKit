@@ -39,4 +39,5 @@ jobs:
         username: ${{secrets.DOCKER_HUB_USERNAME}}
         password: ${{secrets.DOCKER_HUB_PSK}}
     - name: Push Image to Docker Hub
+      run: |
           maple push bubblebox ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:latest
