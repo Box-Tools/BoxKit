@@ -1,0 +1,34 @@
+name: Publish
+
+on:
+  push:
+    branches: 
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'CITATION'
+
+jobs:
+
+  Publish:
+    name: "Publish" 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to Docker Hub
+      run: |
+          echo "::add-mask::${{secrets.DOCKER_HUB_PSK}}"
+    - uses: docker/login-action@v1
+      with:
+        username: ${{secrets.DOCKER_HUB_USERNAME}}
+        password: ${{secrets.DOCKER_HUB_PSK}}
+    - uses: actions/checkout@v2      
+    - uses: akashdhruv/Maple/.github/actions/maple@main
+    - name: Publish BubbleBox Image
+      run: |
+          maple image build bubblebox --as-root
+          maple container pour --image=bubblebox
+          maple container execute
+          maple container commit --image=bubblebox
+          maple container rinse
+          maple push bubblebox ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:latest
