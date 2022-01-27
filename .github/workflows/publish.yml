@@ -27,8 +27,5 @@ jobs:
     - name: Publish BubbleBox Image
       run: |
           maple image build bubblebox --as-root
-          maple container pour --image=bubblebox
-          maple container execute
-          maple container commit --image=bubblebox
-          maple container rinse
+          maple container publish --image=bubblebox 
           maple push bubblebox ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:latest
