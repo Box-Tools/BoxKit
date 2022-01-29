@@ -1,9 +1,9 @@
 ## BubbleBox
 
-![FlashX](https://github.com/akashdhruv/BubbleBox/.github/workflows/flashx/badge.svg)
-![FlowX](https://github.com/akashdhruv/BubbleBox/.github/workflows/flowx/badge.svg)
-![Minimal](https://github.com/akashdhruv/BubbleBox/.github/workflows/minimal/badge.svg)
-![Publish](https://github.com/akashdhruv/BubbleBox/.github/workflows/publish/badge.svg)
+![FlashX](https://github.com/akashdhruv/BubbleBox/workflows/FlashX/badge.svg)
+![FlowX](https://github.com/akashdhruv/BubbleBox/workflows/FlowX/badge.svg)
+![Minimal](https://github.com/akashdhruv/BubbleBox/workflows/Minimal/badge.svg)
+![Publish](https://github.com/akashdhruv/BubbleBox/workflows/Publish/badge.svg)
 
 
 ### Introduction
