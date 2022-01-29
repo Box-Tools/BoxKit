@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #Development mode
 if [ $1 = "develop" ]; then
     cd cbox/source && make && cd ../../
