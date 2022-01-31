@@ -1,6 +1,10 @@
 ## BubbleBox
 
-![bubblebox-tests](https://github.com/akashdhruv/BubbleBox/workflows/tests/badge.svg)
+![FlashX](https://github.com/akashdhruv/BubbleBox/workflows/FlashX/badge.svg)
+![FlowX](https://github.com/akashdhruv/BubbleBox/workflows/FlowX/badge.svg)
+![Minimal](https://github.com/akashdhruv/BubbleBox/workflows/Minimal/badge.svg)
+![Publish](https://github.com/akashdhruv/BubbleBox/workflows/Publish/badge.svg)
+
 
 ### Introduction
 BubbleBox is a library that provides building blocks to parallelize and scale data science, HPC, and ML applications
