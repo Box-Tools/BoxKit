@@ -7,7 +7,7 @@
 
 
 ### Introduction
-BubbleBox is a library that provides building blocks to parallelize and scale data science, HPC, and ML applications
+BubbleBox is a library that provides building blocks to parallelize and scale data science, high performance computing, and machine learning applications
 
 ### Installation
 Installation instructions
