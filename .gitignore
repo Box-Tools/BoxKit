@@ -8,3 +8,4 @@ dist/
 dask-worker-space
 *.rst
 !.sphinx/source/index.rst
+!README.rst

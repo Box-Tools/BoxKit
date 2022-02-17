@@ -6,6 +6,7 @@ import cbox.lib.boost as cbox
 
 from . import Data
 
+
 class Block(object):
     """Default class for a Block.
 
@@ -25,11 +26,10 @@ class Block(object):
                  'tag'  : block ID }
     """
 
-    type_ = 'default'
+    type_ = "default"
 
     def __init__(self, data=None, **attributes):
-        """Initialize the  object and allocate the data.
-        """
+        """Initialize the  object and allocate the data."""
         super().__init__()
 
         self._set_attributes(attributes)
@@ -37,68 +37,87 @@ class Block(object):
 
     def __repr__(self):
         """Return a representation of the object."""
-        return ("Block:\n" +
-                " - type         : {}\n".format(type(self)) +
-                " - deltas       : {} x {} x {}\n".format(self.dx, self.dy, self.dz) +
-                " - bound(z-y-x) : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.zmin,self.zmax,
-                                                                            self.ymin,self.ymax,
-                                                                            self.xmin,self.xmax) +
-                " - tag          : {}\n".format(self.tag))
+        return (
+            "Block:\n"
+            + " - type         : {}\n".format(type(self))
+            + " - deltas       : {} x {} x {}\n".format(self.dx, self.dy, self.dz)
+            + " - bound(z-y-x) : [{}, {}] x [{}, {}] x [{}, {}]\n".format(
+                self.zmin, self.zmax, self.ymin, self.ymax, self.xmin, self.xmax
+            )
+            + " - tag          : {}\n".format(self.tag)
+        )
 
-    def __getitem__(self,varkey):
+    def __getitem__(self, varkey):
         """
         Get variable data
         """
-        return self._data[varkey][self.tag] #.to_numpy()[:]
+        return self._data[varkey][self.tag]  # .to_numpy()[:]
 
-    def __setitem__(self,varkey,value):
+    def __setitem__(self, varkey, value):
         """
         Set variable data
         """
-        self._data[varkey][self.tag] = value #.to_numpy()[:] = value
+        self._data[varkey][self.tag] = value  # .to_numpy()[:] = value
 
-    def _set_attributes(self,attributes):
+    def _set_attributes(self, attributes):
         """
         Private method for intialization
-        """        
+        """
 
-        default_attributes = {'dx'   : 1 , 'dy'   : 1 , 'dz'   : 1 ,
-                              'xmin' : 0., 'ymin' : 0., 'zmin' : 0.,
-                              'xmax' : 0., 'ymax' : 0., 'zmax' : 0.,
-                              'tag'  : 0}
+        default_attributes = {
+            "dx": 1,
+            "dy": 1,
+            "dz": 1,
+            "xmin": 0.0,
+            "ymin": 0.0,
+            "zmin": 0.0,
+            "xmax": 0.0,
+            "ymax": 0.0,
+            "zmax": 0.0,
+            "tag": 0,
+        }
 
         for key in attributes:
             if key in default_attributes:
                 default_attributes[key] = attributes[key]
             else:
-                raise ValueError('[bubblebox.library.create.Block] '+
-                                 'Attribute "{}" not present in class Block'.format(key))
+                raise ValueError(
+                    "[bubblebox.library.create.Block] "
+                    + 'Attribute "{}" not present in class Block'.format(key)
+                )
 
-        for key, value in default_attributes.items(): setattr(self, key, value)
+        for key, value in default_attributes.items():
+            setattr(self, key, value)
 
-        self.xcenter = (self.xmin + self.xmax)/2.
-        self.ycenter = (self.ymin + self.ymax)/2.
-        self.zcenter = (self.zmin + self.zmax)/2.
+        self.xcenter = (self.xmin + self.xmax) / 2.0
+        self.ycenter = (self.ymin + self.ymax) / 2.0
+        self.zcenter = (self.zmin + self.zmax) / 2.0
 
-    def _map_data(self,data):
+    def _map_data(self, data):
         """
         Private method for initialization
         """
         self._data = None
 
-        self.neighdict = {'xlow':None, 'xhigh':None, 
-                          'ylow':None, 'yhigh':None, 
-                          'zlow':None, 'zhigh':None}
+        self.neighdict = {
+            "xlow": None,
+            "xhigh": None,
+            "ylow": None,
+            "yhigh": None,
+            "zlow": None,
+            "zhigh": None,
+        }
 
-        if not data: return
+        if not data:
+            return
 
         self._data = data
 
-        if 1 in [self.dx,self.dy,self.dz]:
+        if 1 in [self.dx, self.dy, self.dz]:
             self._set_neighdict_2D()
         else:
             self._set_neighdict_3D()
- 
+
         self.nxb, self.xguard = self._data.nxb, self._data.xguard
         self.nyb, self.yguard = self._data.nyb, self._data.yguard
         self.nzb, self.zguard = self._data.nzb, self._data.zguard
@@ -110,94 +129,115 @@ class Block(object):
         order - imins,iplus,jmins,jplus
         """
         if self.dz == 1:
-            locations = ['xlow','xhigh','ylow','yhigh']
+            locations = ["xlow", "xhigh", "ylow", "yhigh"]
         elif self.dy == 1:
-            locations = ['xlow','xhigh','zlow','zhigh']          
+            locations = ["xlow", "xhigh", "zlow", "zhigh"]
         else:
-            locations = ['ylow','yhigh','zlow','zhigh']
+            locations = ["ylow", "yhigh", "zlow", "zhigh"]
 
         if self._data.nblocks > 1:
-            iloc,jloc = pymorton.deinterleave2(self.tag)
+            iloc, jloc = pymorton.deinterleave2(self.tag)
 
-            neighlist = [pymorton.interleave(iloc-1,jloc),
-                         pymorton.interleave(iloc+1,jloc),
-                         pymorton.interleave(iloc,jloc-1),
-                         pymorton.interleave(iloc,jloc+1)]
+            neighlist = [
+                pymorton.interleave(iloc - 1, jloc),
+                pymorton.interleave(iloc + 1, jloc),
+                pymorton.interleave(iloc, jloc - 1),
+                pymorton.interleave(iloc, jloc + 1),
+            ]
 
-            neighlist = [None if neighbor > self._data.nblocks-1 else neighbor for neighbor in neighlist]
+            neighlist = [
+                None if neighbor > self._data.nblocks - 1 else neighbor
+                for neighbor in neighlist
+            ]
 
         else:
-            neighlist = [None]*4
- 
-        self.neighdict.update(dict(zip(locations,neighlist))) 
+            neighlist = [None] * 4
+
+        self.neighdict.update(dict(zip(locations, neighlist)))
 
     def _set_neighdict_3D(self):
         """
         Return neighbor tags
 
-        order - xmins,xplus,ymins,yplus,zmins,zplus        
+        order - xmins,xplus,ymins,yplus,zmins,zplus
         """
-        locations = ['xlow','xhigh','ylow','yhigh','zlow','zhigh']
+        locations = ["xlow", "xhigh", "ylow", "yhigh", "zlow", "zhigh"]
 
         if self._data.nblocks > 1:
-            xloc,yloc,zloc = pymorton.deinterleave3(self.tag)
+            xloc, yloc, zloc = pymorton.deinterleave3(self.tag)
 
-            neighlist = [pymorton.interleave(xloc-1,yloc,zloc),
-                         pymorton.interleave(xloc+1,yloc,zloc),
-                         pymorton.interleave(xloc,yloc-1,zloc),
-                         pymorton.interleave(xloc,yloc+1,zloc),
-                         pymorton.interleave(xloc,yloc,zloc-1),
-                         pymorton.interleave(xloc,yloc,zloc+1)]
- 
-            neighlist = [None if neighbor > self._data.nblocks-1 else neighbor for neighbor in neighlist]
+            neighlist = [
+                pymorton.interleave(xloc - 1, yloc, zloc),
+                pymorton.interleave(xloc + 1, yloc, zloc),
+                pymorton.interleave(xloc, yloc - 1, zloc),
+                pymorton.interleave(xloc, yloc + 1, zloc),
+                pymorton.interleave(xloc, yloc, zloc - 1),
+                pymorton.interleave(xloc, yloc, zloc + 1),
+            ]
+
+            neighlist = [
+                None if neighbor > self._data.nblocks - 1 else neighbor
+                for neighbor in neighlist
+            ]
 
         else:
-            neighlist = [None]*6
+            neighlist = [None] * 6
 
-        self.neighdict.update(dict(zip(locations,neighlist)))
+        self.neighdict.update(dict(zip(locations, neighlist)))
 
-    def write_neighbuffer(self,varkey):
+    def write_neighbuffer(self, varkey):
         """
         Write block data to buffer for halo exchange
         """
         pass
 
-    def read_neighbuffer(self,varkey):
+    def read_neighbuffer(self, varkey):
         """
         Read neighbor buffer and perform halo exchange
         """
         pass
 
-    def neighdata(self,varkey,neighkey):
+    def neighdata(self, varkey, neighkey):
         """
         Get neighbor data
         """
         if self.neighdict[neighkey] is not None:
-            return self._data[varkey][self.neighdict[neighkey]] #.to_numpy()[:]
+            return self._data[varkey][self.neighdict[neighkey]]  # .to_numpy()[:]
         else:
             return None
 
-    def exchange_neighdata(self,varkey):
+    def exchange_neighdata(self, varkey):
         """
         Exchange information
         """
         blockdata = self._data[varkey][self.tag]
 
         for guard in range(self.xguard):
-            if self.neighdict['xlow']:
-                blockdata[:,:,guard] = self.neighdata(varkey,'xlow')[:,:,self.nxb+guard]
-            if self.neighdict['xhigh']:
-                blockdata[:,:,self.nxb+self.xguard+guard] = self.neighdata(varkey,'xhigh')[:,:,self.xguard+guard]
+            if self.neighdict["xlow"]:
+                blockdata[:, :, guard] = self.neighdata(varkey, "xlow")[
+                    :, :, self.nxb + guard
+                ]
+            if self.neighdict["xhigh"]:
+                blockdata[:, :, self.nxb + self.xguard + guard] = self.neighdata(
+                    varkey, "xhigh"
+                )[:, :, self.xguard + guard]
 
         for guard in range(self.yguard):
-            if self.neighdict['ylow']:
-                blockdata[:,guard,:] = self.neighdata(varkey,'ylow')[:,self.nyb+guard,:]
-            if self.neighdict['yhigh']:
-                blockdata[:,self.nyb+self.yguard+guard,:] = self.neighdata(varkey,'yhigh')[:,self.yguard+guard,:]
+            if self.neighdict["ylow"]:
+                blockdata[:, guard, :] = self.neighdata(varkey, "ylow")[
+                    :, self.nyb + guard, :
+                ]
+            if self.neighdict["yhigh"]:
+                blockdata[:, self.nyb + self.yguard + guard, :] = self.neighdata(
+                    varkey, "yhigh"
+                )[:, self.yguard + guard, :]
 
         for guard in range(self.zguard):
-            if self.neighdict['zlow']:
-                blockdata[guard,:,:] = self.neighdata(varkey,'zlow')[self.nzb+guard,:,:]
-            if self.neighdit['zhigh']:
-                blockdata[self.nzb+self.zguard+guard,:,:] = self.neighdata(varkey,'zhigh')[self.zguard+guard,:,:]
-
+            if self.neighdict["zlow"]:
+                blockdata[guard, :, :] = self.neighdata(varkey, "zlow")[
+                    self.nzb + guard, :, :
+                ]
+            if self.neighdit["zhigh"]:
+                blockdata[self.nzb + self.zguard + guard, :, :] = self.neighdata(
+                    varkey, "zhigh"
+                )[self.zguard + guard, :, :]

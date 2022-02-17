@@ -2,10 +2,11 @@
 
 import copy
 
+
 class Process(object):
     """Default class for a Process."""
 
-    type_ = 'default'
+    type_ = "default"
 
     def __init__(self, target=None, stencils=None):
         """Initialize the  object and allocate the data.
@@ -21,8 +22,8 @@ class Process(object):
         self.tasks = dict()
 
         [self.tasks.update(module()) for module in stencils]
-       
-    def __call__(self,*args):
+
+    def __call__(self, *args):
         """
         Call wrapper for process
 
@@ -33,7 +34,7 @@ class Process(object):
             return self
 
         else:
-            return self.target(self,*args)
+            return self.target(self, *args)
 
     def clone(self):
         """

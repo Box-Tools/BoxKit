@@ -1,22 +1,24 @@
 """Module with implementation of Jacobi solver"""
 
 from ...library.utilities import Action
-from ...library.create    import Region,Block
+from ...library.create import Region, Block
+
 
 def jacobi():
     """
     Public method to create a dictionary of actions
     """
 
-    tasks = {'jacobi' : {'region' : jacobi_region.copy(),
-                         'block'  : jacobi_block.copy() }}
+    tasks = {"jacobi": {"region": jacobi_region.copy(), "block": jacobi_block.copy()}}
 
-    for action in tasks['jacobi'].values(): action.tasks = tasks
+    for action in tasks["jacobi"].values():
+        action.tasks = tasks
 
     return tasks
 
+
 @Action(unit=Region)
-def jacobi_region(self,unit,lsetkey,labelkey):
+def jacobi_region(self, unit, lsetkey, labelkey):
     """
     Parameters
     ----------
@@ -30,8 +32,9 @@ def jacobi_region(self,unit,lsetkey,labelkey):
     """
     pass
 
+
 @Action(unit=Block)
-def jacobi_block(self,unit,lsetkey,labelkey):
+def jacobi_block(self, unit, lsetkey, labelkey):
     """
     Parameters
     ----------

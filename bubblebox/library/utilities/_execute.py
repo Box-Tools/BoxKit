@@ -9,7 +9,8 @@ import dask.distributed as distributed
 import cbox.lib as cbox
 import ctypes
 
-def exectask(action,unitlist,*args):
+
+def exectask(action, unitlist, *args):
     """
     Parameters
     ----------
@@ -28,78 +29,100 @@ def exectask(action,unitlist,*args):
     """
     action.nthreads = action.nthreads or 1
 
-    backends = {'serial' : execute_serial,
-                'loky'   : execute_loky,
-                'dask'   : execute_dask,
-                'cbox'   : execute_cbox}
+    backends = {
+        "serial": execute_serial,
+        "loky": execute_loky,
+        "dask": execute_dask,
+        "cbox": execute_cbox,
+    }
 
-    if(action.monitor): print('run-'+action.backend+':'+action.target.__module__+'.'+action.target.__name__)
+    if action.monitor:
+        print(
+            "run-"
+            + action.backend
+            + ":"
+            + action.target.__module__
+            + "."
+            + action.target.__name__
+        )
 
-    return backends[action.backend](action,unitlist,*args)
+    return backends[action.backend](action, unitlist, *args)
 
-def execute_serial(action,unitlist,*args):
+
+def execute_serial(action, unitlist, *args):
     """
     Wrapper takes in unitlist and additional arguments and
-    then applies target operations to individual units in 
+    then applies target operations to individual units in
     serial
     """
-    if(action.monitor): unitlist = tqdm.tqdm(unitlist)
+    if action.monitor:
+        unitlist = tqdm.tqdm(unitlist)
 
-    listresult = [action.target(action,unit,*args) for unit in unitlist]
+    listresult = [action.target(action, unit, *args) for unit in unitlist]
 
     return listresult
 
-def execute_loky(action,unitlist,*args):
+
+def execute_loky(action, unitlist, *args):
     """
     Wrapper takes in unitlist and additional arguments and
-    then applies target operations to individual units in 
+    then applies target operations to individual units in
     parallel using joblib "loky" backend
 
     nthreads = 1 or None reverts to serial mode
     """
-    if(action.monitor): unitlist = tqdm.tqdm(unitlist)
+    if action.monitor:
+        unitlist = tqdm.tqdm(unitlist)
 
-    with joblib.parallel_backend(n_jobs=action.nthreads,backend="loky"):
-        listresult = joblib.Parallel(batch_size=action.batch) \
-                         (joblib.delayed(action.target)(action,unit,*args) for unit in unitlist) 
+    with joblib.parallel_backend(n_jobs=action.nthreads, backend="loky"):
+        listresult = joblib.Parallel(batch_size=action.batch)(
+            joblib.delayed(action.target)(action, unit, *args) for unit in unitlist
+        )
 
     return listresult
 
-def execute_cbox(action,unitlist,*args):
+
+def execute_cbox(action, unitlist, *args):
     """
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
-    """    
-    cbox.extern.utilities.execute_pyTask.argtypes = [ctypes.py_object]*3
-    cbox.extern.utilities.execute_pyTask.restype  = ctypes.py_object
+    """
+    cbox.extern.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
+    cbox.extern.utilities.execute_pyTask.restype = ctypes.py_object
 
-    listresult = cbox.extern.utilities.execute_pyTask(action,unitlist,args)
+    listresult = cbox.extern.utilities.execute_pyTask(action, unitlist, args)
 
     return listresult
 
-def execute_dask(action,unitlist,*args):
+
+def execute_dask(action, unitlist, *args):
     """
     Wrapper takes in unitlist and additional arguments and
-    then applies target operations to individual units in 
+    then applies target operations to individual units in
     using dask parallel backend
 
     nthreads = 1 or None reverts to serial mode
     """
-    with distributed.LocalCluster(threads_per_worker=action.nthreads,
-                                  n_workers=None,
-                                  processes=False) as cluster, distributed.Client(cluster) as client:
+    with distributed.LocalCluster(
+        threads_per_worker=action.nthreads, n_workers=None, processes=False
+    ) as cluster, distributed.Client(cluster) as client:
 
-        #if(action.monitor): unitlist = tqdm.tqdm(unitlist)
-        #lazy_results = [dask.delayed(action.target)(action,unit,*args) for unit in unitlist]
-        #futures = dask.persist(*lazy_results)
-        #listresult = dask.compute(*futures)
+        # if(action.monitor): unitlist = tqdm.tqdm(unitlist)
+        # lazy_results = [dask.delayed(action.target)(action,unit,*args) for unit in unitlist]
+        # futures = dask.persist(*lazy_results)
+        # listresult = dask.compute(*futures)
 
         biglist = client.scatter(unitlist)
-        futures = client.map(action.target, [action]*len(biglist), biglist, 
-                                             *[[arg]*len(biglist) for arg in args]) 
-            
-        if(action.monitor): distributed.progress(futures)
-            
+        futures = client.map(
+            action.target,
+            [action] * len(biglist),
+            biglist,
+            *[[arg] * len(biglist) for arg in args]
+        )
+
+        if action.monitor:
+            distributed.progress(futures)
+
         listresult = client.gather(futures)
 
     return listresult
