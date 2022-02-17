@@ -1,5 +1,7 @@
 ## BubbleBox
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 ![FlashX](https://github.com/akashdhruv/BubbleBox/workflows/FlashX/badge.svg)
 ![FlowX](https://github.com/akashdhruv/BubbleBox/workflows/FlowX/badge.svg)
 ![Minimal](https://github.com/akashdhruv/BubbleBox/workflows/Minimal/badge.svg)

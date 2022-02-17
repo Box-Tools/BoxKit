@@ -2,6 +2,7 @@
 
 import h5pickle as h5py
 
+
 def read_flash(filename):
     """
     Read dataset from FLASH output file
@@ -16,7 +17,7 @@ def read_flash(filename):
     block_attributes : dictionary containg block attributes
     """
 
-    data_attributes  = {}
+    data_attributes = {}
     block_attributes = [{}]
-    
-    return data_attributes,block_attributes
+
+    return data_attributes, block_attributes

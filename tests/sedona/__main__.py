@@ -3,8 +3,9 @@
 import sys
 import unittest
 
+
 def main():
-    tests = ['boiling','heater','application']
+    tests = ["boiling", "heater", "application"]
 
     suite = unittest.TestSuite()
 
@@ -12,8 +13,9 @@ def main():
         suite.addTest(unittest.defaultTestLoader.loadTestsFromName(test))
 
     res = unittest.TextTestRunner().run(suite).wasSuccessful()
-    rc = (0 if res else 1)
+    rc = 0 if res else 1
     sys.exit(rc)
+
 
 if __name__ == "__main__":
     main()

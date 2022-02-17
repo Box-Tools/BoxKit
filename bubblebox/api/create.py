@@ -4,7 +4,8 @@ from .. import library
 
 from ..resources import read
 
-def dataset(data_attributes={},block_attributes=[{}],storage='numpy-memmap'):
+
+def dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
     """
     Create a dataset from a file
 
@@ -24,9 +25,12 @@ def dataset(data_attributes={},block_attributes=[{}],storage='numpy-memmap'):
     """
     data = library.create.Data(storage=storage, **data_attributes)
 
-    blocklist = [library.create.Block(data, **attributes) for attributes in block_attributes]
+    blocklist = [
+        library.create.Block(data, **attributes) for attributes in block_attributes
+    ]
 
-    return library.create.Dataset(blocklist,data)
+    return library.create.Dataset(blocklist, data)
+
 
 def region(dataset, **attributes):
     """
@@ -34,7 +38,7 @@ def region(dataset, **attributes):
 
     Parameters
     ----------
-    dataset    : Dataset object 
+    dataset    : Dataset object
     attributes : dictionary of attributes
                  { 'xmin' : low x bound
                    'ymin' : low y bound
@@ -46,15 +50,23 @@ def region(dataset, **attributes):
     -------
     Region object
     """
- 
-    region_attributes = {'xmin' : dataset.xmin, 'ymin' : dataset.ymin, 'zmin' : dataset.zmin,
-                         'xmax' : dataset.xmax, 'ymax' : dataset.ymax, 'zmax' : dataset.zmax}
 
-    for key in attributes: region_attributes[key] = attributes[key]
+    region_attributes = {
+        "xmin": dataset.xmin,
+        "ymin": dataset.ymin,
+        "zmin": dataset.zmin,
+        "xmax": dataset.xmax,
+        "ymax": dataset.ymax,
+        "zmax": dataset.zmax,
+    }
+
+    for key in attributes:
+        region_attributes[key] = attributes[key]
 
     return library.create.Region(dataset.blocklist, **region_attributes)
 
-def slice(dataset,**attributes):
+
+def slice(dataset, **attributes):
     """
     Create a slice from a dataset
 
@@ -73,10 +85,17 @@ def slice(dataset,**attributes):
     -------
     Slice object
     """
- 
-    slice_attributes = {'xmin' : dataset.xmin, 'ymin' : dataset.ymin, 'zmin' : dataset.zmin,
-                        'xmax' : dataset.xmax, 'ymax' : dataset.ymax, 'zmax' : dataset.zmax}
 
-    for key in attributes: slice_attributes[key] = attributes[key]
+    slice_attributes = {
+        "xmin": dataset.xmin,
+        "ymin": dataset.ymin,
+        "zmin": dataset.zmin,
+        "xmax": dataset.xmax,
+        "ymax": dataset.ymax,
+        "zmax": dataset.zmax,
+    }
+
+    for key in attributes:
+        slice_attributes[key] = attributes[key]
 
     return library.create.Slice(dataset.blocklist, **slice_attributes)

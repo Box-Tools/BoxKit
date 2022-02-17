@@ -3,12 +3,13 @@
 from . import Block
 from ..utilities import Action
 
+
 class Dataset(object):
     """API class for storing Dataset info"""
 
     type_ = "default"
 
-    def __init__(self,blocklist=[],data=None):
+    def __init__(self, blocklist=[], data=None):
         """Constructor for Dataset
 
         Parameters
@@ -23,57 +24,63 @@ class Dataset(object):
 
     def __repr__(self):
         """Return a representation of the object."""
-        return ("Dataset:\n" +
-                " - type         : {}\n".format(type(self)) +
-                " - file         : {}\n".format(self._data.inputfile) +
-                " - keys         : {}\n".format(self._data.varlist) +
-                " - bound(z-y-x) : [{}, {}] x [{}, {}] x [{}, {}]\n".format(self.zmin,self.zmax,
-                                                                            self.ymin,self.ymax,
-                                                                            self.xmin,self.xmax) +
-                " - shape(z-y-x) : {} x {} x {}\n".format(self.nzb,self.nyb,self.nxb) +
-                " - guard(z-y-x) : {} x {} x {}\n".format(self.zguard,self.yguard,self.xguard) +
-                " - nblocks      : {}".format(self.nblocks))
+        return (
+            "Dataset:\n"
+            + " - type         : {}\n".format(type(self))
+            + " - file         : {}\n".format(self._data.inputfile)
+            + " - keys         : {}\n".format(self._data.varlist)
+            + " - bound(z-y-x) : [{}, {}] x [{}, {}] x [{}, {}]\n".format(
+                self.zmin, self.zmax, self.ymin, self.ymax, self.xmin, self.xmax
+            )
+            + " - shape(z-y-x) : {} x {} x {}\n".format(self.nzb, self.nyb, self.nxb)
+            + " - guard(z-y-x) : {} x {} x {}\n".format(
+                self.zguard, self.yguard, self.xguard
+            )
+            + " - nblocks      : {}".format(self.nblocks)
+        )
 
-    def __getitem__(self,varkey):
+    def __getitem__(self, varkey):
         """
         Get variable data
         """
         return self._data[varkey]
 
-    def __setitem__(self,varkey,value):
+    def __setitem__(self, varkey, value):
         """
         Set variable data
         """
         self._data[varkey] = value
 
-    def _map_blocklist(self,blocklist):
+    def _map_blocklist(self, blocklist):
         """
         Private method for initialization
         """
         self.blocklist = []
-        self.xmin,self.ymin,self.zmin = [1e10]*3
-        self.xmax,self.ymax,self.zmax = [-1e10]*3
+        self.xmin, self.ymin, self.zmin = [1e10] * 3
+        self.xmax, self.ymax, self.zmax = [-1e10] * 3
 
-        if not blocklist: return
+        if not blocklist:
+            return
 
-        self.blocklist  = blocklist
+        self.blocklist = blocklist
 
         for block in self.blocklist:
-            self.xmin = min(self.xmin,block.xmin)
-            self.ymin = min(self.ymin,block.ymin)
-            self.zmin = min(self.zmin,block.zmin)
-         
-            self.xmax = max(self.xmax,block.xmax)
-            self.ymax = max(self.ymax,block.ymax)
-            self.zmax = max(self.zmax,block.zmax)
- 
-    def _map_data(self,data):
+            self.xmin = min(self.xmin, block.xmin)
+            self.ymin = min(self.ymin, block.ymin)
+            self.zmin = min(self.zmin, block.zmin)
+
+            self.xmax = max(self.xmax, block.xmax)
+            self.ymax = max(self.ymax, block.ymax)
+            self.zmax = max(self.zmax, block.zmax)
+
+    def _map_data(self, data):
         """
         Private method for initialization
         """
         self._data = None
 
-        if not data: return
+        if not data:
+            return
 
         self._data = data
 
@@ -109,19 +116,21 @@ class Dataset(object):
     def varlist(self):
         return self._data.varlist
 
-    def addvar(self,varkey):
+    def addvar(self, varkey):
         self._data.addvar(varkey)
 
-    def delvar(self,varkey):
+    def delvar(self, varkey):
         self._data.delvar(varkey)
 
-    def purge(self,purgeflag='all'):
+    def purge(self, purgeflag="all"):
         """
         Clean up the dataset and close it
         """
         self._data.purge(purgeflag)
 
-    def halo_exchange(self,varlist,nthreads=1,batch='auto',backend='serial',monitor=False):
+    def halo_exchange(
+        self, varlist, nthreads=1, batch="auto", backend="serial", monitor=False
+    ):
         """
         Perform halo exchange
         """
@@ -135,10 +144,11 @@ class Dataset(object):
         halo_exchange_block.monitor = monitor
 
         for varkey in varlist:
-            halo_exchange_block(self.blocklist,varkey)         
+            halo_exchange_block(self.blocklist, varkey)
+
 
 @Action(unit=Block)
-def halo_exchange_block(self,unit,varkey):
+def halo_exchange_block(self, unit, varkey):
     """
     Halo exchange
     """

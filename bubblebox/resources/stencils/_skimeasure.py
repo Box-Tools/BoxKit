@@ -4,22 +4,29 @@ import itertools
 import skimage.measure as skimage_measure
 
 from ...library.utilities import Action
-from ...library.create    import Region,Block
+from ...library.create import Region, Block
+
 
 def skimeasure():
     """
     Public method to create a dictionary of actions
     """
 
-    tasks = {'skimeasure' : {'region' : skimeasure_region.copy(),
-                             'block'  : skimeasure_block.copy() }}
+    tasks = {
+        "skimeasure": {
+            "region": skimeasure_region.copy(),
+            "block": skimeasure_block.copy(),
+        }
+    }
 
-    for action in tasks['skimeasure'].values(): action.tasks = tasks
+    for action in tasks["skimeasure"].values():
+        action.tasks = tasks
 
     return tasks
 
+
 @Action(unit=Region)
-def skimeasure_region(self,unit,lsetkey,labelkey):
+def skimeasure_region(self, unit, lsetkey, labelkey):
     """
     Measure properties for a region
 
@@ -34,14 +41,15 @@ def skimeasure_region(self,unit,lsetkey,labelkey):
     listprops : list of properties
     """
 
-    listprops = self.tasks['skimeasure']['block'](unit.blocklist,lsetkey,labelkey)
+    listprops = self.tasks["skimeasure"]["block"](unit.blocklist, lsetkey, labelkey)
 
     listprops = list(itertools.chain.from_iterable(listprops))
 
     return listprops
 
+
 @Action(unit=Block)
-def skimeasure_block(self,unit,lsetkey,labelkey):
+def skimeasure_block(self, unit, lsetkey, labelkey):
     """
     Measure properties for a block
 
@@ -56,10 +64,12 @@ def skimeasure_block(self,unit,lsetkey,labelkey):
     listprops : list of properties
     """
 
-    unit[labelkey][:,:,:] = skimage_measure.label(unit[lsetkey] >= 0)
+    unit[labelkey][:, :, :] = skimage_measure.label(unit[lsetkey] >= 0)
 
     listprops = skimage_measure.regionprops(unit[labelkey].astype(int))
 
-    listprops = [{'area' : props['area']*unit.dx*unit.dy*unit.dz} for props in listprops]
+    listprops = [
+        {"area": props["area"] * unit.dx * unit.dy * unit.dz} for props in listprops
+    ]
 
     return listprops
