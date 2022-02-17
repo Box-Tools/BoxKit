@@ -45,9 +45,7 @@ class Data(cbox.create.Data):
         Return a representation of the object
         """
         return (
-            "Data:\n"
-            + " - type   : {}\n".format(type(self))
-            + " - keys   : {}\n".format(self.varlist)
+            "Data:\n" + f" - type   : {type(self)}\n" + f" - keys   : {self.varlist}\n"
         )
 
     def __getitem__(self, varkey):
@@ -67,31 +65,22 @@ class Data(cbox.create.Data):
         Private method for intialization
         """
 
-        default_attributes = {
-            "nblocks": 1,
-            "inputfile": None,
-            "boxmem": None,
-            "variables": {},
-            "nxb": 1,
-            "nyb": 1,
-            "nzb": 1,
-            "xguard": 0,
-            "yguard": 0,
-            "zguard": 0,
-            "storage": "numpy-memmap",
-        }
+        self.nblocks = 1
+        self.inputfile = None
+        self.boxmem = None
+        self.variables = {}
+        self.nxb, self.nyb, self.nzb = [1, 1, 1]
+        self.xguard, self.yguard, self.zguard = [0, 0, 0]
+        self.storage = "numpy-memmap"
 
-        for key in attributes:
-            if key in default_attributes:
-                default_attributes[key] = attributes[key]
+        for key, value in attributes.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
             else:
                 raise ValueError(
                     "[bubblebox.library.create.Data] "
-                    + 'Attribute "{}" not present in class Data'.format(key)
+                    + f'Attribute "{key}" not present in class Data'
                 )
-
-        for key, value in default_attributes.items():
-            setattr(self, key, value)
 
     def _set_data(self):
         """
@@ -111,7 +100,7 @@ class Data(cbox.create.Data):
         else:
             raise NotImplementedError(
                 "[bubblebox.library.create.Data] "
-                + 'Storage format "{}" not implemented'.format(self.storage)
+                + f'Storage format "{self.storage}" not implemented'
             )
 
     def _create_numpy_memmap(self):
@@ -119,7 +108,9 @@ class Data(cbox.create.Data):
         Create numpy memory maps for empty keys in variables dictionary
         """
         emptykeys = [
-            key for key, value in self.variables.items() if type(value) is type(None)
+            key
+            for key, value in self.variables.items()
+            if isinstance(value, type(None))
         ]
         if not emptykeys:
             return
@@ -151,7 +142,9 @@ class Data(cbox.create.Data):
         Create zarr objects
         """
         emptykeys = [
-            key for key, value in self.variables.items() if type(value) is type(None)
+            key
+            for key, value in self.variables.items()
+            if isinstance(value, type(None))
         ]
         if not emptykeys:
             return
@@ -192,7 +185,9 @@ class Data(cbox.create.Data):
         Create numpy arrays for empty keys in variables dictionary
         """
         emptykeys = [
-            key for key, value in self.variables.items() if type(value) is type(None)
+            key
+            for key, value in self.variables.items()
+            if isinstance(value, type(None))
         ]
         if not emptykeys:
             return
@@ -211,13 +206,15 @@ class Data(cbox.create.Data):
         Create dask array representation of data
         """
         emptykeys = [
-            key for key, value in self.variables.items() if type(value) is type(None)
+            key
+            for key, value in self.variables.items()
+            if isinstance(value, type(None))
         ]
         if not emptykeys:
             return
 
         for varkey in emptykeys:
-            if type(self.variables[varkey]) is not dsarray.core.Array:
+            if not isinstance(self.variables[varkey], dsarray.core.Array):
                 self.variables[varkey] = dsarray.from_array(
                     self.variables[varkey],
                     chunks=(
@@ -233,13 +230,15 @@ class Data(cbox.create.Data):
         Create a pyarrow tensor objects
         """
         emptykeys = [
-            key for key, value in self.variables.items() if type(value) is type(None)
+            key
+            for key, value in self.variables.items()
+            if isinstance(value, type(None))
         ]
         if not emptykeys:
             return
 
         for varkey in emptykeys:
-            if type(self.variables[varkey]) is not pyarrow.lib.Tensor:
+            if not isinstance(self.variables[varkey], pyarrow.lib.Tensor):
                 templist = []
                 for lblock in range(self.nblocks):
                     templist.append(
@@ -251,13 +250,13 @@ class Data(cbox.create.Data):
         """
         Clean up data and close it
         """
-        if self.boxmem and (purgeflag == "all" or purgeflag == "boxmem"):
+        if self.boxmem and purgeflag in ("all", "boxmem"):
             try:
                 shutil.rmtree(self.boxmem)
             except:
                 pass
 
-        if self.inputfile and (purgeflag == "all" or purgeflag == "inputfile"):
+        if self.inputfile and purgeflag in ("all", "inputfile"):
             self.inputfile.close()
 
     def addvar(self, varkey):

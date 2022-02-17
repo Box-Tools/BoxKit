@@ -55,9 +55,7 @@ static inline void show_console_cursor(bool const show) {
   std::fputs(show ? "\033[?25h" : "\033[?25l", stdout);
 }
 
-static inline void erase_line() {
-  std::fputs("\r\033[K", stdout);
-}
+static inline void erase_line() { std::fputs("\r\033[K", stdout); }
 
 #endif
 

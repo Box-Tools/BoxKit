@@ -13,8 +13,8 @@
 #include <indicators/terminal_size.hpp>
 #include <iomanip>
 #include <iostream>
-#include <sstream>
 #include <mutex>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <tuple>
@@ -232,8 +232,8 @@ private:
     if (get_value<details::ProgressBarOption::show_percentage>()) {
       os << " "
          << (std::min)(static_cast<size_t>(static_cast<float>(progress_) /
-                                         max_progress * 100),
-                     size_t(100))
+                                           max_progress * 100),
+                       size_t(100))
          << "%";
     }
 
@@ -332,12 +332,15 @@ public:
     os << postfix_text;
 
     // Get length of prefix text and postfix text
-    const auto start_length = get_value<details::ProgressBarOption::start>().size();
+    const auto start_length =
+        get_value<details::ProgressBarOption::start>().size();
     const auto bar_width = get_value<details::ProgressBarOption::bar_width>();
     const auto end_length = get_value<details::ProgressBarOption::end>().size();
     const auto terminal_width = terminal_size().second;
     // prefix + bar_width + postfix should be <= terminal_width
-    const int remaining = terminal_width - (prefix_length + start_length + bar_width + end_length + postfix_length);
+    const int remaining =
+        terminal_width - (prefix_length + start_length + bar_width +
+                          end_length + postfix_length);
     if (remaining > 0) {
       os << std::string(remaining, ' ') << "\r";
     } else if (remaining < 0) {

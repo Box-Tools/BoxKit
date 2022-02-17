@@ -31,10 +31,10 @@ class Region(object):
         """Return a representation of the object."""
         return (
             "Region:\n"
-            + " - type      : {}\n".format(type(self))
-            + " - bound     : [{}, {}] x [{}, {}] x [{}, {}]\n".format(
-                self.xmin, self.xmax, self.ymin, self.ymax, self.zmin, self.zmax
-            )
+            + f" - type         : {type(self)}\n"
+            + f" - bound(z-y-x) : [{self.zmin}, {self.zmax}] x "
+            + f"[{self.ymin}, {self.ymax}] x "
+            + f"[{self.xmin}, {self.xmax}]\n"
         )
 
     def _set_attributes(self, attributes):
@@ -42,26 +42,17 @@ class Region(object):
         Private method for intialization
         """
 
-        default_attributes = {
-            "xmin": 0.0,
-            "ymin": 0.0,
-            "zmin": 0.0,
-            "xmax": 0.0,
-            "ymax": 0.0,
-            "zmax": 0.0,
-        }
+        self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
+        self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
 
-        for key in attributes:
-            if key in default_attributes:
-                default_attributes[key] = attributes[key]
+        for key, value in attributes.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
             else:
                 raise ValueError(
                     "[bubblebox.library.create.Region] "
-                    + 'Attribute "{}" not present in class Region'.format(key)
+                    + f'Attribute "{key}" not present in class Region'
                 )
-
-        for key, value in default_attributes.items():
-            setattr(self, key, value)
 
         self.xcenter = (self.xmin + self.xmax) / 2.0
         self.ycenter = (self.ymin + self.ymax) / 2.0

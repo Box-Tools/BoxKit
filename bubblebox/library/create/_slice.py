@@ -29,8 +29,8 @@ class Slice(Region):
         """Return a representation of the object."""
         return (
             "Region:\n"
-            + " - type      : {}\n".format(type(self))
-            + " - bound     : [{}, {}] x [{}, {}] x [{}, {}]\n".format(
-                self.xmin, self.xmax, self.ymin, self.ymax, self.zmin, self.zmax
-            )
+            + f" - type          : {type(self)}\n"
+            + f" - bound (z-y-x) : [{self.zmin}, {self.zmax}] x "
+            + f"[{self.ymin}, {self.ymax}] x "
+            + f"[{self.xmin}, {self.xmax}]\n"
         )

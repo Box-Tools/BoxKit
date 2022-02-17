@@ -1,15 +1,26 @@
 """Module with implementation of Action utility"""
 
 import copy
-import cbox.lib.boost as cbox
 
 from .. import utilities
 
 
-class Action(object):
+class Action:
     """Default class for an action."""
 
     type_ = "default"
+
+    @staticmethod
+    def toparg(*args):
+        """Method to get top argument from *args"""
+
+        top = args[0]
+
+        args = list(args)
+        args.pop(0)
+        args = tuple(args)
+
+        return top, args
 
     def __init__(
         self,
@@ -46,31 +57,22 @@ class Action(object):
 
         if self.target is None:
             self.target = args[0]
-            return self
+            retval = self
 
         else:
-            return self.execute(*args)
+            retval = self.execute(*args)
+
+        return retval
 
     def copy(self):
         """Custom copy method"""
 
         return copy.copy(self)
 
-    def toparg(self, *args):
-        """Method to get top argument from *args"""
-
-        top = args[0]
-
-        args = list(args)
-        args.pop(0)
-        args = tuple(args)
-
-        return top, args
-
     def execute(self, *args):
         """Custom call signature"""
 
-        unitlist, args = self.toparg(*args)
+        unitlist, args = Action.toparg(*args)
 
         self._check_unitlist(unitlist)
 
@@ -79,14 +81,14 @@ class Action(object):
     def _check_unitlist(self, unitlist):
         """Check if unitlist matches the unit type"""
 
-        if type(unitlist) is not list:
+        if not isinstance(unitlist, list):
             raise ValueError(
                 "[bubblebox.utilities.Action] Top argument must be a list of units"
             )
 
         for unit in unitlist:
-            if type(unit) is not self.unit:
+            if not isinstance(unit, self.unit):
                 raise ValueError(
                     "[bubblebox.utilities.Action] Unit type not consistent."
-                    + 'Expected "{}" but got "{}"'.format(self.unit, type(unit))
+                    + f'Expected "{self.unit}" but got "{type(unit)}"'
                 )

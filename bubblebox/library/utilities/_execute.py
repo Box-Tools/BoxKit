@@ -1,13 +1,14 @@
 """Module with implementation of ExecuteTask utility"""
 
+import ctypes
+
 import joblib
 import tqdm
 
 import dask
-import dask.distributed as distributed
+from dask import distributed
 
 import cbox.lib as cbox
-import ctypes
 
 
 def exectask(action, unitlist, *args):

@@ -1,13 +1,9 @@
 """Module with implementation of the Block class."""
 
 import pymorton
-import numpy
-import cbox.lib.boost as cbox
-
-from . import Data
 
 
-class Block(object):
+class Block:
     """Default class for a Block.
 
     Parameters
@@ -39,12 +35,12 @@ class Block(object):
         """Return a representation of the object."""
         return (
             "Block:\n"
-            + " - type         : {}\n".format(type(self))
-            + " - deltas       : {} x {} x {}\n".format(self.dx, self.dy, self.dz)
-            + " - bound(z-y-x) : [{}, {}] x [{}, {}] x [{}, {}]\n".format(
-                self.zmin, self.zmax, self.ymin, self.ymax, self.xmin, self.xmax
-            )
-            + " - tag          : {}\n".format(self.tag)
+            + f" - type         : {type(self)}\n"
+            + f" - deltas       : {self.dx} x {self.dy} x {self.dz}\n"
+            + f" - bound(z-y-x) : [{self.zmin}, {self.zmax}] x"
+            + f"[{self.ymin}, {self.ymax}] x"
+            + f"[{self.xmin}, {self.xmax}]\n"
+            + f" - tag          : {self.tag}\n"
         )
 
     def __getitem__(self, varkey):
@@ -63,31 +59,19 @@ class Block(object):
         """
         Private method for intialization
         """
+        self.dx, self.dy, self.dz = [1.0, 1.0, 1.0]
+        self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
+        self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
+        self.tag = 0
 
-        default_attributes = {
-            "dx": 1,
-            "dy": 1,
-            "dz": 1,
-            "xmin": 0.0,
-            "ymin": 0.0,
-            "zmin": 0.0,
-            "xmax": 0.0,
-            "ymax": 0.0,
-            "zmax": 0.0,
-            "tag": 0,
-        }
-
-        for key in attributes:
-            if key in default_attributes:
-                default_attributes[key] = attributes[key]
+        for key, value in attributes.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
             else:
                 raise ValueError(
                     "[bubblebox.library.create.Block] "
-                    + 'Attribute "{}" not present in class Block'.format(key)
+                    + f"Attribute {key} not present in class Block"
                 )
-
-        for key, value in default_attributes.items():
-            setattr(self, key, value)
 
         self.xcenter = (self.xmin + self.xmax) / 2.0
         self.ycenter = (self.ymin + self.ymax) / 2.0
@@ -114,15 +98,15 @@ class Block(object):
         self._data = data
 
         if 1 in [self.dx, self.dy, self.dz]:
-            self._set_neighdict_2D()
+            self._set_neighdict_2d()
         else:
-            self._set_neighdict_3D()
+            self._set_neighdict_3d()
 
         self.nxb, self.xguard = self._data.nxb, self._data.xguard
         self.nyb, self.yguard = self._data.nyb, self._data.yguard
         self.nzb, self.zguard = self._data.nzb, self._data.zguard
 
-    def _set_neighdict_2D(self):
+    def _set_neighdict_2d(self):
         """class property python
         Return neighbor tags
 
@@ -155,7 +139,7 @@ class Block(object):
 
         self.neighdict.update(dict(zip(locations, neighlist)))
 
-    def _set_neighdict_3D(self):
+    def _set_neighdict_3d(self):
         """
         Return neighbor tags
 
@@ -189,22 +173,22 @@ class Block(object):
         """
         Write block data to buffer for halo exchange
         """
-        pass
 
     def read_neighbuffer(self, varkey):
         """
         Read neighbor buffer and perform halo exchange
         """
-        pass
 
     def neighdata(self, varkey, neighkey):
         """
         Get neighbor data
         """
+        neighdata = None
+
         if self.neighdict[neighkey] is not None:
-            return self._data[varkey][self.neighdict[neighkey]]  # .to_numpy()[:]
-        else:
-            return None
+            neighdata = self._data[varkey][self.neighdict[neighkey]]  # .to_numpy()[:]
+
+        return neighdata
 
     def exchange_neighdata(self, varkey):
         """
@@ -237,7 +221,7 @@ class Block(object):
                 blockdata[guard, :, :] = self.neighdata(varkey, "zlow")[
                     self.nzb + guard, :, :
                 ]
-            if self.neighdit["zhigh"]:
+            if self.neighdict["zhigh"]:
                 blockdata[self.nzb + self.zguard + guard, :, :] = self.neighdata(
                     varkey, "zhigh"
                 )[self.zguard + guard, :, :]
