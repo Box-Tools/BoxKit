@@ -81,7 +81,8 @@ inline void set_font_style(std::ostream &os, FontStyle style) {
   }
 }
 
-inline std::ostream &write_duration(std::ostream &os, std::chrono::nanoseconds ns) {
+inline std::ostream &write_duration(std::ostream &os,
+                                    std::chrono::nanoseconds ns) {
   using namespace std;
   using namespace std::chrono;
   using days = duration<int, ratio<86400>>;
@@ -105,11 +106,13 @@ inline std::ostream &write_duration(std::ostream &os, std::chrono::nanoseconds n
 
 class BlockProgressScaleWriter {
 public:
-  BlockProgressScaleWriter(std::ostream &os, size_t bar_width) : os(os), bar_width(bar_width) {}
+  BlockProgressScaleWriter(std::ostream &os, size_t bar_width)
+      : os(os), bar_width(bar_width) {}
 
   std::ostream &write(float progress) {
     std::string fill_text{"█"};
-    std::vector<std::string> lead_characters{" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉"};
+    std::vector<std::string> lead_characters{" ", "▏", "▎", "▍",
+                                             "▌", "▋", "▊", "▉"};
     auto value = (std::min)(1.0f, (std::max)(0.0f, progress / 100.0f));
     auto whole_width = std::floor(value * bar_width);
     auto remainder_width = fmod((value * bar_width), 1.0f);
@@ -132,9 +135,11 @@ private:
 
 class ProgressScaleWriter {
 public:
-  ProgressScaleWriter(std::ostream &os, size_t bar_width, const std::string &fill,
-                      const std::string &lead, const std::string &remainder)
-      : os(os), bar_width(bar_width), fill(fill), lead(lead), remainder(remainder) {}
+  ProgressScaleWriter(std::ostream &os, size_t bar_width,
+                      const std::string &fill, const std::string &lead,
+                      const std::string &remainder)
+      : os(os), bar_width(bar_width), fill(fill), lead(lead),
+        remainder(remainder) {}
 
   std::ostream &write(float progress) {
     auto pos = static_cast<size_t>(progress * bar_width / 100.0);
@@ -176,7 +181,8 @@ private:
 
 class IndeterminateProgressScaleWriter {
 public:
-  IndeterminateProgressScaleWriter(std::ostream &os, size_t bar_width, const std::string &fill,
+  IndeterminateProgressScaleWriter(std::ostream &os, size_t bar_width,
+                                   const std::string &fill,
                                    const std::string &lead)
       : os(os), bar_width(bar_width), fill(fill), lead(lead) {}
 

@@ -3,7 +3,7 @@
 import copy
 
 
-class Process(object):
+class Process:
     """Default class for a Process."""
 
     type_ = "default"
@@ -19,9 +19,10 @@ class Process(object):
         super().__init__()
         self.target = target
 
-        self.tasks = dict()
+        self.tasks = {}
 
-        [self.tasks.update(module()) for module in stencils]
+        for module in stencils:
+            self.tasks.update(module())
 
     def __call__(self, *args):
         """
@@ -29,12 +30,15 @@ class Process(object):
 
         If target is None, define the target, else call the target
         """
+
         if self.target is None:
             self.target = args[0]
-            return self
+            retval = self
 
         else:
-            return self.target(self, *args)
+            retval = self.target(self, *args)
+
+        return retval
 
     def clone(self):
         """

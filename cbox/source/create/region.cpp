@@ -3,7 +3,6 @@
  *
  *
  */
-namespace cbox::create 
-{
-    //add cbox create methods here
+namespace cbox::create {
+// add cbox create methods here
 }

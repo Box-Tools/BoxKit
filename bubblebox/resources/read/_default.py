@@ -35,7 +35,7 @@ def read_default(filename):
     dy = inputfile["deltas"][1]
     dz = inputfile["deltas"][2]
 
-    variables = dict()
+    variables = {}
     variables.update(inputfile["quantities"])
 
     # Create data attributes

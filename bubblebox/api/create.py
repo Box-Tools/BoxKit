@@ -2,8 +2,6 @@
 
 from .. import library
 
-from ..resources import read
-
 
 def dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
     """
@@ -60,8 +58,8 @@ def region(dataset, **attributes):
         "zmax": dataset.zmax,
     }
 
-    for key in attributes:
-        region_attributes[key] = attributes[key]
+    for key, value in attributes.items():
+        region_attributes[key] = value
 
     return library.create.Region(dataset.blocklist, **region_attributes)
 
@@ -95,7 +93,7 @@ def slice(dataset, **attributes):
         "zmax": dataset.zmax,
     }
 
-    for key in attributes:
-        slice_attributes[key] = attributes[key]
+    for key, value in attributes.items():
+        slice_attributes[key] = value
 
     return library.create.Slice(dataset.blocklist, **slice_attributes)

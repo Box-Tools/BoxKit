@@ -4,7 +4,7 @@ from . import Block
 from ..utilities import Action
 
 
-class Dataset(object):
+class Dataset:
     """API class for storing Dataset info"""
 
     type_ = "default"
@@ -26,17 +26,15 @@ class Dataset(object):
         """Return a representation of the object."""
         return (
             "Dataset:\n"
-            + " - type         : {}\n".format(type(self))
-            + " - file         : {}\n".format(self._data.inputfile)
-            + " - keys         : {}\n".format(self._data.varlist)
-            + " - bound(z-y-x) : [{}, {}] x [{}, {}] x [{}, {}]\n".format(
-                self.zmin, self.zmax, self.ymin, self.ymax, self.xmin, self.xmax
-            )
-            + " - shape(z-y-x) : {} x {} x {}\n".format(self.nzb, self.nyb, self.nxb)
-            + " - guard(z-y-x) : {} x {} x {}\n".format(
-                self.zguard, self.yguard, self.xguard
-            )
-            + " - nblocks      : {}".format(self.nblocks)
+            + f" - type         : {type(self)}\n"
+            + f" - file         : {self._data.inputfile}\n"
+            + f" - keys         : {self._data.varlist}\n"
+            + f" - bound(z-y-x) : [{self.zmin}, {self.zmax}] x "
+            + f"[{self.ymin}, {self.ymax}] x "
+            + f"[{self.xmin}, {self.xmax}]\n"
+            + f" - shape(z-y-x) : {self.nzb} x {self.nyb} x {self.nxb}\n"
+            + f" - guard(z-y-x) : {self.zguard} x {self.yguard} x {self.xguard}\n"
+            + f" - nblocks      : {self.nblocks}"
         )
 
     def __getitem__(self, varkey):
@@ -135,7 +133,7 @@ class Dataset(object):
         Perform halo exchange
         """
         # Convert single string to a list
-        if type(varlist) is str:
+        if isinstance(varlist, str):
             varlist = [varlist]
 
         halo_exchange_block.nthreads = nthreads

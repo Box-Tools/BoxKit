@@ -5,10 +5,10 @@
 #include <atomic>
 #include <functional>
 #include <indicators/color.hpp>
-#include <indicators/setting.hpp>
 #include <indicators/cursor_control.hpp>
 #include <indicators/cursor_movement.hpp>
 #include <indicators/details/stream_helper.hpp>
+#include <indicators/setting.hpp>
 #include <iostream>
 #include <mutex>
 #include <vector>
@@ -19,7 +19,8 @@ template <typename Indicator> class DynamicProgress {
   using Settings = std::tuple<option::HideBarWhenComplete>;
 
 public:
-  template <typename... Indicators> explicit DynamicProgress(Indicators &... bars) {
+  template <typename... Indicators>
+  explicit DynamicProgress(Indicators &... bars) {
     bars_ = {bars...};
     for (auto &bar : bars_) {
       bar.get().multi_progress_mode_ = true;
@@ -43,18 +44,20 @@ public:
 
   template <typename T, details::ProgressBarOption id>
   void set_option(details::Setting<T, id> &&setting) {
-    static_assert(!std::is_same<T, typename std::decay<decltype(details::get_value<id>(
-                                       std::declval<Settings>()))>::type>::value,
-                  "Setting has wrong type!");
+    static_assert(
+        !std::is_same<T, typename std::decay<decltype(details::get_value<id>(
+                             std::declval<Settings>()))>::type>::value,
+        "Setting has wrong type!");
     std::lock_guard<std::mutex> lock(mutex_);
     get_value<id>() = std::move(setting).value;
   }
 
   template <typename T, details::ProgressBarOption id>
   void set_option(const details::Setting<T, id> &setting) {
-    static_assert(!std::is_same<T, typename std::decay<decltype(details::get_value<id>(
-                                       std::declval<Settings>()))>::type>::value,
-                  "Setting has wrong type!");
+    static_assert(
+        !std::is_same<T, typename std::decay<decltype(details::get_value<id>(
+                             std::declval<Settings>()))>::type>::value,
+        "Setting has wrong type!");
     std::lock_guard<std::mutex> lock(mutex_);
     get_value<id>() = setting.value;
   }
@@ -68,20 +71,22 @@ private:
   std::atomic<size_t> incomplete_count_{0};
 
   template <details::ProgressBarOption id>
-  auto get_value() -> decltype((details::get_value<id>(std::declval<Settings &>()).value)) {
+  auto get_value()
+      -> decltype((details::get_value<id>(std::declval<Settings &>()).value)) {
     return details::get_value<id>(settings_).value;
   }
 
   template <details::ProgressBarOption id>
-  auto get_value() const
-      -> decltype((details::get_value<id>(std::declval<const Settings &>()).value)) {
+  auto get_value() const -> decltype(
+      (details::get_value<id>(std::declval<const Settings &>()).value)) {
     return details::get_value<id>(settings_).value;
   }
 
 public:
   void print_progress() {
     std::lock_guard<std::mutex> lock{mutex_};
-    auto &hide_bar_when_complete = get_value<details::ProgressBarOption::hide_bar_when_complete>();
+    auto &hide_bar_when_complete =
+        get_value<details::ProgressBarOption::hide_bar_when_complete>();
     if (hide_bar_when_complete) {
       // Hide completed bars
       if (started_) {
