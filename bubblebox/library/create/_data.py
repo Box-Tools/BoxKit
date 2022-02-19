@@ -10,7 +10,7 @@ import dask.array as dsarray
 import pyarrow
 import zarr
 
-import cbox.lib.boost as cbox
+from ...cbox.lib import boost as cbox
 
 
 class Data(cbox.create.Data):
