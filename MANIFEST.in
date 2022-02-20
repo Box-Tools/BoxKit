@@ -1,0 +1,11 @@
+include README.rst
+include LICENSE
+include bubblebox/cbox/*
+include bubblebox/cbox/lib/*
+include bubblebox/cbox/source/*
+include bubblebox/cbox/source/create/*
+include bubblebox/cbox/source/utilities/*
+include bubblebox/cbox/include/*
+include bubblebox/cbox/include/cbox/*
+include bubblebox/cbox/include/indicators/*
+include bubblebox/cbox/include/indicators/details/*

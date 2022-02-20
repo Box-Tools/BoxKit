@@ -3,16 +3,22 @@
 
 #Development mode
 if [ $1 = "develop" ]; then
-    cd cbox/source && make && cd ../../
+    cd bubblebox/cbox/source && make && cd ../../../
     python3 setup.py develop --user
 fi
 
 
 #Install mode
 if [ $1 = "install" ]; then
-    cd cbox/source && make && cd ../../
     python3 setup.py build
     python3 setup.py install --user
+fi
+
+
+# Publish mode
+if [ $1 = "publish" ]; then
+    python3 setup.py sdist
+    twine upload dist/*
 fi
 
 
@@ -20,5 +26,5 @@ fi
 if [ $1 = "clean" ]; then
     rm -rf *.egg-info
     rm -rf build dist
-    cd cbox/source && make clean && cd ../../
+    cd bubblebox/cbox/source && make clean && cd ../../../
 fi

@@ -8,7 +8,7 @@ import tqdm
 import dask
 from dask import distributed
 
-import cbox.lib as cbox
+from ...cbox.lib import extern as cbox
 
 
 def exectask(action, unitlist, *args):
@@ -88,10 +88,10 @@ def execute_cbox(action, unitlist, *args):
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """
-    cbox.extern.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
-    cbox.extern.utilities.execute_pyTask.restype = ctypes.py_object
+    cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
+    cbox.utilities.execute_pyTask.restype = ctypes.py_object
 
-    listresult = cbox.extern.utilities.execute_pyTask(action, unitlist, args)
+    listresult = cbox.utilities.execute_pyTask(action, unitlist, args)
 
     return listresult
 

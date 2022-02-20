@@ -23,7 +23,9 @@ jobs:
         username: ${{secrets.DOCKER_HUB_USERNAME}}
         password: ${{secrets.DOCKER_HUB_PSK}}
     - uses: actions/checkout@v2      
-    - uses: akashdhruv/Maple/.github/actions/maple@main
+    - name: Install PyMaple
+      run: |
+          pip3 install PyMaple
     - name: Build Container
       run: |
           maple image build flowx --base=${{secrets.DOCKER_HUB_USERNAME}}/flowx:archive-spring-2022
