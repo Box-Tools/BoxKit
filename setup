@@ -23,7 +23,7 @@ def develop(boost_path):
 
 @setup.command(name="install")
 @click.option("--boost-path", "-B", default=None, help="Boost library path")
-def install():
+def install(boost_path):
     """Installation command"""
     if boost_path:
         os.environ["BOOST_PATH"] = str(boost_path)
