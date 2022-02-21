@@ -23,9 +23,7 @@ jobs:
         username: ${{secrets.DOCKER_HUB_USERNAME}}
         password: ${{secrets.DOCKER_HUB_PSK}}
     - uses: actions/checkout@v2      
-    - name: Install PyMaple
-      run: |
-          pip3 install PyMaple
+    - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Publish BubbleBox Image
       run: |
           maple image build bubblebox --as-root
