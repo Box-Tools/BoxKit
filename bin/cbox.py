@@ -8,7 +8,7 @@ from distutils.sysconfig import get_python_version, BASE_PREFIX
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Custom variables
-CBOX_DICT = {
+CBOX_MAKE_DICT = {
     "python_version": get_python_version(),
     "python_path": BASE_PREFIX,
     "boost_version": "".join(get_python_version().split(".")),
@@ -18,7 +18,7 @@ CBOX_DICT = {
 
 CBOX_MAKE_ARGS = ""
 
-for key, value in CBOX_DICT.items():
+for key, value in CBOX_MAKE_DICT.items():
     CBOX_MAKE_ARGS = CBOX_MAKE_ARGS + " " + f"{key}={value}"
 
 # cbox install command
