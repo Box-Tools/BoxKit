@@ -8,26 +8,6 @@ Subpackages
    :maxdepth: 4
 
    bubblebox.api
+   bubblebox.cbox
    bubblebox.library
    bubblebox.resources
-
-Submodules
-----------
-
-bubblebox.\_\_meta\_\_ module
------------------------------
-
-.. automodule:: bubblebox.__meta__
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
-Module contents
----------------
-
-.. automodule:: bubblebox
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
