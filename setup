@@ -2,6 +2,7 @@
 
 """Setup CLI script"""
 
+import os
 import subprocess
 import click
 
@@ -12,14 +13,20 @@ def setup():
 
 
 @setup.command(name="develop")
-def develop():
+@click.option("--boost-path", "-B", default=None, help="Boost library path")
+def develop(boost_path):
     """Development mode"""
+    if boost_path:
+        os.environ["BOOST_PATH"] = str(boost_path)
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
 
 
 @setup.command(name="install")
+@click.option("--boost-path", "-B", default=None, help="Boost library path")
 def install():
     """Installation command"""
+    if boost_path:
+        os.environ["BOOST_PATH"] = str(boost_path)
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
     subprocess.run("python3 setup.py build", shell=True, check=True)
     subprocess.run("python3 setup.py install --user", shell=True, check=True)
