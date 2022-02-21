@@ -24,7 +24,7 @@ linkers = -L$(python_path)/lib/python$(python_version)/config -lpython$(python_v
           -L$(boost_path)/lib -lboost_python$(boost_version)
 
 # Set header flags
-headers = -I$(basedir)/include \
+headers = -I$(basedir)/include -I$(basedir)/depends \
           -I$(python_path)/include/python$(python_version) \
           -I$(boost_path)/include
 

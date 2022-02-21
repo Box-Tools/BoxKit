@@ -1,29 +1,52 @@
-#!/bin/bash
+#!/usr/bin/env python3
+
+"""Setup CLI script"""
+
+import os
+import subprocess
+import click
 
 
-#Development mode
-if [ $1 = "develop" ]; then
-    python3 setup.py develop --user
-fi
+@click.group(name="setup")
+def setup():
+    """Setup toolkit for BubbleBox"""
 
 
-#Install mode
-if [ $1 = "install" ]; then
-    python3 setup.py build
-    python3 setup.py install --user
-fi
+@setup.command(name="develop")
+@click.option("--boost-path", "-B", default=None, help="Boost library path")
+def develop(boost_path):
+    """Development mode"""
+    if boost_path:
+        os.environ["BOOST_PATH"] = str(boost_path)
+    subprocess.run("python3 setup.py develop --user", shell=True, check=True)
 
 
-# Publish mode
-if [ $1 = "publish" ]; then
-    python3 setup.py sdist
-    twine upload dist/*
-fi
+@setup.command(name="install")
+@click.option("--boost-path", "-B", default=None, help="Boost library path")
+def install(boost_path):
+    """Installation command"""
+    if boost_path:
+        os.environ["BOOST_PATH"] = str(boost_path)
+    subprocess.run("python3 setup.py develop --user", shell=True, check=True)
+    subprocess.run("python3 setup.py build", shell=True, check=True)
+    subprocess.run("python3 setup.py install --user", shell=True, check=True)
 
 
-#Clean after installation
-if [ $1 = "clean" ]; then
-    rm -rf *.egg-info
-    rm -rf build dist
-    cd bubblebox/cbox/source && make clean && cd ../../../
-fi
+@setup.command(name="publish")
+def publish():
+    """Publish PyPi package"""
+    subprocess.run("python3 setup.py sdist", shell=True, check=True)
+    subprocess.run("twine upload dist/*", shell=True, check=True)
+
+
+@setup.command(name="clean")
+def clean():
+    """Clean installation artifacts"""
+    subprocess.run("rm -rf *.egg-info build dist", shell=True, check=True)
+    subprocess.run(
+        "cd bubblebox/cbox/source && make clean && cd ../../../", shell=True, check=True
+    )
+
+
+if __name__ == "__main__":
+    setup()
