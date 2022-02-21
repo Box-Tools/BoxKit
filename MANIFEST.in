@@ -1,6 +1,6 @@
 include README.rst
 include LICENSE
-include setup_cmd.py
+include bin/*
 include bubblebox/cbox/*
 include bubblebox/cbox/lib/*
 include bubblebox/cbox/source/*
@@ -8,5 +8,6 @@ include bubblebox/cbox/source/create/*
 include bubblebox/cbox/source/utilities/*
 include bubblebox/cbox/include/*
 include bubblebox/cbox/include/cbox/*
-include bubblebox/cbox/include/indicators/*
-include bubblebox/cbox/include/indicators/details/*
+include bubblebox/cbox/depends/*
+include bubblebox/cbox/depends/indicators/*
+include bubblebox/cbox/depends/indicators/details/*

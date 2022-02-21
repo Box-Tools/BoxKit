@@ -3,7 +3,7 @@
 # standard libraries
 import re
 from setuptools import setup, find_packages
-import setup_cmd
+import bin.cmd as setup_cmd
 
 # get long description from README
 with open("README.rst", mode="r") as readme:
@@ -35,6 +35,7 @@ DEPENDENCIES = [
     "distributed",
     "tqdm",
     "zarr",
+    "faber",
 ]
 
 setup(
