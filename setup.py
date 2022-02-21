@@ -2,23 +2,8 @@
 
 # standard libraries
 import re
-import subprocess
 from setuptools import setup, find_packages
-from setuptools.command.build_py import build_py
-
-# custom build command
-class BuildPyCommand(build_py):
-    """Custom build command."""
-
-    def run(self):
-        build_py.run(self)
-        subprocess.run("cd bubblebox/cbox/source && make", shell=True, check=True)
-        subprocess.run(
-            "cp bubblebox/cbox/lib/*.so build/lib/bubblebox/cbox/lib/.",
-            shell=True,
-            check=True,
-        )
-
+import setup_cmd
 
 # get long description from README
 with open("README.rst", mode="r") as readme:
@@ -73,5 +58,8 @@ setup(
         "License :: OSI Approved :: MIT License",
     ],
     install_requires=DEPENDENCIES,
-    cmdclass={"build_py": BuildPyCommand},
+    cmdclass={
+        "develop": setup_cmd.DevelopCmd,
+        "build_py": setup_cmd.BuildCmd,
+    },
 )
