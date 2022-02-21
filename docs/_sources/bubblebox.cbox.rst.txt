@@ -1,5 +1,5 @@
-flowx package
-=============
+bubblebox.cbox package
+======================
 
 Subpackages
 -----------
@@ -7,17 +7,13 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   flowx.domain
-   flowx.imbound
-   flowx.ins
-   flowx.io
-   flowx.poisson
-   flowx.quantum
+   bubblebox.cbox.lib
 
 Module contents
 ---------------
 
-.. automodule:: flowx
+.. automodule:: bubblebox.cbox
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

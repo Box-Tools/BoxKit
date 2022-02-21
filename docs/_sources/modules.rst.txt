@@ -1,9 +1,7 @@
-BubbleBox
+bubblebox
 =========
 
 .. toctree::
    :maxdepth: 4
 
    bubblebox
-   cbox
-   setup
