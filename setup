@@ -12,6 +12,16 @@ def setup():
     """Setup toolkit for BubbleBox"""
 
 
+@setup.command(name="submodules")
+@click.argument("path_modules", required=True, nargs=-1)
+def submodules(path_modules):
+    """Initialize submodules, accepts multiple arguments"""
+    for module in path_modules:
+        subprocess.run(
+            f"git submodule update --init --recursive {module}", shell=True, check=True
+        )
+
+
 @setup.command(name="develop")
 @click.option("--boost-path", "-B", default=None, help="Boost library path")
 def develop(boost_path):
