@@ -33,7 +33,7 @@ def boost():
     )
 
     subprocess.run(
-        "git submodule deinit submodules/boost",
+        "git submodule deinit -f submodules/boost",
         shell=True,
         check=True,
     )
