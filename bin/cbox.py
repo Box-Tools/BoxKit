@@ -12,9 +12,12 @@ CBOX_MAKE_DICT = {
     "python_version": get_python_version(),
     "python_path": BASE_PREFIX,
     "boost_version": "".join(get_python_version().split(".")),
-    "boost_path": (os.getenv("BOOST_PATH") if os.getenv("BOOST_PATH") else BASE_PREFIX),
+    "boost_path": (
+        os.getenv("PWD") + "/bubblebox/depends/boost"
+        if os.path.exists(os.getenv("PWD") + "/bubblebox/depends/boost")
+        else BASE_PREFIX
+    ),
 }
-
 
 CBOX_MAKE_ARGS = ""
 
