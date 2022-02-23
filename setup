@@ -6,7 +6,8 @@ import subprocess
 import click
 
 # Import from local bin
-from bin.boost import boost_build
+from bin.boost import boost_build, boost_clean
+from bin.cbox import cbox_clean
 
 
 @click.group(name="setup")
@@ -18,6 +19,7 @@ def setup():
 def depends():
     """Build dependencies for the Python library"""
     boost_build()
+    boost_clean()
 
 
 @setup.command(name="develop")
@@ -45,10 +47,7 @@ def publish():
 def clean():
     """Clean installation artifacts"""
     subprocess.run("rm -rf *.egg-info build dist", shell=True, check=True)
-    subprocess.run(
-        "cd bubblebox/cbox/source && make clean && cd ../../../", shell=True, check=True
-    )
-
+    cbox_clean()
 
 if __name__ == "__main__":
     setup()

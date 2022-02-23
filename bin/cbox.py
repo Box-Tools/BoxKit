@@ -49,3 +49,11 @@ def cbox_install():
         shell=True,
         check=True,
     )
+
+
+# Clean CBox environment
+def cbox_clean():
+    """Clean cbox objects"""
+    subprocess.run(
+        "cd bubblebox/cbox/source && make clean && cd ../../../", shell=True, check=True
+    )

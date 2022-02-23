@@ -26,6 +26,9 @@ def boost_build():
         check=True,
     )
 
+
+def boost_clean():
+    """Clean boost source environment"""
     subprocess.run(
         "git submodule deinit -f submodules/boost",
         shell=True,
