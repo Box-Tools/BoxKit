@@ -1,14 +1,25 @@
 """Build and installation script for BubbleBox."""
 
 # standard libraries
+import os
+import sys
 import re
 from setuptools import setup, find_packages
-import bin.cmd as setup_cmd
 
-# get long description from README
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Import bin from current working directory
+# sys.path.insert makes sure that current file path is searched
+# first to find this module
+import bin.cmd as bin_cmd
+
+# Parse README and get long
+# description
 with open("README.rst", mode="r") as readme:
     long_description = readme.read()
 
+
+# Open metadata file to extract package information
 with open("bubblebox/__meta__.py", mode="r") as source:
     content = source.read().strip()
     metadata = {
@@ -22,7 +33,7 @@ with open("bubblebox/__meta__.py", mode="r") as source:
         ]
     }
 
-# core dependancies
+# core dependancies for the package
 DEPENDENCIES = [
     "numpy==1.21",
     "h5py",
@@ -38,6 +49,9 @@ DEPENDENCIES = [
     "faber",
 ]
 
+# Call setup command with necessary arguments
+# replace existing build and develop commands
+# with custom commands defined in 'bin.cmd'
 setup(
     name=metadata["__pkgname__"],
     version=metadata["__version__"],
@@ -54,7 +68,7 @@ setup(
     ],
     install_requires=DEPENDENCIES,
     cmdclass={
-        "develop": setup_cmd.DevelopCmd,
-        "build_py": setup_cmd.BuildCmd,
+        "develop": bin_cmd.DevelopCmd,
+        "build_py": bin_cmd.BuildCmd,
     },
 )

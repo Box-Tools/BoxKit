@@ -8,5 +8,6 @@ dist/*
 dask-worker-space
 *.rst
 bubblebox/depends/boost/*
+.sphinx/build/*
 !.sphinx/source/index.rst
 !README.rst
