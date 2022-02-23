@@ -24,8 +24,6 @@ jobs:
         username: ${{secrets.DOCKER_HUB_USERNAME}}
         password: ${{secrets.DOCKER_HUB_PSK}}
     - uses: actions/checkout@v2      
-      with:
-        submodules: recursive
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
