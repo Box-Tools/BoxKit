@@ -2,10 +2,11 @@
 
 """Setup CLI script"""
 
-import os
 import subprocess
 import click
-from distutils.sysconfig import get_python_version
+
+# Import from local bin
+from bin.boost import boost_build
 
 
 @click.group(name="setup")
@@ -13,30 +14,10 @@ def setup():
     """Setup toolkit for BubbleBox"""
 
 
-@setup.command(name="boost")
-def boost():
-    """Build local Boost library from submodules"""
-    subprocess.run(
-        "git submodule update --init --recursive submodules/boost",
-        shell=True,
-        check=True,
-    )
-
-    subprocess.run(
-        "cd submodules/boost && ./bootstrap.sh"
-        + " "
-        + f"--with-python-version={get_python_version()}"
-        + " "
-        + f"--prefix={os.getenv('PWD')}/bubblebox/depends/boost && ./b2 install",
-        shell=True,
-        check=True,
-    )
-
-    subprocess.run(
-        "git submodule deinit -f submodules/boost",
-        shell=True,
-        check=True,
-    )
+@setup.command(name="depends")
+def depends():
+    """Build dependencies for the Python library"""
+    boost_build()
 
 
 @setup.command(name="develop")
