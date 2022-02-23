@@ -22,6 +22,19 @@ class BuildCmd(build_py):
             check=True,
         )
 
+        if os.path.exists(os.getenv("PWD") + "/bubblebox/depends/boost"):
+            subprocess.run(
+                "mkdir -pv build/lib/bubblebox/depends/boost/lib",
+                shell=True,
+                check=True,
+            )
+
+            subprocess.run(
+                "cp bubblebox/depends/boost/lib/libboost_python* build/lib/bubblebox/depends/boost/lib",
+                shell=True,
+                check=True,
+            )
+
 
 # custom develop command
 class DevelopCmd(develop):

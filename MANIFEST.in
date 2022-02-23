@@ -8,5 +8,6 @@ include bubblebox/cbox/source/create/*
 include bubblebox/cbox/source/utilities/*
 include bubblebox/cbox/include/*
 include bubblebox/cbox/include/cbox/*
-include bubblebox/cbox/include/indicators/*
-include bubblebox/cbox/include/indicators/details/*
+include bubblebox/depends/*
+include bubblebox/depends/indicators/*
+include bubblebox/depends/indicators/details/*
