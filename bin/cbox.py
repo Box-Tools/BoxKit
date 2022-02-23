@@ -19,9 +19,6 @@ CBOX_MAKE_DICT = {
     ),
 }
 
-
-print(CBOX_MAKE_DICT["boost_path"])
-
 CBOX_MAKE_ARGS = ""
 
 for key, value in CBOX_MAKE_DICT.items():
