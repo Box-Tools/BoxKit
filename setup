@@ -17,23 +17,11 @@ def setup():
 def boost():
     """Build local Boost library from submodules"""
     subprocess.run(
-        "git submodule update --init --recursive submodules/boost",
-        shell=True,
-        check=True,
-    )
-
-    subprocess.run(
         "cd submodules/boost && ./bootstrap.sh"
         + " "
         + f"--with-python-version={get_python_version()}"
         + " "
         + f"--prefix={os.getenv('PWD')}/bubblebox/depends/boost && ./b2 install",
-        shell=True,
-        check=True,
-    )
-
-    subprocess.run(
-        "git submodule deinit submodules/boost",
         shell=True,
         check=True,
     )
