@@ -5,6 +5,7 @@
 import os
 import subprocess
 import click
+from distutils.sysconfig import get_python_version
 
 
 @click.group(name="setup")
@@ -12,21 +13,41 @@ def setup():
     """Setup toolkit for BubbleBox"""
 
 
+@setup.command(name="boost")
+def boost():
+    """Build local Boost library from submodules"""
+    subprocess.run(
+        "git submodule update --init --recursive submodules/boost",
+        shell=True,
+        check=True,
+    )
+
+    subprocess.run(
+        "cd submodules/boost && ./bootstrap.sh"
+        + " "
+        + f"--with-python-version={get_python_version()}"
+        + " "
+        + f"--prefix={os.getenv('PWD')}/bubblebox/depends/boost && ./b2 install",
+        shell=True,
+        check=True,
+    )
+
+    subprocess.run(
+        "git submodule deinit submodules/boost",
+        shell=True,
+        check=True,
+    )
+
+
 @setup.command(name="develop")
-@click.option("--boost-path", "-B", default=None, help="Boost library path")
-def develop(boost_path):
+def develop():
     """Development mode"""
-    if boost_path:
-        os.environ["BOOST_PATH"] = str(boost_path)
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
 
 
 @setup.command(name="install")
-@click.option("--boost-path", "-B", default=None, help="Boost library path")
-def install(boost_path):
+def install():
     """Installation command"""
-    if boost_path:
-        os.environ["BOOST_PATH"] = str(boost_path)
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
     subprocess.run("python3 setup.py build", shell=True, check=True)
     subprocess.run("python3 setup.py install --user", shell=True, check=True)

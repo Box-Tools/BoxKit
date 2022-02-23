@@ -1,0 +1,3 @@
+[submodule "submodules/boost"]
+	path = submodules/boost
+	url = git@github.com:boostorg/boost.git
