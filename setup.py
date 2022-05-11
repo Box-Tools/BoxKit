@@ -35,7 +35,6 @@ with open("bubblebox/__meta__.py", mode="r") as source:
 
 # core dependancies for the package
 DEPENDENCIES = [
-    "cython",
     "numpy==1.21",
     "h5py",
     "h5pickle",
@@ -67,6 +66,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "License :: OSI Approved :: MIT License",
     ],
+    setup_requires=["cython"],
     install_requires=DEPENDENCIES,
     cmdclass={
         "develop": bin_cmd.DevelopCmd,
