@@ -27,8 +27,10 @@ container = "bubblebox"
 # Commands to execute inside the container and update the
 # image
 publish = [
-    "cd bubblebox/cbox/source && make",
-    "python3 setup.py develop && python3 setup.py install && ./setup clean",
+    "export cbox_backend=TRUE",
+    "python3 setup.py develop",
+    "python3 setup.py build",
+    "python3 setup.py install && ./setup clean",
 ]
 
 # Backend for service docker/singularity
