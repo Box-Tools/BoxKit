@@ -1,6 +1,10 @@
 """Initialization of parallel interface"""
 
-from ._monitor import Monitor
+import os
+
 from ._execute import exectask
 from ._action import Action
 from ._process import Process
+
+if os.getenv("cbox_backend") == "TRUE":
+    from ._monitor import Monitor
