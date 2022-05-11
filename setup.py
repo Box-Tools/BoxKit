@@ -35,6 +35,7 @@ with open("bubblebox/__meta__.py", mode="r") as source:
 
 # core dependancies for the package
 DEPENDENCIES = [
+    "cython",
     "numpy==1.21",
     "h5py",
     "h5pickle",
