@@ -10,10 +10,16 @@ import dask.array as dsarray
 import pyarrow
 import zarr
 
-from ...cbox.lib import boost as cbox
+if os.getenv("cbox_backend") == "TRUE":
+    from ...cbox.lib import boost as cbox
+
+    _data_base = cbox.create.Data
+
+else:
+    _data_base = object
 
 
-class Data(cbox.create.Data):
+class Data(_data_base):
     """Default class to store data"""
 
     type_ = "default"

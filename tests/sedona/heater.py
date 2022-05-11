@@ -1,11 +1,12 @@
-"""Tests for `bubblebox/api/flow`."""
+"""Tests for `bubblebox/api`."""
 
-import bubblebox.api as bubblebox
+import os
+import time
 import unittest
 import pymorton
-import time
-import os
 
+os.environ["cbox_backend"] = "TRUE"
+import bubblebox.api as bubblebox
 from bubblebox.library.utilities import Monitor
 
 

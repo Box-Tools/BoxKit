@@ -1,5 +1,6 @@
 """Module with implementation of ExecuteTask utility"""
 
+import os
 import ctypes
 
 import joblib
@@ -8,7 +9,8 @@ import tqdm
 import dask
 from dask import distributed
 
-from ...cbox.lib import extern as cbox
+if os.getenv("cbox_backend") == "TRUE":
+    from ...cbox.lib import extern as cbox
 
 
 def exectask(action, unitlist, *args):
@@ -88,10 +90,15 @@ def execute_cbox(action, unitlist, *args):
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """
-    cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
-    cbox.utilities.execute_pyTask.restype = ctypes.py_object
+    if os.getenv("cbox_backend") == "TRUE":
+        cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
+        cbox.utilities.execute_pyTask.restype = ctypes.py_object
 
-    listresult = cbox.utilities.execute_pyTask(action, unitlist, args)
+        listresult = cbox.utilities.execute_pyTask(action, unitlist, args)
+
+    else:
+        listresult = None
+        raise ValueError("Cannot execute using CBOX backend")
 
     return listresult
 

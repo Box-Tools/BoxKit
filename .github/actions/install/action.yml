@@ -11,7 +11,7 @@ runs:
   steps:
     - run: maple container pour --image=${{inputs.image}} 
       shell: bash
-    - run: maple container execute "pip3 install click && ./setup install && ./setup clean"
+    - run: maple container execute "pip3 install click && ./setup install --with-cbox && ./setup clean"
       shell: bash
     - run: maple container commit --image=${{inputs.image}}
       shell: bash

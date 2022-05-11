@@ -18,10 +18,13 @@ class BuildCmd(build_py):
     """Custom build_py command."""
 
     def run(self):
+
         build_py.run(self)
-        cbox_build()
-        cbox_install()
-        boost_install()
+
+        if os.getenv("cbox_backend") == "TRUE":
+            cbox_build()
+            cbox_install()
+            boost_install()
 
 
 # custom develop command
@@ -30,5 +33,8 @@ class DevelopCmd(develop):
     """Custom develop command."""
 
     def run(self):
+
         develop.run(self)
-        cbox_build()
+
+        if os.getenv("cbox_backend") == "TRUE":
+            cbox_build()
