@@ -34,13 +34,20 @@ def develop(with_cbox):
 
 @setup.command(name="install")
 @click.option("--with-cbox", is_flag=True, help="build with C++ backend")
-def install(with_cbox):
+@click.option("--as-root", is_flag=True, help="install as root user")
+def install(with_cbox, as_root):
     """Installation command"""
     if with_cbox:
         os.environ["cbox_backend"] = "TRUE"
-    subprocess.run("python3 setup.py develop --user", shell=True, check=True)
+
+    if as_root:
+        user = ""
+    else:
+        user = "--user"
+
+    subprocess.run(f"python3 setup.py develop {user}", shell=True, check=True)
     subprocess.run("python3 setup.py build", shell=True, check=True)
-    subprocess.run("python3 setup.py install --user", shell=True, check=True)
+    subprocess.run(f"python3 setup.py install {user}", shell=True, check=True)
 
 
 @setup.command(name="publish")
