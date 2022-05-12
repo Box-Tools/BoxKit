@@ -17,6 +17,7 @@ build = [
     "apt-get install -y libhdf5-openmpi-dev openmpi-bin",
     "apt-get install -y python3 python3-dev python3-pip",
     "apt-get install -y libboost-all-dev",
+    "pip3 install click",
 ]
 
 # Name of the local container that will be used
@@ -27,10 +28,8 @@ container = "bubblebox"
 # Commands to execute inside the container and update the
 # image
 publish = [
-    "export cbox_backend=TRUE",
-    "python3 setup.py develop",
-    "python3 setup.py build",
-    "python3 setup.py install && ./setup clean",
+    "./setup install --with-cbox --as-root",
+    "./setup clean",
 ]
 
 # Backend for service docker/singularity
