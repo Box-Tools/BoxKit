@@ -4,8 +4,6 @@ import os
 import time
 import unittest
 import pymorton
-
-os.environ["cbox_backend"] = "TRUE"
 import bubblebox.api as bubblebox
 from bubblebox.library.utilities import Monitor
 

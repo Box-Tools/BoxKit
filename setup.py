@@ -47,6 +47,7 @@ DEPENDENCIES = [
     "tqdm",
     "zarr",
     "faber",
+    "toml",
 ]
 
 # Call setup command with necessary arguments
@@ -60,6 +61,11 @@ setup(
     license=metadata["__license__"],
     packages=find_packages(where="./"),
     package_dir={"": "./"},
+    package_data={
+        "": [
+            "envfile",
+        ]
+    },
     include_package_data=True,
     long_description=long_description,
     classifiers=[

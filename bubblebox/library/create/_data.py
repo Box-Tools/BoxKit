@@ -10,7 +10,7 @@ import dask.array as dsarray
 import pyarrow
 import zarr
 
-if os.getenv("cbox_backend") == "TRUE":
+if os.getenv("CBOX_BACKEND") == "TRUE":
     from ...cbox.lib import boost as cbox
 
     _data_base = cbox.create.Data

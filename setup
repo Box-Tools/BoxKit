@@ -28,7 +28,8 @@ def depends():
 def develop(with_cbox):
     """Development mode"""
     if with_cbox:
-        os.environ["cbox_backend"] = "TRUE"
+        os.environ["CBOX_BACKEND"] = "TRUE"
+
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
 
 
@@ -38,7 +39,7 @@ def develop(with_cbox):
 def install(with_cbox, as_root):
     """Installation command"""
     if with_cbox:
-        os.environ["cbox_backend"] = "TRUE"
+        os.environ["CBOX_BACKEND"] = "TRUE"
 
     if as_root:
         user = ""
