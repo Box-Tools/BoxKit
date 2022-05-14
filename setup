@@ -27,8 +27,15 @@ def depends():
 @click.option("--with-cbox", is_flag=True, help="build with C++ backend")
 def develop(with_cbox):
     """Development mode"""
-    if with_cbox:
-        os.environ["cbox_backend"] = "TRUE"
+
+    with open("bubblebox/envfile", "w") as envfile:
+        if with_cbox:
+            os.environ["CBOX_BACKEND"] = "TRUE"
+            envfile.write('CBOX_BACKEND = "TRUE"\n')
+
+        else:
+            envfile.write('CBOX_BACKEND = "FALSE"\n')
+
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
 
 
@@ -37,8 +44,14 @@ def develop(with_cbox):
 @click.option("--as-root", is_flag=True, help="install as root user")
 def install(with_cbox, as_root):
     """Installation command"""
-    if with_cbox:
-        os.environ["cbox_backend"] = "TRUE"
+
+    with open("bubblebox/envfile", "w") as envfile:
+        if with_cbox:
+            os.environ["CBOX_BACKEND"] = "TRUE"
+            envfile.write('CBOX_BACKEND = "TRUE"\n')
+
+        else:
+            envfile.write('CBOX_BACKEND = "FALSE"\n')
 
     if as_root:
         user = ""

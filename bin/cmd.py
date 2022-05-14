@@ -21,7 +21,7 @@ class BuildCmd(build_py):
 
         build_py.run(self)
 
-        if os.getenv("cbox_backend") == "TRUE":
+        if os.getenv("CBOX_BACKEND") == "TRUE":
             cbox_build()
             cbox_install()
             boost_install()
@@ -36,5 +36,5 @@ class DevelopCmd(develop):
 
         develop.run(self)
 
-        if os.getenv("cbox_backend") == "TRUE":
+        if os.getenv("CBOX_BACKEND") == "TRUE":
             cbox_build()
