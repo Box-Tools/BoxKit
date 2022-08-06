@@ -1,7 +1,7 @@
-bubblebox
-=========
+boxkit
+======
 
 .. toctree::
    :maxdepth: 4
 
-   bubblebox
+   boxkit

@@ -24,8 +24,8 @@ jobs:
         password: ${{secrets.DOCKER_HUB_PSK}}
     - uses: actions/checkout@v2      
     - uses: akashdhruv/Maple/.github/actions/maple@main
-    - name: Publish BubbleBox Image
+    - name: Publish BoxKit Image
       run: |
-          maple image build bubblebox --as-root
-          maple container publish --image=bubblebox 
-          maple push bubblebox ${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:latest
+          maple image build boxkit --as-root
+          maple container publish --image=boxkit 
+          maple push boxkit ${{secrets.DOCKER_HUB_USERNAME}}/boxkit:latest

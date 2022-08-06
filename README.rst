@@ -1,4 +1,4 @@
-BubbleBox
+BoxKit
 =========
 
 |Code style: black|
@@ -8,7 +8,7 @@ BubbleBox
 Introduction
 ------------
 
-BubbleBox is a library that provides building blocks to parallelize and
+BoxKit is a library that provides building blocks to parallelize and
 scale data science, high performance computing, and machine learning
 applications
 
@@ -29,7 +29,7 @@ Example tests/scripts
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
-.. |FlashX| image:: https://github.com/akashdhruv/BubbleBox/workflows/FlashX/badge.svg
-.. |FlowX| image:: https://github.com/akashdhruv/BubbleBox/workflows/FlowX/badge.svg
-.. |Minimal| image:: https://github.com/akashdhruv/BubbleBox/workflows/Minimal/badge.svg
-.. |Publish| image:: https://github.com/akashdhruv/BubbleBox/workflows/Publish/badge.svg
+.. |FlashX| image:: https://github.com/akashdhruv/BoxKit/workflows/FlashX/badge.svg
+.. |FlowX| image:: https://github.com/akashdhruv/BoxKit/workflows/FlowX/badge.svg
+.. |Minimal| image:: https://github.com/akashdhruv/BoxKit/workflows/Minimal/badge.svg
+.. |Publish| image:: https://github.com/akashdhruv/BoxKit/workflows/Publish/badge.svg

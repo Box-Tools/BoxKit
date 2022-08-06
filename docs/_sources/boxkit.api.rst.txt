@@ -1,0 +1,41 @@
+boxkit.api package
+==================
+
+Submodules
+----------
+
+boxkit.api.create module
+------------------------
+
+.. automodule:: boxkit.api.create
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.api.measure module
+-------------------------
+
+.. automodule:: boxkit.api.measure
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.api.read module
+----------------------
+
+.. automodule:: boxkit.api.read
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+Module contents
+---------------
+
+.. automodule:: boxkit.api
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

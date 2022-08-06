@@ -1,4 +1,4 @@
-"""Custom commands for BubbleBox setup."""
+"""Custom commands for BoxKit setup."""
 
 import os
 import sys
@@ -21,7 +21,7 @@ def boost_build():
         + " "
         + f"--with-python-version={get_python_version()}"
         + " "
-        + f"--prefix={os.getenv('PWD')}/bubblebox/depends/boost && ./b2 install",
+        + f"--prefix={os.getenv('PWD')}/boxkit/depends/boost && ./b2 install",
         shell=True,
         check=True,
     )
@@ -38,15 +38,15 @@ def boost_clean():
 
 def boost_install():
     """Install Boost library"""
-    if os.path.exists(os.getenv("PWD") + "/bubblebox/depends/boost"):
+    if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost"):
         subprocess.run(
-            "mkdir -pv build/lib/bubblebox/depends/boost/lib",
+            "mkdir -pv build/lib/boxkit/depends/boost/lib",
             shell=True,
             check=True,
         )
 
         subprocess.run(
-            "cp bubblebox/depends/boost/lib/lib* build/lib/bubblebox/depends/boost/lib/.",
+            "cp boxkit/depends/boost/lib/lib* build/lib/boxkit/depends/boost/lib/.",
             shell=True,
             check=True,
         )

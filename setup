@@ -13,7 +13,7 @@ from bin.cbox import cbox_clean
 
 @click.group(name="setup")
 def setup():
-    """Setup toolkit for BubbleBox"""
+    """Setup toolkit for BoxKit"""
 
 
 @setup.command(name="depends")

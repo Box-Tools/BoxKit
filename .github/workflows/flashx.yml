@@ -27,11 +27,11 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build flashx --base=${{secrets.DOCKER_HUB_USERNAME}}/bubblebox:testing
+          maple image build flashx --base=${{secrets.DOCKER_HUB_USERNAME}}/boxkit:testing
     - uses: ./.github/actions/install
       with:
         image: flashx
-    - name: Run BubbleBox tests
+    - name: Run BoxKit tests
       run: |
           maple container pour --image=flashx
           maple container execute "python3 tests/container/heater.py"
