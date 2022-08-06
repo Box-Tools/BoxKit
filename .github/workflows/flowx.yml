@@ -31,7 +31,7 @@ jobs:
     - uses: ./.github/actions/install
       with:
         image: flowx
-    - name: Run BubbleBox tests
+    - name: Run BoxKit tests
       run: |
           maple container pour --image=flowx
           maple container execute "python3 tests/container/application.py"

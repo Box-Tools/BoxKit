@@ -1,15 +1,15 @@
-"""Tests for `bubblebox/api`."""
+"""Tests for `boxkit/api`."""
 
 import os
 import time
 import unittest
 import pymorton
-import bubblebox.api as bubblebox
-from bubblebox.library.utilities import Monitor
+import boxkit.api as boxkit
+from boxkit.library.utilities import Monitor
 
 
 class TestHeater(unittest.TestCase):
-    """bubblebox unit test for 2D Heater Data"""
+    """boxkit unit test for 2D Heater Data"""
 
     def customSetUp(self, prefix):
         """
@@ -39,7 +39,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are morton order
         """
         self.customSetUp("oneblk")
-        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -65,13 +65,13 @@ class TestHeater(unittest.TestCase):
         """
         self.customSetUp("oneblk")
 
-        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        process = bubblebox.measure.bubbles
+        process = boxkit.measure.bubbles
         process.tasks["skimeasure"]["region"].monitor = True
         print(process.tasks["skimeasure"]["region"].backend)
 
-        bubbleframes = bubblebox.measure.bubbles(dataframes, "phi")
+        bubbleframes = boxkit.measure.bubbles(dataframes, "phi")
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 

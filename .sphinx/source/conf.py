@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'BubbleBox'
+project = 'BoxKit'
 copyright = '2022, Akash Dhruv'
 author = 'Akash Dhruv'
 

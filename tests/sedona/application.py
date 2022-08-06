@@ -5,7 +5,7 @@ import numpy
 
 
 class TestApplication(unittest.TestCase):
-    """bubblebox unit test for bubblebox applications"""
+    """boxkit unit test for boxkit applications"""
 
     def test_flowx(self):
         """test flowx library"""

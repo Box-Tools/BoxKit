@@ -27,13 +27,13 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build bubblebox
+          maple image build boxkit
     - uses: ./.github/actions/install
       with:
-        image: bubblebox
-    - name: Run BubbleBox tests
+        image: boxkit
+    - name: Run BoxKit tests
       run: |
-          maple container pour --image=bubblebox
+          maple container pour --image=boxkit
           maple container execute "python3 tests/container/create.py"
           maple container rinse
-          maple image delete bubblebox 
+          maple image delete boxkit 

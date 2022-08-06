@@ -3,12 +3,12 @@ __pycache__
 boxmem*
 *.o
 *.so
-bubblebox/envfile
+boxkit/envfile
 build/*
 dist/*
 dask-worker-space
 *.rst
-bubblebox/depends/boost/*
+boxkit/depends/boost/*
 .sphinx/build/*
 !.sphinx/source/index.rst
 !README.rst

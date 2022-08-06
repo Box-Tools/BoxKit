@@ -1,15 +1,15 @@
-"""Tests for `bubblebox/api`."""
+"""Tests for `boxkit/api`."""
 
 import os
 import time
 import unittest
 import pymorton
-import bubblebox.api as bubblebox
-from bubblebox.library.utilities import Monitor
+import boxkit.api as boxkit
+from boxkit.library.utilities import Monitor
 
 
 class TestBoiling(unittest.TestCase):
-    """bubblebox unit test for 3D boiling data"""
+    """boxkit unit test for 3D boiling data"""
 
     def setUp(self):
         """
@@ -42,7 +42,7 @@ class TestBoiling(unittest.TestCase):
         dataframes : list of Dataset objects
 
         """
-        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -63,7 +63,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -101,9 +101,9 @@ class TestBoiling(unittest.TestCase):
         """
         Test slice
         """
-        dataframes = [bubblebox.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
         regionframes = [
-            bubblebox.create.slice(dataset, zmin=0.01, zmax=0.01)
+            boxkit.create.slice(dataset, zmin=0.01, zmax=0.01)
             for dataset in dataframes
         ]
 
@@ -123,12 +123,12 @@ class TestBoiling(unittest.TestCase):
         Test measure bubbles
         """
         dataframes = [
-            bubblebox.read.dataset(filename, storage="numpy-memmap")
+            boxkit.read.dataset(filename, storage="numpy-memmap")
             for filename in self.filenames
         ]
 
         _time_measure = time.time()
-        process = bubblebox.measure.bubbles.clone()
+        process = boxkit.measure.bubbles.clone()
 
         process.tasks["skimeasure"]["region"].nthreads = 1
         process.tasks["skimeasure"]["region"].backend = "serial"
@@ -141,7 +141,7 @@ class TestBoiling(unittest.TestCase):
         bubbleframes = process(dataframes, "phi")
 
         _time_measure = time.time() - _time_measure
-        print("%s: %.3fs" % ("bubblebox.measure.bubbles", _time_measure))
+        print("%s: %.3fs" % ("boxkit.measure.bubbles", _time_measure))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 

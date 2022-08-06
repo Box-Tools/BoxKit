@@ -1,1 +1,1 @@
-sphinx-apidoc -f -P -o source ../../BubbleBox/bubblebox
+sphinx-apidoc -f -P -o source ../../BoxKit/boxkit

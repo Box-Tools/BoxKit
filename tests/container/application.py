@@ -1,3 +1,7 @@
+import boxkit
+import sys
+sys.modules['bubblebox'] = boxkit
+
 import flowx
 import numpy
 import time

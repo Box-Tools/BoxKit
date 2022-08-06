@@ -3,7 +3,7 @@ name: install
 
 inputs:
   image: 
-    description: 'Input image for bubblebox'
+    description: 'Input image for boxkit'
     required: true
 
 runs:

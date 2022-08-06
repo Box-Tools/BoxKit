@@ -1,4 +1,4 @@
-"""Build and installation script for BubbleBox."""
+"""Build and installation script for BoxKit."""
 
 # standard libraries
 import os
@@ -20,7 +20,7 @@ with open("README.rst", mode="r") as readme:
 
 
 # Open metadata file to extract package information
-with open("bubblebox/__meta__.py", mode="r") as source:
+with open("boxkit/__meta__.py", mode="r") as source:
     content = source.read().strip()
     metadata = {
         key: re.search(key + r'\s*=\s*[\'"]([^\'"]*)[\'"]', content).group(1)
@@ -40,10 +40,10 @@ DEPENDENCIES = [
     "h5pickle",
     "pymorton",
     "scikit-image",
-    "dask",
+    "dask==2021.07.1",
     "pyarrow",
     "joblib",
-    "distributed",
+    "distributed==2021.07.1",
     "tqdm",
     "zarr",
     "faber",

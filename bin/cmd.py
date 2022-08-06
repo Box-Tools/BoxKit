@@ -1,4 +1,4 @@
-"""Custom commands for BubbleBox setup."""
+"""Custom commands for BoxKit setup."""
 import os
 import sys
 import subprocess
@@ -27,7 +27,7 @@ class BuildCmd(build_py):
             cbox_install()
             boost_install()
 
-        with open("bubblebox/envfile", "w") as envfile:
+        with open("boxkit/envfile", "w") as envfile:
             if os.getenv("CBOX_BACKEND") == "TRUE":
                 envfile.write('CBOX_BACKEND = "TRUE"\n')
 
@@ -35,7 +35,7 @@ class BuildCmd(build_py):
                 envfile.write('CBOX_BACKEND = "FALSE"\n')
 
         subprocess.run(
-            "cp bubblebox/envfile build/lib/bubblebox/.",
+            "cp boxkit/envfile build/lib/boxkit/.",
             shell=True,
             check=True,
         )
@@ -53,7 +53,7 @@ class DevelopCmd(develop):
         if os.getenv("CBOX_BACKEND") == "TRUE":
             cbox_build()
 
-        with open("bubblebox/envfile", "w") as envfile:
+        with open("boxkit/envfile", "w") as envfile:
             if os.getenv("CBOX_BACKEND") == "TRUE":
                 envfile.write('CBOX_BACKEND = "TRUE"\n')
 

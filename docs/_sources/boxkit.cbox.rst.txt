@@ -1,0 +1,19 @@
+boxkit.cbox package
+===================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   boxkit.cbox.lib
+
+Module contents
+---------------
+
+.. automodule:: boxkit.cbox
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
