@@ -40,7 +40,7 @@ DEPENDENCIES = [
     "h5pickle",
     "pymorton",
     "scikit-image",
-    "dask",
+    "dask==2021.07.1",
     "pyarrow",
     "joblib",
     "distributed",
