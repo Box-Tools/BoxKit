@@ -43,7 +43,7 @@ DEPENDENCIES = [
     "dask==2021.07.1",
     "pyarrow",
     "joblib",
-    "distributed",
+    "distributed==2021.07.1",
     "tqdm",
     "zarr",
     "faber",
