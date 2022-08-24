@@ -55,7 +55,7 @@ def install(with_cbox, as_root):
 def publish():
     """Publish PyPi package"""
     subprocess.run("python3 setup.py sdist", shell=True, check=True)
-    subprocess.run("twine upload dist/*", shell=True, check=True)
+    subprocess.run("twine upload dist/* --verbose", shell=True, check=True)
 
 
 @setup.command(name="clean")

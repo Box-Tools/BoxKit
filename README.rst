@@ -16,9 +16,9 @@ Spatial data from simulations and experiments can be organized and managed using
 
 The library is designed into two broad categories:
 
-|create| - contains classes/structures to store spatial data in a rectangular/cubic frame, along with auxillary tools to manage irregular geometries composed of unstructured triangular mesh.
+**CREATE** - contains classes/structures to store spatial data in a rectangular/cubic frame, along with auxillary tools to manage irregular geometries composed of unstructured triangular mesh.
 
-|utilities| - contains classes/structures to improve memory managment of data on NUMA nodes.
+**UTILITIES** - contains classes/structures to improve memory managment of data on NUMA nodes.
 
 This library is designed to facilitate the use of scientific datasets with more data analysis oriented packages.
 
