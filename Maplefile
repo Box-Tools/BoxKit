@@ -26,8 +26,7 @@ build = [
 # Note: 'container' is a writable instance of an 'image'
 container = "boxkit"
 
-# Commands to execute inside the container and update the
-# image
+# Commands to execute inside the container and update the image
 publish = [
     "./setup install --with-cbox --as-root",
     "./setup clean",
