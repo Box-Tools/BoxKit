@@ -61,7 +61,13 @@ def region(dataset, **attributes):
     for key, value in attributes.items():
         region_attributes[key] = value
 
-    return library.create.Region(dataset.blocklist, **region_attributes)
+    blocklist = []
+
+    for block in dataset.blocklist:
+        if block.leaf:
+            blocklist.append(block)
+
+    return library.create.Region(blocklist, **region_attributes)
 
 
 def slice(dataset, **attributes):
@@ -96,4 +102,10 @@ def slice(dataset, **attributes):
     for key, value in attributes.items():
         slice_attributes[key] = value
 
-    return library.create.Slice(dataset.blocklist, **slice_attributes)
+    blocklist = []
+
+    for block in dataset.blocklist:
+        if block.leaf:
+            blocklist.append(block)
+
+    return library.create.Slice(blocklist, **slice_attributes)

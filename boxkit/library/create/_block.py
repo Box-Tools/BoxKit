@@ -41,6 +41,8 @@ class Block:
             + f"[{self.ymin}, {self.ymax}] x"
             + f"[{self.xmin}, {self.xmax}]\n"
             + f" - tag          : {self.tag}\n"
+            + f" - level        : {self.level}\n"
+            + f" - leaf         : {self.leaf}\n"
         )
 
     def __getitem__(self, varkey):
@@ -63,6 +65,8 @@ class Block:
         self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
         self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
         self.tag = 0
+        self.level = 1
+        self.leaf = True
 
         for key, value in attributes.items():
             if hasattr(self, key):
