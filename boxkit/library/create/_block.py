@@ -1,5 +1,6 @@
 """Module with implementation of the Block class."""
 
+import numpy
 import pymorton
 
 
@@ -56,6 +57,49 @@ class Block:
         Set variable data
         """
         self._data[varkey][self.tag] = value  # .to_numpy()[:] = value
+
+    def xrange(self, location):
+        """
+        Get xrange of the block
+        """
+        range_dict = {
+            "center": self.__class__._get_center_loc,
+            "node": self.__class__._get_node_loc,
+        }
+
+        return range_dict[location](self.xmin, self.xmax, self.dx, self.xguard, self.nxb)
+
+    def yrange(self, location):
+        """
+        Get yrange of the block
+        """
+        range_dict = {
+            "center": self.__class__._get_center_loc,
+            "node": self.__class__._get_node_loc,
+        }
+
+        return range_dict[location](self.ymin, self.ymax, self.dy, self.yguard, self.nyb)
+
+    def zrange(self, location):
+        """
+        Get zrange of the block
+        """
+        range_dict = {
+            "center": self.__class__._get_center_loc,
+            "node": self.__class__._get_node_loc,
+        }
+
+        return range_dict[location](self.zmin, self.zmax, self.dz, self.zguard, self.nzb)
+
+    @staticmethod
+    def _get_center_loc(min_val, max_val, delta, guard, num_points):
+        """Private method for center location"""
+        return numpy.linspace(min_val + delta / 2, max_val - delta / 2, num_points)
+
+    @staticmethod
+    def _get_node_loc(min_val, max_val, delta, guard, num_points):
+        """Private method for face location"""
+        return numpy.linspace(min_val, max_val, num_points + 1)
 
     def _set_attributes(self, attributes):
         """
