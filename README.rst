@@ -8,9 +8,7 @@ BoxKit
 Introduction
 ------------
 
-BoxKit is a library that provides building blocks to parallelize and
-scale data science, high performance computing, and machine learning
-applications for block-structured spatial datasets. 
+BoxKit is a library that provides building blocks to parallelize and scale data science, high performance computing, and machine learning applications for block-structured spatial datasets. 
 
 Spatial data from simulations and experiments can be organized and managed using the tools available in this library. 
 
@@ -25,17 +23,13 @@ This library is designed to facilitate the use of scientific datasets with more 
 Installation
 ------------
 
-Installation instructions
+Using Python Package Index (PyPI)
+::
+   pip3 install BoxKit
 
-Using Containers
-----------------
-
-Description for using MAPLE containers
-
-Examples
---------
-
-Example tests/scripts
+Development mode
+::
+   pip3 install click && ./setup develop
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
