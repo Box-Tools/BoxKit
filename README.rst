@@ -1,5 +1,5 @@
 .. |icon| image:: ./icon.svg
-  :width: 25 
+  :width: 30
   
 |icon| BoxKit
 =============
