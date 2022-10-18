@@ -44,7 +44,7 @@ Development mode enables testing of features/updates directly from the source co
 Usage
 =====
 
-BoxKit is undergoing active development and therefore the design changes are frequent, however, the library is divided into two broad categories:
+BoxKit is undergoing active development and therefore design changes are frequent, however, the library is divided into two broad categories:
 
 - **Create**: Containing interface for classes/methods to store spatial data in a rectangular/cubic frame, along with auxillary tools to manage irregular geometries composed of unstructured triangular mesh.
 
