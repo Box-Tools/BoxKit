@@ -41,8 +41,8 @@ Development mode enables testing of features/updates directly from the source co
 
   pip install click
   
-Interface
-=========
+Usage
+=====
 
 The library is divided into two broad categories:
 
