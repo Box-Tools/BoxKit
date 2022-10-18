@@ -9,27 +9,10 @@
 
 |FlashX| |FlowX| |Minimal| |Publish|
 
-BoxKit is a library that provides building blocks to parallelize and scale data science, high performance computing, and machine learning applications for block-structured datasets. Spatial data from simulations and experiments can be organized and managed using the tools available in this library. 
-
-Organization
-------------
-
-The library is designed into two broad categories:
-
-Create
-======
-
-Interface containing classes/structures to store spatial data in a rectangular/cubic frame, along with auxillary tools to manage irregular geometries composed of unstructured triangular mesh.
-
-Utilities
-=========
-
-Interface containing classes/structures to improve memory managment of data on NUMA nodes.
-
-This library is designed to facilitate the use of scientific datasets with more data analysis oriented packages.
+BoxKit is a library that provides building blocks to parallelize and scale data science, high performance computing, and machine learning applications for block-structured datasets. Spatial data from simulations and experiments can be organized and managed using the tools available in this library, along with  
 
 Installation
-------------
+============
 
 Stable releases of BoxKit are hosted on Python Package Index website (`<https://pypi.org/project/BoxKit/>`_) and can be installed by executing,
 
@@ -57,6 +40,17 @@ Development mode enables testing of features/updates directly from the source co
 ::
 
   pip install click
+  
+Design & Organization
+======================
+
+The library is divided into two broad categories:
+
+- **Create**: Interface containing classes/structures to store spatial data in a rectangular/cubic frame, along with auxillary tools to manage irregular geometries composed of unstructured triangular mesh.
+
+- **Utilities**: Interface containing classes/structures to improve memory managment of data on NUMA nodes.
+
+This library is designed to facilitate the use of scientific datasets with more data analysis oriented packages.
 
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
