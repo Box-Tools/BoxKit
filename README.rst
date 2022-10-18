@@ -9,7 +9,7 @@
 
 |FlashX| |FlowX| |Minimal| |Publish|
 
-BoxKit is a library that provides building blocks to parallelize and scale data science, high performance computing, and machine learning applications for block-structured datasets. Spatial data from simulations and experiments can be organized and managed using the tools available in this library, along with  
+BoxKit is a library that provides building blocks to parallelize and scale data science, high performance computing, and machine learning applications for block-structured datasets. Spatial data from simulations and experiments can be accessed and managed using tools available in this library when working with more data analysis oriented packages like SciKit (https://github.com/scikit-learn/scikit-learn) and FlowNet (https://github.com/NVIDIA/flownet2-pytorch)
 
 Installation
 ============
@@ -44,13 +44,19 @@ Development mode enables testing of features/updates directly from the source co
 Usage
 =====
 
-The library is divided into two broad categories:
+BoxKit is undergoing active development and therefore the design changes are frequent, however, the library is divided into two broad categories:
 
-- **Create**: Interface containing classes/structures to store spatial data in a rectangular/cubic frame, along with auxillary tools to manage irregular geometries composed of unstructured triangular mesh.
+- **Create**: Containing interface for classes/methods to store spatial data in a rectangular/cubic frame, along with auxillary tools to manage irregular geometries composed of unstructured triangular mesh.
 
-- **Utilities**: Interface containing classes/structures to improve memory managment of data on NUMA nodes.
+- **Utilities**: Containing interface for classes/method to improve memory managment of data on NUMA nodes.
 
-This library is designed to facilitate the use of scientific datasets with more data analysis oriented packages.
+We are currently setting up use cases for BoxKit, and will update this section when we are able to demonstrate proof-of-concept.
+
+
+Help & Support
+==============
+
+Please file an issue on the repository page
 
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
