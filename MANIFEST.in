@@ -1,6 +1,7 @@
 include README.rst
 include LICENSE
 include bin/*
+include media/*
 include boxkit/cbox/*
 include boxkit/cbox/lib/*
 include boxkit/cbox/source/*

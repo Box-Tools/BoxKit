@@ -1,4 +1,4 @@
-.. |icon| image:: ./icon.svg
+.. |icon| image:: ./media/icon.svg
   :width: 30
  
 =============
