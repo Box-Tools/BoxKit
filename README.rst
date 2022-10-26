@@ -52,6 +52,21 @@ BoxKit is undergoing active development and therefore design changes are frequen
 
 We are currently setting up use cases for BoxKit, and will update this section when we are able to demonstrate proof-of-concept.
 
+Citation
+========
+
+::
+
+  @software{akash_dhruv_2022_7255632,
+    author       = {Akash Dhruv},
+    title        = {akashdhruv/BoxKit: October 2022},
+    month        = oct,
+    year         = 2022,
+    publisher    = {Zenodo},
+    version      = {22.10},
+    doi          = {10.5281/zenodo.7255632},
+    url          = {https://doi.org/10.5281/zenodo.7255632}
+  }
 
 Help & Support
 ==============
