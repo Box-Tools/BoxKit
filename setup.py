@@ -39,7 +39,7 @@ DEPENDENCIES = [
     "h5py",
     "h5pickle",
     "pymorton",
-    "scikit-image",
+    #"scikit-image",
     "dask==2021.07.1",
     "pyarrow",
     "joblib",
