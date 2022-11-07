@@ -38,6 +38,7 @@ class Data(_data_base):
                        'yguard'    : number of guard cells in y dir,
                        'zguard'    : number of guard cells in z dir,
                        'inputfile' : hdf5 inputfile default (None),
+                       'remotefile': sftp remote file default (None),
                        'variables' : dictionary of variables default ({})
                        'storage'   : 'numpy', 'zarr', 'dask', 'pyarrow' }
 
@@ -73,6 +74,7 @@ class Data(_data_base):
 
         self.nblocks = 1
         self.inputfile = None
+        self.remotefile = None
         self.boxmem = None
         self.variables = {}
         self.nxb, self.nyb, self.nzb = [1, 1, 1]
@@ -264,6 +266,9 @@ class Data(_data_base):
 
         if self.inputfile and purgeflag in ("all", "inputfile"):
             self.inputfile.close()
+
+        if self.remotefile and purgeflag in ("all", "remotefile"):
+            self.remotefile.close()
 
     def addvar(self, varkey):
         """

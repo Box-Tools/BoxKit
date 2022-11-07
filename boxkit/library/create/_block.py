@@ -67,7 +67,9 @@ class Block:
             "node": self.__class__._get_node_loc,
         }
 
-        return range_dict[location](self.xmin, self.xmax, self.dx, self.xguard, self.nxb)
+        return range_dict[location](
+            self.xmin, self.xmax, self.dx, self.xguard, self.nxb
+        )
 
     def yrange(self, location):
         """
@@ -78,7 +80,9 @@ class Block:
             "node": self.__class__._get_node_loc,
         }
 
-        return range_dict[location](self.ymin, self.ymax, self.dy, self.yguard, self.nyb)
+        return range_dict[location](
+            self.ymin, self.ymax, self.dy, self.yguard, self.nyb
+        )
 
     def zrange(self, location):
         """
@@ -89,7 +93,9 @@ class Block:
             "node": self.__class__._get_node_loc,
         }
 
-        return range_dict[location](self.zmin, self.zmax, self.dz, self.zguard, self.nzb)
+        return range_dict[location](
+            self.zmin, self.zmax, self.dz, self.zguard, self.nzb
+        )
 
     @staticmethod
     def _get_center_loc(min_val, max_val, delta, guard, num_points):

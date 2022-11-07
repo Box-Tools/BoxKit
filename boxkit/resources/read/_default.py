@@ -3,13 +3,14 @@
 import h5pickle as h5py
 
 
-def read_default(filename):
+def read_default(filename, server):
     """
     Read dataset from BoxKit default file
 
     Parameters
     ----------
     filename : string containing file name
+    server : server dictionary
 
     Returns
     -------

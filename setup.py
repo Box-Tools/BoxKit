@@ -39,7 +39,6 @@ DEPENDENCIES = [
     "h5py",
     "h5pickle",
     "pymorton",
-    #"scikit-image",
     "dask==2021.07.1",
     "pyarrow",
     "joblib",
@@ -48,6 +47,8 @@ DEPENDENCIES = [
     "zarr",
     "faber",
     "toml",
+    "paramiko",
+    # "scikit-image",
 ]
 
 # Call setup command with necessary arguments

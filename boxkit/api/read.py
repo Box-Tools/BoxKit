@@ -5,7 +5,7 @@ from .. import library
 from ..resources import read
 
 
-def dataset(filename, source="default", storage="numpy"):
+def dataset(filename, source="default", storage="numpy", server={}):
     """
     Create a dataset from a file
 
@@ -18,6 +18,8 @@ def dataset(filename, source="default", storage="numpy"):
     storage  : storage option 'disk', 'pyarrow', or 'dask'
                default('disk')
 
+    server : server dictionary
+
     (see tests/boiling.py and tests/heater.py for references)
 
     Returns
@@ -26,7 +28,7 @@ def dataset(filename, source="default", storage="numpy"):
 
     """
 
-    data_attributes, block_attributes = read.options[source](filename)
+    data_attributes, block_attributes = read.options[source](filename, server)
 
     data = library.create.Data(storage=storage, **data_attributes)
 
