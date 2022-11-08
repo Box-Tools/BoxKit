@@ -3,9 +3,9 @@
 import h5pickle as h5py
 
 
-def read_default(filename, server):
+def read_test_sample(filename, server):
     """
-    Read dataset from BoxKit default file
+    Read dataset from BoxKit test sample
 
     Parameters
     ----------

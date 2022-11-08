@@ -21,6 +21,7 @@ def read_flash(filename, server):
     if server:
         # Read from remote path
         remotefile = server["sftp"].open(filename)
+        remotefile.set_pipelined()
         inputfile = h5py.File(remotefile, "r", skip_cache=False)
         print(
             "[boxkit.resource.read]: Remote files cannot be pickled. Multithreading should not be used"
@@ -83,6 +84,7 @@ def read_flash(filename, server):
             "tag": lblock,
             "level": inputfile["refine level"][lblock],
             "leaf": (True if inputfile["node type"][lblock] == 1 else False),
+            "inputproc": inputfile["processor number"][lblock],
         }
         for lblock in range(nblocks)
     ]

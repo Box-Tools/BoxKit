@@ -116,6 +116,7 @@ class Block:
         self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
         self.tag = 0
         self.level = 1
+        self.inputproc = None
         self.leaf = True
 
         for key, value in attributes.items():

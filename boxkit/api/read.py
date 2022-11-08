@@ -5,7 +5,7 @@ from .. import library
 from ..resources import read
 
 
-def dataset(filename, source="default", storage="numpy", server={}):
+def dataset(filename, source="test-sample", storage="numpy", server=None):
     """
     Create a dataset from a file
 
@@ -13,7 +13,7 @@ def dataset(filename, source="default", storage="numpy", server={}):
     ----------
     filename : string containing file name
     source   : string identifying source/format of the file
-               'sample' : method to create sample dataset for BoxKit API tests
+               'test-sample' : method to create sample dataset for BoxKit API tests
                'flash'  : method to create FLASH dataset
     storage  : storage option 'disk', 'pyarrow', or 'dask'
                default('disk')
