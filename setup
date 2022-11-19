@@ -11,37 +11,60 @@ from bin.boost import boost_build, boost_clean
 from bin.cbox import cbox_clean
 
 
+def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask):
+    """
+    Private function to set environment variables
+    """
+    if with_cbox:
+        os.environ["CBOX_BACKEND"] = "TRUE"
+
+    if with_pyarrow:
+        os.environ["BBOX_PYARROW"] = "TRUE"
+
+    if with_zarr:
+        os.environ["BBOX_ZARR"] = "TRUE"
+
+    if with_dask:
+        os.environ["BBOX_DASK"] = "TRUE"
+
+
 @click.group(name="setup")
 def setup():
     """Setup toolkit for BoxKit"""
 
 
 @setup.command(name="depends")
-def depends():
+@click.option("--keep-artifacts", is_flag=True, help="preserve build artifcats")
+def depends(keep_artifacts):
     """Build dependencies for the Python library"""
     boost_build()
-    boost_clean()
+    if not keep_artifacts:
+        boost_clean()
 
 
 @setup.command(name="develop")
 @click.option("--with-cbox", is_flag=True, help="build with C++ backend")
-def develop(with_cbox):
+@click.option("--with-pyarrow", is_flag=True, help="enable pyarrow data backend")
+@click.option("--with-zarr", is_flag=True, help="enable zarr data backend")
+@click.option("--with-dask", is_flag=True, help="enable dask data and parallel backend")
+def develop(with_cbox, with_pyarrow, with_zarr, with_dask):
     """Development mode"""
-    if with_cbox:
-        os.environ["CBOX_BACKEND"] = "TRUE"
+    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask)
 
     subprocess.run("python3 setup.py develop --user", shell=True, check=True)
 
 
 @setup.command(name="install")
 @click.option("--with-cbox", is_flag=True, help="build with C++ backend")
-@click.option("--as-root", is_flag=True, help="install as root user")
-def install(with_cbox, as_root):
+@click.option("--with-pyarrow", is_flag=True, help="enable pyarrow data backend")
+@click.option("--with-zarr", is_flag=True, help="enable zarr data backend")
+@click.option("--with-dask", is_flag=True, help="enable dask backend")
+@click.option("--all-users", is_flag=True, help="install for all users")
+def install(with_cbox, with_pyarrow, with_zarr, with_dask, all_users):
     """Installation command"""
-    if with_cbox:
-        os.environ["CBOX_BACKEND"] = "TRUE"
+    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask)
 
-    if as_root:
+    if all_users:
         user = ""
     else:
         user = "--user"

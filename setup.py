@@ -39,16 +39,11 @@ DEPENDENCIES = [
     "h5py",
     "h5pickle",
     "pymorton",
-    "dask==2021.07.1",
-    "pyarrow",
     "joblib",
-    "distributed==2021.07.1",
     "tqdm",
-    "zarr",
     "faber",
     "toml",
     "paramiko",
-    # "scikit-image",
 ]
 
 # Call setup command with necessary arguments
