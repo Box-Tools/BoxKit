@@ -53,6 +53,7 @@ class BuildCmd(build_py):
             "cp boxkit/envfile build/lib/boxkit/.",
             shell=True,
             check=True,
+            exectuable="/bin/bash",
         )
 
 

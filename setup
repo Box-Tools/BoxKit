@@ -51,7 +51,12 @@ def develop(with_cbox, with_pyarrow, with_zarr, with_dask):
     """Development mode"""
     _setenv(with_cbox, with_pyarrow, with_zarr, with_dask)
 
-    subprocess.run("python3 setup.py develop --user", shell=True, check=True)
+    subprocess.run(
+        "python3 setup.py develop --user",
+        shell=True,
+        check=True,
+        executable="/bin/bash",
+    )
 
 
 @setup.command(name="install")
@@ -69,22 +74,40 @@ def install(with_cbox, with_pyarrow, with_zarr, with_dask, all_users):
     else:
         user = "--user"
 
-    subprocess.run(f"python3 setup.py develop {user}", shell=True, check=True)
-    subprocess.run("python3 setup.py build", shell=True, check=True)
-    subprocess.run(f"python3 setup.py install {user}", shell=True, check=True)
+    subprocess.run(
+        f"python3 setup.py develop {user}",
+        shell=True,
+        check=True,
+        executable="/bin/bash",
+    )
+    subprocess.run(
+        "python3 setup.py build", shell=True, check=True, executable="/bin/bash"
+    )
+    subprocess.run(
+        f"python3 setup.py install {user}",
+        shell=True,
+        check=True,
+        executable="/bin/bash",
+    )
 
 
 @setup.command(name="publish")
 def publish():
     """Publish PyPi package"""
-    subprocess.run("python3 setup.py sdist", shell=True, check=True)
-    subprocess.run("twine upload dist/* --verbose", shell=True, check=True)
+    subprocess.run(
+        "python3 setup.py sdist", shell=True, check=True, executable="/bin/bash"
+    )
+    subprocess.run(
+        "twine upload dist/* --verbose", shell=True, check=True, executable="/bin/bash"
+    )
 
 
 @setup.command(name="clean")
 def clean():
     """Clean installation artifacts"""
-    subprocess.run("rm -rf *.egg-info build dist", shell=True, check=True)
+    subprocess.run(
+        "rm -rf *.egg-info build dist", shell=True, check=True, executable="/bin/bash"
+    )
     cbox_clean()
 
 
