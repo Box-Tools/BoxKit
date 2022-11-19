@@ -19,13 +19,13 @@ if os.getenv("BBOX_ZARR") == "TRUE":
 if os.getenv("CBOX_BACKEND") == "TRUE":
     from ...cbox.lib import boost as cbox
 
-    _data_base = cbox.create.Data
+    _DataBase = cbox.create.Data
 
 else:
-    _data_base = object
+    _DataBase = object
 
 
-class Data(_data_base):
+class Data(_DataBase):
     """Default class to store data"""
 
     type_ = "default"
@@ -45,8 +45,9 @@ class Data(_data_base):
                        'zguard'    : number of guard cells in z dir,
                        'inputfile' : hdf5 inputfile default (None),
                        'remotefile': sftp remote file default (None),
-                       'variables' : dictionary of variables default ({})
-                       'storage'   : 'numpy', 'zarr', 'dask', 'pyarrow' }
+                       'variables' : dictionary of variables default ({}),
+                       'storage'   : ('numpy', 'zarr', 'dask', 'pyarrow'),
+                       'dtype'     : float, int }
 
         """
         super().__init__()
@@ -86,6 +87,7 @@ class Data(_data_base):
         self.nxb, self.nyb, self.nzb = [1, 1, 1]
         self.xguard, self.yguard, self.zguard = [0, 0, 0]
         self.storage = "numpy-memmap"
+        self.dtype = float
 
         for key, value in attributes.items():
             if hasattr(self, key):
@@ -148,7 +150,7 @@ class Data(_data_base):
                 self.nxb + 2 * self.xguard,
             )
             self.variables[varkey] = numpy.memmap(
-                outputfile, dtype=float, shape=outputshape, mode="w+"
+                outputfile, dtype=self.dtype, shape=outputshape, mode="w+"
             )
 
     def _create_zarr_objects(self):
@@ -193,7 +195,7 @@ class Data(_data_base):
                         self.nyb + 2 * self.yguard,
                         self.nxb + 2 * self.xguard,
                     ),
-                    dtype=float,
+                    dtype=self.dtype,
                 )
 
         else:
@@ -220,7 +222,7 @@ class Data(_data_base):
                 self.nyb + 2 * self.yguard,
                 self.nxb + 2 * self.xguard,
             )
-            self.variables[varkey] = numpy.ndarray(dtype=float, shape=outputshape)
+            self.variables[varkey] = numpy.ndarray(dtype=self.dtype, shape=outputshape)
 
     def _create_dask_objects(self):
         """
