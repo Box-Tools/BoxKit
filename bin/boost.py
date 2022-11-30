@@ -19,13 +19,12 @@ def boost_build():
 
     subprocess.run(
         "cd submodules/boost && ./bootstrap.sh"
-        + " "
-        + f"--with-python-version={get_python_version()}"
-        + " "
-        + f"--prefix={os.getenv('PWD')}/boxkit/depends/boost && ./b2 install",
+        + f" --with-python-version={get_python_version()}"
+        + " --with-toolset=gcc"
+        + f" --prefix={os.getenv('PWD')}/boxkit/depends/boost && ./b2 install",
         shell=True,
         check=True,
-        exectuable="/bin/bash",
+        executable="/bin/bash",
     )
 
 
@@ -35,7 +34,7 @@ def boost_clean():
         "git submodule deinit -f submodules/boost",
         shell=True,
         check=True,
-        exectuable="/bin/bash",
+        executable="/bin/bash",
     )
 
 
@@ -46,12 +45,12 @@ def boost_install():
             "mkdir -pv build/lib/boxkit/depends/boost/lib",
             shell=True,
             check=True,
-            exectuable="/bin/bash",
+            executable="/bin/bash",
         )
 
         subprocess.run(
             "cp boxkit/depends/boost/lib/lib* build/lib/boxkit/depends/boost/lib/.",
             shell=True,
             check=True,
-            exectuable="/bin/bash",
+            executable="/bin/bash",
         )
