@@ -37,7 +37,7 @@ def cbox_build():
         f"cd boxkit/cbox/source && make {CBOX_MAKE_ARGS}",
         shell=True,
         check=True,
-        exectuable="/bin/bash",
+        executable="/bin/bash",
     )
 
 
@@ -49,7 +49,7 @@ def cbox_install():
         "cp boxkit/cbox/lib/*.so build/lib/boxkit/cbox/lib/.",
         shell=True,
         check=True,
-        exectuable="/bin/bash",
+        executable="/bin/bash",
     )
 
 
@@ -60,5 +60,5 @@ def cbox_clean():
         "cd boxkit/cbox/source && make clean && cd ../../../",
         shell=True,
         check=True,
-        exectuable="/bin/bash",
+        executable="/bin/bash",
     )
