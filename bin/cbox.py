@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 from distutils.sysconfig import get_python_version, BASE_PREFIX
+from distutils import sysconfig
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,13 +13,20 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # and are assigned here to build and compile when setting up the
 # Python library
 CBOX_MAKE_DICT = {
-    "python_version": get_python_version(),
-    "python_path": BASE_PREFIX,
-    "boost_version": "".join(get_python_version().split(".")),
-    "boost_path": (
-        os.getenv("PWD") + "/boxkit/depends/boost"
+    "cc": "clang++",
+    "python_version": sysconfig.get_config_var("py_version_short"),
+    "boost_version": sysconfig.get_config_var("py_version_nodot"),
+    "python_include_path": sysconfig.get_python_inc(),
+    "python_lib_path": sysconfig.BASE_PREFIX + "/lib",
+    "boost_include_path": (
+        os.getenv("PWD") + "/boxkit/depends/boost/include"
         if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
-        else BASE_PREFIX
+        else "$HOME/homebrew/include"
+    ),
+    "boost_lib_path": (
+        os.getenv("PWD") + "/boxkit/depends/boost/lib"
+        if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
+        else "$HOME/homebrew/lib"
     ),
 }
 
