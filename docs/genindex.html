@@ -13,7 +13,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -52,8 +54,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Index</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -72,7 +74,6 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
- | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#J"><strong>J</strong></a>
  | <a href="#M"><strong>M</strong></a>
@@ -81,7 +82,6 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
- | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
@@ -104,7 +104,9 @@
 </li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._data.Data._create_zarr_objects">_create_zarr_objects() (boxkit.library.create._data.Data method)</a>
 </li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.utilities.Monitor._gettype">_gettype() (boxkit.cbox.lib.utilities.Monitor method)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block._get_center_loc">_get_center_loc() (boxkit.library.create._block.Block static method)</a>
+</li>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block._get_node_loc">_get_node_loc() (boxkit.library.create._block.Block static method)</a>
 </li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._region.Region._in_collision">_in_collision() (boxkit.library.create._region.Region method)</a>
 </li>
@@ -129,16 +131,14 @@
 </li>
         <li><a href="boxkit.library.create.html#boxkit.library.create._region.Region._set_attributes">(boxkit.library.create._region.Region method)</a>
 </li>
+        <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._server.Server._set_attributes">(boxkit.library.utilities._server.Server method)</a>
+</li>
       </ul></li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._data.Data._set_data">_set_data() (boxkit.library.create._data.Data method)</a>
 </li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block._set_neighdict_2d">_set_neighdict_2d() (boxkit.library.create._block.Block method)</a>
 </li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block._set_neighdict_3d">_set_neighdict_3d() (boxkit.library.create._block.Block method)</a>
-</li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.utilities.Monitor._setlimit">_setlimit() (boxkit.cbox.lib.utilities.Monitor method)</a>
-</li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.utilities.Monitor._update">_update() (boxkit.cbox.lib.utilities.Monitor method)</a>
 </li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._region.Region._update_bounds">_update_bounds() (boxkit.library.create._region.Region method)</a>
 </li>
@@ -148,12 +148,8 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.utilities.Action">Action (class in boxkit.cbox.lib.utilities)</a>
-
-      <ul>
-        <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._action.Action">(class in boxkit.library.utilities._action)</a>
+      <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._action.Action">Action (class in boxkit.library.utilities._action)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="boxkit.library.create.html#boxkit.library.create._data.Data.addvar">addvar() (boxkit.library.create._data.Data method)</a>
@@ -168,12 +164,8 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block">Block (class in boxkit.cbox.lib.create)</a>
-
-      <ul>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block">(class in boxkit.library.create._block)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block">Block (class in boxkit.library.create._block)</a>
 </li>
-      </ul></li>
       <li>
     boxkit
 
@@ -217,48 +209,6 @@
 </li>
       </ul></li>
       <li>
-    boxkit.cbox
-
-      <ul>
-        <li><a href="boxkit.cbox.html#module-boxkit.cbox">module</a>
-</li>
-      </ul></li>
-      <li>
-    boxkit.cbox.lib
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib">module</a>
-</li>
-      </ul></li>
-      <li>
-    boxkit.cbox.lib.boost
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.boost">module</a>
-</li>
-      </ul></li>
-      <li>
-    boxkit.cbox.lib.create
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.create">module</a>
-</li>
-      </ul></li>
-      <li>
-    boxkit.cbox.lib.extern
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.extern">module</a>
-</li>
-      </ul></li>
-      <li>
-    boxkit.cbox.lib.utilities
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.utilities">module</a>
-</li>
-      </ul></li>
-      <li>
     boxkit.library
 
       <ul>
@@ -279,8 +229,6 @@
         <li><a href="boxkit.library.create.html#module-boxkit.library.create._block">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     boxkit.library.create._data
 
@@ -302,6 +250,8 @@
         <li><a href="boxkit.library.create.html#module-boxkit.library.create._region">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     boxkit.library.create._slice
 
@@ -331,17 +281,17 @@
 </li>
       </ul></li>
       <li>
-    boxkit.library.utilities._monitor
-
-      <ul>
-        <li><a href="boxkit.library.utilities.html#module-boxkit.library.utilities._monitor">module</a>
-</li>
-      </ul></li>
-      <li>
     boxkit.library.utilities._process
 
       <ul>
         <li><a href="boxkit.library.utilities.html#module-boxkit.library.utilities._process">module</a>
+</li>
+      </ul></li>
+      <li>
+    boxkit.library.utilities._server
+
+      <ul>
+        <li><a href="boxkit.library.utilities.html#module-boxkit.library.utilities._server">module</a>
 </li>
       </ul></li>
       <li>
@@ -359,17 +309,17 @@
 </li>
       </ul></li>
       <li>
-    boxkit.resources.read._default
-
-      <ul>
-        <li><a href="boxkit.resources.read.html#module-boxkit.resources.read._default">module</a>
-</li>
-      </ul></li>
-      <li>
     boxkit.resources.read._flash
 
       <ul>
         <li><a href="boxkit.resources.read.html#module-boxkit.resources.read._flash">module</a>
+</li>
+      </ul></li>
+      <li>
+    boxkit.resources.read._sample
+
+      <ul>
+        <li><a href="boxkit.resources.read.html#module-boxkit.resources.read._sample">module</a>
 </li>
       </ul></li>
       <li>
@@ -401,8 +351,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._process.Process.clone">clone() (boxkit.library.utilities._process.Process method)</a>
 </li>
+      <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._server.Server.close">close() (boxkit.library.utilities._server.Server method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._server.Server.connect">connect() (boxkit.library.utilities._server.Server method)</a>
+</li>
       <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._action.Action.copy">copy() (boxkit.library.utilities._action.Action method)</a>
 </li>
   </ul></td>
@@ -411,12 +365,8 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Data">Data (class in boxkit.cbox.lib.create)</a>
-
-      <ul>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._data.Data">(class in boxkit.library.create._data)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._data.Data">Data (class in boxkit.library.create._data)</a>
 </li>
-      </ul></li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset">Dataset (class in boxkit.library.create._dataset)</a>
 </li>
       <li><a href="boxkit.api.html#boxkit.api.create.dataset">dataset() (in module boxkit.api.create)</a>
@@ -433,12 +383,6 @@
         <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.delvar">(boxkit.library.create._dataset.Dataset method)</a>
 </li>
       </ul></li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.dx">dx (boxkit.cbox.lib.create.Block property)</a>
-</li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.dy">dy (boxkit.cbox.lib.create.Block property)</a>
-</li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.dz">dz (boxkit.cbox.lib.create.Block property)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -460,14 +404,6 @@
       <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._execute.execute_loky">execute_loky() (in module boxkit.library.utilities._execute)</a>
 </li>
       <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._execute.execute_serial">execute_serial() (in module boxkit.library.utilities._execute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._monitor.Monitor.gettype">gettype() (boxkit.library.utilities._monitor.Monitor method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -507,18 +443,6 @@
 </li>
         <li><a href="boxkit.api.html#module-boxkit.api.read">boxkit.api.read</a>
 </li>
-        <li><a href="boxkit.cbox.html#module-boxkit.cbox">boxkit.cbox</a>
-</li>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib">boxkit.cbox.lib</a>
-</li>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.boost">boxkit.cbox.lib.boost</a>
-</li>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.create">boxkit.cbox.lib.create</a>
-</li>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.extern">boxkit.cbox.lib.extern</a>
-</li>
-        <li><a href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.utilities">boxkit.cbox.lib.utilities</a>
-</li>
         <li><a href="boxkit.library.html#module-boxkit.library">boxkit.library</a>
 </li>
         <li><a href="boxkit.library.create.html#module-boxkit.library.create">boxkit.library.create</a>
@@ -539,17 +463,17 @@
 </li>
         <li><a href="boxkit.library.utilities.html#module-boxkit.library.utilities._execute">boxkit.library.utilities._execute</a>
 </li>
-        <li><a href="boxkit.library.utilities.html#module-boxkit.library.utilities._monitor">boxkit.library.utilities._monitor</a>
-</li>
         <li><a href="boxkit.library.utilities.html#module-boxkit.library.utilities._process">boxkit.library.utilities._process</a>
+</li>
+        <li><a href="boxkit.library.utilities.html#module-boxkit.library.utilities._server">boxkit.library.utilities._server</a>
 </li>
         <li><a href="boxkit.resources.html#module-boxkit.resources">boxkit.resources</a>
 </li>
         <li><a href="boxkit.resources.read.html#module-boxkit.resources.read">boxkit.resources.read</a>
 </li>
-        <li><a href="boxkit.resources.read.html#module-boxkit.resources.read._default">boxkit.resources.read._default</a>
-</li>
         <li><a href="boxkit.resources.read.html#module-boxkit.resources.read._flash">boxkit.resources.read._flash</a>
+</li>
+        <li><a href="boxkit.resources.read.html#module-boxkit.resources.read._sample">boxkit.resources.read._sample</a>
 </li>
         <li><a href="boxkit.resources.stencils.html#module-boxkit.resources.stencils">boxkit.resources.stencils</a>
 </li>
@@ -559,57 +483,23 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.utilities.Action.monitor">monitor (boxkit.cbox.lib.utilities.Action property)</a>
-</li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.utilities.Monitor">Monitor (class in boxkit.cbox.lib.utilities)</a>
-
-      <ul>
-        <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._monitor.Monitor">(class in boxkit.library.utilities._monitor)</a>
-</li>
-      </ul></li>
-  </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Data.nblocks">nblocks (boxkit.cbox.lib.create.Data property)</a>
-
-      <ul>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.nblocks">(boxkit.library.create._dataset.Dataset property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.nblocks">nblocks (boxkit.library.create._dataset.Dataset property)</a>
 </li>
-      </ul></li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block.neighdata">neighdata() (boxkit.library.create._block.Block method)</a>
 </li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.utilities.Action.nthreads">nthreads (boxkit.cbox.lib.utilities.Action property)</a>
-</li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.nxb">nxb (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Data.nxb">(boxkit.cbox.lib.create.Data property)</a>
-</li>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.nxb">(boxkit.library.create._dataset.Dataset property)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.nyb">nyb (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Data.nyb">(boxkit.cbox.lib.create.Data property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.nxb">nxb (boxkit.library.create._dataset.Dataset property)</a>
 </li>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.nyb">(boxkit.library.create._dataset.Dataset property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.nyb">nyb (boxkit.library.create._dataset.Dataset property)</a>
 </li>
-      </ul></li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.nzb">nzb (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Data.nzb">(boxkit.cbox.lib.create.Data property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.nzb">nzb (boxkit.library.create._dataset.Dataset property)</a>
 </li>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.nzb">(boxkit.library.create._dataset.Dataset property)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -632,20 +522,16 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.resources.read.html#boxkit.resources.read._default.read_default">read_default() (in module boxkit.resources.read._default)</a>
-</li>
       <li><a href="boxkit.resources.read.html#boxkit.resources.read._flash.read_flash">read_flash() (in module boxkit.resources.read._flash)</a>
 </li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block.read_neighbuffer">read_neighbuffer() (boxkit.library.create._block.Block method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Region">Region (class in boxkit.cbox.lib.create)</a>
-
-      <ul>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._region.Region">(class in boxkit.library.create._region)</a>
+      <li><a href="boxkit.resources.read.html#boxkit.resources.read._sample.read_test_sample">read_test_sample() (in module boxkit.resources.read._sample)</a>
 </li>
-      </ul></li>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._region.Region">Region (class in boxkit.library.create._region)</a>
+</li>
       <li><a href="boxkit.api.html#boxkit.api.create.region">region() (in module boxkit.api.create)</a>
 </li>
   </ul></td>
@@ -654,7 +540,7 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._monitor.Monitor.setlimit">setlimit() (boxkit.library.utilities._monitor.Monitor method)</a>
+      <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._server.Server">Server (class in boxkit.library.utilities._server)</a>
 </li>
       <li><a href="boxkit.resources.stencils.html#boxkit.resources.stencils._skimeasure.skimeasure">skimeasure() (in module boxkit.resources.stencils._skimeasure)</a>
 </li>
@@ -670,10 +556,6 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.tag">tag (boxkit.cbox.lib.create.Block property)</a>
-</li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.utilities.Action.target">target (boxkit.cbox.lib.utilities.Action property)</a>
-</li>
       <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._action.Action.toparg">toparg() (boxkit.library.utilities._action.Action static method)</a>
 </li>
       <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block.type_">type_ (boxkit.library.create._block.Block attribute)</a>
@@ -692,14 +574,6 @@
         <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._process.Process.type_">(boxkit.library.utilities._process.Process attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="U">U</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.library.utilities.html#boxkit.library.utilities._monitor.Monitor.update">update() (boxkit.library.utilities._monitor.Monitor method)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -722,84 +596,36 @@
 <h2 id="X">X</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.xguard">xguard (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Data.xguard">(boxkit.cbox.lib.create.Data property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.xguard">xguard (boxkit.library.create._dataset.Dataset property)</a>
 </li>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.xguard">(boxkit.library.create._dataset.Dataset property)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.xmax">xmax (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Region.xmax">(boxkit.cbox.lib.create.Region property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block.xrange">xrange() (boxkit.library.create._block.Block method)</a>
 </li>
-      </ul></li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.xmin">xmin (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Region.xmin">(boxkit.cbox.lib.create.Region property)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="Y">Y</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.yguard">yguard (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Data.yguard">(boxkit.cbox.lib.create.Data property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.yguard">yguard (boxkit.library.create._dataset.Dataset property)</a>
 </li>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.yguard">(boxkit.library.create._dataset.Dataset property)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.ymax">ymax (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Region.ymax">(boxkit.cbox.lib.create.Region property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block.yrange">yrange() (boxkit.library.create._block.Block method)</a>
 </li>
-      </ul></li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.ymin">ymin (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Region.ymin">(boxkit.cbox.lib.create.Region property)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="Z">Z</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.zguard">zguard (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Data.zguard">(boxkit.cbox.lib.create.Data property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.zguard">zguard (boxkit.library.create._dataset.Dataset property)</a>
 </li>
-        <li><a href="boxkit.library.create.html#boxkit.library.create._dataset.Dataset.zguard">(boxkit.library.create._dataset.Dataset property)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.zmax">zmax (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Region.zmax">(boxkit.cbox.lib.create.Region property)</a>
+      <li><a href="boxkit.library.create.html#boxkit.library.create._block.Block.zrange">zrange() (boxkit.library.create._block.Block method)</a>
 </li>
-      </ul></li>
-      <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Block.zmin">zmin (boxkit.cbox.lib.create.Block property)</a>
-
-      <ul>
-        <li><a href="boxkit.cbox.lib.html#boxkit.cbox.lib.create.Region.zmin">(boxkit.cbox.lib.create.Region property)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 

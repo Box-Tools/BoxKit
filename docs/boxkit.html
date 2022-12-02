@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>boxkit package &mdash; BoxKit  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -13,7 +14,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -69,9 +72,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">boxkit</a> &raquo;</li>
-      <li>boxkit package</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">boxkit</a></li>
+      <li class="breadcrumb-item active">boxkit package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/boxkit.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,17 +84,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="boxkit-package">
-<h1>boxkit package<a class="headerlink" href="#boxkit-package" title="Permalink to this headline"></a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline"></a></h2>
+  <section id="boxkit-package">
+<h1>boxkit package<a class="headerlink" href="#boxkit-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="boxkit.api.html">boxkit.api package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="boxkit.api.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.api.html#module-boxkit.api.create">boxkit.api.create module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boxkit.api.html#module-boxkit.api.create">boxkit.api.create module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="boxkit.api.html#boxkit.api.create.dataset"><code class="docutils literal notranslate"><span class="pre">dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="boxkit.api.html#boxkit.api.create.region"><code class="docutils literal notranslate"><span class="pre">region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="boxkit.api.html#boxkit.api.create.slice"><code class="docutils literal notranslate"><span class="pre">slice()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="boxkit.api.html#module-boxkit.api.measure">boxkit.api.measure module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.api.html#module-boxkit.api.read">boxkit.api.read module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boxkit.api.html#module-boxkit.api.read">boxkit.api.read module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="boxkit.api.html#boxkit.api.read.dataset"><code class="docutils literal notranslate"><span class="pre">dataset()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="boxkit.api.html#module-boxkit.api">Module contents</a></li>
 </ul>
 </li>
@@ -99,16 +110,16 @@
 <li class="toctree-l2"><a class="reference internal" href="boxkit.cbox.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="boxkit.cbox.lib.html">boxkit.cbox.lib package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.boost">boxkit.cbox.lib.boost module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.create">boxkit.cbox.lib.create module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.extern">boxkit.cbox.lib.extern module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#module-boxkit.cbox.lib.utilities">boxkit.cbox.lib.utilities module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#module-boxkit.cbox.lib">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#boxkit-cbox-lib-boost-module">boxkit.cbox.lib.boost module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#boxkit-cbox-lib-create-module">boxkit.cbox.lib.create module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#boxkit-cbox-lib-extern-module">boxkit.cbox.lib.extern module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#boxkit-cbox-lib-utilities-module">boxkit.cbox.lib.utilities module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.lib.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.cbox.html#module-boxkit.cbox">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boxkit.cbox.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="boxkit.library.html">boxkit.library package</a><ul>
@@ -127,8 +138,9 @@
 <li class="toctree-l4"><a class="reference internal" href="boxkit.library.utilities.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._action">boxkit.library.utilities._action module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._execute">boxkit.library.utilities._execute module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._monitor">boxkit.library.utilities._monitor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxkit.library.utilities.html#boxkit-library-utilities-monitor-module">boxkit.library.utilities._monitor module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._process">boxkit.library.utilities._process module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._server">boxkit.library.utilities._server module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities">Module contents</a></li>
 </ul>
 </li>
@@ -141,8 +153,8 @@
 <li class="toctree-l2"><a class="reference internal" href="boxkit.resources.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="boxkit.resources.read.html">boxkit.resources.read package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="boxkit.resources.read.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.resources.read.html#module-boxkit.resources.read._default">boxkit.resources.read._default module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="boxkit.resources.read.html#module-boxkit.resources.read._flash">boxkit.resources.read._flash module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxkit.resources.read.html#module-boxkit.resources.read._sample">boxkit.resources.read._sample module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="boxkit.resources.read.html#module-boxkit.resources.read">Module contents</a></li>
 </ul>
 </li>
@@ -160,19 +172,19 @@
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
-</div>
-<div class="section" id="module-boxkit.__meta__">
-<span id="boxkit-meta-module"></span><h2>boxkit.__meta__ module<a class="headerlink" href="#module-boxkit.__meta__" title="Permalink to this headline"></a></h2>
-<p>Metadata for PyBoxKit package</p>
-</div>
-<div class="section" id="module-boxkit">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-boxkit" title="Permalink to this headline"></a></h2>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-boxkit.__meta__">
+<span id="boxkit-meta-module"></span><h2>boxkit.__meta__ module<a class="headerlink" href="#module-boxkit.__meta__" title="Permalink to this heading"></a></h2>
+<p>Metadata for BoxKit package</p>
+</section>
+<section id="module-boxkit">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-boxkit" title="Permalink to this heading"></a></h2>
 <p>Top level intialization of BoxKit</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
