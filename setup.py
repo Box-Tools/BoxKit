@@ -39,14 +39,8 @@ DEPENDENCIES = [
     "h5py",
     "h5pickle",
     "pymorton",
-    "scikit-image",
-    "dask==2021.07.1",
-    "pyarrow",
     "joblib",
-    "distributed==2021.07.1",
     "tqdm",
-    "zarr",
-    "faber",
     "toml",
 ]
 

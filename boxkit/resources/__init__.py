@@ -1,4 +1,7 @@
 """Initialize resources"""
+import os
 
 from . import read
-from . import stencils
+
+if os.getenv("BBOX_TESTING") == "TRUE":
+    from . import stencils

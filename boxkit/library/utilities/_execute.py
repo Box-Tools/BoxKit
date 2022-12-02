@@ -6,10 +6,11 @@ import ctypes
 import joblib
 import tqdm
 
-import dask
-from dask import distributed
+if os.getenv("BBOX_DASK") == "TRUE":
+    import dask
+    from dask import distributed
 
-if os.getenv("cbox_backend") == "TRUE":
+if os.getenv("CBOX_BACKEND") == "TRUE":
     from ...cbox.lib import extern as cbox
 
 
@@ -90,7 +91,7 @@ def execute_cbox(action, unitlist, *args):
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """
-    if os.getenv("cbox_backend") == "TRUE":
+    if os.getenv("CBOX_BACKEND") == "TRUE":
         cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
         cbox.utilities.execute_pyTask.restype = ctypes.py_object
 
@@ -98,7 +99,9 @@ def execute_cbox(action, unitlist, *args):
 
     else:
         listresult = None
-        raise ValueError("Cannot execute using CBOX backend")
+        raise NotImplementedError(
+            "[boxkit.utilities.execute) Cannot execute using CBOX backend use --with-cbox during setup"
+        )
 
     return listresult
 
@@ -111,26 +114,33 @@ def execute_dask(action, unitlist, *args):
 
     nthreads = 1 or None reverts to serial mode
     """
-    with distributed.LocalCluster(
-        threads_per_worker=action.nthreads, n_workers=None, processes=False
-    ) as cluster, distributed.Client(cluster) as client:
+    if os.getenv("BBOX_DASK") == "TRUE":
+        with distributed.LocalCluster(
+            threads_per_worker=action.nthreads, n_workers=None, processes=False
+        ) as cluster, distributed.Client(cluster) as client:
 
-        # if(action.monitor): unitlist = tqdm.tqdm(unitlist)
-        # lazy_results = [dask.delayed(action.target)(action,unit,*args) for unit in unitlist]
-        # futures = dask.persist(*lazy_results)
-        # listresult = dask.compute(*futures)
+            # if(action.monitor): unitlist = tqdm.tqdm(unitlist)
+            # lazy_results = [dask.delayed(action.target)(action,unit,*args) for unit in unitlist]
+            # futures = dask.persist(*lazy_results)
+            # listresult = dask.compute(*futures)
 
-        biglist = client.scatter(unitlist)
-        futures = client.map(
-            action.target,
-            [action] * len(biglist),
-            biglist,
-            *[[arg] * len(biglist) for arg in args]
+            biglist = client.scatter(unitlist)
+            futures = client.map(
+                action.target,
+                [action] * len(biglist),
+                biglist,
+                *[[arg] * len(biglist) for arg in args]
+            )
+
+            if action.monitor:
+                distributed.progress(futures)
+
+            listresult = client.gather(futures)
+
+    else:
+        listresult = None
+        raise NotImplementedError(
+            "[boxkit.utilities.execute) Cannot execute using DASK backend use --with-dask during setup"
         )
-
-        if action.monitor:
-            distributed.progress(futures)
-
-        listresult = client.gather(futures)
 
     return listresult

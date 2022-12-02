@@ -7,7 +7,7 @@
 #include <indicators/progress_spinner.hpp>
 
 namespace pytypes = cbox::pytypes;
-namespace indicators = indicators;
+//namespace indicators = indicators;
 /*
  *
  *

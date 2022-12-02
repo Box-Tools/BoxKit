@@ -2,13 +2,5 @@ include README.rst
 include LICENSE
 include bin/*
 include media/*
-include boxkit/cbox/*
-include boxkit/cbox/lib/*
-include boxkit/cbox/source/*
-include boxkit/cbox/source/create/*
-include boxkit/cbox/source/utilities/*
-include boxkit/cbox/include/*
-include boxkit/cbox/include/cbox/*
-include boxkit/depends/*
-include boxkit/depends/indicators/*
-include boxkit/depends/indicators/details/*
+recursive-include boxkit/cbox *
+recursive-include boxkit/depends *

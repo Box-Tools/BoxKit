@@ -34,7 +34,8 @@ class Dataset:
             + f"[{self.xmin}, {self.xmax}]\n"
             + f" - shape(z-y-x) : {self.nzb} x {self.nyb} x {self.nxb}\n"
             + f" - guard(z-y-x) : {self.zguard} x {self.yguard} x {self.xguard}\n"
-            + f" - nblocks      : {self.nblocks}"
+            + f" - nblocks      : {self.nblocks}\n"
+            + f" - dtype        : {self._data.dtype}"
         )
 
     def __getitem__(self, varkey):

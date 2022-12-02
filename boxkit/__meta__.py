@@ -1,8 +1,8 @@
 """Metadata for BoxKit package"""
 
 __pkgname__ = "BoxKit"
-__version__ = "0.2"
+__version__ = "2.0"
 __authors__ = "Akash Dhruv"
-__license__ = "MIT License"
+__license__ = "Apache License"
 __copyright__ = "Copyright (c) Akash Dhruv 2021. All Rights Reserved."
 __description__ = "BoxKit Utility"

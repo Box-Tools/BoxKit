@@ -11,7 +11,11 @@ runs:
   steps:
     - run: maple container pour --image=${{inputs.image}} 
       shell: bash
-    - run: maple container execute "pip3 install click && ./setup install --with-cbox && ./setup clean"
+    - run: maple container execute "pip3 install click && pip3 install -r options/cbox.txt -r options/testing.txt"
+      shell: bash
+    - run: maple container execute "export CXX=g++ BOOST_LIB_DIR=usr/lib BOOST_INCLUDE_DIR=/usr/include && ./setup install --with-cbox --enable-testing"
+      shell: bash
+    - run: maple container execute "./setup clean"
       shell: bash
     - run: maple container commit --image=${{inputs.image}}
       shell: bash

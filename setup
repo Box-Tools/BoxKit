@@ -11,57 +11,130 @@ from bin.boost import boost_build, boost_clean
 from bin.cbox import cbox_clean
 
 
+def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing):
+    """
+    Private function to set environment variables
+    """
+    if with_cbox:
+        os.environ["CBOX_BACKEND"] = "TRUE"
+
+    if with_pyarrow:
+        os.environ["BBOX_PYARROW"] = "TRUE"
+
+    if with_zarr:
+        os.environ["BBOX_ZARR"] = "TRUE"
+
+    if with_dask:
+        os.environ["BBOX_DASK"] = "TRUE"
+
+    if with_server:
+        os.environ["BBOX_SERVER"] = "TRUE"
+
+    if enable_testing:
+        os.environ["BBOX_TESTING"] = "TRUE"
+
+
 @click.group(name="setup")
 def setup():
     """Setup toolkit for BoxKit"""
 
 
 @setup.command(name="depends")
-def depends():
+@click.option("--keep-artifacts", is_flag=True, help="Preserve build artifacts")
+def depends(keep_artifacts):
     """Build dependencies for the Python library"""
     boost_build()
-    boost_clean()
+    if not keep_artifacts:
+        boost_clean()
 
 
 @setup.command(name="develop")
-@click.option("--with-cbox", is_flag=True, help="build with C++ backend")
-def develop(with_cbox):
-    """Development mode"""
-    if with_cbox:
-        os.environ["CBOX_BACKEND"] = "TRUE"
+@click.option("--with-cbox", is_flag=True, help="With C++ backend")
+@click.option("--with-pyarrow", is_flag=True, help="With pyarrow data backend")
+@click.option("--with-zarr", is_flag=True, help="With zarr data backend")
+@click.option("--with-dask", is_flag=True, help="With dask data/parallel backend")
+@click.option("--with-server", is_flag=True, help="With remote server utility")
+@click.option("--enable-testing", is_flag=True, help="Enable testing mode")
+def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing):
+    """
+    \b
+    Development mode
 
-    subprocess.run("python3 setup.py develop --user", shell=True, check=True)
+    \b
+    Environment variables for building C++ backend
+    CXX			:	C++ compiler (clang++, g++)
+    BOOST_INCLUDE_DIR	:	Path to boost/python.hpp
+    BOOST_LIB_DIR	:	Path to libboost_python.so, libbboost_python.dylib
+    """
+    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing)
+
+    subprocess.run(
+        "python3 setup.py develop --user",
+        shell=True,
+        check=True,
+        executable="/bin/bash",
+    )
 
 
 @setup.command(name="install")
-@click.option("--with-cbox", is_flag=True, help="build with C++ backend")
-@click.option("--as-root", is_flag=True, help="install as root user")
-def install(with_cbox, as_root):
+@click.option("--with-cbox", is_flag=True, help="With C++ backend")
+@click.option("--with-pyarrow", is_flag=True, help="With pyarrow data backend")
+@click.option("--with-zarr", is_flag=True, help="With zarr data backend")
+@click.option("--with-dask", is_flag=True, help="With dask data/parallel backend")
+@click.option("--with-server", is_flag=True, help="With remote server utility")
+@click.option("--enable-testing", is_flag=True, help="Enable testing mode")
+@click.option("--all-users", is_flag=True, help="Install for all users")
+def install(
+    with_cbox,
+    with_pyarrow,
+    with_zarr,
+    with_dask,
+    with_server,
+    enable_testing,
+    all_users,
+):
     """Installation command"""
-    if with_cbox:
-        os.environ["CBOX_BACKEND"] = "TRUE"
+    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing)
 
-    if as_root:
+    if all_users:
         user = ""
     else:
         user = "--user"
 
-    subprocess.run(f"python3 setup.py develop {user}", shell=True, check=True)
-    subprocess.run("python3 setup.py build", shell=True, check=True)
-    subprocess.run(f"python3 setup.py install {user}", shell=True, check=True)
+    subprocess.run(
+        f"python3 setup.py develop {user}",
+        shell=True,
+        check=True,
+        executable="/bin/bash",
+    )
+    subprocess.run(
+        "python3 setup.py build", shell=True, check=True, executable="/bin/bash"
+    )
+    subprocess.run(
+        f"python3 setup.py install {user}",
+        shell=True,
+        check=True,
+        executable="/bin/bash",
+    )
 
 
 @setup.command(name="publish")
 def publish():
     """Publish PyPi package"""
-    subprocess.run("python3 setup.py sdist", shell=True, check=True)
-    subprocess.run("twine upload dist/* --verbose", shell=True, check=True)
+    subprocess.run(
+        "python3 setup.py sdist", shell=True, check=True, executable="/bin/bash"
+    )
+    subprocess.run(
+        "twine upload dist/* --verbose", shell=True, check=True, executable="/bin/bash"
+    )
 
 
 @setup.command(name="clean")
 def clean():
     """Clean installation artifacts"""
-    subprocess.run("rm -rf *.egg-info build dist", shell=True, check=True)
+    subprocess.run(
+        "rm -rf *.egg-info build dist", shell=True, check=True, executable="/bin/bash"
+    )
     cbox_clean()
 
 

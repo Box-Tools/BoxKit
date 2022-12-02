@@ -3,7 +3,7 @@
 import os
 import sys
 import subprocess
-from distutils.sysconfig import get_python_version, BASE_PREFIX
+from distutils import sysconfig
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,13 +12,19 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # and are assigned here to build and compile when setting up the
 # Python library
 CBOX_MAKE_DICT = {
-    "python_version": get_python_version(),
-    "python_path": BASE_PREFIX,
-    "boost_version": "".join(get_python_version().split(".")),
-    "boost_path": (
-        os.getenv("PWD") + "/boxkit/depends/boost"
+    "cxx": os.getenv("CXX"),
+    "python_version": sysconfig.get_python_version(),
+    "boost_version": "".join(sysconfig.get_python_version().split(".")),
+    "python_include_path": sysconfig.get_python_inc(),
+    "boost_include_path": (
+        os.getenv("PWD") + "/boxkit/depends/boost/include"
         if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
-        else BASE_PREFIX
+        else os.getenv("BOOST_INCLUDE_DIR")
+    ),
+    "boost_lib_path": (
+        os.getenv("PWD") + "/boxkit/depends/boost/lib"
+        if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
+        else os.getenv("BOOST_LIB_DIR")
     ),
 }
 
@@ -33,10 +39,13 @@ for key, value in CBOX_MAKE_DICT.items():
 # the source code
 def cbox_build():
     """Compile and build cbox"""
+    from find_libpython import find_libpython
+
     subprocess.run(
-        f"cd boxkit/cbox/source && make {CBOX_MAKE_ARGS}",
+        f"cd boxkit/cbox/source && make {CBOX_MAKE_ARGS} python_lib_path={find_libpython()}",
         shell=True,
         check=True,
+        executable="/bin/bash",
     )
 
 
@@ -48,6 +57,7 @@ def cbox_install():
         "cp boxkit/cbox/lib/*.so build/lib/boxkit/cbox/lib/.",
         shell=True,
         check=True,
+        executable="/bin/bash",
     )
 
 
@@ -55,5 +65,8 @@ def cbox_install():
 def cbox_clean():
     """Clean cbox objects"""
     subprocess.run(
-        "cd boxkit/cbox/source && make clean && cd ../../../", shell=True, check=True
+        "cd boxkit/cbox/source && make clean && cd ../../../",
+        shell=True,
+        check=True,
+        executable="/bin/bash",
     )

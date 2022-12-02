@@ -1,24 +1,36 @@
 """Module to read attributes from FLASH output files"""
 
-import h5pickle as h5py
+import h5py
+import h5pickle
 
 
-def read_flash(filename):
+def read_flash(filename, server):
     """
     Read dataset from FLASH output file
 
     Parameters
     ----------
     filename : string containing file name
+    server : server dictionary
 
     Returns
     -------
     data_attributes  : dictionary containing data attributes
     block_attributes : dictionary containg block attributes
     """
+    if server:
+        # Read from remote path
+        remotefile = server["sftp"].open(filename)
+        remotefile.set_pipelined()
+        inputfile = h5py.File(remotefile, "r", skip_cache=False)
+        print(
+            "[boxkit.resource.read]: Remote files cannot be pickled. Multithreading should not be used"
+        )
 
-    # Read the hdf5 file
-    inputfile = h5py.File(filename, "r", skip_cache=False)
+    else:
+        # Read from local path
+        remotefile = None
+        inputfile = h5pickle.File(filename, "r", skip_cache=False)
 
     # Set variable dictionary for datasets
     variables = {}
@@ -45,6 +57,7 @@ def read_flash(filename):
         "nyb": int(nyb),
         "nzb": int(nzb),
         "inputfile": inputfile,
+        "remotefile": remotefile,
         "variables": variables,
     }
 
@@ -71,6 +84,7 @@ def read_flash(filename):
             "tag": lblock,
             "level": inputfile["refine level"][lblock],
             "leaf": (True if inputfile["node type"][lblock] == 1 else False),
+            "inputproc": inputfile["processor number"][lblock],
         }
         for lblock in range(nblocks)
     ]

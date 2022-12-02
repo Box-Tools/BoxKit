@@ -20,8 +20,8 @@ pytypes::CPyList execute_pyTask(Action &action, pytypes::CPyList &unitList,
   pytypes::CPyTuple targetArgs;
   pytypes::CPyObject arg, unit, result;
 
-  omp_set_dynamic(0);
-  omp_set_num_threads(action.nthreads);
+  //omp_set_dynamic(0);
+  //omp_set_num_threads(action.nthreads);
 
   Monitor actionMonitor("action");
   actionMonitor.setlimit(numUnits);

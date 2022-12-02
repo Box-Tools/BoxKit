@@ -8,3 +8,6 @@ from ._process import Process
 
 if os.getenv("CBOX_BACKEND") == "TRUE":
     from ._monitor import Monitor
+
+if os.getenv("BBOX_SERVER") == "TRUE":
+    from ._server import Server

@@ -13,6 +13,28 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cbox import cbox_build, cbox_install
 from boost import boost_install
 
+
+def _create_envfile():
+    """
+    Create environment file
+    """
+    with open("boxkit/envfile", "w") as envfile:
+
+        for env_var in [
+            "CBOX_BACKEND",
+            "BBOX_PYARROW",
+            "BBOX_ZARR",
+            "BBOX_DASK",
+            "BBOX_SERVER",
+            "BBOX_TESTING",
+        ]:
+            if os.getenv(env_var) == "TRUE":
+                envfile.write(f'{env_var} = "TRUE"\n')
+
+            else:
+                envfile.write(f'{env_var} = "FALSE"\n')
+
+
 # custom build command
 # replaces the default build command for setup.py
 class BuildCmd(build_py):
@@ -27,17 +49,13 @@ class BuildCmd(build_py):
             cbox_install()
             boost_install()
 
-        with open("boxkit/envfile", "w") as envfile:
-            if os.getenv("CBOX_BACKEND") == "TRUE":
-                envfile.write('CBOX_BACKEND = "TRUE"\n')
-
-            else:
-                envfile.write('CBOX_BACKEND = "FALSE"\n')
+        _create_envfile()
 
         subprocess.run(
             "cp boxkit/envfile build/lib/boxkit/.",
             shell=True,
             check=True,
+            executable="/bin/bash",
         )
 
 
@@ -53,9 +71,4 @@ class DevelopCmd(develop):
         if os.getenv("CBOX_BACKEND") == "TRUE":
             cbox_build()
 
-        with open("boxkit/envfile", "w") as envfile:
-            if os.getenv("CBOX_BACKEND") == "TRUE":
-                envfile.write('CBOX_BACKEND = "TRUE"\n')
-
-            else:
-                envfile.write('CBOX_BACKEND = "FALSE"\n')
+        _create_envfile()
