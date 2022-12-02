@@ -56,7 +56,16 @@ def depends(keep_artifacts):
 @click.option("--with-server", is_flag=True, help="With remote server utility")
 @click.option("--enable-testing", is_flag=True, help="Enable testing mode")
 def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing):
-    """Development mode"""
+    """
+    \b
+    Development mode
+
+    \b
+    Environment variables for building C++ backend
+    CXX			:	C++ compiler (clang++, g++)
+    BOOST_INCLUDE_DIR	:	Path to boost/python.hpp
+    BOOST_LIB_DIR	:	Path to libboost_python.so, libbboost_python.dylib
+    """
     _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing)
 
     subprocess.run(
