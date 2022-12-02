@@ -145,7 +145,7 @@ class TestBoiling(unittest.TestCase):
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
-        self.assertEqual(numbubbles, [1341, 1380, 1262, 1255, 1351, 1362])
+        self.assertEqual(numbubbles, [1255])
 
         for dataset in dataframes:
             dataset.purge("boxmem")
