@@ -11,9 +11,7 @@ from bin.boost import boost_build, boost_clean
 from bin.cbox import cbox_clean
 
 
-def _setenv(
-    with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing=False
-):
+def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing):
     """
     Private function to set environment variables
     """
@@ -75,10 +73,19 @@ def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_t
 @click.option("--with-zarr", is_flag=True, help="With zarr data backend")
 @click.option("--with-dask", is_flag=True, help="With dask data/parallel backend")
 @click.option("--with-server", is_flag=True, help="With remote server utility")
+@click.option("--enable-testing", is_flag=True, help="Enable testing mode")
 @click.option("--all-users", is_flag=True, help="Install for all users")
-def install(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, all_users):
+def install(
+    with_cbox,
+    with_pyarrow,
+    with_zarr,
+    with_dask,
+    with_server,
+    enable_testing,
+    all_users,
+):
     """Installation command"""
-    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server)
+    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing)
 
     if all_users:
         user = ""
