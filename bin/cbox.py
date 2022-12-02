@@ -3,7 +3,6 @@
 import os
 import sys
 import subprocess
-from distutils.sysconfig import get_python_version, BASE_PREFIX
 from distutils import sysconfig
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -13,20 +12,20 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # and are assigned here to build and compile when setting up the
 # Python library
 CBOX_MAKE_DICT = {
-    "cc": "clang++",
-    "python_version": sysconfig.get_config_var("py_version_short"),
-    "boost_version": sysconfig.get_config_var("py_version_nodot"),
+    "cc": "g++",
+    "python_version": sysconfig.get_python_version(),
+    "boost_version": "".join(sysconfig.get_python_version().split(".")),
     "python_include_path": sysconfig.get_python_inc(),
-    "python_lib_path": sysconfig.BASE_PREFIX + "/lib",
+    "python_lib_path": sysconfig.BASE_PREFIX + "/inclue" + f"/python{sysconfig.get_python_version()}/config",
     "boost_include_path": (
         os.getenv("PWD") + "/boxkit/depends/boost/include"
         if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
-        else "$HOME/homebrew/include"
+        else ""
     ),
     "boost_lib_path": (
         os.getenv("PWD") + "/boxkit/depends/boost/lib"
         if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
-        else "$HOME/homebrew/lib"
+        else ""
     ),
 }
 
