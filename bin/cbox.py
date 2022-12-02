@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 from distutils import sysconfig
+from find_libpython import find_libpython
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,20 +13,20 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # and are assigned here to build and compile when setting up the
 # Python library
 CBOX_MAKE_DICT = {
-    "cc": "g++",
+    "cxx": os.getenv("CXX"),
     "python_version": sysconfig.get_python_version(),
     "boost_version": "".join(sysconfig.get_python_version().split(".")),
     "python_include_path": sysconfig.get_python_inc(),
-    "python_lib_path": sysconfig.BASE_PREFIX + "/inclue" + f"/python{sysconfig.get_python_version()}/config",
+    "python_lib_path": find_libpython(),
     "boost_include_path": (
         os.getenv("PWD") + "/boxkit/depends/boost/include"
         if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
-        else ""
+        else os.getenv("BOOST_INCLUDE_DIR")
     ),
     "boost_lib_path": (
         os.getenv("PWD") + "/boxkit/depends/boost/lib"
         if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
-        else ""
+        else os.getenv("BOOST_LIB_DIR")
     ),
 }
 
