@@ -11,7 +11,7 @@ from bin.boost import boost_build, boost_clean
 from bin.cbox import cbox_clean
 
 
-def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask):
+def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server):
     """
     Private function to set environment variables
     """
@@ -26,6 +26,9 @@ def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask):
 
     if with_dask:
         os.environ["BBOX_DASK"] = "TRUE"
+
+    if with_server:
+        os.environ["BBOX_SERVER"] = "TRUE"
 
 
 @click.group(name="setup")
@@ -47,9 +50,10 @@ def depends(keep_artifacts):
 @click.option("--with-pyarrow", is_flag=True, help="enable pyarrow data backend")
 @click.option("--with-zarr", is_flag=True, help="enable zarr data backend")
 @click.option("--with-dask", is_flag=True, help="enable dask data and parallel backend")
-def develop(with_cbox, with_pyarrow, with_zarr, with_dask):
+@click.option("--with-server", is_flag=True, help="enable remote server utility")
+def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server):
     """Development mode"""
-    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask)
+    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server)
 
     subprocess.run(
         "python3 setup.py develop --user",
@@ -64,10 +68,11 @@ def develop(with_cbox, with_pyarrow, with_zarr, with_dask):
 @click.option("--with-pyarrow", is_flag=True, help="enable pyarrow data backend")
 @click.option("--with-zarr", is_flag=True, help="enable zarr data backend")
 @click.option("--with-dask", is_flag=True, help="enable dask backend")
+@click.option("--with-server", is_flag=True, help="enable remote server utility")
 @click.option("--all-users", is_flag=True, help="install for all users")
-def install(with_cbox, with_pyarrow, with_zarr, with_dask, all_users):
+def install(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, all_users):
     """Installation command"""
-    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask)
+    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server)
 
     if all_users:
         user = ""

@@ -41,9 +41,7 @@ DEPENDENCIES = [
     "pymorton",
     "joblib",
     "tqdm",
-    "faber",
     "toml",
-    "paramiko",
 ]
 
 # Call setup command with necessary arguments

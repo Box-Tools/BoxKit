@@ -4,7 +4,6 @@ import os
 import sys
 import subprocess
 from distutils import sysconfig
-from find_libpython import find_libpython
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -17,7 +16,6 @@ CBOX_MAKE_DICT = {
     "python_version": sysconfig.get_python_version(),
     "boost_version": "".join(sysconfig.get_python_version().split(".")),
     "python_include_path": sysconfig.get_python_inc(),
-    "python_lib_path": find_libpython(),
     "boost_include_path": (
         os.getenv("PWD") + "/boxkit/depends/boost/include"
         if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
@@ -41,6 +39,10 @@ for key, value in CBOX_MAKE_DICT.items():
 # the source code
 def cbox_build():
     """Compile and build cbox"""
+    from find_libpython import find_libpython
+
+    CBOX_MAKE_ARGS = CBOX_MAKE_ARGS + " " + f"{python_lib_path}={find_libpython()}"
+
     subprocess.run(
         f"cd boxkit/cbox/source && make {CBOX_MAKE_ARGS}",
         shell=True,
