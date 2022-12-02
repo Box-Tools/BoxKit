@@ -44,7 +44,6 @@ DEPENDENCIES = [
     "faber",
     "toml",
     "paramiko",
-    "find-libpython",
 ]
 
 # Call setup command with necessary arguments
