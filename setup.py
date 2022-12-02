@@ -42,6 +42,7 @@ DEPENDENCIES = [
     "joblib",
     "tqdm",
     "toml",
+    "scikit-image",
 ]
 
 # Call setup command with necessary arguments
