@@ -26,6 +26,7 @@ def _create_envfile():
             "BBOX_ZARR",
             "BBOX_DASK",
             "BBOX_SERVER",
+            "BBOX_TESTING",
         ]:
             if os.getenv(env_var) == "TRUE":
                 envfile.write(f'{env_var} = "TRUE"\n')

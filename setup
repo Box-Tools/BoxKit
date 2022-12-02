@@ -11,7 +11,9 @@ from bin.boost import boost_build, boost_clean
 from bin.cbox import cbox_clean
 
 
-def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server):
+def _setenv(
+    with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing=False
+):
     """
     Private function to set environment variables
     """
@@ -30,6 +32,9 @@ def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server):
     if with_server:
         os.environ["BBOX_SERVER"] = "TRUE"
 
+    if enable_testing:
+        os.environ["BBOX_TESTING"] = "TRUE"
+
 
 @click.group(name="setup")
 def setup():
@@ -37,7 +42,7 @@ def setup():
 
 
 @setup.command(name="depends")
-@click.option("--keep-artifacts", is_flag=True, help="preserve build artifcats")
+@click.option("--keep-artifacts", is_flag=True, help="Preserve build artifacts")
 def depends(keep_artifacts):
     """Build dependencies for the Python library"""
     boost_build()
@@ -46,14 +51,15 @@ def depends(keep_artifacts):
 
 
 @setup.command(name="develop")
-@click.option("--with-cbox", is_flag=True, help="build with C++ backend")
-@click.option("--with-pyarrow", is_flag=True, help="enable pyarrow data backend")
-@click.option("--with-zarr", is_flag=True, help="enable zarr data backend")
-@click.option("--with-dask", is_flag=True, help="enable dask data and parallel backend")
-@click.option("--with-server", is_flag=True, help="enable remote server utility")
-def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server):
+@click.option("--with-cbox", is_flag=True, help="With C++ backend")
+@click.option("--with-pyarrow", is_flag=True, help="With pyarrow data backend")
+@click.option("--with-zarr", is_flag=True, help="With zarr data backend")
+@click.option("--with-dask", is_flag=True, help="With dask data/parallel backend")
+@click.option("--with-server", is_flag=True, help="With remote server utility")
+@click.option("--enable-testing", is_flag=True, help="Enable testing mode")
+def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing):
     """Development mode"""
-    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server)
+    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing)
 
     subprocess.run(
         "python3 setup.py develop --user",
@@ -64,12 +70,12 @@ def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server):
 
 
 @setup.command(name="install")
-@click.option("--with-cbox", is_flag=True, help="build with C++ backend")
-@click.option("--with-pyarrow", is_flag=True, help="enable pyarrow data backend")
-@click.option("--with-zarr", is_flag=True, help="enable zarr data backend")
-@click.option("--with-dask", is_flag=True, help="enable dask backend")
-@click.option("--with-server", is_flag=True, help="enable remote server utility")
-@click.option("--all-users", is_flag=True, help="install for all users")
+@click.option("--with-cbox", is_flag=True, help="With C++ backend")
+@click.option("--with-pyarrow", is_flag=True, help="With pyarrow data backend")
+@click.option("--with-zarr", is_flag=True, help="With zarr data backend")
+@click.option("--with-dask", is_flag=True, help="With dask data/parallel backend")
+@click.option("--with-server", is_flag=True, help="With remote server utility")
+@click.option("--all-users", is_flag=True, help="Install for all users")
 def install(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, all_users):
     """Installation command"""
     _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server)
