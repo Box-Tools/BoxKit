@@ -41,10 +41,8 @@ def cbox_build():
     """Compile and build cbox"""
     from find_libpython import find_libpython
 
-    CBOX_MAKE_ARGS = CBOX_MAKE_ARGS + " " + f"{python_lib_path}={find_libpython()}"
-
     subprocess.run(
-        f"cd boxkit/cbox/source && make {CBOX_MAKE_ARGS}",
+        f"cd boxkit/cbox/source && make {CBOX_MAKE_ARGS} python_lib_path={find_libpython()}",
         shell=True,
         check=True,
         executable="/bin/bash",
