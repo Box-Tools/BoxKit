@@ -2,5 +2,6 @@ include README.rst
 include LICENSE
 include bin/*
 include media/*
+include options/*
 recursive-include boxkit/cbox *
 recursive-include boxkit/depends *

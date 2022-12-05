@@ -83,7 +83,6 @@ def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_t
 @click.option("--with-dask", is_flag=True, help="With dask data/parallel backend")
 @click.option("--with-server", is_flag=True, help="With remote server utility")
 @click.option("--enable-testing", is_flag=True, help="Enable testing mode")
-@click.option("--all-users", is_flag=True, help="Install for all users")
 def install(
     with_cbox,
     with_pyarrow,
@@ -91,20 +90,14 @@ def install(
     with_dask,
     with_server,
     enable_testing,
-    all_users,
 ):
     """Installation command"""
-    if all_users:
-        user = ""
-    else:
-        user = "--user"
-
     options = get_options(
         with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing
     )
 
     subprocess.run(
-        f"python3 setup.py develop {user}",
+        f"python3 setup.py develop --user",
         shell=True,
         check=True,
         executable="/bin/bash",
@@ -116,7 +109,7 @@ def install(
         executable="/bin/bash",
     )
     subprocess.run(
-        f"python3 setup.py install {user}",
+        f"python3 setup.py install --user",
         shell=True,
         check=True,
         executable="/bin/bash",

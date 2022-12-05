@@ -35,9 +35,66 @@ class CustomCmd:
         self.enable_testing = 0
 
     def finalize_options(self):
-        pass
+        for option in [
+            "with_cbox",
+            "with_pyarrow",
+            "with_zarr",
+            "with_dask",
+            "with_server",
+            "enable_testing",
+        ]:
+            if getattr(self, option) not in [0, 1]:
+                raise ValueError(f"{option} is a flag")
 
     def run(self):
+
+        if self.with_cbox:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/cbox.txt --user",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.with_pyarrow:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/pyarrow.txt --user",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.with_zarr:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/zarr.txt --user",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.with_dask:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/dask.txt --user",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.with_server:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/server.txt --user",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.enable_testing:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/testing.txt --user",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
 
         with open("boxkit/options.py", "w") as optfile:
 
@@ -66,13 +123,12 @@ class BuildCmd(build, CustomCmd):
     def run(self):
 
         build.run(self)
+        CustomCmd.run(self)
 
         if self.with_cbox:
             cbox_build()
             cbox_install()
             boost_install()
-
-        CustomCmd.run(self)
 
         subprocess.run(
             "cp boxkit/options.py build/lib/boxkit/.",
@@ -99,8 +155,7 @@ class DevelopCmd(develop, CustomCmd):
     def run(self):
 
         develop.run(self)
+        CustomCmd.run(self)
 
         if self.with_cbox:
             cbox_build()
-
-        CustomCmd.run(self)
