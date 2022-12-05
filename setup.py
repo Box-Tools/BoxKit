@@ -57,7 +57,7 @@ setup(
     package_dir={"": "./"},
     package_data={
         "": [
-            "envfile",
+            "options.py",
         ]
     },
     include_package_data=True,

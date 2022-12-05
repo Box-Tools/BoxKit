@@ -1,7 +1,9 @@
 import os
 
+from .. import options
+
 from . import create
 from . import read
 
-if os.getenv("BBOX_TESTING") == "TRUE":
+if options.testing:
     from . import measure

@@ -14,25 +14,25 @@ from cbox import cbox_build, cbox_install
 from boost import boost_install
 
 
-def _create_envfile():
+def _set_options(
+    with_cbox=0,
+    with_pyarrow=0,
+    with_zarr=0,
+    with_dask=0,
+    with_server=0,
+    enable_testing=0,
+):
     """
     Create environment file
     """
-    with open("boxkit/envfile", "w") as envfile:
+    with open("boxkit/options.py", "w") as optfile:
 
-        for env_var in [
-            "CBOX_BACKEND",
-            "BBOX_PYARROW",
-            "BBOX_ZARR",
-            "BBOX_DASK",
-            "BBOX_SERVER",
-            "BBOX_TESTING",
-        ]:
-            if os.getenv(env_var) == "TRUE":
-                envfile.write(f'{env_var} = "TRUE"\n')
-
-            else:
-                envfile.write(f'{env_var} = "FALSE"\n')
+        optfile.write(f"cbox={with_cbox}\n")
+        optfile.write(f"pyarrow={with_pyarrow}\n")
+        optfile.write(f"zarr={with_zarr}\n")
+        optfile.write(f"dask={with_dask}\n")
+        optfile.write(f"server={with_server}\n")
+        optfile.write(f"testing={enable_testing}\n")
 
 
 # custom build command
@@ -40,16 +40,44 @@ def _create_envfile():
 class BuildCmd(build_py):
     """Custom build_py command."""
 
+    user_options = build_py.user_options + [
+        ("with-cbox", None, "With C++ backend"),
+        ("with-pyarrow", None, "With pyarrow data backend"),
+        ("with-zarr", None, "With zarr data backend"),
+        ("with-dask", None, "With dask data/parallel backend"),
+        ("with-server", None, "With remote server utilitiy"),
+        ("enable-testing", None, "Enable testing mode"),
+    ]
+
+    def initialize_options(self):
+        build_py.initialize_options(self)
+        self.with_cbox = 0
+        self.with_pyarrow = 0
+        self.with_zarr = 0
+        self.with_dask = 0
+        self.with_server = 0
+        self.enable_testing = 0
+
+    def finalize_options(self):
+        build_py.finalize_options(self)
+
     def run(self):
 
         build_py.run(self)
 
-        if os.getenv("CBOX_BACKEND") == "TRUE":
+        if self.with_cbox:
             cbox_build()
             cbox_install()
             boost_install()
 
-        _create_envfile()
+        _set_options(
+            self.with_cbox,
+            self.with_pyarrow,
+            self.with_zarr,
+            self.with_dask,
+            self.with_server,
+            self.enable_testing,
+        )
 
         subprocess.run(
             "cp boxkit/envfile build/lib/boxkit/.",
@@ -64,11 +92,39 @@ class BuildCmd(build_py):
 class DevelopCmd(develop):
     """Custom develop command."""
 
+    user_options = develop.user_options + [
+        ("with-cbox", None, "With C++ backend"),
+        ("with-pyarrow", None, "With pyarrow data backend"),
+        ("with-zarr", None, "With zarr data backend"),
+        ("with-dask", None, "With dask data/parallel backend"),
+        ("with-server", None, "With remote server utilitiy"),
+        ("enable-testing", None, "Enable testing mode"),
+    ]
+
+    def initialize_options(self):
+        develop.initialize_options(self)
+        self.with_cbox = 0
+        self.with_pyarrow = 0
+        self.with_zarr = 0
+        self.with_dask = 0
+        self.with_server = 0
+        self.enable_testing = 0
+
+    def finalize_options(self):
+        develop.finalize_options(self)
+
     def run(self):
 
         develop.run(self)
 
-        if os.getenv("CBOX_BACKEND") == "TRUE":
+        if self.with_cbox:
             cbox_build()
 
-        _create_envfile()
+        _set_options(
+            self.with_cbox,
+            self.with_pyarrow,
+            self.with_zarr,
+            self.with_dask,
+            self.with_server,
+            self.enable_testing,
+        )

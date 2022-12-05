@@ -11,27 +11,25 @@ from bin.boost import boost_build, boost_clean
 from bin.cbox import cbox_clean
 
 
-def _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing):
-    """
-    Private function to set environment variables
-    """
+def get_options(
+    with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing
+):
+    options = ""
+
     if with_cbox:
-        os.environ["CBOX_BACKEND"] = "TRUE"
-
+        options = options + " --with-cbox"
     if with_pyarrow:
-        os.environ["BBOX_PYARROW"] = "TRUE"
-
+        options = options + " --with-zarr"
     if with_zarr:
-        os.environ["BBOX_ZARR"] = "TRUE"
-
+        options = options + " --with-zarr"
     if with_dask:
-        os.environ["BBOX_DASK"] = "TRUE"
-
+        options = options + " --with-dask"
     if with_server:
-        os.environ["BBOX_SERVER"] = "TRUE"
-
+        options = options + " --with-server"
     if enable_testing:
-        os.environ["BBOX_TESTING"] = "TRUE"
+        options = options + " --enable-testing"
+
+    return options
 
 
 @click.group(name="setup")
@@ -66,10 +64,12 @@ def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_t
     BOOST_INCLUDE_DIR	:	Path to boost/python.hpp
     BOOST_LIB_DIR	:	Path to libboost_python.so, libbboost_python.dylib
     """
-    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing)
+    options = get_options(
+        with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing
+    )
 
     subprocess.run(
-        "python3 setup.py develop --user",
+        f"python3 setup.py develop --user {options}",
         shell=True,
         check=True,
         executable="/bin/bash",
@@ -94,12 +94,14 @@ def install(
     all_users,
 ):
     """Installation command"""
-    _setenv(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing)
-
     if all_users:
         user = ""
     else:
         user = "--user"
+
+    options = get_options(
+        with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing
+    )
 
     subprocess.run(
         f"python3 setup.py develop {user}",
@@ -108,7 +110,10 @@ def install(
         executable="/bin/bash",
     )
     subprocess.run(
-        "python3 setup.py build", shell=True, check=True, executable="/bin/bash"
+        'python3 setup.py build --install-option="{options}"',
+        shell=True,
+        check=True,
+        executable="/bin/bash",
     )
     subprocess.run(
         f"python3 setup.py install {user}",

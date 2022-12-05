@@ -3,7 +3,7 @@ __pycache__
 boxmem*
 *.o
 *.so
-boxkit/envfile
+boxkit/options.py
 build/*
 dist/*
 dask-worker-space
