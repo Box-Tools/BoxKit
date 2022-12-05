@@ -4,19 +4,19 @@ boxkit.resources.read package
 Submodules
 ----------
 
-boxkit.resources.read.\_default module
---------------------------------------
+boxkit.resources.read.\_flash module
+------------------------------------
 
-.. automodule:: boxkit.resources.read._default
+.. automodule:: boxkit.resources.read._flash
    :members:
    :undoc-members:
    :show-inheritance:
    :private-members:
 
-boxkit.resources.read.\_flash module
-------------------------------------
+boxkit.resources.read.\_sample module
+-------------------------------------
 
-.. automodule:: boxkit.resources.read._flash
+.. automodule:: boxkit.resources.read._sample
    :members:
    :undoc-members:
    :show-inheritance:

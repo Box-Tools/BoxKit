@@ -2,12 +2,14 @@
 
 import os
 
+from ... import options
+
 from ._execute import exectask
 from ._action import Action
 from ._process import Process
 
-if os.getenv("CBOX_BACKEND") == "TRUE":
+if options.cbox:
     from ._monitor import Monitor
 
-if os.getenv("BBOX_SERVER") == "TRUE":
+if options.server:
     from ._server import Server

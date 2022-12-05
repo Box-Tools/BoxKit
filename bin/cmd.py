@@ -2,7 +2,7 @@
 import os
 import sys
 import subprocess
-from setuptools.command.build_py import build_py
+from setuptools.command.install import install
 from setuptools.command.develop import develop
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -13,62 +13,155 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cbox import cbox_build, cbox_install
 from boost import boost_install
 
+# custom command
+class CustomCmd:
+    """Custom command."""
 
-def _create_envfile():
-    """
-    Create environment file
-    """
-    with open("boxkit/envfile", "w") as envfile:
+    user_options = [
+        ("with-cbox", None, "With C++ backend"),
+        ("with-pyarrow", None, "With pyarrow data backend"),
+        ("with-zarr", None, "With zarr data backend"),
+        ("with-dask", None, "With dask data/parallel backend"),
+        ("with-server", None, "With remote server utilitiy"),
+        ("enable-testing", None, "Enable testing mode"),
+    ]
 
-        for env_var in [
-            "CBOX_BACKEND",
-            "BBOX_PYARROW",
-            "BBOX_ZARR",
-            "BBOX_DASK",
-            "BBOX_SERVER",
-            "BBOX_TESTING",
+    def initialize_options(self):
+        self.with_cbox = 0
+        self.with_pyarrow = 0
+        self.with_zarr = 0
+        self.with_dask = 0
+        self.with_server = 0
+        self.enable_testing = 0
+
+    def finalize_options(self):
+        for option in [
+            "with_cbox",
+            "with_pyarrow",
+            "with_zarr",
+            "with_dask",
+            "with_server",
+            "enable_testing",
         ]:
-            if os.getenv(env_var) == "TRUE":
-                envfile.write(f'{env_var} = "TRUE"\n')
+            if getattr(self, option) not in [0, 1]:
+                raise ValueError(f"{option} is a flag")
 
-            else:
-                envfile.write(f'{env_var} = "FALSE"\n')
+    def run(self, user):
+
+        if user:
+            with_user = "--user"
+        else:
+            with_user = ""
+
+        if self.with_cbox:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/cbox.txt {with_user}",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.with_pyarrow:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/pyarrow.txt {with_user}",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.with_zarr:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/zarr.txt {with_user}",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.with_dask:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/dask.txt {with_user}",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.with_server:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/server.txt {with_user}",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        if self.enable_testing:
+            subprocess.run(
+                f"{sys.executable} -m pip install -r options/testing.txt {with_user}",
+                shell=True,
+                check=True,
+                executable="/bin/bash",
+            )
+
+        with open("boxkit/options.py", "w") as optfile:
+
+            optfile.write(f"cbox={self.with_cbox}\n")
+            optfile.write(f"pyarrow={self.with_pyarrow}\n")
+            optfile.write(f"zarr={self.with_zarr}\n")
+            optfile.write(f"dask={self.with_dask}\n")
+            optfile.write(f"server={self.with_server}\n")
+            optfile.write(f"testing={self.enable_testing}\n")
 
 
-# custom build command
 # replaces the default build command for setup.py
-class BuildCmd(build_py):
-    """Custom build_py command."""
+class InstallCmd(install, CustomCmd):
+    """Custom build command."""
+
+    user_options = install.user_options + CustomCmd.user_options
+
+    def initialize_options(self):
+        install.initialize_options(self)
+        CustomCmd.initialize_options(self)
+
+    def finalize_options(self):
+        install.finalize_options(self)
+        CustomCmd.finalize_options(self)
 
     def run(self):
 
-        build_py.run(self)
+        CustomCmd.run(self, self.user)
 
-        if os.getenv("CBOX_BACKEND") == "TRUE":
+        if self.with_cbox:
             cbox_build()
             cbox_install()
             boost_install()
 
-        _create_envfile()
+        #subprocess.run(
+        #    f"cp boxkit/options.py build/lib/boxkit/.",
+        #    shell=True,
+        #    check=True,
+        #    executable="/bin/bash",
+        #)
 
-        subprocess.run(
-            "cp boxkit/envfile build/lib/boxkit/.",
-            shell=True,
-            check=True,
-            executable="/bin/bash",
-        )
+        install.run(self)
 
 
-# custom develop command
 # replaces custom develop command for setup.py
-class DevelopCmd(develop):
+class DevelopCmd(develop, CustomCmd):
     """Custom develop command."""
+
+    user_options = develop.user_options + CustomCmd.user_options
+
+    def initialize_options(self):
+        develop.initialize_options(self)
+        CustomCmd.initialize_options(self)
+
+    def finalize_options(self):
+        develop.finalize_options(self)
+        CustomCmd.finalize_options(self)
 
     def run(self):
 
         develop.run(self)
+        CustomCmd.run(self, self.user)
 
-        if os.getenv("CBOX_BACKEND") == "TRUE":
+        if self.with_cbox:
             cbox_build()
-
-        _create_envfile()

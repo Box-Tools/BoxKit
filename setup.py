@@ -57,7 +57,9 @@ setup(
     package_dir={"": "./"},
     package_data={
         "": [
-            "envfile",
+            "options.py",
+            "cbox/lib/utilities.so",
+            "cbox/lib/create.so",
         ]
     },
     include_package_data=True,
@@ -69,6 +71,6 @@ setup(
     install_requires=DEPENDENCIES,
     cmdclass={
         "develop": bin_cmd.DevelopCmd,
-        "build_py": bin_cmd.BuildCmd,
+        "install": bin_cmd.InstallCmd,
     },
 )

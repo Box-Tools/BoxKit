@@ -40,6 +40,15 @@ boxkit.library.utilities.\_process module
    :show-inheritance:
    :private-members:
 
+boxkit.library.utilities.\_server module
+----------------------------------------
+
+.. automodule:: boxkit.library.utilities._server
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
 Module contents
 ---------------
 

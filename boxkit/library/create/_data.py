@@ -7,16 +7,18 @@ import shutil
 
 import numpy
 
-if os.getenv("BBOX_DASK") == "TRUE":
+from ... import options
+
+if options.dask:
     import dask.array as dsarray
 
-if os.getenv("BBOX_PYARROW") == "TRUE":
+if options.pyarrow:
     import pyarrow
 
-if os.getenv("BBOX_ZARR") == "TRUE":
+if options.zarr:
     import zarr
 
-if os.getenv("CBOX_BACKEND") == "TRUE":
+if options.cbox:
     from ...cbox.lib import boost as cbox
 
     _DataBase = cbox.create.Data
@@ -158,7 +160,7 @@ class Data(_DataBase):
         Create zarr objects
         """
 
-        if os.getenv("BBOX_ZARR") == "TRUE":
+        if options.zarr:
             emptykeys = [
                 key
                 for key, value in self.variables.items()
@@ -228,7 +230,7 @@ class Data(_DataBase):
         """
         Create dask array representation of data
         """
-        if os.getenv("BBOX_DASK") == "TRUE":
+        if options.dask:
             emptykeys = [
                 key
                 for key, value in self.variables.items()
@@ -258,7 +260,7 @@ class Data(_DataBase):
         """
         Create a pyarrow tensor objects
         """
-        if os.getenv("BBOX_PYARROW") == "TRUE":
+        if options.pyarrow:
             emptykeys = [
                 key
                 for key, value in self.variables.items()

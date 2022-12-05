@@ -6,11 +6,13 @@ import ctypes
 import joblib
 import tqdm
 
-if os.getenv("BBOX_DASK") == "TRUE":
+from ... import options
+
+if options.dask:
     import dask
     from dask import distributed
 
-if os.getenv("CBOX_BACKEND") == "TRUE":
+if options.cbox:
     from ...cbox.lib import extern as cbox
 
 
@@ -91,7 +93,7 @@ def execute_cbox(action, unitlist, *args):
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """
-    if os.getenv("CBOX_BACKEND") == "TRUE":
+    if options.cbox:
         cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
         cbox.utilities.execute_pyTask.restype = ctypes.py_object
 
@@ -114,28 +116,40 @@ def execute_dask(action, unitlist, *args):
 
     nthreads = 1 or None reverts to serial mode
     """
-    if os.getenv("BBOX_DASK") == "TRUE":
+    if options.dask:
         with distributed.LocalCluster(
-            threads_per_worker=action.nthreads, n_workers=None, processes=False
+            threads_per_worker=None, n_workers=None, processes=False
         ) as cluster, distributed.Client(cluster) as client:
 
+            # --------------METHOD 1---------------------------
             # if(action.monitor): unitlist = tqdm.tqdm(unitlist)
             # lazy_results = [dask.delayed(action.target)(action,unit,*args) for unit in unitlist]
             # futures = dask.persist(*lazy_results)
             # listresult = dask.compute(*futures)
 
-            biglist = client.scatter(unitlist)
-            futures = client.map(
-                action.target,
-                [action] * len(biglist),
-                biglist,
-                *[[arg] * len(biglist) for arg in args]
-            )
+            # --------------METHOD 2---------------------------
+            # biglist = client.scatter(unitlist)
+            # futures = client.map(
+            #     action.target,
+            #     [action] * len(biglist),
+            #     biglist,
+            #     *[[arg] * len(biglist) for arg in args]
+            # )
 
+            # if action.monitor:
+            #     distributed.progress(futures)
+
+            # listresult = client.gather(futures)
+
+            # --------------METHOD 3---------------------------
             if action.monitor:
-                distributed.progress(futures)
+                unitlist = tqdm.tqdm(unitlist)
 
-            listresult = client.gather(futures)
+            with joblib.parallel_backend(n_jobs=action.nthreads, backend="dask"):
+                listresult = joblib.Parallel(batch_size=action.batch)(
+                    joblib.delayed(action.target)(action, unit, *args)
+                    for unit in unitlist
+                )
 
     else:
         listresult = None

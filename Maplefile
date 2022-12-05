@@ -28,7 +28,7 @@ container = "boxkit"
 
 # Commands to execute inside the container and update the image
 publish = [
-    "pip3 install -r options/cbox.txt ./setup install --with-cbox --as-root",
+    "export CXX=g++ BOOST_LIB_DIR=usr/lib BOOST_INCLUDE_DIR=/usr/include && python3 setup.py develop && python3 setup.py build && python3 setup.py install --with-cbox",
     "./setup clean",
 ]
 
