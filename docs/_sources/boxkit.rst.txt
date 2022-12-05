@@ -24,6 +24,15 @@ boxkit.\_\_meta\_\_ module
    :show-inheritance:
    :private-members:
 
+boxkit.options module
+---------------------
+
+.. automodule:: boxkit.options
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
 Module contents
 ---------------
 
