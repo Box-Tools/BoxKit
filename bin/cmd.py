@@ -2,7 +2,7 @@
 import os
 import sys
 import subprocess
-from setuptools.command.build import build
+from setuptools.command.install import install
 from setuptools.command.develop import develop
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -107,22 +107,21 @@ class CustomCmd:
 
 
 # replaces the default build command for setup.py
-class BuildCmd(build, CustomCmd):
+class InstallCmd(install, CustomCmd):
     """Custom build command."""
 
-    user_options = build.user_options + CustomCmd.user_options
+    user_options = install.user_options + CustomCmd.user_options
 
     def initialize_options(self):
-        build.initialize_options(self)
+        install.initialize_options(self)
         CustomCmd.initialize_options(self)
 
     def finalize_options(self):
-        build.finalize_options(self)
+        install.finalize_options(self)
         CustomCmd.finalize_options(self)
 
     def run(self):
 
-        build.run(self)
         CustomCmd.run(self)
 
         if self.with_cbox:
@@ -137,6 +136,7 @@ class BuildCmd(build, CustomCmd):
             executable="/bin/bash",
         )
 
+        install.run(self)
 
 # replaces custom develop command for setup.py
 class DevelopCmd(develop, CustomCmd):

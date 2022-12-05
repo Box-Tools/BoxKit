@@ -69,6 +69,6 @@ setup(
     install_requires=DEPENDENCIES,
     cmdclass={
         "develop": bin_cmd.DevelopCmd,
-        "build": bin_cmd.BuildCmd,
+        "install": bin_cmd.InstallCmd,
     },
 )

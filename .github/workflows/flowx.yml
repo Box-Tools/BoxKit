@@ -16,9 +16,9 @@ jobs:
     name: "Application"
     runs-on: ubuntu-latest
     steps:
-    - name: Login to Docker Hub
-      run: |
-          echo "::add-mask::${{secrets.DOCKER_HUB_PSK}}"
+    #- name: Login to Docker Hub
+    #  run: |
+    #      echo "::add-mask::${{secrets.DOCKER_HUB_PSK}}"
     #- uses: docker/login-action@v1
     #  with:
     #    username: ${{secrets.DOCKER_HUB_USERNAME}}
@@ -27,7 +27,7 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build flowx --base=${{secrets.DOCKER_HUB_USERNAME}}/flowx:archive-spring-2022 --as-root
+          maple image build flowx --base=${{secrets.DOCKER_HUB_USERNAME}}/flowx:archive-spring-2022
     - uses: ./.github/actions/install
       with:
         image: flowx

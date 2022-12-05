@@ -103,13 +103,13 @@ def install(
         executable="/bin/bash",
     )
     subprocess.run(
-        f"python3 setup.py build {options}",
+        f"python3 setup.py build",
         shell=True,
         check=True,
         executable="/bin/bash",
     )
     subprocess.run(
-        f"python3 setup.py install --user",
+        f"python3 setup.py install --user {options}",
         shell=True,
         check=True,
         executable="/bin/bash",
