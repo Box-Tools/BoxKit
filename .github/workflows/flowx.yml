@@ -27,7 +27,7 @@ jobs:
     - uses: akashdhruv/Maple/.github/actions/maple@main
     - name: Build Container
       run: |
-          maple image build flowx --base=${{secrets.DOCKER_HUB_USERNAME}}/flowx:archive-spring-2022
+          maple image build flowx --base=${{secrets.DOCKER_HUB_USERNAME}}/flowx:archive-spring-2022 --as-root
     - uses: ./.github/actions/install
       with:
         image: flowx
