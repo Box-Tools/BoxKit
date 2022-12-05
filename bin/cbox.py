@@ -53,13 +53,13 @@ def cbox_build():
 # to package directory
 def cbox_install():
     """Install cbox"""
-    subprocess.run(
-        f"cp boxkit/cbox/lib/*.so build/lib/boxkit/cbox/lib/.",
-        shell=True,
-        check=True,
-        executable="/bin/bash",
-    )
-
+    #subprocess.run(
+    #    f"cp boxkit/cbox/lib/*.so build/lib/boxkit/cbox/lib/.",
+    #    shell=True,
+    #    check=True,
+    #    executable="/bin/bash",
+    #)
+    pass
 
 # Clean CBox environment
 def cbox_clean():
