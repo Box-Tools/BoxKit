@@ -19,6 +19,7 @@ build = [
     "apt-get install -y python-is-python3",
     "apt-get install -y libboost-all-dev",
     "pip3 install click",
+    "pip3 install --upgrade setuptools",
 ]
 
 # Name of the local container that will be used
