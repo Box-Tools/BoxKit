@@ -80,7 +80,7 @@ class BuildCmd(build_py):
         )
 
         subprocess.run(
-            "cp boxkit/envfile build/lib/boxkit/.",
+            "cp boxkit/options.py build/lib/boxkit/.",
             shell=True,
             check=True,
             executable="/bin/bash",
