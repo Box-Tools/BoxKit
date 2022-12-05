@@ -110,7 +110,7 @@ def install(
         executable="/bin/bash",
     )
     subprocess.run(
-        f"python3 setup.py build_py {options}",
+        f"python3 setup.py build {options}",
         shell=True,
         check=True,
         executable="/bin/bash",
