@@ -7,8 +7,6 @@ from distutils import sysconfig
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from misc import get_build_base
-
 # Dictionary of Makefile variables for CBox
 # These variables are defined in boxkit/cbox/source/Make.inc
 # and are assigned here to build and compile when setting up the
@@ -56,7 +54,7 @@ def cbox_build():
 def cbox_install():
     """Install cbox"""
     subprocess.run(
-        f"cp boxkit/cbox/lib/*.so {get_build_base()}/build/lib/boxkit/cbox/lib/.",
+        f"cp boxkit/cbox/lib/*.so build/lib/boxkit/cbox/lib/.",
         shell=True,
         check=True,
         executable="/bin/bash",

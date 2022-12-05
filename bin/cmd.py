@@ -12,7 +12,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # package directory
 from cbox import cbox_build, cbox_install
 from boost import boost_install
-from misc import get_build_base
 
 # custom command
 class CustomCmd:
@@ -135,12 +134,12 @@ class InstallCmd(install, CustomCmd):
             cbox_install()
             boost_install()
 
-        subprocess.run(
-            f"cp boxkit/options.py {get_build_base()}/build/lib/boxkit/.",
-            shell=True,
-            check=True,
-            executable="/bin/bash",
-        )
+        #subprocess.run(
+        #    f"cp boxkit/options.py build/lib/boxkit/.",
+        #    shell=True,
+        #    check=True,
+        #    executable="/bin/bash",
+        #)
 
         install.run(self)
 

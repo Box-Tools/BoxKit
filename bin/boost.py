@@ -7,8 +7,6 @@ from distutils.sysconfig import get_python_version
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from misc import get_build_base
-
 def boost_build():
     """Installation for Boost library"""
     subprocess.run(
@@ -43,14 +41,14 @@ def boost_install():
     """Install Boost library"""
     if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost"):
         subprocess.run(
-            f"mkdir -pv {get_build_base()}/build/lib/boxkit/depends/boost/lib",
+            f"mkdir -pv build/lib/boxkit/depends/boost/lib",
             shell=True,
             check=True,
             executable="/bin/bash",
         )
 
         subprocess.run(
-            f"cp boxkit/depends/boost/lib/lib* {get_build_base()}/build/lib/boxkit/depends/boost/lib/.",
+            f"cp boxkit/depends/boost/lib/lib* build/lib/boxkit/depends/boost/lib/.",
             shell=True,
             check=True,
             executable="/bin/bash",
