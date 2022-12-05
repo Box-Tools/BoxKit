@@ -7,7 +7,7 @@ from distutils import sysconfig
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from misc import build_base
+from misc import get_build_base
 
 # Dictionary of Makefile variables for CBox
 # These variables are defined in boxkit/cbox/source/Make.inc
