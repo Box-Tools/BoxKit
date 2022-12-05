@@ -69,6 +69,6 @@ setup(
     install_requires=DEPENDENCIES,
     cmdclass={
         "develop": bin_cmd.DevelopCmd,
-        "build_py": bin_cmd.BuildCmd,
+        "build": bin_cmd.BuildCmd,
     },
 )
