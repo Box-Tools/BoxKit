@@ -46,11 +46,16 @@ class CustomCmd:
             if getattr(self, option) not in [0, 1]:
                 raise ValueError(f"{option} is a flag")
 
-    def run(self):
+    def run(self, user):
+
+        if user:
+            with_user = "--user"
+        else:
+            with_user = ""
 
         if self.with_cbox:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/cbox.txt --user",
+                f"{sys.executable} -m pip install -r options/cbox.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -58,7 +63,7 @@ class CustomCmd:
 
         if self.with_pyarrow:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/pyarrow.txt --user",
+                f"{sys.executable} -m pip install -r options/pyarrow.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -66,7 +71,7 @@ class CustomCmd:
 
         if self.with_zarr:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/zarr.txt --user",
+                f"{sys.executable} -m pip install -r options/zarr.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -74,7 +79,7 @@ class CustomCmd:
 
         if self.with_dask:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/dask.txt --user",
+                f"{sys.executable} -m pip install -r options/dask.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -82,7 +87,7 @@ class CustomCmd:
 
         if self.with_server:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/server.txt --user",
+                f"{sys.executable} -m pip install -r options/server.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -90,7 +95,7 @@ class CustomCmd:
 
         if self.enable_testing:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/testing.txt --user",
+                f"{sys.executable} -m pip install -r options/testing.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -122,7 +127,7 @@ class InstallCmd(install, CustomCmd):
 
     def run(self):
 
-        CustomCmd.run(self)
+        CustomCmd.run(self, self.user)
 
         if self.with_cbox:
             cbox_build()
@@ -137,6 +142,7 @@ class InstallCmd(install, CustomCmd):
         )
 
         install.run(self)
+
 
 # replaces custom develop command for setup.py
 class DevelopCmd(develop, CustomCmd):
@@ -155,7 +161,7 @@ class DevelopCmd(develop, CustomCmd):
     def run(self):
 
         develop.run(self)
-        CustomCmd.run(self)
+        CustomCmd.run(self, self.user)
 
         if self.with_cbox:
             cbox_build()
