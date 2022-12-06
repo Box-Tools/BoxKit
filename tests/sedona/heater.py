@@ -82,6 +82,31 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
+    def test_measure_bubbles_blocks_2D(self):
+        """
+        Test bubble measurement
+        """
+        self.customSetUp("blocks")
+
+        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
+
+        dataframes = [boxkit.create.reshaped_dataset(dataset, "phi") for dataset in dataframes]
+
+        process = boxkit.measure.bubbles
+        process.tasks["skimeasure"]["region"].monitor = True
+        print(process.tasks["skimeasure"]["region"].backend)
+
+        bubbleframes = boxkit.measure.bubbles(dataframes, "phi")
+
+        numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
+
+        self.assertEqual(
+            numbubbles, [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
+        )
+
+        for dataset in dataframes:
+            dataset.purge("boxmem")
+
     def tearDown(self):
         """Clean up and timing"""
         timetest = time.time() - self.timestart

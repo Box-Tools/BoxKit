@@ -1,10 +1,12 @@
 """Module with implemenetation of api create methods"""
 
+import time
 import math
 
 from .. import library
 
 from ..library.utilities import Action
+
 
 def dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
     """
@@ -117,9 +119,13 @@ def reshaped_dataset(dataset, varlist, level=1, nthreads=1):
     for varkey in varlist:
         dataset_reshaped.addvar(varkey, dtype=dataset._data.dtype[varkey])
 
-        _reshape_block.nthreads=nthreads
-        _reshape_block.monitor=True
+        _reshape_block.nthreads = nthreads
+        _reshape_block.monitor = True
+        _reshape_time = time.time()
         _reshape_block(blocklist_level, dataset_reshaped, varkey)
+        _reshape_time = time.time() - _reshape_time
+
+        print("[boxkit.api.create] reshapping time: ", _reshape_time)
 
     return dataset_reshaped
 

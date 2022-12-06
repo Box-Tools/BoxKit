@@ -114,7 +114,7 @@ class Data(_DataBase):
 
         for key, value in self.variables.items():
             self.varlist.append(key)
-            if type(value) != None:
+            if value != None:
                 self.dtype[key] = type(value)
             else:
                 self.dtype[key] = float
