@@ -21,6 +21,18 @@ class Block:
                  'ymax' : high bound in y dir
                  'zmax' : high bound in z dir
                  'tag'  : block ID }
+
+    Auxillary attributes
+    --------------------
+    { 'nxb' : number of points in x dir
+      'nyb' : number of points in y dir
+      'nzb' : number of points in z dir
+      'xguard' : number of guard cells in x dir
+      'yguard' : number of guard cells in y dir
+      'zguard' : number of guard cells in z dir
+      'xcenter' : block xcenter
+      'ycenter' : block ycenter
+      'zcenter' : block zcenter }
     """
 
     type_ = "default"

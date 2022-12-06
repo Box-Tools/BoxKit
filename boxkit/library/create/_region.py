@@ -40,8 +40,8 @@ class Region:
         Private method for intialization
         """
 
-        self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
-        self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
+        self.xmin, self.ymin, self.zmin = [-1e10, -1e10, -1e10]
+        self.xmax, self.ymax, self.zmax = [1e10, 1e10, 1e10]
 
         for key, value in attributes.items():
             if hasattr(self, key):
@@ -105,6 +105,17 @@ class Region:
                 "[boxkit.library.create.Region] "
                 + "is empty and outside scope of Blocks\n"
             )
+
+        self.xmin, self.ymin, self.zmin = [
+            self.blocklist[0].xmin,
+            self.blocklist[0].ymin,
+            self.blocklist[0].zmin,
+        ]
+        self.xmax, self.ymax, self.zmax = [
+            self.blocklist[0].xmax,
+            self.blocklist[0].ymax,
+            self.blocklist[0].zmax,
+        ]
 
         for block in self.blocklist:
             self.xmin = min(self.xmin, block.xmin)
