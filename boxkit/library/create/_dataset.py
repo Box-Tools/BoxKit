@@ -145,6 +145,27 @@ class Dataset:
         for varkey in varlist:
             halo_exchange_block(self.blocklist, varkey)
 
+    def get_nblocks_xyz(self, level=1):
+        """
+        Get block layout in x-y-z directon at a given level
+        """
+        level_dx, level_dy, level_dz = [None] * 3
+
+        for block in self.blocklist:
+            if block.level == level:
+                level_dx, level_dy, level_dz = [block.dx, block.dy, block.dz]
+                break
+
+            raise ValueError(
+                f"[boxkit.library.dataset]: level={level} does not exist in dataset"
+            )
+
+        nblockx = int((self.xmax - self.xmin) / level_dx / self.nxb)
+        nblocky = int((self.ymax - self.ymin) / level_dy / self.nyb)
+        nblockz = int((self.zmax - self.zmin) / level_dz / self.nzb)
+
+        return nblockx, nblocky, nblockz
+
 
 @Action(unit=Block)
 def halo_exchange_block(self, unit, varkey):
