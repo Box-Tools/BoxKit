@@ -2,7 +2,7 @@
 
 from ..resources import stencils
 
-from ..library.utilities import Process
+from ..library import Process
 
 from . import create
 

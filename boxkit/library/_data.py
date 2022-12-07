@@ -7,7 +7,7 @@ import shutil
 
 import numpy
 
-from ... import options
+from .. import options
 
 if options.dask:
     import dask.array as dsarray
@@ -19,9 +19,9 @@ if options.zarr:
     import zarr
 
 if options.cbox:
-    from ...cbox.lib import boost as cbox
+    from ..cbox.lib import boost as cbox
 
-    _DataBase = cbox.create.Data
+    _DataBase = cbox.library.Data
 
 else:
     _DataBase = object

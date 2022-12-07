@@ -5,7 +5,7 @@ import math
 
 from .. import library
 
-from ..library.utilities import Action
+from ..library import Action
 
 
 def dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
@@ -26,16 +26,16 @@ def dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
     Dataset object
 
     """
-    data = library.create.Data(storage=storage, **data_attributes)
+    data = library.Data(storage=storage, **data_attributes)
 
     blocklist = [
-        library.create.Block(data, **attributes) for attributes in block_attributes
+        library.Block(data, **attributes) for attributes in block_attributes
     ]
 
-    return library.create.Dataset(blocklist, data)
+    return library.Dataset(blocklist, data)
 
 
-@Action(unit=library.create.Block, backend="loky")
+@Action(unit=library.Block, backend="loky")
 def _reshape_block(self, unit, dataset_reshaped, varkey):
     iloc, jloc, kloc = [
         math.ceil(
@@ -77,7 +77,7 @@ def reshaped_dataset(dataset, varlist, level=1, nthreads=1):
             f"[boxkit.library.dataset]: level={level} does not exist in input dataset"
         )
 
-    region_level = library.create.Region(blocklist_level)
+    region_level = library.Region(blocklist_level)
 
     nblockx = int((dataset.xmax - dataset.xmin) / blocklist_level[0].dx / dataset.nxb)
     nblocky = int((dataset.ymax - dataset.ymin) / blocklist_level[0].dy / dataset.nyb)
@@ -92,7 +92,7 @@ def reshaped_dataset(dataset, varlist, level=1, nthreads=1):
     if nblockz == 0:
         nblockz = 1
 
-    data_reshaped = library.create.Data(
+    data_reshaped = library.Data(
         nblocks=1,
         nxb=nblockx * dataset.nxb,
         nyb=nblocky * dataset.nyb,
@@ -100,7 +100,7 @@ def reshaped_dataset(dataset, varlist, level=1, nthreads=1):
     )
 
     blocklist_reshaped = [
-        library.create.Block(
+        library.Block(
             data_reshaped,
             dx=blocklist_level[0].dx,
             dy=blocklist_level[0].dy,
@@ -114,7 +114,7 @@ def reshaped_dataset(dataset, varlist, level=1, nthreads=1):
         )
     ]
 
-    dataset_reshaped = library.create.Dataset(blocklist_reshaped, data_reshaped)
+    dataset_reshaped = library.Dataset(blocklist_reshaped, data_reshaped)
 
     for varkey in varlist:
         dataset_reshaped.addvar(varkey, dtype=dataset._data.dtype[varkey])
@@ -167,7 +167,7 @@ def region(dataset, **attributes):
         if block.leaf:
             blocklist.append(block)
 
-    return library.create.Region(blocklist, **region_attributes)
+    return library.Region(blocklist, **region_attributes)
 
 
 def slice(dataset, **attributes):
@@ -208,4 +208,4 @@ def slice(dataset, **attributes):
         if block.leaf:
             blocklist.append(block)
 
-    return library.create.Slice(blocklist, **slice_attributes)
+    return library.Slice(blocklist, **slice_attributes)

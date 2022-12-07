@@ -58,8 +58,7 @@ setup(
     package_data={
         "": [
             "options.py",
-            "cbox/lib/utilities.so",
-            "cbox/lib/create.so",
+            "cbox/lib/library.so",
         ]
     },
     include_package_data=True,

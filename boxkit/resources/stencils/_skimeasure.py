@@ -3,8 +3,8 @@
 import itertools
 import skimage.measure as skimage_measure
 
-from ...library.utilities import Action
-from ...library.create import Region, Block
+from ...library import Action
+from ...library import Region, Block
 
 
 def skimeasure():

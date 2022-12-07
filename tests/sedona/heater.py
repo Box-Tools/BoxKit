@@ -5,7 +5,7 @@ import time
 import unittest
 import pymorton
 import boxkit.api as boxkit
-from boxkit.library.utilities import Monitor
+from boxkit.library import Monitor
 
 
 class TestHeater(unittest.TestCase):

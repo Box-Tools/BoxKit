@@ -6,14 +6,14 @@ import ctypes
 import joblib
 import tqdm
 
-from ... import options
+from .. import options
 
 if options.dask:
     import dask
     from dask import distributed
 
 if options.cbox:
-    from ...cbox.lib import extern as cbox
+    from ..cbox.lib import extern as cbox
 
 
 def exectask(action, unitlist, *args):
@@ -97,7 +97,7 @@ def execute_cbox(action, unitlist, *args):
         cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
         cbox.utilities.execute_pyTask.restype = ctypes.py_object
 
-        listresult = cbox.utilities.execute_pyTask(action, unitlist, args)
+        listresult = cbox.library.execute_pyTask(action, unitlist, args)
 
     else:
         listresult = None

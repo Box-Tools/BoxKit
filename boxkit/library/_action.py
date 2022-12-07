@@ -2,7 +2,7 @@
 
 import copy
 
-from .. import utilities
+from .. import library
 
 
 class Action:
@@ -76,19 +76,19 @@ class Action:
 
         self._check_unitlist(unitlist)
 
-        return utilities.exectask(self, unitlist, *args)
+        return library.exectask(self, unitlist, *args)
 
     def _check_unitlist(self, unitlist):
         """Check if unitlist matches the unit type"""
 
         if not isinstance(unitlist, list):
             raise ValueError(
-                "[boxkit.utilities.Action] Top argument must be a list of units"
+                "[boxkit.library.Action] Top argument must be a list of units"
             )
 
         for unit in unitlist:
             if not isinstance(unit, self.unit):
                 raise ValueError(
-                    "[boxkit.utilities.Action] Unit type not consistent."
+                    "[boxkit.library.Action] Unit type not consistent."
                     + f'Expected "{self.unit}" but got "{type(unit)}"'
                 )

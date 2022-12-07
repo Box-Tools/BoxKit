@@ -1,11 +1,11 @@
-#include <cbox/utilities.h>
+#include <cbox/library.h>
 
 namespace pytypes = cbox::pytypes;
 /*
  *
  *
  */
-namespace cbox::utilities {
+namespace cbox::library {
 Action::Action() : pytypes::CPyObject() {}
 
 Action::Action(PyObject *ptrAction) : pytypes::CPyObject(ptrAction) {
@@ -25,4 +25,4 @@ Action::~Action() {
   }
 }
 
-} // namespace cbox::utilities
+} // namespace cbox::library

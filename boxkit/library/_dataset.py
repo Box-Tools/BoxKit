@@ -1,9 +1,8 @@
 """Module with implemenetation of Dataset class"""
 
 from . import Block
-from ..utilities import Action
 from . import Data
-
+from . import Action
 
 class Dataset:
     """API class for storing Dataset info"""

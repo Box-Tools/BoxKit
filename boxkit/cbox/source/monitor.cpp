@@ -1,10 +1,10 @@
-#include <cbox/utilities.h>
+#include <cbox/library.h>
 #include <string.h>
 /*
  *
  *
  */
-namespace cbox::utilities {
+namespace cbox::library {
 Monitor::Monitor(const char *type) : max_progress(0), progress(0) {
   this->type = type;
 
@@ -54,4 +54,4 @@ void Monitor::update(std::string msg, int progress) {
 const char *Monitor::gettype() { return this->type; }
 /*
  */
-} // namespace cbox::utilities
+} // namespace cbox::library
