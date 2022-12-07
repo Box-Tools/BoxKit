@@ -1,5 +1,7 @@
 """Module with implemenetation of api reshape methods"""
 
+import math
+
 from .. import library
 
 from ..resources import stencils
@@ -70,18 +72,39 @@ def dataset(self, dataset, varlist, level=1, nthreads=1, **attributes):
 
     dataset_reshaped = library.Dataset(blocklist_reshaped, data_reshaped)
 
+    _time2 = Timer("Block sorting")
+
+    blocklist_sorted = [None] * len(blocklist_level)
+
+    for block in blocklist_level:
+        iloc, jloc, kloc = [
+            math.ceil(
+                (block.xmin - dataset_reshaped.xmin) / (block.xmax - block.xmin + 1e-13)
+            ),
+            math.ceil(
+                (block.ymin - dataset_reshaped.ymin) / (block.ymax - block.ymin + 1e-13)
+            ),
+            math.ceil(
+                (block.zmin - dataset_reshaped.zmin) / (block.zmax - block.zmin + 1e-13)
+            ),
+        ]
+
+        blocklist_sorted[iloc + nblockx * jloc + nblockx * nblocky * kloc] = block
+
+    del _time2
+
     for varkey in varlist:
 
-        _time2 = Timer("Addvar")
+        _time3 = Timer("Addvar")
         dataset_reshaped.addvar(varkey, dtype=dataset._data.dtype[varkey])
-        del _time2
+        del _time3
 
         self.tasks["reshape"]["block"].nthreads = nthreads
         self.tasks["reshape"]["block"].monitor = True
 
-        _time3 = Timer("Reshape block")
+        _time4 = Timer("Reshape block")
         self.tasks["reshape"]["block"](blocklist_level, dataset_reshaped, varkey)
-        del _time3
+        del _time4
 
     del _time0
     return dataset_reshaped
