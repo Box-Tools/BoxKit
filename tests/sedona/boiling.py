@@ -161,7 +161,7 @@ class TestBoiling(unittest.TestCase):
         ]
 
         for dataset in dataframes:
-            reshaped_dataset=boxkit.create.reshaped_dataset(dataset, "phi", nthreads=8)
+            reshaped_dataset=boxkit.reshape.dataset(dataset, "phi", nthreads=8)
             reshaped_dataset.purge("boxmem")    
 
         for dataset in dataframes:

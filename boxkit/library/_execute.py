@@ -1,6 +1,5 @@
 """Module with implementation of ExecuteTask utility"""
 
-import os
 import ctypes
 
 import joblib

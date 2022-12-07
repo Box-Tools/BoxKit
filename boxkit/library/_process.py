@@ -24,7 +24,7 @@ class Process:
         for module in stencils:
             self.tasks.update(module())
 
-    def __call__(self, *args):
+    def __call__(self, *args, **kwargs):
         """
         Call wrapper for process
 
@@ -36,7 +36,7 @@ class Process:
             retval = self
 
         else:
-            retval = self.target(self, *args)
+            retval = self.target(self, *args, **kwargs)
 
         return retval
 

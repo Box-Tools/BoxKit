@@ -90,7 +90,7 @@ class TestHeater(unittest.TestCase):
 
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        dataframes = [boxkit.create.reshaped_dataset(dataset, "phi") for dataset in dataframes]
+        dataframes = [boxkit.reshape.dataset(dataset, "phi") for dataset in dataframes]
 
         process = boxkit.measure.bubbles
         process.tasks["skimeasure"]["region"].monitor = True
