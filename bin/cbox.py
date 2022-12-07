@@ -48,19 +48,6 @@ def cbox_build():
         executable="/bin/bash",
     )
 
-
-# CBox install command which install cbox libraries
-# to package directory
-def cbox_install():
-    """Install cbox"""
-    #subprocess.run(
-    #    f"cp boxkit/cbox/lib/*.so build/lib/boxkit/cbox/lib/.",
-    #    shell=True,
-    #    check=True,
-    #    executable="/bin/bash",
-    #)
-    pass
-
 # Clean CBox environment
 def cbox_clean():
     """Clean cbox objects"""
