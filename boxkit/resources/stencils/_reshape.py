@@ -5,20 +5,20 @@ from ...library import Block, Action
 
 
 @Action(unit=Block)
-def map_dataset_block(unit, dataset_reshaped, varkey):
+def map_dataset_block(unit, reshaped_dataset, varkey):
     iloc, jloc, kloc = [
         math.ceil(
-            (unit.xmin - dataset_reshaped.xmin) / (unit.xmax - unit.xmin + 1e-13)
+            (unit.xmin - reshaped_dataset.xmin) / (unit.xmax - unit.xmin + 1e-13)
         ),
         math.ceil(
-            (unit.ymin - dataset_reshaped.ymin) / (unit.ymax - unit.ymin + 1e-13)
+            (unit.ymin - reshaped_dataset.ymin) / (unit.ymax - unit.ymin + 1e-13)
         ),
         math.ceil(
-            (unit.zmin - dataset_reshaped.zmin) / (unit.zmax - unit.zmin + 1e-13)
+            (unit.zmin - reshaped_dataset.zmin) / (unit.zmax - unit.zmin + 1e-13)
         ),
     ]
 
-    dataset_reshaped[varkey][
+    reshaped_dataset[varkey][
         0,
         unit.nxb * iloc : unit.nxb * (iloc + 1),
         unit.nyb * jloc : unit.nyb * (jloc + 1),

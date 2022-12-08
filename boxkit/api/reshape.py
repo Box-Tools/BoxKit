@@ -44,16 +44,16 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         value if value > 0 else 1 for value in [nblockx, nblocky, nblockz]
     ]
 
-    data_reshaped = library.Data(
+    reshaped_data = library.Data(
         nblocks=1,
         nxb=nblockx * dataset.nxb,
         nyb=nblocky * dataset.nyb,
         nzb=nblockz * dataset.nzb,
     )
 
-    blocklist_reshaped = [
+    reshaped_blocklist = [
         library.Block(
-            data_reshaped,
+            reshaped_data,
             dx=dx_level,
             dy=dy_level,
             dz=dz_level,
@@ -66,18 +66,18 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         )
     ]
 
-    dataset_reshaped = library.Dataset(blocklist_reshaped, data_reshaped)
+    reshaped_dataset = library.Dataset(reshaped_blocklist, reshaped_data)
 
     for varkey in varlist:
-        dataset_reshaped.addvar(varkey, dtype=dataset._data.dtype[varkey])
+        reshaped_dataset.addvar(varkey, dtype=dataset._data.dtype[varkey])
 
         stencils.map_dataset_block.nthreads = nthreads
         stencils.map_dataset_block.monitor = monitor
         stencils.map_dataset_block.backend = backend
 
         time_mapping = Timer("[boxkit.stencils.map_dataset_block]")
-        stencils.map_dataset_block(blocklist_level, dataset_reshaped, varkey)
+        stencils.map_dataset_block(blocklist_level, reshaped_dataset, varkey)
         del time_mapping
 
     del time_mergeblocks
-    return dataset_reshaped
+    return reshaped_dataset
