@@ -18,7 +18,10 @@ Stable releases of BoxKit are hosted on Python Package Index website (`<https://
 
 ::
 
-   pip install BoxKit
+   pip install BoxKit --user
+   
+   export CXX=$(CPP_COMPILER)
+   pip install BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
    
 Note that ``pip`` should point to ``python3+`` installation package ``pip3``. 
 
@@ -26,7 +29,8 @@ Upgrading and uninstallation is easily managed through this interface using,
 
 ::
 
-   pip install --upgrade BoxKit
+   pip install --upgrade BoxKit --user
+   pip install --upgrade BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
    pip uninstall BoxKit
 
 There maybe situations where users may want to install BoxKit in development mode $\\textemdash$ to design new features, debug, or customize classes/methods to their needs. This can be easily accomplished using the ``setup`` script located in the project root directory and executing,
