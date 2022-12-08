@@ -174,11 +174,12 @@ class TestBoiling(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        boxkit.measure.Average(dataframes, "vvel", monitor=True)
+        average_dataset = boxkit.measure.Average(dataframes, "vvel", monitor=True)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
 
+        average_dataset.purge("boxmem")
 
     def tearDown(self):
         """Clean up and timing"""

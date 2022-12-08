@@ -52,7 +52,8 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
         varlist = [varlist]
 
     reshaped_datasets = [
-        reshape.Mergeblocks(dataset, varlist, level=level, monitor=monitor) for dataset in datasets
+        reshape.Mergeblocks(dataset, varlist, level=level, monitor=monitor)
+        for dataset in datasets
     ]
 
     nxb, nyb, nzb, dx, dy, dz, xmin, ymin, zmin, xmax, ymax, zmax = [
@@ -98,8 +99,11 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
 
         time_atomic = Timer("[boxkit.measure.average atomic]")
         for dataset in reshaped_datasets:
-            average_dataset[varkey][:] = dataset[varkey][:]/len(reshaped_datasets)
+            average_dataset[varkey][:] = dataset[varkey][:] / len(reshaped_datasets)
         del time_atomic
 
+    for dataset in reshaped_datasets:
+        dataset.purge("boxmem")
+
     del time_average
-    return
+    return average_dataset
