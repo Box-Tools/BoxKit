@@ -1,4 +1,4 @@
-#include <cbox/utilities.h>
+#include <cbox/library.h>
 #include <omp.h>
 
 namespace pytypes = cbox::pytypes;
@@ -6,7 +6,7 @@ namespace pytypes = cbox::pytypes;
  *
  *
  */
-namespace cbox::utilities {
+namespace cbox::library {
 /*
  */
 pytypes::CPyList execute_pyTask(Action &action, pytypes::CPyList &unitList,
@@ -63,4 +63,4 @@ pytypes::CPyList execute_pyTask(Action &action, pytypes::CPyList &unitList,
   resultList.AddPyRef();
   return resultList;
 }
-} // namespace cbox::utilities
+} // namespace cbox::library

@@ -2,7 +2,7 @@
 
 import copy
 
-from .. import utilities
+from .. import library
 
 
 class Action:
@@ -28,7 +28,6 @@ class Action:
         nthreads=1,
         monitor=False,
         backend="serial",
-        actions=None,
         unit=None,
     ):
         """Initialize the  object and allocate the data.
@@ -40,7 +39,6 @@ class Action:
         nthreads : number of nthreads (only relevant for parallel operations)
         monitor  : flag (True or False) to show progress bar for task
         backend  : 'serial', 'loky', 'dask'
-        actions  : dictionary of actions
         unit     : unit type
         """
         super().__init__()
@@ -48,11 +46,10 @@ class Action:
         self.nthreads = nthreads
         self.monitor = monitor
         self.backend = backend
-        self.actions = actions
         self.unit = unit
         self.batch = "auto"
 
-    def __call__(self, *args):
+    def __call__(self, *args, **kwargs):
         """Call wrapper"""
 
         if self.target is None:
@@ -60,7 +57,7 @@ class Action:
             retval = self
 
         else:
-            retval = self.execute(*args)
+            retval = self.execute(*args, **kwargs)
 
         return retval
 
@@ -69,26 +66,26 @@ class Action:
 
         return copy.copy(self)
 
-    def execute(self, *args):
+    def execute(self, *args, **kwargs):
         """Custom call signature"""
 
         unitlist, args = Action.toparg(*args)
 
         self._check_unitlist(unitlist)
 
-        return utilities.exectask(self, unitlist, *args)
+        return library.exectask(self, unitlist, *args, **kwargs)
 
     def _check_unitlist(self, unitlist):
         """Check if unitlist matches the unit type"""
 
         if not isinstance(unitlist, list):
             raise ValueError(
-                "[boxkit.utilities.Action] Top argument must be a list of units"
+                "[boxkit.library.Action] Top argument must be a list of units"
             )
 
         for unit in unitlist:
             if not isinstance(unit, self.unit):
                 raise ValueError(
-                    "[boxkit.utilities.Action] Unit type not consistent."
+                    "[boxkit.library.Action] Unit type not consistent."
                     + f'Expected "{self.unit}" but got "{type(unit)}"'
                 )

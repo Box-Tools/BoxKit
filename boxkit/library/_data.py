@@ -7,7 +7,7 @@ import shutil
 
 import numpy
 
-from ... import options
+from .. import options
 
 if options.dask:
     import dask.array as dsarray
@@ -19,9 +19,9 @@ if options.zarr:
     import zarr
 
 if options.cbox:
-    from ...cbox.lib import boost as cbox
+    from ..cbox.lib import boost as cbox
 
-    _DataBase = cbox.create.Data
+    _DataBase = cbox.library.Data
 
 else:
     _DataBase = object
@@ -48,9 +48,7 @@ class Data(_DataBase):
                        'inputfile' : hdf5 inputfile default (None),
                        'remotefile': sftp remote file default (None),
                        'variables' : dictionary of variables default ({}),
-                       'storage'   : ('numpy', 'zarr', 'dask', 'pyarrow'),
-                       'dtype'     : float, int }
-
+                       'storage'   : ('numpy', 'zarr', 'dask', 'pyarrow')}
         """
         super().__init__()
         self._set_attributes(attributes)
@@ -61,7 +59,10 @@ class Data(_DataBase):
         Return a representation of the object
         """
         return (
-            "Data:\n" + f" - type   : {type(self)}\n" + f" - keys   : {self.varlist}\n"
+            "Data:\n"
+            + f" - type   : {type(self)}\n"
+            + f" - keys   : {self.varlist}\n"
+            + f" - dtype  : {list(self.dtype.values())}\n"
         )
 
     def __getitem__(self, varkey):
@@ -89,23 +90,39 @@ class Data(_DataBase):
         self.nxb, self.nyb, self.nzb = [1, 1, 1]
         self.xguard, self.yguard, self.zguard = [0, 0, 0]
         self.storage = "numpy-memmap"
-        self.dtype = float
+        self.dtype = {}
+        self.varlist = []
 
         for key, value in attributes.items():
             if hasattr(self, key):
+                if (type(getattr(self, key)) != type(value)) and (
+                    key not in ["inputfile", "remotefile"]
+                ):
+                    print(key, type(getattr(self, key)), type(value))
+                    raise ValueError(
+                        "[boxkit.library.create.Data] "
+                        + f'Type mismatch for attribute "{key}" in class Data'
+                    )
+
                 setattr(self, key, value)
+
             else:
                 raise ValueError(
                     "[boxkit.library.create.Data] "
                     + f'Attribute "{key}" not present in class Data'
                 )
 
+        for key, value in self.variables.items():
+            self.varlist.append(key)
+            if value != None:
+                self.dtype[key] = type(value)
+            else:
+                self.dtype[key] = float
+
     def _set_data(self):
         """
         Private method for setting new data
         """
-        self.varlist = list(self.variables.keys())
-
         if self.storage == "numpy":
             self._create_numpy_arrays()
         elif self.storage == "numpy-memmap":
@@ -152,7 +169,7 @@ class Data(_DataBase):
                 self.nxb + 2 * self.xguard,
             )
             self.variables[varkey] = numpy.memmap(
-                outputfile, dtype=self.dtype, shape=outputshape, mode="w+"
+                outputfile, dtype=self.dtype[varkey], shape=outputshape, mode="w+"
             )
 
     def _create_zarr_objects(self):
@@ -197,12 +214,12 @@ class Data(_DataBase):
                         self.nyb + 2 * self.yguard,
                         self.nxb + 2 * self.xguard,
                     ),
-                    dtype=self.dtype,
+                    dtype=self.dtype[varkey],
                 )
 
         else:
             raise NotImplementedError(
-                "[boxkit.library.data] enable zarr using --with-zarr during setup"
+                "[boxkit.library.data] enable zarr using --with-zarr during install"
             )
 
     def _create_numpy_arrays(self):
@@ -224,7 +241,9 @@ class Data(_DataBase):
                 self.nyb + 2 * self.yguard,
                 self.nxb + 2 * self.xguard,
             )
-            self.variables[varkey] = numpy.ndarray(dtype=self.dtype, shape=outputshape)
+            self.variables[varkey] = numpy.ndarray(
+                dtype=self.dtype[varkey], shape=outputshape
+            )
 
     def _create_dask_objects(self):
         """
@@ -253,7 +272,7 @@ class Data(_DataBase):
 
         else:
             raise NotImplementedError(
-                "[boxkit.library.data] enable dask using --with-dask during setup"
+                "[boxkit.library.data] enable dask using --with-dask during install"
             )
 
     def _create_pyarrow_objects(self):
@@ -280,7 +299,7 @@ class Data(_DataBase):
 
         else:
             raise NotImplementedError(
-                "[boxkit.library.data] enable pyarrow using --with-pyarrow during setup"
+                "[boxkit.library.data] enable pyarrow using --with-pyarrow during install"
             )
 
     def purge(self, purgeflag="all"):
@@ -299,11 +318,18 @@ class Data(_DataBase):
         if self.remotefile and purgeflag in ("all", "remotefile"):
             self.remotefile.close()
 
-    def addvar(self, varkey):
+    def addvar(self, varkey, dtype=float):
         """
         Add a variables to data
         """
+        if varkey in self.variables:
+            raise ValueError(
+                f"[boxkit.library.data] Variable {varkey!r} already present in dataset"
+            )
+
         self.variables[varkey] = None
+        self.dtype[varkey] = dtype if dtype in [float, int, bool] else float
+        self.varlist.append(varkey)
         self._set_data()
 
     def delvar(self, varkey):
@@ -311,6 +337,7 @@ class Data(_DataBase):
         Delete a variable
         """
         del self.variables[varkey]
+        del self.dtype[varkey]
 
         if self.boxmem:
             outputfile = os.path.join(self.boxmem, varkey)

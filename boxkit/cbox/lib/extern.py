@@ -8,7 +8,7 @@ import sys
 _libpath = os.path.dirname(os.path.abspath(__file__)) + os.path.sep
 
 # Load modules
-_modulelist = ["utilities"]
+_modulelist = ["library"]
 for _module in _modulelist:
     setattr(
         sys.modules[__name__],

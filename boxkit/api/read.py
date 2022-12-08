@@ -30,10 +30,8 @@ def dataset(filename, source="test-sample", storage="numpy", server=None):
 
     data_attributes, block_attributes = read.options[source](filename, server)
 
-    data = library.create.Data(storage=storage, **data_attributes)
+    data = library.Data(storage=storage, **data_attributes)
 
-    blocklist = [
-        library.create.Block(data, **attributes) for attributes in block_attributes
-    ]
+    blocklist = [library.Block(data, **attributes) for attributes in block_attributes]
 
-    return library.create.Dataset(blocklist, data)
+    return library.Dataset(blocklist, data)

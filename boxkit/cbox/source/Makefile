@@ -1,17 +1,19 @@
-# ----------------------
+# --------------------
 # Boxkit C++ Makefile
-# ----------------------
+# --------------------
 
-modules = create utilities
+.PHONY: all clean
 
-.PHONY: all clean $(modules)
+lib = library.so
+objects = data.o \
+	  block.o \
+	  region.o \
+	  action.o \
+          monitor.o \
+          execute.o
 
-all: command=all
-all: $(modules)
+all: $(lib)
 
-clean: command=clean
-clean: $(modules)
+$(lib): %.so: $(objects) %.o
 
-$(modules):
-	$(MAKE) --directory=$@ $(command)
-
+include Make.inc

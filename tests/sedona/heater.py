@@ -5,7 +5,7 @@ import time
 import unittest
 import pymorton
 import boxkit.api as boxkit
-from boxkit.library.utilities import Monitor
+from boxkit.library import Monitor
 
 
 class TestHeater(unittest.TestCase):
@@ -67,16 +67,37 @@ class TestHeater(unittest.TestCase):
 
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        process = boxkit.measure.bubbles
-        process.tasks["skimeasure"]["region"].monitor = True
-        print(process.tasks["skimeasure"]["region"].backend)
-
-        bubbleframes = boxkit.measure.bubbles(dataframes, "phi")
+        bubbleframes = []
+        for dataset in dataframes:
+            bubbleframes.append(boxkit.measure.regionprops(dataset, "phi"))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
         self.assertEqual(
             numbubbles, [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
+        )
+
+        for dataset in dataframes:
+            dataset.purge("boxmem")
+
+    def test_measure_bubbles_blocks_2D(self):
+        """
+        Test bubble measurement
+        """
+        self.customSetUp("blocks")
+
+        dataframes = [boxkit.read.dataset(filename) for filename in [self.filenames[0]]]
+        dataframes = [boxkit.reshape.mergeblocks(dataset, "phi") for dataset in dataframes]
+
+        bubbleframes = []
+        for dataset in dataframes:
+            bubbleframes.append(boxkit.measure.regionprops(dataset, "phi"))
+
+        numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
+
+        self.assertEqual(
+            numbubbles,
+            [488],  # [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
         )
 
         for dataset in dataframes:

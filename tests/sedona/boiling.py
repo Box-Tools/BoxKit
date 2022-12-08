@@ -5,7 +5,7 @@ import time
 import unittest
 import pymorton
 import boxkit.api as boxkit
-from boxkit.library.utilities import Monitor
+from boxkit.library import Monitor
 
 
 class TestBoiling(unittest.TestCase):
@@ -103,8 +103,7 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
         regionframes = [
-            boxkit.create.slice(dataset, zmin=0.01, zmax=0.01)
-            for dataset in dataframes
+            boxkit.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
         ]
 
         testMonitor = Monitor("test")
@@ -128,17 +127,15 @@ class TestBoiling(unittest.TestCase):
         ]
 
         _time_measure = time.time()
-        process = boxkit.measure.bubbles.clone()
 
-        process.tasks["skimeasure"]["region"].nthreads = 1
-        process.tasks["skimeasure"]["region"].backend = "serial"
-        process.tasks["skimeasure"]["region"].monitor = False
-        process.tasks["skimeasure"]["block"].nthreads = 8
-        process.tasks["skimeasure"]["block"].backend = "loky"
-        process.tasks["skimeasure"]["block"].monitor = True
-        process.tasks["skimeasure"]["block"].batch = "auto"
+        bubbleframes = []
 
-        bubbleframes = process(dataframes, "phi")
+        for dataset in dataframes:
+            bubbleframes.append(
+                boxkit.measure.regionprops(
+                    dataset, "phi", backend="loky", monitor=True, nthreads=8
+                )
+            )
 
         _time_measure = time.time() - _time_measure
         print("%s: %.3fs" % ("boxkit.measure.bubbles", _time_measure))
@@ -146,6 +143,24 @@ class TestBoiling(unittest.TestCase):
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
         self.assertEqual(numbubbles, [1341, 1380, 1262, 1255, 1351, 1362])
+
+        for dataset in dataframes:
+            dataset.purge("boxmem")
+
+    def test_reshape_3D(self):
+        """
+        Test reshape
+        """
+        dataframes = [
+            boxkit.read.dataset(filename, storage="numpy-memmap")
+            for filename in [self.filenames[0]]
+        ]
+
+        for dataset in dataframes:
+            reshaped_dataset = boxkit.reshape.mergeblocks(
+                dataset, "phi", nthreads=1, monitor=True
+            )
+            reshaped_dataset.purge("boxmem")
 
         for dataset in dataframes:
             dataset.purge("boxmem")

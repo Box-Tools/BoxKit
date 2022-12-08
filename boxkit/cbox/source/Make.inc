@@ -3,7 +3,7 @@
 # -------------------------------
 
 # Set base directory
-basedir = $(shell pwd)/../..
+basedir = $(shell pwd)/..
 
 # Set common flags
 flags = -shared -fPIC --std=c++11 #-fopenmp -Wl,--export-dynamic

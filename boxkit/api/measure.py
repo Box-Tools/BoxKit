@@ -1,37 +1,39 @@
 """ Module with implemenation of region methods"""
 
-from ..resources import stencils
+import itertools
+import numpy
 
-from ..library.utilities import Process
+from ..resources import stencils
 
 from . import create
 
 
-@Process(stencils=[stencils.skimeasure])
-def bubbles(self, dataframes, lsetkey, **attributes):
+def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     """
     Create a list of bubbles in a region
 
     Parameters
     ----------
-    dataframes : list of Dataset objects
-    lsetkey    : key containing level-set/binary data
+    dataset : Dataset object
+    lsetkey : key containing level-set/binary data
 
     Returns
     -------
-    listbubbles : list of bubble properties
+    listprops : list of bubble properties
     """
 
-    regionlist = []
-    bubblekey = "bubble"
+    labelkey = "bwlabel"
+    dataset.addvar(labelkey, dtype=int)
 
-    for dataset in dataframes:
-        dataset.addvar(bubblekey)
-        regionlist.append(create.region(dataset, **attributes))
+    region = create.region(dataset)
 
-    listbubbles = self.tasks["skimeasure"]["region"](regionlist, lsetkey, bubblekey)
+    stencils.regionprops_block.nthreads = nthreads
+    stencils.regionprops_block.backend = backend
+    stencils.regionprops_block.monitor = monitor
 
-    for dataset in dataframes:
-        dataset.delvar(bubblekey)
+    listprops = stencils.regionprops_block(region.blocklist, lsetkey, labelkey)
+    listprops = list(itertools.chain.from_iterable(listprops))
 
-    return listbubbles
+    dataset.delvar(labelkey)
+
+    return listprops

@@ -7,10 +7,10 @@ from setuptools.command.develop import develop
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# Import cbox_build, and cbox_install from cbox
+# Import cbox_build from cbox
 # module located in the 'bin' folder of the
 # package directory
-from cbox import cbox_build, cbox_install
+from cbox import cbox_build
 from boost import boost_install
 
 # custom command
@@ -131,15 +131,7 @@ class InstallCmd(install, CustomCmd):
 
         if self.with_cbox:
             cbox_build()
-            cbox_install()
             boost_install()
-
-        #subprocess.run(
-        #    f"cp boxkit/options.py build/lib/boxkit/.",
-        #    shell=True,
-        #    check=True,
-        #    executable="/bin/bash",
-        #)
 
         install.run(self)
 

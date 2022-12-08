@@ -21,13 +21,11 @@ def dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
     Dataset object
 
     """
-    data = library.create.Data(storage=storage, **data_attributes)
+    data = library.Data(storage=storage, **data_attributes)
 
-    blocklist = [
-        library.create.Block(data, **attributes) for attributes in block_attributes
-    ]
+    blocklist = [library.Block(data, **attributes) for attributes in block_attributes]
 
-    return library.create.Dataset(blocklist, data)
+    return library.Dataset(blocklist, data)
 
 
 def region(dataset, **attributes):
@@ -67,7 +65,7 @@ def region(dataset, **attributes):
         if block.leaf:
             blocklist.append(block)
 
-    return library.create.Region(blocklist, **region_attributes)
+    return library.Region(blocklist, **region_attributes)
 
 
 def slice(dataset, **attributes):
@@ -108,4 +106,4 @@ def slice(dataset, **attributes):
         if block.leaf:
             blocklist.append(block)
 
-    return library.create.Slice(blocklist, **slice_attributes)
+    return library.Slice(blocklist, **slice_attributes)

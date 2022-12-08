@@ -1,9 +1,9 @@
 """Module with implementaion of Monitor class"""
 
-from ...cbox.lib import boost as cbox
+from ..cbox.lib import boost as cbox
 
 
-class Monitor(cbox.utilities.Monitor):
+class Monitor(cbox.library.Monitor):
     """
     Dervied class of a Boost.Python.Class
     """

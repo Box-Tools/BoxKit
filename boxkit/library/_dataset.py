@@ -1,8 +1,8 @@
 """Module with implemenetation of Dataset class"""
 
 from . import Block
-from ..utilities import Action
-
+from . import Data
+from . import Action
 
 class Dataset:
     """API class for storing Dataset info"""
@@ -29,6 +29,7 @@ class Dataset:
             + f" - type         : {type(self)}\n"
             + f" - file         : {self._data.inputfile}\n"
             + f" - keys         : {self._data.varlist}\n"
+            + f" - dtype	: {list(self._data.dtype.values())}\n"
             + f" - bound(z-y-x) : [{self.zmin}, {self.zmax}] x "
             + f"[{self.ymin}, {self.ymax}] x "
             + f"[{self.xmin}, {self.xmax}]\n"
@@ -115,8 +116,8 @@ class Dataset:
     def varlist(self):
         return self._data.varlist
 
-    def addvar(self, varkey):
-        self._data.addvar(varkey)
+    def addvar(self, varkey, dtype=float):
+        self._data.addvar(varkey, dtype)
 
     def delvar(self, varkey):
         self._data.delvar(varkey)
@@ -147,7 +148,7 @@ class Dataset:
 
 
 @Action(unit=Block)
-def halo_exchange_block(self, unit, varkey):
+def halo_exchange_block(unit, varkey):
     """
     Halo exchange
     """
