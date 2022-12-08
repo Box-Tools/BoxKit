@@ -15,7 +15,7 @@ if options.cbox:
     from ..cbox.lib import extern as cbox
 
 
-def exectask(action, unitlist, *args, **kwargs):
+def Exectask(action, unitlist, *args, **kwargs):
     """
     Parameters
     ----------
