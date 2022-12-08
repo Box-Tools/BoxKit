@@ -8,8 +8,13 @@ from ..resources import stencils
 
 from ..library import Timer
 
+def FilterBlocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
+    """
+    Build a pseudo UG dataset from AMR dataset at a level
+    """
+    pass
 
-def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
+def MergeBlocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
     """
     Reshaped dataset at a level
     """

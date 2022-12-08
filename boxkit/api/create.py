@@ -3,7 +3,7 @@
 from .. import library
 
 
-def dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
+def Dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
     """
     Create a dataset from a file
 
@@ -28,7 +28,7 @@ def dataset(data_attributes={}, block_attributes=[{}], storage="numpy-memmap"):
     return library.Dataset(blocklist, data)
 
 
-def region(dataset, **attributes):
+def Region(dataset, **attributes):
     """
     Create a region from a dataset
 
@@ -68,7 +68,7 @@ def region(dataset, **attributes):
     return library.Region(blocklist, **region_attributes)
 
 
-def slice(dataset, **attributes):
+def Slice(dataset, **attributes):
     """
     Create a slice from a dataset
 

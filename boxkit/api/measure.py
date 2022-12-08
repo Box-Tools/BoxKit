@@ -11,7 +11,7 @@ from . import create
 from . import reshape
 
 
-def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
+def Regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     """
     Create a list of bubbles in a region
 
@@ -28,7 +28,7 @@ def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     labelkey = "bwlabel"
     dataset.addvar(labelkey, dtype=int)
 
-    region = create.region(dataset)
+    region = create.Region(dataset)
 
     stencils.regionprops_block.nthreads = nthreads
     stencils.regionprops_block.backend = backend
@@ -42,7 +42,7 @@ def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     return listprops
 
 
-def average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=False):
+def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=False):
     """
     Compute average across a dataset list
     """
@@ -52,7 +52,7 @@ def average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
         varlist = [varlist]
 
     reshaped_datasets = [
-        reshape.mergeblocks(dataset, varlist, level=level, monitor=monitor) for dataset in datasets
+        reshape.MergeBlocks(dataset, varlist, level=level, monitor=monitor) for dataset in datasets
     ]
 
     nxb, nyb, nzb, dx, dy, dz, xmin, ymin, zmin, xmax, ymax, zmax = [

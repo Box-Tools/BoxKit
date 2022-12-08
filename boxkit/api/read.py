@@ -5,7 +5,7 @@ from .. import library
 from ..resources import read
 
 
-def dataset(filename, source="test-sample", storage="numpy", server=None):
+def Dataset(filename, source="test-sample", storage="numpy", server=None):
     """
     Create a dataset from a file
 
