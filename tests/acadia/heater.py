@@ -4,8 +4,7 @@ import os
 import time
 import unittest
 import pymorton
-import boxkit.api as boxkit
-
+import boxkit
 # from boxkit.library import Monitor
 
 
@@ -40,7 +39,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are morton order
         """
         self.customSetUp("oneblk")
-        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
 
         # testMonitor = Monitor("test")
         # testMonitor.setlimit(len(dataframes))
@@ -66,11 +65,11 @@ class TestHeater(unittest.TestCase):
         """
         self.customSetUp("oneblk")
 
-        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
 
         bubbleframes = []
         for dataset in dataframes:
-            bubbleframes.append(boxkit.measure.regionprops(dataset, "phi"))
+            bubbleframes.append(boxkit.measure.Regionprops(dataset, "phi"))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 

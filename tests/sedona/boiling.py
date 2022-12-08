@@ -42,7 +42,7 @@ class TestBoiling(unittest.TestCase):
         dataframes : list of Dataset objects
 
         """
-        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -63,7 +63,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -101,9 +101,9 @@ class TestBoiling(unittest.TestCase):
         """
         Test slice
         """
-        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
         regionframes = [
-            boxkit.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
+            boxkit.create.Slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
         ]
 
         testMonitor = Monitor("test")
@@ -122,7 +122,7 @@ class TestBoiling(unittest.TestCase):
         Test measure bubbles
         """
         dataframes = [
-            boxkit.read.dataset(filename, storage="numpy-memmap")
+            boxkit.read.Dataset(filename, storage="numpy-memmap")
             for filename in self.filenames
         ]
 
@@ -132,7 +132,7 @@ class TestBoiling(unittest.TestCase):
 
         for dataset in dataframes:
             bubbleframes.append(
-                boxkit.measure.regionprops(
+                boxkit.measure.Regionprops(
                     dataset, "phi", backend="loky", monitor=True, nthreads=8
                 )
             )
@@ -152,18 +152,34 @@ class TestBoiling(unittest.TestCase):
         Test reshape
         """
         dataframes = [
-            boxkit.read.dataset(filename, storage="numpy-memmap")
+            boxkit.read.Dataset(filename, storage="numpy-memmap")
             for filename in [self.filenames[0]]
         ]
 
         for dataset in dataframes:
-            reshaped_dataset = boxkit.reshape.mergeblocks(
-                dataset, "phi", nthreads=1, monitor=True
+            reshaped_dataset = boxkit.reshape.Mergeblocks(
+                dataset, "phi", nthreads=8, monitor=True, backend="loky"
             )
             reshaped_dataset.purge("boxmem")
 
         for dataset in dataframes:
             dataset.purge("boxmem")
+
+    def test_average_3D(self):
+        """
+        Test reshape
+        """
+        dataframes = [
+            boxkit.read.Dataset(filename, storage="numpy-memmap")
+            for filename in self.filenames
+        ]
+
+        average_dataset = boxkit.measure.Average(dataframes, "vvel", monitor=True)
+
+        for dataset in dataframes:
+            dataset.purge("boxmem")
+
+        average_dataset.purge("boxmem")
 
     def tearDown(self):
         """Clean up and timing"""
