@@ -92,6 +92,7 @@ class Data(_DataBase):
         self.storage = "numpy-memmap"
         self.dtype = {}
         self.varlist = []
+        self.source = ""
 
         for key, value in attributes.items():
             if hasattr(self, key):

@@ -1,6 +1,6 @@
 from ... import options
 
-from ._reshape import map_dataset_block
+from . import reshape
 
 if options.testing:
-    from ._measure import regionprops_block
+    from . import measure

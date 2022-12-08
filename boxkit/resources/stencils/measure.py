@@ -7,7 +7,7 @@ from ...library import Block
 
 
 @Action(unit=Block)
-def regionprops_block(unit, lsetkey, labelkey):
+def skimage_props_blk(unit, lsetkey, labelkey):
     """
     Measure properties for a block
 

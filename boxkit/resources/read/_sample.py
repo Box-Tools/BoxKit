@@ -47,6 +47,7 @@ def read_test_sample(filename, server):
         "nzb": int(nzb),
         "inputfile": inputfile,
         "variables": variables,
+        "source": "test-sample",
     }
 
     # Create block attributes
