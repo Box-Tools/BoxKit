@@ -1,9 +1,6 @@
-"""Initialization of measure unit"""
-
 from ... import options
 
-from ._jacobi import jacobi
-from ._reshape import reshape
+from ._reshape import map_dataset_block
 
 if options.testing:
-    from ._skimeasure import skimeasure
+    from ._measure import regionprops_block

@@ -32,8 +32,6 @@ def dataset(filename, source="test-sample", storage="numpy", server=None):
 
     data = library.Data(storage=storage, **data_attributes)
 
-    blocklist = [
-        library.Block(data, **attributes) for attributes in block_attributes
-    ]
+    blocklist = [library.Block(data, **attributes) for attributes in block_attributes]
 
     return library.Dataset(blocklist, data)

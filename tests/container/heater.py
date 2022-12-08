@@ -89,10 +89,9 @@ class TestHeater(unittest.TestCase):
 
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        process = boxkit.measure.bubbles
-        process.tasks["skimeasure"]["region"].monitor = True
-
-        bubbleframes = boxkit.measure.bubbles(dataframes, "phi")
+        bubbleframes = []
+        for dataset in dataframes:
+            bubbleframes.append(boxkit.measure.regionprops(dataset, "phi"))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 

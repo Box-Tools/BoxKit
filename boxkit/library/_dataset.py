@@ -148,7 +148,7 @@ class Dataset:
 
 
 @Action(unit=Block)
-def halo_exchange_block(self, unit, varkey):
+def halo_exchange_block(unit, varkey):
     """
     Halo exchange
     """

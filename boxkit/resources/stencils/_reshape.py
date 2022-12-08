@@ -4,25 +4,8 @@ import math
 from ...library import Block, Action
 
 
-def reshape():
-    """
-    Public method to create a dictionary of actions
-    """
-
-    tasks = {
-        "reshape": {
-            "block": reshape_block.copy(),
-        }
-    }
-
-    for action in tasks["reshape"].values():
-        action.tasks = tasks
-
-    return tasks
-
-
-@Action(unit=Block, backend="loky")
-def reshape_block(self, unit, dataset_reshaped, varkey):
+@Action(unit=Block)
+def map_dataset_block(unit, dataset_reshaped, varkey):
     iloc, jloc, kloc = [
         math.ceil(
             (unit.xmin - dataset_reshaped.xmin) / (unit.xmax - unit.xmin + 1e-13)

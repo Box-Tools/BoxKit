@@ -117,7 +117,7 @@ class Data(_DataBase):
             if value != None:
                 self.dtype[key] = type(value)
             else:
-                self.dtype[key] = numpy.float
+                self.dtype[key] = float
 
     def _set_data(self):
         """
@@ -318,7 +318,7 @@ class Data(_DataBase):
         if self.remotefile and purgeflag in ("all", "remotefile"):
             self.remotefile.close()
 
-    def addvar(self, varkey, dtype=numpy.float):
+    def addvar(self, varkey, dtype=float):
         """
         Add a variables to data
         """
@@ -328,7 +328,7 @@ class Data(_DataBase):
             )
 
         self.variables[varkey] = None
-        self.dtype[varkey] = dtype if dtype in [numpy.float, numpy.int, numpy.bool] else numpy.float
+        self.dtype[varkey] = dtype if dtype in [float, int, bool] else float
         self.varlist.append(varkey)
         self._set_data()
 

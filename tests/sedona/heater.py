@@ -67,11 +67,9 @@ class TestHeater(unittest.TestCase):
 
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        process = boxkit.measure.bubbles
-        process.tasks["skimeasure"]["region"].monitor = True
-        print(process.tasks["skimeasure"]["region"].backend)
-
-        bubbleframes = boxkit.measure.bubbles(dataframes, "phi")
+        bubbleframes = []
+        for dataset in dataframes:
+            bubbleframes.append(boxkit.measure.regionprops(dataset, "phi"))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
@@ -88,20 +86,18 @@ class TestHeater(unittest.TestCase):
         """
         self.customSetUp("blocks")
 
-        dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read.dataset(filename) for filename in [self.filenames[0]]]
+        dataframes = [boxkit.reshape.mergeblocks(dataset, "phi") for dataset in dataframes]
 
-        dataframes = [boxkit.reshape.dataset(dataset, "phi") for dataset in dataframes]
-
-        process = boxkit.measure.bubbles
-        process.tasks["skimeasure"]["region"].monitor = True
-        print(process.tasks["skimeasure"]["region"].backend)
-
-        bubbleframes = boxkit.measure.bubbles(dataframes, "phi")
+        bubbleframes = []
+        for dataset in dataframes:
+            bubbleframes.append(boxkit.measure.regionprops(dataset, "phi"))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
         self.assertEqual(
-            numbubbles, [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
+            numbubbles,
+            [488],  # [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
         )
 
         for dataset in dataframes:

@@ -6,47 +6,43 @@ from .. import library
 
 from ..resources import stencils
 
-from ..library import Process, Timer
+from ..library import Timer
 
 
-@Process(stencils=[stencils.reshape])
-def dataset(self, dataset, varlist, level=1, nthreads=1, **attributes):
+def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
     """
     Reshaped dataset at a level
     """
-    _time0 = Timer("Reshape dataset")
+    time_mergeblocks = Timer("[boxkit.reshape.mergeblocks]")
+
     if isinstance(varlist, str):
         varlist = [varlist]
 
-    level_dx, level_dy, level_dz = [None] * 3
-
     blocklist_level = []
-
-    _time1 = Timer("Block level")
     for block in dataset.blocklist:
         if block.level == level:
             blocklist_level.append(block)
-    del _time1
 
     if not blocklist_level:
         raise ValueError(
-            f"[boxkit.library.dataset]: level={level} does not exist in input dataset"
+            f"[boxkit.reshape.mergeblocks]: level={level} does not exist in input dataset"
         )
+
+    dx_level, dy_level, dz_level = [
+        blocklist_level[0].dx,
+        blocklist_level[0].dy,
+        blocklist_level[0].dz,
+    ]
 
     region_level = library.Region(blocklist_level)
 
-    nblockx = int((dataset.xmax - dataset.xmin) / blocklist_level[0].dx / dataset.nxb)
-    nblocky = int((dataset.ymax - dataset.ymin) / blocklist_level[0].dy / dataset.nyb)
-    nblockz = int((dataset.zmax - dataset.zmin) / blocklist_level[0].dz / dataset.nzb)
+    nblockx = int((dataset.xmax - dataset.xmin) / dx_level / dataset.nxb)
+    nblocky = int((dataset.ymax - dataset.ymin) / dy_level / dataset.nyb)
+    nblockz = int((dataset.zmax - dataset.zmin) / dz_level / dataset.nzb)
 
-    if nblockx == 0:
-        nblockx = 1
-
-    if nblocky == 0:
-        nblocky = 1
-
-    if nblockz == 0:
-        nblockz = 1
+    nblockx, nblocky, nblockz = [
+        value if value > 0 else 1 for value in [nblockx, nblocky, nblockz]
+    ]
 
     data_reshaped = library.Data(
         nblocks=1,
@@ -58,9 +54,9 @@ def dataset(self, dataset, varlist, level=1, nthreads=1, **attributes):
     blocklist_reshaped = [
         library.Block(
             data_reshaped,
-            dx=blocklist_level[0].dx,
-            dy=blocklist_level[0].dy,
-            dz=blocklist_level[0].dz,
+            dx=dx_level,
+            dy=dy_level,
+            dz=dz_level,
             xmin=region_level.xmin,
             ymin=region_level.ymin,
             zmin=region_level.zmin,
@@ -72,39 +68,16 @@ def dataset(self, dataset, varlist, level=1, nthreads=1, **attributes):
 
     dataset_reshaped = library.Dataset(blocklist_reshaped, data_reshaped)
 
-    _time2 = Timer("Block sorting")
-
-    blocklist_sorted = [None] * len(blocklist_level)
-
-    for block in blocklist_level:
-        iloc, jloc, kloc = [
-            math.ceil(
-                (block.xmin - dataset_reshaped.xmin) / (block.xmax - block.xmin + 1e-13)
-            ),
-            math.ceil(
-                (block.ymin - dataset_reshaped.ymin) / (block.ymax - block.ymin + 1e-13)
-            ),
-            math.ceil(
-                (block.zmin - dataset_reshaped.zmin) / (block.zmax - block.zmin + 1e-13)
-            ),
-        ]
-
-        blocklist_sorted[iloc + nblockx * jloc + nblockx * nblocky * kloc] = block
-
-    del _time2
-
     for varkey in varlist:
-
-        _time3 = Timer("Addvar")
         dataset_reshaped.addvar(varkey, dtype=dataset._data.dtype[varkey])
-        del _time3
 
-        self.tasks["reshape"]["block"].nthreads = nthreads
-        self.tasks["reshape"]["block"].monitor = True
+        stencils.map_dataset_block.nthreads = nthreads
+        stencils.map_dataset_block.monitor = monitor
+        stencils.map_dataset_block.backend = backend
 
-        _time4 = Timer("Reshape block")
-        self.tasks["reshape"]["block"](blocklist_level, dataset_reshaped, varkey)
-        del _time4
+        time_mapping = Timer("[boxkit.stencils.map_dataset_block]")
+        stencils.map_dataset_block(blocklist_level, dataset_reshaped, varkey)
+        del time_mapping
 
-    del _time0
+    del time_mergeblocks
     return dataset_reshaped

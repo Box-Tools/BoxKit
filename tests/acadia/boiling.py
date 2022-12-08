@@ -5,7 +5,8 @@ import time
 import unittest
 import pymorton
 import boxkit.api as boxkit
-#from boxkit.library import Monitor
+
+# from boxkit.library import Monitor
 
 
 class TestBoiling(unittest.TestCase):
@@ -44,9 +45,9 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        #testMonitor = Monitor("test")
-        #testMonitor.setlimit(len(dataframes))
-        #monitorMsg = "run:" + self.id() + ": "
+        # testMonitor = Monitor("test")
+        # testMonitor.setlimit(len(dataframes))
+        # monitorMsg = "run:" + self.id() + ": "
 
         for dataset in dataframes:
             for block in dataset.blocklist:
@@ -54,7 +55,7 @@ class TestBoiling(unittest.TestCase):
                     block._data is dataset.blocklist[0]._data,
                     "Data pointers are inconsistent",
                 )
-            #testMonitor.update(monitorMsg)
+            # testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -65,9 +66,9 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        #testMonitor = Monitor("test")
-        #testMonitor.setlimit(len(dataframes))
-        #monitorMsg = "run:" + self.id() + ": "
+        # testMonitor = Monitor("test")
+        # testMonitor.setlimit(len(dataframes))
+        # monitorMsg = "run:" + self.id() + ": "
 
         for dataset in dataframes:
             for block in dataset.blocklist:
@@ -92,7 +93,7 @@ class TestBoiling(unittest.TestCase):
                     list(block.neighdict.values()),
                     "Neigbhors are inconsitent with morton order",
                 )
-            #testMonitor.update(monitorMsg)
+            # testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -103,17 +104,16 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
         regionframes = [
-            boxkit.create.slice(dataset, zmin=0.01, zmax=0.01)
-            for dataset in dataframes
+            boxkit.create.slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
         ]
 
-        #testMonitor = Monitor("test")
-        #testMonitor.setlimit(len(regionframes))
+        # testMonitor = Monitor("test")
+        # testMonitor.setlimit(len(regionframes))
         monitorMsg = "run:" + self.id() + ": "
 
         for region in regionframes:
             self.assertEqual(int(len(region.blocklist) ** (1 / 2)), 16)
-            #testMonitor.update(monitorMsg)
+            # testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -128,17 +128,15 @@ class TestBoiling(unittest.TestCase):
         ]
 
         _time_measure = time.time()
-        process = boxkit.measure.bubbles.clone()
 
-        process.tasks["skimeasure"]["region"].nthreads = 1
-        process.tasks["skimeasure"]["region"].backend = "serial"
-        process.tasks["skimeasure"]["region"].monitor = False
-        process.tasks["skimeasure"]["block"].nthreads = 8
-        process.tasks["skimeasure"]["block"].backend = "loky"
-        process.tasks["skimeasure"]["block"].monitor = True
-        process.tasks["skimeasure"]["block"].batch = "auto"
+        bubbleframes = []
 
-        bubbleframes = process(dataframes, "phi")
+        for dataset in dataframes:
+            bubbleframes.append(
+                boxkit.measure.regionprops(
+                    dataset, "phi", backend="loky", monitor=True, nthreads=8
+                )
+            )
 
         _time_measure = time.time() - _time_measure
         print("%s: %.3fs" % ("boxkit.measure.bubbles", _time_measure))

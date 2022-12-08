@@ -5,7 +5,8 @@ import time
 import unittest
 import pymorton
 import boxkit.api as boxkit
-#from boxkit.library import Monitor
+
+# from boxkit.library import Monitor
 
 
 class TestHeater(unittest.TestCase):
@@ -41,8 +42,8 @@ class TestHeater(unittest.TestCase):
         self.customSetUp("oneblk")
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        #testMonitor = Monitor("test")
-        #testMonitor.setlimit(len(dataframes))
+        # testMonitor = Monitor("test")
+        # testMonitor.setlimit(len(dataframes))
         monitorMsg = "run:" + self.id() + ": "
 
         for dataset in dataframes:
@@ -54,7 +55,7 @@ class TestHeater(unittest.TestCase):
                     "Single block data structure has no neighbors",
                 )
 
-            #testMonitor.update(monitorMsg)
+            # testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -67,17 +68,13 @@ class TestHeater(unittest.TestCase):
 
         dataframes = [boxkit.read.dataset(filename) for filename in self.filenames]
 
-        process = boxkit.measure.bubbles
-        process.tasks["skimeasure"]["region"].monitor = True
-        print(process.tasks["skimeasure"]["region"].backend)
-
-        bubbleframes = boxkit.measure.bubbles(dataframes, "phi")
+        bubbleframes = []
+        for dataset in dataframes:
+            bubbleframes.append(boxkit.measure.regionprops(dataset, "phi"))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
-        self.assertEqual(
-            numbubbles, [257]
-        )
+        self.assertEqual(numbubbles, [257])
 
         for dataset in dataframes:
             dataset.purge("boxmem")
