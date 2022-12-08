@@ -73,7 +73,7 @@ class Action:
 
         self._check_unitlist(unitlist)
 
-        return library.exectask(self, unitlist, *args, **kwargs)
+        return library.Exectask(self, unitlist, *args, **kwargs)
 
     def _check_unitlist(self, unitlist):
         """Check if unitlist matches the unit type"""
