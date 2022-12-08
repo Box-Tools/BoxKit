@@ -59,6 +59,7 @@ def read_flash(filename, server):
         "inputfile": inputfile,
         "remotefile": remotefile,
         "variables": variables,
+        "source": "flash",
     }
 
     # Create block attributes

@@ -8,10 +8,16 @@ from ..resources import stencils
 
 from ..library import Timer
 
-def Filterblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
+def Filterblocks(dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"):
     """
     Build a pseudo UG dataset from AMR dataset at a level
     """
+    if not varlist:
+        varlist = dataset.varlist
+
+    elif isinstance(varlist, str):
+        varlist = [varlist]
+
     pass
 
 def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
@@ -49,16 +55,16 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         value if value > 0 else 1 for value in [nblockx, nblocky, nblockz]
     ]
 
-    reshaped_data = library.Data(
+    merged_data = library.Data(
         nblocks=1,
         nxb=nblockx * dataset.nxb,
         nyb=nblocky * dataset.nyb,
         nzb=nblockz * dataset.nzb,
     )
 
-    reshaped_blocklist = [
+    merged_blocklist = [
         library.Block(
-            reshaped_data,
+            merged_data,
             dx=dx_level,
             dy=dy_level,
             dz=dz_level,
@@ -71,18 +77,18 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         )
     ]
 
-    reshaped_dataset = library.Dataset(reshaped_blocklist, reshaped_data)
+    merged_dataset = library.Dataset(merged_blocklist, merged_data)
 
     for varkey in varlist:
-        reshaped_dataset.addvar(varkey, dtype=dataset._data.dtype[varkey])
+        merged_dataset.addvar(varkey, dtype=dataset._data.dtype[varkey])
 
-        stencils.map_dataset_block.nthreads = nthreads
-        stencils.map_dataset_block.monitor = monitor
-        stencils.map_dataset_block.backend = backend
+        stencils.reshape.map_blk_to_merged_dset.nthreads = nthreads
+        stencils.reshape.map_blk_to_merged_dset.monitor = monitor
+        stencils.reshape.map_blk_to_merged_dset.backend = backend
 
         time_mapping = Timer("[boxkit.stencils.map_dataset_block]")
-        stencils.map_dataset_block(blocklist_level, reshaped_dataset, varkey)
+        stencils.reshape.map_blk_to_merged_dset(blocklist_level, merged_dataset, varkey)
         del time_mapping
 
     del time_mergeblocks
-    return reshaped_dataset
+    return merged_dataset

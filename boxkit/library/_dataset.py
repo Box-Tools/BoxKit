@@ -4,6 +4,7 @@ from . import Block
 from . import Data
 from . import Action
 
+
 class Dataset:
     """API class for storing Dataset info"""
 
@@ -115,6 +116,10 @@ class Dataset:
     @property
     def varlist(self):
         return self._data.varlist
+
+    @property
+    def source(self):
+        return self._data.source
 
     def addvar(self, varkey, dtype=float):
         self._data.addvar(varkey, dtype)

@@ -30,11 +30,11 @@ def Regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
 
     region = create.Region(dataset)
 
-    stencils.regionprops_block.nthreads = nthreads
-    stencils.regionprops_block.backend = backend
-    stencils.regionprops_block.monitor = monitor
+    stencils.measure.skimage_props_blk.nthreads = nthreads
+    stencils.measure.skimage_props_blk.backend = backend
+    stencils.measure.skimage_props_blk.monitor = monitor
 
-    listprops = stencils.regionprops_block(region.blocklist, lsetkey, labelkey)
+    listprops = stencils.measure.skimage_props_blk(region.blocklist, lsetkey, labelkey)
     listprops = list(itertools.chain.from_iterable(listprops))
 
     dataset.delvar(labelkey)
