@@ -98,8 +98,12 @@ class TestHeater(unittest.TestCase):
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
+        # self.assertEqual(
+        #    numbubbles, [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
+        # )
+
         self.assertEqual(
-            numbubbles, [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
+            numbubbles, [546, 189, 278, 274, 279, 277, 312, 263, 297, 326, 278, 254]
         )
 
         for dataset in dataframes:

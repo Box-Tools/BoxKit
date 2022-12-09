@@ -96,10 +96,10 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         # to build a new test datasets after all
         #
         # for test data
-        blocklist_sorted[kloc + nblockx * jloc + nblockx * nblocky * iloc] = block
+        # blocklist_sorted[kloc + nblockx * jloc + nblockx * nblocky * iloc] = block
         #
         # desired
-        # blocklist_sorted[iloc + nblockx * jloc + nblockx * nblocky * kloc] = block
+        blocklist_sorted[iloc + nblockx * jloc + nblockx * nblocky * kloc] = block
 
     for varkey in varlist:
         merged_dataset.addvar(varkey, dtype=dataset._data.dtype[varkey])
