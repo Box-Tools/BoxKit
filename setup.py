@@ -42,6 +42,7 @@ DEPENDENCIES = [
     "joblib",
     "tqdm",
     "toml",
+    "psutil",
 ]
 
 # Call setup command with necessary arguments
