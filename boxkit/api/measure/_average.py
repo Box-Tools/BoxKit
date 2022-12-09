@@ -1,45 +1,10 @@
-""" Module with implemenation of region methods"""
+""" Module with implemenation of measure methods"""
 
-import itertools
-import numpy
+from ... import library
 
-from .. import library
-from ..library import Timer
-from ..resources import stencils
+from ...library import Timer
 
-from . import create
-from . import reshape
-
-
-def Regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
-    """
-    Create a list of bubbles in a region
-
-    Parameters
-    ----------
-    dataset : Dataset object
-    lsetkey : key containing level-set/binary data
-
-    Returns
-    -------
-    listprops : list of bubble properties
-    """
-
-    labelkey = "bwlabel"
-    dataset.addvar(labelkey, dtype=int)
-
-    region = create.Region(dataset)
-
-    stencils.measure.skimage_props_blk.nthreads = nthreads
-    stencils.measure.skimage_props_blk.backend = backend
-    stencils.measure.skimage_props_blk.monitor = monitor
-
-    listprops = stencils.measure.skimage_props_blk(region.blocklist, lsetkey, labelkey)
-    listprops = list(itertools.chain.from_iterable(listprops))
-
-    dataset.delvar(labelkey)
-
-    return listprops
+from .. import reshape
 
 
 def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=False):

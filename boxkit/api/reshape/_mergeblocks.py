@@ -1,27 +1,8 @@
 """Module with implemenetation of api reshape methods"""
-
 import math
 
-from .. import library
-
-from ..resources import stencils
-
-from ..library import Timer
-
-
-def Filterblocks(
-    dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"
-):
-    """
-    Build a pseudo UG dataset from AMR dataset at a level
-    """
-    if not varlist:
-        varlist = dataset.varlist
-
-    elif isinstance(varlist, str):
-        varlist = [varlist]
-
-    pass
+from ... import library
+from ...library import Block, Action, Timer
 
 
 def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
@@ -102,17 +83,46 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         blocklist_sorted[iloc + nblockx * jloc + nblockx * nblocky * kloc] = block
 
     for varkey in varlist:
-        merged_dataset.addvar(varkey, dtype=dataset._data.dtype[varkey])
+        merged_dataset.addvar(varkey, dtype=dataset.dtype[varkey])
 
-        stencils.reshape.map_blk_to_merged_dset.nthreads = nthreads
-        stencils.reshape.map_blk_to_merged_dset.monitor = monitor
-        stencils.reshape.map_blk_to_merged_dset.backend = backend
+        map_blk_to_merged_dset.nthreads = nthreads
+        map_blk_to_merged_dset.monitor = monitor
+        map_blk_to_merged_dset.backend = backend
 
         time_mapping = Timer("[boxkit.stencils.map_dataset_block]")
-        stencils.reshape.map_blk_to_merged_dset(
-            blocklist_sorted, merged_dataset, varkey
-        )
+        map_blk_to_merged_dset(blocklist_sorted, merged_dataset, varkey)
         del time_mapping
 
     del time_mergeblocks
     return merged_dataset
+
+
+@Action(unit=Block)
+def map_blk_to_merged_dset(unit, merged_dataset, varkey):
+    """
+    map block to a merged dataset
+    """
+    iloc, jloc, kloc = unit.get_location(
+        origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
+    )
+
+    # TODO - this statement behaves differently for
+    # test datasets vs desired way - investigate. It maybe because
+    # test datasets were not constructured properly and maybe its time
+    # to build a new test datasets after all
+    #
+    # for test datasets
+    # merged_dataset[varkey][
+    #     0,
+    #     unit.nxb * iloc : unit.nxb * (iloc + 1),
+    #     unit.nyb * jloc : unit.nyb * (jloc + 1),
+    #     unit.nzb * kloc : unit.nzb * (kloc + 1),
+    # ] = unit[varkey][:, :, :]
+    #
+    # desired
+    merged_dataset[varkey][
+        0,
+        unit.nzb * kloc : unit.nzb * (kloc + 1),
+        unit.nyb * jloc : unit.nyb * (jloc + 1),
+        unit.nxb * iloc : unit.nxb * (iloc + 1),
+    ] = unit[varkey][:, :, :]

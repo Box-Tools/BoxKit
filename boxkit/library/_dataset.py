@@ -121,6 +121,10 @@ class Dataset:
     def source(self):
         return self._data.source
 
+    @property
+    def dtype(self):
+        return self._data.dtype
+
     def addvar(self, varkey, dtype=float):
         self._data.addvar(varkey, dtype)
 
