@@ -1,8 +1,10 @@
 """Module with implemenetation of api reshape methods"""
+
+import sys
 import math
 
 from ... import library
-from ...library import Block, Action, Timer
+from ...library import Block, Action, Timer, Resources
 
 
 def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
@@ -84,6 +86,22 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
 
     for varkey in varlist:
         merged_dataset.addvar(varkey, dtype=dataset.dtype[varkey])
+
+        resources = Resources()
+        print(
+            f'[cpu_count]: {resources["cpu_count"]}',
+            f'[cpu_avail]: {resources["cpu_avail"]}',
+            f'[mem_avail]: {resources["mem_avail"]} GB',
+            f'[cpu_usage]: {resources["cpu_usage"]}%',
+            f'[mem_usage]: {resources["mem_usage"]}%',
+        )
+
+        print(
+            f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varkey][:])/(2**20),2)} MB"
+        )
+        print(
+            f"[mem_merged_dataset]: {round(sys.getsizeof(merged_dataset._data.variables[varkey][:])/(2**20),2)} MB"
+        )
 
         map_blk_to_merged_dset.nthreads = nthreads
         map_blk_to_merged_dset.monitor = monitor

@@ -1,20 +1,22 @@
 """Module for managing resources"""
 
-from collections import namedtuple
+import math
 import psutil
+
 
 def Resources():
     """
     Return dictionary of available and used resources to optimize usage
     """
+
+    cpu_count = psutil.cpu_count()
+    cpu_percent = psutil.cpu_percent()
+    virtual_memory = psutil.virtual_memory()
+
     return {
-        "cpu_count": psutil.cpu_count(),
-        "cpu_used": psutil.cpu_percent()*psutil.cpu_count()/100,
-        "cpu_percent": psutil.cpu_percent(),
-        "mem_percent": psutil.virtual_memory()[2], 
+        "cpu_count": cpu_count,
+        "cpu_avail": cpu_count - math.floor(cpu_percent * cpu_count / 100),
+        "mem_avail": round(virtual_memory[1] / (2**30), 2),
+        "cpu_usage": cpu_percent,
+        "mem_usage": virtual_memory[2],
     }
-
-
-if __name__ == "__main__":
-    resources = Resources()
-    print(resources["cpu_count"], resources["cpu_used"], resources["cpu_percent"], resources["mem_percent"])

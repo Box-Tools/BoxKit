@@ -147,6 +147,24 @@ class TestBoiling(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
+    def test_reshape_3D(self):
+        """
+        Test reshape
+        """
+        dataframes = [
+            boxkit.read.Dataset(filename, storage="numpy-memmap")
+            for filename in self.filenames
+        ]
+
+        for dataset in dataframes:
+            reshaped_dataset = boxkit.reshape.Mergeblocks(
+                dataset, "phi", nthreads=8, monitor=True, backend="loky"
+            )
+            reshaped_dataset.purge("boxmem")
+
+        for dataset in dataframes:
+            dataset.purge("boxmem")
+
     def tearDown(self):
         """Clean up and timing"""
         timetest = time.time() - self.timestart
