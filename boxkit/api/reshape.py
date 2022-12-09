@@ -8,7 +8,10 @@ from ..resources import stencils
 
 from ..library import Timer
 
-def Filterblocks(dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"):
+
+def Filterblocks(
+    dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"
+):
     """
     Build a pseudo UG dataset from AMR dataset at a level
     """
@@ -19,6 +22,7 @@ def Filterblocks(dataset, varlist=None, level=1, nthreads=1, monitor=False, back
         varlist = [varlist]
 
     pass
+
 
 def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
     """
@@ -79,6 +83,15 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
 
     merged_dataset = library.Dataset(merged_blocklist, merged_data)
 
+    blocklist_sorted = [None] * len(blocklist_level)
+
+    for block in blocklist_level:
+        iloc, jloc, kloc = block.get_location(
+            origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
+        )
+
+        blocklist_sorted[kloc + nblockx * jloc + nblockx * nblocky * iloc] = block
+
     for varkey in varlist:
         merged_dataset.addvar(varkey, dtype=dataset._data.dtype[varkey])
 
@@ -87,7 +100,7 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         stencils.reshape.map_blk_to_merged_dset.backend = backend
 
         time_mapping = Timer("[boxkit.stencils.map_dataset_block]")
-        stencils.reshape.map_blk_to_merged_dset(blocklist_level, merged_dataset, varkey)
+        stencils.reshape.map_blk_to_merged_dset(blocklist_sorted, merged_dataset, varkey)
         del time_mapping
 
     del time_mergeblocks

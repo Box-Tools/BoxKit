@@ -6,17 +6,12 @@ from ...library import Block, Action
 
 @Action(unit=Block)
 def map_blk_to_merged_dset(unit, merged_dataset, varkey):
-    iloc, jloc, kloc = [
-        math.ceil(
-            (unit.xmin - merged_dataset.xmin) / (unit.xmax - unit.xmin + 1e-13)
-        ),
-        math.ceil(
-            (unit.ymin - merged_dataset.ymin) / (unit.ymax - unit.ymin + 1e-13)
-        ),
-        math.ceil(
-            (unit.zmin - merged_dataset.zmin) / (unit.zmax - unit.zmin + 1e-13)
-        ),
-    ]
+    """
+    map block to a merged dataset
+    """
+    iloc, jloc, kloc = unit.get_location(
+        origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
+    )
 
     merged_dataset[varkey][
         0,
