@@ -86,8 +86,11 @@ class TestHeater(unittest.TestCase):
         """
         self.customSetUp("blocks")
 
-        dataframes = [boxkit.read.Dataset(filename) for filename in [self.filenames[0]]]
-        dataframes = [boxkit.reshape.Mergeblocks(dataset, "phi") for dataset in dataframes]
+        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        dataframes = [
+            boxkit.reshape.Mergeblocks(dataset, "phi", nthreads=2, backend="loky")
+            for dataset in dataframes
+        ]
 
         bubbleframes = []
         for dataset in dataframes:
@@ -95,9 +98,12 @@ class TestHeater(unittest.TestCase):
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
+        # self.assertEqual(
+        #    numbubbles, [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
+        # )
+
         self.assertEqual(
-            numbubbles,
-            [488],  # [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
+            numbubbles, [546, 189, 278, 274, 279, 277, 312, 263, 297, 326, 278, 254]
         )
 
         for dataset in dataframes:
