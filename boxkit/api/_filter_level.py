@@ -1,12 +1,10 @@
 """Module with implemenetation of api reshape methods"""
 
-import math
-
-from ... import library
-from .. import create
+from .. import library
+from .. import api
 
 
-def LevelFilter(
+def filter_level(
     dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"
 ):
     """
@@ -27,7 +25,7 @@ def LevelFilter(
 
     """
     if monitor:
-        time_filterblocks = Timer("[boxkit.reshape.filterblocks]")
+        time_filterlevel = library.Timer("[boxkit.filter_level]")
 
     if not varlist:
         varlist = dataset.varlist
@@ -41,7 +39,7 @@ def LevelFilter(
             break
 
         raise ValueError(
-            f"[boxkit.reshape.filterblocks]: level={level} does not exist in input dataset"
+            f"[boxkit.filter_level]: level={level} does not exist in input dataset"
         )
 
     nblockx_level = int((dataset.xmax - dataset.xmin) / dx_level / dataset.nxb)
@@ -53,12 +51,12 @@ def LevelFilter(
         for value in [nblockx_level, nblocky_level, nblockz_level]
     ]
 
-    filtered_dataset = create.Dataset(
+    filtered_dataset = api.create_dataset(
         nblockx=nblockx_level,
         nblocky=nblocky_level,
         nblockz=nblockz_level,
         nxb=dataset.nxb,
-        nyb=datset.nyb,
+        nyb=dataset.nyb,
         nzb=dataset.nzb,
         xmin=dataset.xmin,
         ymin=dataset.ymin,
@@ -69,4 +67,4 @@ def LevelFilter(
     )
 
     if monitor:
-        del time_filterblocks
+        del time_filterlevel

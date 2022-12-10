@@ -42,7 +42,7 @@ class TestBoiling(unittest.TestCase):
         dataframes : list of Dataset objects
 
         """
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         # testMonitor = Monitor("test")
         # testMonitor.setlimit(len(dataframes))
@@ -63,7 +63,7 @@ class TestBoiling(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         # testMonitor = Monitor("test")
         # testMonitor.setlimit(len(dataframes))
@@ -101,9 +101,9 @@ class TestBoiling(unittest.TestCase):
         """
         Test slice
         """
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
         regionframes = [
-            boxkit.create.Slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
+            boxkit.create_slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
         ]
 
         # testMonitor = Monitor("test")
@@ -117,12 +117,12 @@ class TestBoiling(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
-    def test_measure_bubbles_3D(self):
+    def test_regionprops_3D(self):
         """
         Test measure bubbles
         """
         dataframes = [
-            boxkit.read.Dataset(filename, storage="numpy-memmap")
+            boxkit.read_dataset(filename, storage="numpy-memmap")
             for filename in self.filenames
         ]
 
@@ -132,13 +132,13 @@ class TestBoiling(unittest.TestCase):
 
         for dataset in dataframes:
             bubbleframes.append(
-                boxkit.measure.Regionprops(
+                boxkit.regionprops(
                     dataset, "phi", backend="loky", monitor=True, nthreads=8
                 )
             )
 
         _time_measure = time.time() - _time_measure
-        print("%s: %.3fs" % ("boxkit.measure.bubbles", _time_measure))
+        print("%s: %.3fs" % ("boxkit.regionprops", _time_measure))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
@@ -147,17 +147,17 @@ class TestBoiling(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
-    def test_reshape_3D(self):
+    def test_mergeblocks_3D(self):
         """
         Test reshape
         """
         dataframes = [
-            boxkit.read.Dataset(filename, storage="numpy-memmap")
+            boxkit.read_dataset(filename, storage="numpy-memmap")
             for filename in self.filenames
         ]
 
         for dataset in dataframes:
-            reshaped_dataset = boxkit.reshape.Mergeblocks(
+            reshaped_dataset = boxkit.mergeblocks(
                 dataset, "phi", nthreads=1, monitor=True, backend="loky"
             )
             reshaped_dataset.purge("boxmem")

@@ -4,7 +4,7 @@ import os
 import time
 import unittest
 import pymorton
-import boxkit.api as boxkit
+import boxkit
 from boxkit.library import Monitor
 
 
@@ -40,7 +40,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are morton order
         """
         self.customSetUp("oneblk")
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -60,17 +60,17 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
-    def test_measure_bubbles_oneblk_2D(self):
+    def test_regionprops_oneblk_2D(self):
         """
         Test bubble measurement
         """
         self.customSetUp("oneblk")
 
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         bubbleframes = []
         for dataset in dataframes:
-            bubbleframes.append(boxkit.measure.Regionprops(dataset, "phi"))
+            bubbleframes.append(boxkit.regionprops(dataset, "phi"))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
@@ -81,21 +81,21 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
-    def test_measure_bubbles_blocks_2D(self):
+    def test_regionprops_blocks_2D(self):
         """
         Test bubble measurement
         """
         self.customSetUp("blocks")
 
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
         dataframes = [
-            boxkit.reshape.Mergeblocks(dataset, "phi", nthreads=2, backend="loky")
+            boxkit.mergeblocks(dataset, "phi", nthreads=2, backend="loky")
             for dataset in dataframes
         ]
 
         bubbleframes = []
         for dataset in dataframes:
-            bubbleframes.append(boxkit.measure.Regionprops(dataset, "phi"))
+            bubbleframes.append(boxkit.regionprops(dataset, "phi"))
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 

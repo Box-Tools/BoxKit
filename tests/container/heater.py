@@ -36,7 +36,7 @@ class TestHeater(unittest.TestCase):
         Test if neighbors are in morton order
         """
         self.customSetUp()
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -81,23 +81,15 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
-    def test_measure_bubbles_blocks_2D(self):
+    def test_regionprops_blocks_2D(self):
         """
         Test bubble measurement
         """
         self.customSetUp()
 
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
-
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
-        dataframes = [
-            boxkit.reshape.Mergeblocks(dataset, "phi", nthreads=2, backend="loky")
-            for dataset in dataframes
-        ]
-
-        bubbleframes = []
-        for dataset in dataframes:
-            bubbleframes.append(boxkit.measure.Regionprops(dataset, "phi"))
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.mergeblocks(dataset, "phi") for dataset in dataframes]
+        bubbleframes = [boxkit.regionprops(dataset, "phi") for dataset in dataframes]
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 

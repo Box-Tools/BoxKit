@@ -1,24 +1,23 @@
 """ Module with implemenation of measure methods"""
 
-from ... import library
-
-from ...library import Timer, Action
-
-from .. import reshape
+from .. import library
+from .. import api
 
 
-def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=False):
+def temporal_mean(
+    datasets, varlist, level=1, backend="serial", nthreads=1, monitor=False
+):
     """
     Compute average across a dataset list
     """
     if monitor:
-        time_average = Timer("[boxkit.measure.average]")
+        time_average = library.Timer("[boxkit.temporal_mean]")
 
     if isinstance(varlist, str):
         varlist = [varlist]
 
-    reshaped_datasets = [
-        reshape.Mergeblocks(
+    merged_datasets = [
+        api.mergeblocks(
             dataset,
             varlist,
             level=level,
@@ -30,23 +29,23 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
     ]
 
     nxb, nyb, nzb, dx, dy, dz, xmin, ymin, zmin, xmax, ymax, zmax = [
-        reshaped_datasets[0].nxb,
-        reshaped_datasets[0].nyb,
-        reshaped_datasets[0].nzb,
-        reshaped_datasets[0].blocklist[0].dx,
-        reshaped_datasets[0].blocklist[0].dy,
-        reshaped_datasets[0].blocklist[0].dz,
-        reshaped_datasets[0].xmin,
-        reshaped_datasets[0].ymin,
-        reshaped_datasets[0].zmin,
-        reshaped_datasets[0].xmax,
-        reshaped_datasets[0].ymax,
-        reshaped_datasets[0].zmax,
+        merged_datasets[0].nxb,
+        merged_datasets[0].nyb,
+        merged_datasets[0].nzb,
+        merged_datasets[0].blocklist[0].dx,
+        merged_datasets[0].blocklist[0].dy,
+        merged_datasets[0].blocklist[0].dz,
+        merged_datasets[0].xmin,
+        merged_datasets[0].ymin,
+        merged_datasets[0].zmin,
+        merged_datasets[0].xmax,
+        merged_datasets[0].ymax,
+        merged_datasets[0].zmax,
     ]
 
-    for dataset in reshaped_datasets:
+    for dataset in merged_datasets:
         if [nxb, nyb, nzb] != [dataset.nxb, dataset.nyb, dataset.nzb]:
-            raise ValueError("[boxkit.measure.average] inconsistent sizes for datasets")
+            raise ValueError("[boxkit.temporal_mean] inconsistent sizes for datasets")
 
     average_data = library.Data(nblocks=1, nxb=nxb, nyb=nyb, nzb=nzb)
 
@@ -74,14 +73,14 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
         reduce_dset.backend = backend
 
         if monitor:
-            time_atomic = Timer("[boxkit.measure.reduce_dset]")
+            time_atomic = library.Timer("[boxkit.temporal_mean.reduce_dset]")
 
-        reduce_dset(reshaped_datasets, average_dataset, varkey, len(reshaped_datasets))
+        reduce_dset(merged_datasets, average_dataset, varkey, len(merged_datasets))
 
         if monitor:
             del time_atomic
 
-    for dataset in reshaped_datasets:
+    for dataset in merged_datasets:
         dataset.purge("boxmem")
 
     if monitor:
@@ -90,6 +89,9 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
     return average_dataset
 
 
-@Action(unit=library.Dataset)
+@library.Action(unit=library.Dataset)
 def reduce_dset(unit, average_dataset, varkey, sample_size):
+    """
+    Reduce dataset / compute average
+    """
     average_dataset[varkey][:] = unit[varkey][:] / sample_size

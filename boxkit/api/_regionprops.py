@@ -3,16 +3,12 @@
 import itertools
 import skimage.measure as skimage_measure
 
-from .. import create
-
-from ...library import Action
-from ...library import Block
+from .. import api
+from .. import library
 
 
-def Regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
+def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     """
-    Create a list of bubbles in a region
-
     Parameters
     ----------
     dataset : Dataset object
@@ -26,7 +22,7 @@ def Regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     labelkey = "bwlabel"
     dataset.addvar(labelkey, dtype=int)
 
-    region = create.Region(dataset)
+    region = api.create_region(dataset)
 
     skimage_props_blk.nthreads = nthreads
     skimage_props_blk.backend = backend
@@ -40,7 +36,7 @@ def Regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     return listprops
 
 
-@Action(unit=Block)
+@library.Action(unit=library.Block)
 def skimage_props_blk(unit, lsetkey, labelkey):
     """
     Measure properties for a block

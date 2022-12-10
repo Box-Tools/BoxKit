@@ -1,19 +1,17 @@
-"""Module with implemenetation of api reshape methods"""
+"""Module with implemenetation of api methods"""
 
 import sys
-import math
 
-from ... import library
-from ...library import Block, Action, Timer, Resources
-from .. import create
+from .. import library
+from .. import api
 
 
-def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
+def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
     """
     Reshaped dataset at a level
     """
     if monitor:
-        time_mergeblocks = Timer("[boxkit.reshape.mergeblocks]")
+        time_mergeblocks = library.Timer("[boxkit.mergeblocks]")
 
     if isinstance(varlist, str):
         varlist = [varlist]
@@ -25,7 +23,7 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
 
     if not blocklist_level:
         raise ValueError(
-            f"[boxkit.reshape.mergeblocks]: level={level} does not exist in input dataset"
+            f"[boxkit.mergeblocks]: level={level} does not exist in input dataset"
         )
 
     dx_level, dy_level, dz_level = [
@@ -44,7 +42,7 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
 
     region_level = library.Region(blocklist_level)
 
-    merged_dataset = create.Dataset(
+    merged_dataset = api.create_dataset(
         nxb=nblockx * dataset.nxb,
         nyb=nblocky * dataset.nyb,
         nzb=nblockz * dataset.nzb,
@@ -68,7 +66,7 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
     for varkey in varlist:
         merged_dataset.addvar(varkey, dtype=dataset.dtype[varkey])
 
-        resources = Resources()
+        resources = library.Resources()
 
         if monitor:
             print(
@@ -88,7 +86,7 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         map_blk_to_merged_dset.backend = backend
 
         if monitor:
-            time_mapping = Timer("[boxkit.stencils.map_dataset_block]")
+            time_mapping = library.Timer("[boxkit.mergeblocks.map_dataset_block]")
 
         map_blk_to_merged_dset(blocklist_sorted, merged_dataset, varkey)
 
@@ -101,7 +99,7 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
     return merged_dataset
 
 
-@Action(unit=Block)
+@library.Action(unit=library.Block)
 def map_blk_to_merged_dset(unit, merged_dataset, varkey):
     """
     map block to a merged dataset
