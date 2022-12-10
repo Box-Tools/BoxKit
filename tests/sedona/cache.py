@@ -5,7 +5,7 @@ import time
 import unittest
 import pymorton
 import boxkit
-from boxkit.library import Monitor
+from boxkit.library import Monitor, Timer
 
 
 class TestCache(unittest.TestCase):
@@ -22,8 +22,9 @@ class TestCache(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        print("-------------------------------------------------------------------------------------------------")
-        self.timestart = time.time()
+        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
+
+        self.timer = Timer(self.id())
         basedir = (
             os.getenv("HOME")
             + "/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/not-chunked/"
@@ -43,7 +44,7 @@ class TestCache(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        average_dataset = boxkit.temporal_mean(dataframes, "vvel", nthreads=8, backend="loky", monitor=True)
+        average_dataset = boxkit.mean_temporal(dataframes, "vvel", nthreads=8, backend="loky", monitor=True)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -52,9 +53,7 @@ class TestCache(unittest.TestCase):
 
     def tearDown(self):
         """Clean up and timing"""
-        timetest = time.time() - self.timestart
-        print("%s: %.3fs\n" % (self.id(), timetest))
-
+        del self.timer
 
 if __name__ == "__main__":
     unittest.main()

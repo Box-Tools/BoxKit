@@ -5,8 +5,7 @@ import time
 import unittest
 import pymorton
 import boxkit
-# from boxkit.library import Monitor
-
+from boxkit.library import Timer
 
 class TestBoiling(unittest.TestCase):
     """boxkit unit test for 3D boiling data"""
@@ -22,7 +21,9 @@ class TestBoiling(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        self.timestart = time.time()
+        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
+ 
+        self.timer = Timer(self.id())
 
         basedir = (
             os.getenv("HOME")
@@ -44,17 +45,12 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
-        # testMonitor = Monitor("test")
-        # testMonitor.setlimit(len(dataframes))
-        # monitorMsg = "run:" + self.id() + ": "
-
         for dataset in dataframes:
             for block in dataset.blocklist:
                 self.assertTrue(
                     block._data is dataset.blocklist[0]._data,
                     "Data pointers are inconsistent",
                 )
-            # testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -64,10 +60,6 @@ class TestBoiling(unittest.TestCase):
         Test if neighbors are in morton order
         """
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
-
-        # testMonitor = Monitor("test")
-        # testMonitor.setlimit(len(dataframes))
-        # monitorMsg = "run:" + self.id() + ": "
 
         for dataset in dataframes:
             for block in dataset.blocklist:
@@ -92,7 +84,6 @@ class TestBoiling(unittest.TestCase):
                     list(block.neighdict.values()),
                     "Neigbhors are inconsitent with morton order",
                 )
-            # testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -106,13 +97,10 @@ class TestBoiling(unittest.TestCase):
             boxkit.create_slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
         ]
 
-        # testMonitor = Monitor("test")
-        # testMonitor.setlimit(len(regionframes))
         monitorMsg = "run:" + self.id() + ": "
 
         for region in regionframes:
             self.assertEqual(int(len(region.blocklist) ** (1 / 2)), 16)
-            # testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -126,7 +114,7 @@ class TestBoiling(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        _time_measure = time.time()
+        timer = Timer("boxkit.regionprops")
 
         bubbleframes = []
 
@@ -137,8 +125,7 @@ class TestBoiling(unittest.TestCase):
                 )
             )
 
-        _time_measure = time.time() - _time_measure
-        print("%s: %.3fs" % ("boxkit.regionprops", _time_measure))
+        del timer
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
@@ -167,10 +154,7 @@ class TestBoiling(unittest.TestCase):
 
     def tearDown(self):
         """Clean up and timing"""
-        timetest = time.time() - self.timestart
-
-        print("%s: %.3fs\n" % (self.id(), timetest))
-
+        del self.timer
 
 if __name__ == "__main__":
     unittest.main()

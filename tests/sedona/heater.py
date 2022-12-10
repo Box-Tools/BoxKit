@@ -22,7 +22,8 @@ class TestHeater(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        print("-------------------------------------------------------------------------------------------------")
+        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
+
         self.timestart = time.time()
 
         basedir = (

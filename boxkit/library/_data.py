@@ -155,9 +155,9 @@ class Data(_DataBase):
             namerandom = "".join(
                 random.choice(string.ascii_lowercase) for i in range(5)
             )
-            self.boxmem = "".join(["./boxmem_", namerandom])
+            self.boxmem = "".join(["./boxmem/", namerandom])
         try:
-            os.mkdir(self.boxmem)
+            os.makedirs(self.boxmem)
         except FileExistsError:
             pass
 
