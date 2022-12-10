@@ -11,7 +11,7 @@ from boxkit.library import Monitor
 class TestHeater(unittest.TestCase):
     """boxkit unit test for 2D Heater Data"""
 
-    def customSetUp(self, prefix):
+    def customSetUp(self, prefix=""):
         """
         Setup test parameters
 
@@ -35,8 +35,8 @@ class TestHeater(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        self.customSetUp("blocks")
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
+        self.customSetUp()
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
         testMonitor.setlimit(len(dataframes))
@@ -81,19 +81,21 @@ class TestHeater(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
-    def test_measure_bubbles_blocks_2D(self):
+    def test_regionprops_blocks_2D(self):
         """
         Test bubble measurement
         """
-        self.customSetUp("blocks")
+        self.customSetUp()
 
-        dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
-
-        bubbleframes = []
-        for dataset in dataframes:
-            bubbleframes.append(boxkit.measure.Regionprops(dataset, "phi"))
+        dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
+        dataframes = [boxkit.mergeblocks(dataset, "phi") for dataset in dataframes]
+        bubbleframes = [boxkit.regionprops(dataset, "phi") for dataset in dataframes]
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
+
+        self.assertEqual(
+            numbubbles, [488, 163, 236, 236, 242, 234, 257, 223, 259, 291, 235, 223]
+        )
 
         for dataset in dataframes:
             dataset.purge("boxmem")
