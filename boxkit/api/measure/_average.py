@@ -2,7 +2,7 @@
 
 from ... import library
 
-from ...library import Timer
+from ...library import Timer, Action
 
 from .. import reshape
 
@@ -11,13 +11,21 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
     """
     Compute average across a dataset list
     """
-    time_average = Timer("[boxkit.measure.average]")
+    if monitor:
+        time_average = Timer("[boxkit.measure.average]")
 
     if isinstance(varlist, str):
         varlist = [varlist]
 
     reshaped_datasets = [
-        reshape.Mergeblocks(dataset, varlist, level=level, backend=backend, nthreads=nthreads, monitor=monitor)
+        reshape.Mergeblocks(
+            dataset,
+            varlist,
+            level=level,
+            backend=backend,
+            nthreads=nthreads,
+            monitor=monitor,
+        )
         for dataset in datasets
     ]
 
@@ -62,13 +70,26 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
     for varkey in varlist:
         average_dataset.addvar(varkey)
 
-        time_atomic = Timer("[boxkit.measure.average atomic]")
-        for dataset in reshaped_datasets:
-            average_dataset[varkey][:] = dataset[varkey][:] / len(reshaped_datasets)
-        del time_atomic
+        reduce_dset.nthreads = nthreads
+        reduce_dset.backend = backend
+
+        if monitor:
+            time_atomic = Timer("[boxkit.measure.reduce_dset]")
+
+        reduce_dset(reshaped_datsets, average_dataset, varkey, len(reshaped_datasets))
+
+        if monitor:
+            del time_atomic
 
     for dataset in reshaped_datasets:
         dataset.purge("boxmem")
 
-    del time_average
+    if monitor:
+        del time_average
+
     return average_dataset
+
+
+@Action(unit=library.Dataset)
+def reduce_dset(unit, average_dataset, varkey, sample_size):
+    average_dataset[varkey][:] = unit[varkey][:] / sample_size
