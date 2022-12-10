@@ -76,7 +76,7 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
         if monitor:
             time_atomic = Timer("[boxkit.measure.reduce_dset]")
 
-        reduce_dset(reshaped_datsets, average_dataset, varkey, len(reshaped_datasets))
+        reduce_dset(reshaped_datasets, average_dataset, varkey, len(reshaped_datasets))
 
         if monitor:
             del time_atomic
