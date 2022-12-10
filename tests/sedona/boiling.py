@@ -165,22 +165,6 @@ class TestBoiling(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
-    def test_temporal_mean_3D(self):
-        """
-        Test reshape
-        """
-        dataframes = [
-            boxkit.read_dataset(filename, storage="numpy-memmap")
-            for filename in self.filenames
-        ]
-
-        average_dataset = boxkit.temporal_mean(dataframes, "vvel", nthreads=8, backend="loky", monitor=True)
-
-        for dataset in dataframes:
-            dataset.purge("boxmem")
-
-        average_dataset.purge("boxmem")
-
     def tearDown(self):
         """Clean up and timing"""
         timetest = time.time() - self.timestart
