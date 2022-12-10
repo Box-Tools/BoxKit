@@ -6,7 +6,7 @@ from ... import library
 from .. import create
 
 
-def Filterblocks(
+def LevelFilter(
     dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"
 ):
     """
