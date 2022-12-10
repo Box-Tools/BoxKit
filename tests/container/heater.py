@@ -11,7 +11,7 @@ from boxkit.library import Monitor
 class TestHeater(unittest.TestCase):
     """boxkit unit test for 2D Heater Data"""
 
-    def customSetUp(self, prefix):
+    def customSetUp(self, prefix=""):
         """
         Setup test parameters
 
@@ -35,7 +35,7 @@ class TestHeater(unittest.TestCase):
         """
         Test if neighbors are in morton order
         """
-        self.customSetUp("blocks")
+        self.customSetUp()
         dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor("test")
@@ -85,7 +85,7 @@ class TestHeater(unittest.TestCase):
         """
         Test bubble measurement
         """
-        self.customSetUp("blocks")
+        self.customSetUp()
 
         dataframes = [boxkit.read.Dataset(filename) for filename in self.filenames]
 
