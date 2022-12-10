@@ -118,7 +118,7 @@ class Block:
     @staticmethod
     def _get_node_loc(min_val, max_val, delta, guard, num_points):
         """Private method for face location"""
-        return numpy.linspace(min_val, max_val, num_points + 1)
+        return numpy.linspace(min_val, max_val, num_points)
 
     def _set_attributes(self, attributes):
         """
@@ -241,11 +241,13 @@ class Block:
         """
         Write block data to buffer for halo exchange
         """
+        pass
 
     def read_neighbuffer(self, varkey):
         """
         Read neighbor buffer and perform halo exchange
         """
+        pass
 
     def neighdata(self, varkey, neighkey):
         """
@@ -258,7 +260,7 @@ class Block:
 
         return neighdata
 
-    def get_location(self, origin=[None]*3):
+    def get_relative_loc(self, origin=[None] * 3):
         """
         Get offset from origin
         """

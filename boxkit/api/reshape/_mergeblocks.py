@@ -5,13 +5,15 @@ import math
 
 from ... import library
 from ...library import Block, Action, Timer, Resources
+from .. import create
 
 
 def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
     """
     Reshaped dataset at a level
     """
-    time_mergeblocks = Timer("[boxkit.reshape.mergeblocks]")
+    if monitor:
+        time_mergeblocks = Timer("[boxkit.reshape.mergeblocks]")
 
     if isinstance(varlist, str):
         varlist = [varlist]
@@ -32,8 +34,6 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         blocklist_level[0].dz,
     ]
 
-    region_level = library.Region(blocklist_level)
-
     nblockx = int((dataset.xmax - dataset.xmin) / dx_level / dataset.nxb)
     nblocky = int((dataset.ymax - dataset.ymin) / dy_level / dataset.nyb)
     nblockz = int((dataset.zmax - dataset.zmin) / dz_level / dataset.nzb)
@@ -42,34 +42,24 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         value if value > 0 else 1 for value in [nblockx, nblocky, nblockz]
     ]
 
-    merged_data = library.Data(
-        nblocks=1,
+    region_level = library.Region(blocklist_level)
+
+    merged_dataset = create.Dataset(
         nxb=nblockx * dataset.nxb,
         nyb=nblocky * dataset.nyb,
         nzb=nblockz * dataset.nzb,
+        xmin=region_level.xmin,
+        ymin=region_level.ymin,
+        zmin=region_level.zmin,
+        xmax=region_level.xmax,
+        ymax=region_level.ymax,
+        zmax=region_level.zmax,
     )
-
-    merged_blocklist = [
-        library.Block(
-            merged_data,
-            dx=dx_level,
-            dy=dy_level,
-            dz=dz_level,
-            xmin=region_level.xmin,
-            ymin=region_level.ymin,
-            zmin=region_level.zmin,
-            xmax=region_level.xmax,
-            ymax=region_level.ymax,
-            zmax=region_level.zmax,
-        )
-    ]
-
-    merged_dataset = library.Dataset(merged_blocklist, merged_data)
 
     blocklist_sorted = [None] * len(blocklist_level)
 
     for block in blocklist_level:
-        iloc, jloc, kloc = block.get_location(
+        iloc, jloc, kloc = block.get_relative_loc(
             origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
         )
 
@@ -79,30 +69,35 @@ def Mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
         merged_dataset.addvar(varkey, dtype=dataset.dtype[varkey])
 
         resources = Resources()
-        print(
-            f'[cpu_count]: {resources["cpu_count"]}',
-            f'[cpu_avail]: {resources["cpu_avail"]}',
-            f'[mem_avail]: {resources["mem_avail"]} GB',
-            f'[cpu_usage]: {resources["cpu_usage"]}%',
-            f'[mem_usage]: {resources["mem_usage"]}%',
-        )
 
-        print(
-            f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varkey][:])/(2**20),2)} MB"
-        )
-        print(
-            f"[mem_merged_dataset]: {round(sys.getsizeof(merged_dataset._data.variables[varkey][:])/(2**20),2)} MB"
-        )
+        if monitor:
+            print(
+                f'[cpu_count]: {resources["cpu_count"]}',
+                f'[cpu_avail]: {resources["cpu_avail"]}',
+                f'[mem_avail]: {resources["mem_avail"]} GB',
+                f'[cpu_usage]: {resources["cpu_usage"]}%',
+                f'[mem_usage]: {resources["mem_usage"]}%',
+            )
+
+            print(
+                f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varkey][:])/(2**20),2)} MB"
+            )
 
         map_blk_to_merged_dset.nthreads = nthreads
         map_blk_to_merged_dset.monitor = monitor
         map_blk_to_merged_dset.backend = backend
 
-        time_mapping = Timer("[boxkit.stencils.map_dataset_block]")
-        map_blk_to_merged_dset(blocklist_sorted, merged_dataset, varkey)
-        del time_mapping
+        if monitor:
+            time_mapping = Timer("[boxkit.stencils.map_dataset_block]")
 
-    del time_mergeblocks
+        map_blk_to_merged_dset(blocklist_sorted, merged_dataset, varkey)
+
+        if monitor:
+            del time_mapping
+
+    if monitor:
+        del time_mergeblocks
+
     return merged_dataset
 
 
@@ -111,13 +106,13 @@ def map_blk_to_merged_dset(unit, merged_dataset, varkey):
     """
     map block to a merged dataset
     """
-    iloc, jloc, kloc = unit.get_location(
+    iloc, jloc, kloc = unit.get_relative_loc(
         origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
     )
 
-    merged_dataset[varkey][
-        0,
-        unit.nzb * kloc : unit.nzb * (kloc + 1),
-        unit.nyb * jloc : unit.nyb * (jloc + 1),
-        unit.nxb * iloc : unit.nxb * (iloc + 1),
-    ] = unit[varkey][:, :, :]
+    for block in merged_dataset.blocklist:
+        block[varkey][
+            unit.nzb * kloc : unit.nzb * (kloc + 1),
+            unit.nyb * jloc : unit.nyb * (jloc + 1),
+            unit.nxb * iloc : unit.nxb * (iloc + 1),
+        ] = unit[varkey][:, :, :]

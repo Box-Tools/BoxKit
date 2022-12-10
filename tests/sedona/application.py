@@ -10,6 +10,8 @@ class TestApplication(unittest.TestCase):
     def test_flowx(self):
         """test flowx library"""
 
+        print("-------------------------------------------------------------------------------------------------")
+ 
         # Define grid parameters
         nx, ny = 448, 448
         xmin, xmax = -1, 1

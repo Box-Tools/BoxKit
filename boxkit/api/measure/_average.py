@@ -17,7 +17,7 @@ def Average(datasets, varlist, level=1, backend="serial", nthreads=1, monitor=Fa
         varlist = [varlist]
 
     reshaped_datasets = [
-        reshape.Mergeblocks(dataset, varlist, level=level, monitor=monitor)
+        reshape.Mergeblocks(dataset, varlist, level=level, backend=backend, nthreads=nthreads, monitor=monitor)
         for dataset in datasets
     ]
 

@@ -22,8 +22,8 @@ class TestBoiling(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
+        print("-------------------------------------------------------------------------------------------------")
         self.timestart = time.time()
-
         basedir = (
             os.getenv("HOME")
             + "/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/not-chunked/"
@@ -174,7 +174,7 @@ class TestBoiling(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        average_dataset = boxkit.measure.Average(dataframes, "vvel", monitor=True)
+        average_dataset = boxkit.measure.Average(dataframes, "vvel", nthreads=8, backend="loky", monitor=True)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -184,7 +184,6 @@ class TestBoiling(unittest.TestCase):
     def tearDown(self):
         """Clean up and timing"""
         timetest = time.time() - self.timestart
-
         print("%s: %.3fs\n" % (self.id(), timetest))
 
 
