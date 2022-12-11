@@ -10,8 +10,10 @@ class TestApplication(unittest.TestCase):
     def test_flowx(self):
         """test flowx library"""
 
-        print("-------------------------------------------------------------------------------------------------")
- 
+        print(
+            f"\n-------------------------Running: {self.id()}-------------------------\n"
+        )
+
         # Define grid parameters
         nx, ny = 448, 448
         xmin, xmax = -1, 1
@@ -63,7 +65,7 @@ class TestApplication(unittest.TestCase):
 
         self.assertTrue(numpy.allclose(errors, expected_errors, atol=1e-12))
 
-        print("Fill guardcells time: ", end - start)
+        print("[fill guardcells time]: ", end - start)
 
 
 if __name__ == "__main__":

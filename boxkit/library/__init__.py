@@ -10,9 +10,7 @@ from ._region import Region
 from ._slice import Slice
 from ._timer import Timer
 from ._resources import Resources
-
-if options.cbox:
-    from ._monitor import Monitor
+from ._monitor import Monitor
 
 if options.server:
     from ._server import Server

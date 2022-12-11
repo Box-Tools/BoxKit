@@ -5,7 +5,7 @@ import time
 import unittest
 import pymorton
 import boxkit
-from boxkit.library import Monitor
+from boxkit.library import Monitor, Timer
 
 
 class TestBoiling(unittest.TestCase):
@@ -22,8 +22,11 @@ class TestBoiling(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        print("-------------------------------------------------------------------------------------------------")
-        self.timestart = time.time()
+        print(
+            f"\n-------------------------Running: {self.id()}-------------------------\n"
+        )
+        self.timer = Timer(self.id())
+
         basedir = (
             os.getenv("HOME")
             + "/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/not-chunked/"
@@ -44,9 +47,9 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
-        testMonitor = Monitor("test")
-        testMonitor.setlimit(len(dataframes))
-        monitorMsg = "run:" + self.id() + ": "
+        testMonitor = Monitor(
+            msg_="run:" + self.id() + ": ", iter_=len(dataframes), type_="action"
+        )
 
         for dataset in dataframes:
             for block in dataset.blocklist:
@@ -54,7 +57,8 @@ class TestBoiling(unittest.TestCase):
                     block._data is dataset.blocklist[0]._data,
                     "Data pointers are inconsistent",
                 )
-            testMonitor.update(monitorMsg)
+            testMonitor.update()
+        testMonitor.finish()
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -65,9 +69,9 @@ class TestBoiling(unittest.TestCase):
         """
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
-        testMonitor = Monitor("test")
-        testMonitor.setlimit(len(dataframes))
-        monitorMsg = "run:" + self.id() + ": "
+        testMonitor = Monitor(
+            msg_="run:" + self.id() + ": ", iter_=len(dataframes), type_="action"
+        )
 
         for dataset in dataframes:
             for block in dataset.blocklist:
@@ -92,7 +96,8 @@ class TestBoiling(unittest.TestCase):
                     list(block.neighdict.values()),
                     "Neigbhors are inconsitent with morton order",
                 )
-            testMonitor.update(monitorMsg)
+            testMonitor.update()
+        testMonitor.finish()
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -106,13 +111,14 @@ class TestBoiling(unittest.TestCase):
             boxkit.create_slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
         ]
 
-        testMonitor = Monitor("test")
-        testMonitor.setlimit(len(regionframes))
-        monitorMsg = "run:" + self.id() + ": "
+        testMonitor = Monitor(
+            msg_="run:" + self.id() + ": ", iter_=len(regionframes), type_="action"
+        )
 
         for region in regionframes:
             self.assertEqual(int(len(region.blocklist) ** (1 / 2)), 16)
-            testMonitor.update(monitorMsg)
+            testMonitor.update()
+        testMonitor.finish()
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -126,7 +132,7 @@ class TestBoiling(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        _time_measure = time.time()
+        timer = Timer("boxkit.regionprops")
 
         bubbleframes = []
 
@@ -137,8 +143,7 @@ class TestBoiling(unittest.TestCase):
                 )
             )
 
-        _time_measure = time.time() - _time_measure
-        print("%s: %.3fs" % ("boxkit.regionprops", _time_measure))
+        del timer
 
         numbubbles = [len(listbubbles) for listbubbles in bubbleframes]
 
@@ -165,10 +170,27 @@ class TestBoiling(unittest.TestCase):
         for dataset in dataframes:
             dataset.purge("boxmem")
 
+    def test_mean_temporal_3D(self):
+        """
+        Test reshape
+        """
+        dataframes = [
+            boxkit.read_dataset(filename, storage="numpy-memmap")
+            for filename in self.filenames
+        ]
+
+        average_dataset = boxkit.mean_temporal(
+            dataframes, "vvel", nthreads=8, backend="loky", monitor=True
+        )
+
+        for dataset in dataframes:
+            dataset.purge("boxmem")
+
+        average_dataset.purge("boxmem")
+
     def tearDown(self):
         """Clean up and timing"""
-        timetest = time.time() - self.timestart
-        print("%s: %.3fs\n" % (self.id(), timetest))
+        del self.timer
 
 
 if __name__ == "__main__":

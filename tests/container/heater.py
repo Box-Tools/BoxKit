@@ -5,7 +5,7 @@ import time
 import unittest
 import pymorton
 import boxkit
-from boxkit.library import Monitor
+from boxkit.library import Monitor, Timer
 
 
 class TestHeater(unittest.TestCase):
@@ -22,7 +22,7 @@ class TestHeater(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        self.timestart = time.time()
+        self.timer = Timer(self.id())
 
         basedir = "/home/data/boiling-earth/heater2D/"
         filetags = [*range(0, 60, 5)]
@@ -38,9 +38,9 @@ class TestHeater(unittest.TestCase):
         self.customSetUp()
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
-        testMonitor = Monitor("test")
-        testMonitor.setlimit(len(dataframes))
-        monitorMsg = "run:" + self.id() + ": "
+        testMonitor = Monitor(
+            msg_="run:" + self.id() + ": ", iter_=len(dataframes), type_="test"
+        )
 
         for dataset in dataframes:
 
@@ -76,7 +76,8 @@ class TestHeater(unittest.TestCase):
                     "Neigbhors are inconsitent with morton order",
                 )
 
-            testMonitor.update(monitorMsg)
+            testMonitor.update()
+        testMonitor.finish()
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -102,9 +103,7 @@ class TestHeater(unittest.TestCase):
 
     def tearDown(self):
         """Clean up and timing"""
-        timetest = time.time() - self.timestart
-
-        print("%s: %.3fs\n" % (self.id(), timetest))
+        del self.timer
 
 
 if __name__ == "__main__":

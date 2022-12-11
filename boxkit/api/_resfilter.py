@@ -4,7 +4,7 @@ from .. import library
 from .. import api
 
 
-def filter_level(
+def resfilter(
     dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"
 ):
     """
@@ -25,7 +25,7 @@ def filter_level(
 
     """
     if monitor:
-        time_filterlevel = library.Timer("[boxkit.filter_level]")
+        time_resfilter = library.Timer("[boxkit.resfilter]")
 
     if not varlist:
         varlist = dataset.varlist
@@ -39,7 +39,7 @@ def filter_level(
             break
 
         raise ValueError(
-            f"[boxkit.filter_level]: level={level} does not exist in input dataset"
+            f"[boxkit.resfilter]: level={level} does not exist in input dataset"
         )
 
     nblockx_level = int((dataset.xmax - dataset.xmin) / dx_level / dataset.nxb)
@@ -67,4 +67,4 @@ def filter_level(
     )
 
     if monitor:
-        del time_filterlevel
+        del time_resfilter

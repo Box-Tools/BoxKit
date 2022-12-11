@@ -4,7 +4,7 @@ from .. import library
 from .. import resources
 
 
-def read_dataset(filename, source="test-sample", storage="numpy", server=None):
+def read_dataset(filename, source="test-sample", storage="numpy-memmap", server=None):
     """
     Create a dataset from a file
 

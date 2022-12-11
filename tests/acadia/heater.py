@@ -5,8 +5,7 @@ import time
 import unittest
 import pymorton
 import boxkit
-# from boxkit.library import Monitor
-
+from boxkit.library import Timer
 
 class TestHeater(unittest.TestCase):
     """boxkit unit test for 2D Heater Data"""
@@ -22,7 +21,9 @@ class TestHeater(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        self.timestart = time.time()
+        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
+ 
+        self.timer = Timer(self.id())
 
         basedir = (
             os.getenv("HOME")
@@ -41,10 +42,6 @@ class TestHeater(unittest.TestCase):
         self.customSetUp("oneblk")
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
-        # testMonitor = Monitor("test")
-        # testMonitor.setlimit(len(dataframes))
-        monitorMsg = "run:" + self.id() + ": "
-
         for dataset in dataframes:
 
             for block in dataset.blocklist:
@@ -53,8 +50,6 @@ class TestHeater(unittest.TestCase):
                     list(block.neighdict.values()),
                     "Single block data structure has no neighbors",
                 )
-
-            # testMonitor.update(monitorMsg)
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -80,10 +75,7 @@ class TestHeater(unittest.TestCase):
 
     def tearDown(self):
         """Clean up and timing"""
-        timetest = time.time() - self.timestart
-
-        print("%s: %.3fs\n" % (self.id(), timetest))
-
+        del self.timer
 
 if __name__ == "__main__":
     unittest.main()

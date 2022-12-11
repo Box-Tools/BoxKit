@@ -4,14 +4,14 @@ from .. import library
 from .. import api
 
 
-def temporal_mean(
+def mean_temporal(
     datasets, varlist, level=1, backend="serial", nthreads=1, monitor=False
 ):
     """
     Compute average across a dataset list
     """
     if monitor:
-        time_average = library.Timer("[boxkit.temporal_mean]")
+        time_mean_temporal = library.Timer("[boxkit.mean_temporal]")
 
     if isinstance(varlist, str):
         varlist = [varlist]
@@ -45,7 +45,7 @@ def temporal_mean(
 
     for dataset in merged_datasets:
         if [nxb, nyb, nzb] != [dataset.nxb, dataset.nyb, dataset.nzb]:
-            raise ValueError("[boxkit.temporal_mean] inconsistent sizes for datasets")
+            raise ValueError("[boxkit.mean_temporal] inconsistent sizes for datasets")
 
     average_data = library.Data(nblocks=1, nxb=nxb, nyb=nyb, nzb=nzb)
 
@@ -69,29 +69,32 @@ def temporal_mean(
     for varkey in varlist:
         average_dataset.addvar(varkey)
 
-        reduce_dset.nthreads = nthreads
-        reduce_dset.backend = backend
+        reduce_dset_list.nthreads = 1
+        reduce_dset_list.backend = "serial"
 
         if monitor:
-            time_atomic = library.Timer("[boxkit.temporal_mean.reduce_dset]")
+            time_reduction = library.Timer("[boxkit.mean_temporal.reduce_dset_list]")
 
-        reduce_dset(merged_datasets, average_dataset, varkey, len(merged_datasets))
+        reduce_dset_list(merged_datasets, average_dataset, varkey, len(merged_datasets))
 
         if monitor:
-            del time_atomic
+            del time_reduction
 
     for dataset in merged_datasets:
         dataset.purge("boxmem")
 
     if monitor:
-        del time_average
+        del time_mean_temporal
 
     return average_dataset
 
 
 @library.Action(unit=library.Dataset)
-def reduce_dset(unit, average_dataset, varkey, sample_size):
+def reduce_dset_list(unit, average_dataset, varkey, sample_size):
     """
     Reduce dataset / compute average
     """
-    average_dataset[varkey][:] = unit[varkey][:] / sample_size
+    for block_avg, block_unit in zip(average_dataset.blocklist, unit.blocklist):
+        block_avg[varkey][:] = (
+            block_avg[varkey][:] + block_unit[varkey][:] / sample_size
+        )

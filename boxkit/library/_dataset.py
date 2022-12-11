@@ -20,8 +20,8 @@ class Dataset:
 
         """
         super().__init__()
-        self._map_blocklist(blocklist)
-        self._map_data(data)
+        map_blocklist(self, blocklist)
+        map_data(self, data)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -51,39 +51,6 @@ class Dataset:
         Set variable data
         """
         self._data[varkey] = value
-
-    def _map_blocklist(self, blocklist):
-        """
-        Private method for initialization
-        """
-        self.blocklist = []
-        self.xmin, self.ymin, self.zmin = [1e10] * 3
-        self.xmax, self.ymax, self.zmax = [-1e10] * 3
-
-        if not blocklist:
-            return
-
-        self.blocklist = blocklist
-
-        for block in self.blocklist:
-            self.xmin = min(self.xmin, block.xmin)
-            self.ymin = min(self.ymin, block.ymin)
-            self.zmin = min(self.zmin, block.zmin)
-
-            self.xmax = max(self.xmax, block.xmax)
-            self.ymax = max(self.ymax, block.ymax)
-            self.zmax = max(self.zmax, block.zmax)
-
-    def _map_data(self, data):
-        """
-        Private method for initialization
-        """
-        self._data = None
-
-        if not data:
-            return
-
-        self._data = data
 
     @property
     def nblocks(self):
@@ -147,18 +114,53 @@ class Dataset:
         if isinstance(varlist, str):
             varlist = [varlist]
 
-        halo_exchange_block.nthreads = nthreads
-        halo_exchange_block.batch = batch
-        halo_exchange_block.backend = backend
-        halo_exchange_block.monitor = monitor
+        halo_exchange_blk.nthreads = nthreads
+        halo_exchange_blk.batch = batch
+        halo_exchange_blk.backend = backend
+        halo_exchange_blk.monitor = monitor
 
         for varkey in varlist:
-            halo_exchange_block(self.blocklist, varkey)
+            halo_exchange_blk(self.blocklist, varkey)
 
 
 @Action(unit=Block)
-def halo_exchange_block(unit, varkey):
+def halo_exchange_blk(unit, varkey):
     """
     Halo exchange
     """
     unit.exchange_neighdata(varkey)
+
+
+def map_blocklist(self, blocklist):
+    """
+    Private method for initialization
+    """
+    self.blocklist = []
+    self.xmin, self.ymin, self.zmin = [1e10] * 3
+    self.xmax, self.ymax, self.zmax = [-1e10] * 3
+
+    if not blocklist:
+        return
+
+    self.blocklist = blocklist
+
+    for block in self.blocklist:
+        self.xmin = min(self.xmin, block.xmin)
+        self.ymin = min(self.ymin, block.ymin)
+        self.zmin = min(self.zmin, block.zmin)
+
+        self.xmax = max(self.xmax, block.xmax)
+        self.ymax = max(self.ymax, block.ymax)
+        self.zmax = max(self.zmax, block.zmax)
+
+
+def map_data(self, data):
+    """
+    Private method for initialization
+    """
+    self._data = None
+
+    if not data:
+        return
+
+    self._data = data

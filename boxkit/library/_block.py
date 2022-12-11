@@ -42,8 +42,8 @@ class Block:
         """Initialize the  object and allocate the data."""
         super().__init__()
 
-        self._set_attributes(attributes)
-        self._map_data(data)
+        set_attributes(self, attributes)
+        map_data(self, data)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -76,8 +76,8 @@ class Block:
         Get xrange of the block
         """
         range_dict = {
-            "center": self.__class__._get_center_loc,
-            "node": self.__class__._get_node_loc,
+            "center": get_center_loc,
+            "node": get_node_loc,
         }
 
         return range_dict[location](
@@ -89,8 +89,8 @@ class Block:
         Get yrange of the block
         """
         range_dict = {
-            "center": self.__class__._get_center_loc,
-            "node": self.__class__._get_node_loc,
+            "center": get_center_loc,
+            "node": get_node_loc,
         }
 
         return range_dict[location](
@@ -109,133 +109,6 @@ class Block:
         return range_dict[location](
             self.zmin, self.zmax, self.dz, self.zguard, self.nzb
         )
-
-    @staticmethod
-    def _get_center_loc(min_val, max_val, delta, guard, num_points):
-        """Private method for center location"""
-        return numpy.linspace(min_val + delta / 2, max_val - delta / 2, num_points)
-
-    @staticmethod
-    def _get_node_loc(min_val, max_val, delta, guard, num_points):
-        """Private method for face location"""
-        return numpy.linspace(min_val, max_val, num_points)
-
-    def _set_attributes(self, attributes):
-        """
-        Private method for intialization
-        """
-        self.dx, self.dy, self.dz = [1.0, 1.0, 1.0]
-        self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
-        self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
-        self.tag = 0
-        self.level = 1
-        self.inputproc = None
-        self.leaf = True
-
-        for key, value in attributes.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
-            else:
-                raise ValueError(
-                    "[boxkit.library.create.Block] "
-                    + f"Attribute {key} not present in class Block"
-                )
-
-        self.xcenter = (self.xmin + self.xmax) / 2.0
-        self.ycenter = (self.ymin + self.ymax) / 2.0
-        self.zcenter = (self.zmin + self.zmax) / 2.0
-
-    def _map_data(self, data):
-        """
-        Private method for initialization
-        """
-        self._data = None
-
-        self.neighdict = {
-            "xlow": None,
-            "xhigh": None,
-            "ylow": None,
-            "yhigh": None,
-            "zlow": None,
-            "zhigh": None,
-        }
-
-        if not data:
-            return
-
-        self._data = data
-
-        if 1 in [self.dx, self.dy, self.dz]:
-            self._set_neighdict_2d()
-        else:
-            self._set_neighdict_3d()
-
-        self.nxb, self.xguard = self._data.nxb, self._data.xguard
-        self.nyb, self.yguard = self._data.nyb, self._data.yguard
-        self.nzb, self.zguard = self._data.nzb, self._data.zguard
-
-    def _set_neighdict_2d(self):
-        """class property python
-        Return neighbor tags
-
-        order - imins,iplus,jmins,jplus
-        """
-        if self.dz == 1:
-            locations = ["xlow", "xhigh", "ylow", "yhigh"]
-        elif self.dy == 1:
-            locations = ["xlow", "xhigh", "zlow", "zhigh"]
-        else:
-            locations = ["ylow", "yhigh", "zlow", "zhigh"]
-
-        if self._data.nblocks > 1:
-            iloc, jloc = pymorton.deinterleave2(self.tag)
-
-            neighlist = [
-                pymorton.interleave(iloc - 1, jloc),
-                pymorton.interleave(iloc + 1, jloc),
-                pymorton.interleave(iloc, jloc - 1),
-                pymorton.interleave(iloc, jloc + 1),
-            ]
-
-            neighlist = [
-                None if neighbor > self._data.nblocks - 1 else neighbor
-                for neighbor in neighlist
-            ]
-
-        else:
-            neighlist = [None] * 4
-
-        self.neighdict.update(dict(zip(locations, neighlist)))
-
-    def _set_neighdict_3d(self):
-        """
-        Return neighbor tags
-
-        order - xmins,xplus,ymins,yplus,zmins,zplus
-        """
-        locations = ["xlow", "xhigh", "ylow", "yhigh", "zlow", "zhigh"]
-
-        if self._data.nblocks > 1:
-            xloc, yloc, zloc = pymorton.deinterleave3(self.tag)
-
-            neighlist = [
-                pymorton.interleave(xloc - 1, yloc, zloc),
-                pymorton.interleave(xloc + 1, yloc, zloc),
-                pymorton.interleave(xloc, yloc - 1, zloc),
-                pymorton.interleave(xloc, yloc + 1, zloc),
-                pymorton.interleave(xloc, yloc, zloc - 1),
-                pymorton.interleave(xloc, yloc, zloc + 1),
-            ]
-
-            neighlist = [
-                None if neighbor > self._data.nblocks - 1 else neighbor
-                for neighbor in neighlist
-            ]
-
-        else:
-            neighlist = [None] * 6
-
-        self.neighdict.update(dict(zip(locations, neighlist)))
 
     def write_neighbuffer(self, varkey):
         """
@@ -307,3 +180,134 @@ class Block:
                 blockdata[self.nzb + self.zguard + guard, :, :] = self.neighdata(
                     varkey, "zhigh"
                 )[self.zguard + guard, :, :]
+
+
+def get_center_loc(min_val, max_val, delta, guard, num_points):
+    """Private method for center location"""
+    return numpy.linspace(min_val + delta / 2, max_val - delta / 2, num_points)
+
+
+def get_node_loc(min_val, max_val, delta, guard, num_points):
+    """Private method for face location"""
+    return numpy.linspace(min_val, max_val, num_points)
+
+
+def set_attributes(self, attributes):
+    """
+    Private method for intialization
+    """
+    self.dx, self.dy, self.dz = [1.0, 1.0, 1.0]
+    self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
+    self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
+    self.tag = 0
+    self.level = 1
+    self.inputproc = None
+    self.leaf = True
+
+    for key, value in attributes.items():
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            raise ValueError(
+                "[boxkit.library.create.Block] "
+                + f"Attribute {key} not present in class Block"
+            )
+
+    self.xcenter = (self.xmin + self.xmax) / 2.0
+    self.ycenter = (self.ymin + self.ymax) / 2.0
+    self.zcenter = (self.zmin + self.zmax) / 2.0
+
+
+def map_data(self, data):
+    """
+    Private method for initialization
+    """
+    self._data = None
+
+    self.neighdict = {
+        "xlow": None,
+        "xhigh": None,
+        "ylow": None,
+        "yhigh": None,
+        "zlow": None,
+        "zhigh": None,
+    }
+
+    if not data:
+        return
+
+    self._data = data
+
+    if 1 in [self.dx, self.dy, self.dz]:
+        set_neighdict_2d(self)
+    else:
+        set_neighdict_3d(self)
+
+    self.nxb, self.xguard = self._data.nxb, self._data.xguard
+    self.nyb, self.yguard = self._data.nyb, self._data.yguard
+    self.nzb, self.zguard = self._data.nzb, self._data.zguard
+
+
+def set_neighdict_2d(self):
+    """class property python
+    Return neighbor tags
+
+    order - imins,iplus,jmins,jplus
+    """
+    if self.dz == 1:
+        locations = ["xlow", "xhigh", "ylow", "yhigh"]
+    elif self.dy == 1:
+        locations = ["xlow", "xhigh", "zlow", "zhigh"]
+    else:
+        locations = ["ylow", "yhigh", "zlow", "zhigh"]
+
+    if self._data.nblocks > 1:
+        iloc, jloc = pymorton.deinterleave2(self.tag)
+
+        neighlist = [
+            pymorton.interleave(iloc - 1, jloc),
+            pymorton.interleave(iloc + 1, jloc),
+            pymorton.interleave(iloc, jloc - 1),
+            pymorton.interleave(iloc, jloc + 1),
+        ]
+
+        neighlist = [
+            None if neighbor > self._data.nblocks - 1 else neighbor
+            for neighbor in neighlist
+        ]
+
+    else:
+        neighlist = [None] * 4
+
+    self.neighdict.update(dict(zip(locations, neighlist)))
+
+
+def set_neighdict_3d(self):
+    """
+    Return neighbor tags
+
+    order - xmins,xplus,ymins,yplus,zmins,zplus
+    """
+    locations = ["xlow", "xhigh", "ylow", "yhigh", "zlow", "zhigh"]
+
+    if self._data.nblocks > 1:
+        xloc, yloc, zloc = pymorton.deinterleave3(self.tag)
+
+        neighlist = [
+            pymorton.interleave(xloc - 1, yloc, zloc),
+            pymorton.interleave(xloc + 1, yloc, zloc),
+            pymorton.interleave(xloc, yloc - 1, zloc),
+            pymorton.interleave(xloc, yloc + 1, zloc),
+            pymorton.interleave(xloc, yloc, zloc - 1),
+            pymorton.interleave(xloc, yloc, zloc + 1),
+        ]
+
+        neighlist = [
+            None if neighbor > self._data.nblocks - 1 else neighbor
+            for neighbor in neighlist
+        ]
+
+    else:
+        neighlist = [None] * 6
+
+    self.neighdict.update(dict(zip(locations, neighlist)))
