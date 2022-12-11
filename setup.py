@@ -43,6 +43,7 @@ DEPENDENCIES = [
     "tqdm",
     "toml",
     "psutil",
+    "progress",
 ]
 
 # Call setup command with necessary arguments
