@@ -4,6 +4,14 @@ from . import Block
 from . import Data
 from . import Action
 
+# DEVNOTE: The main class is separated from
+# some initialization methods to investigate
+# cache optimization during pickling. A call
+# to these methods from parallel environment
+# can result in some bottlenecks. If and when
+# a need arises to use some of these methods
+# in the future, then they should be assigned
+# to the class object
 
 class Dataset:
     """API class for storing Dataset info"""
@@ -131,36 +139,36 @@ def halo_exchange_blk(unit, varkey):
     unit.exchange_neighdata(varkey)
 
 
-def map_blocklist(self, blocklist):
+def map_blocklist(dataset, blocklist):
     """
     Private method for initialization
     """
-    self.blocklist = []
-    self.xmin, self.ymin, self.zmin = [1e10] * 3
-    self.xmax, self.ymax, self.zmax = [-1e10] * 3
+    dataset.blocklist = []
+    dataset.xmin, dataset.ymin, dataset.zmin = [1e10] * 3
+    dataset.xmax, dataset.ymax, dataset.zmax = [-1e10] * 3
 
     if not blocklist:
         return
 
-    self.blocklist = blocklist
+    dataset.blocklist = blocklist
 
-    for block in self.blocklist:
-        self.xmin = min(self.xmin, block.xmin)
-        self.ymin = min(self.ymin, block.ymin)
-        self.zmin = min(self.zmin, block.zmin)
+    for block in dataset.blocklist:
+        dataset.xmin = min(dataset.xmin, block.xmin)
+        dataset.ymin = min(dataset.ymin, block.ymin)
+        dataset.zmin = min(dataset.zmin, block.zmin)
 
-        self.xmax = max(self.xmax, block.xmax)
-        self.ymax = max(self.ymax, block.ymax)
-        self.zmax = max(self.zmax, block.zmax)
+        dataset.xmax = max(dataset.xmax, block.xmax)
+        dataset.ymax = max(dataset.ymax, block.ymax)
+        dataset.zmax = max(dataset.zmax, block.zmax)
 
 
-def map_data(self, data):
+def map_data(dataset, data):
     """
     Private method for initialization
     """
-    self._data = None
+    dataset._data = None
 
     if not data:
         return
 
-    self._data = data
+    dataset._data = data
