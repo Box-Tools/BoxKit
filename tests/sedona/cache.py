@@ -64,7 +64,11 @@ class TestCache(unittest.TestCase):
             timer_mergeblock_opt = Timer("[mergblocks.optimized]")
 
             merged_dataset = boxkit.mergeblocks(
-                dataset, ["uvel", "vvel", "wvel", "temp", "phi"], nthreads=8, backend="loky", monitor=False
+                dataset,
+                ["uvel", "vvel", "wvel", "temp", "phi"],
+                nthreads=8,
+                backend="loky",
+                monitor=False,
             )
 
             del timer_mergeblock_opt
@@ -76,7 +80,6 @@ class TestCache(unittest.TestCase):
 
         for dataset in dataframes:
             dataset.purge("boxmem")
-
 
     def test_02_naive_3D(self):
         """
@@ -140,6 +143,7 @@ class TestCache(unittest.TestCase):
     def tearDown(self):
         """Clean up and timing"""
         del self.timer
+
 
 if __name__ == "__main__":
     unittest.main()

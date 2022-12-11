@@ -22,7 +22,9 @@ class TestHeater(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
+        print(
+            f"\n-------------------------Running: {self.id()}-------------------------\n"
+        )
 
         self.timestart = time.time()
 
@@ -43,9 +45,9 @@ class TestHeater(unittest.TestCase):
         self.customSetUp("oneblk")
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
-        testMonitor = Monitor("test")
-        testMonitor.setlimit(len(dataframes))
-        monitorMsg = "run:" + self.id() + ": "
+        testMonitor = Monitor(
+            msg_="run:" + self.id() + ": ", iter_=len(dataframes), type_="action"
+        )
 
         for dataset in dataframes:
 
@@ -56,7 +58,8 @@ class TestHeater(unittest.TestCase):
                     "Single block data structure has no neighbors",
                 )
 
-            testMonitor.update(monitorMsg)
+            testMonitor.update()
+        testMonitor.finish()
 
         for dataset in dataframes:
             dataset.purge("boxmem")

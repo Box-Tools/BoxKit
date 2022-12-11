@@ -10,7 +10,9 @@ class TestApplication(unittest.TestCase):
     def test_flowx(self):
         """test flowx library"""
 
-        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
+        print(
+            f"\n-------------------------Running: {self.id()}-------------------------\n"
+        )
 
         # Define grid parameters
         nx, ny = 448, 448

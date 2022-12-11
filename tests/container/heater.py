@@ -7,6 +7,7 @@ import pymorton
 import boxkit
 from boxkit.library import Monitor, Timer
 
+
 class TestHeater(unittest.TestCase):
     """boxkit unit test for 2D Heater Data"""
 
@@ -37,9 +38,9 @@ class TestHeater(unittest.TestCase):
         self.customSetUp()
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
-        testMonitor = Monitor("test")
-        testMonitor.setlimit(len(dataframes))
-        monitorMsg = "run:" + self.id() + ": "
+        testMonitor = Monitor(
+            msg_="run:" + self.id() + ": ", max_=len(dataframes), type_="test"
+        )
 
         for dataset in dataframes:
 
@@ -75,7 +76,8 @@ class TestHeater(unittest.TestCase):
                     "Neigbhors are inconsitent with morton order",
                 )
 
-            testMonitor.update(monitorMsg)
+            testMonitor.update()
+        testMonitor.finish()
 
         for dataset in dataframes:
             dataset.purge("boxmem")
@@ -102,6 +104,7 @@ class TestHeater(unittest.TestCase):
     def tearDown(self):
         """Clean up and timing"""
         del self.timer
+
 
 if __name__ == "__main__":
     unittest.main()

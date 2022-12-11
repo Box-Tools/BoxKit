@@ -1,33 +1,49 @@
 """Module with implementaion of Monitor class"""
 
-from ..cbox.lib import boost as cbox
+from progress.bar import Bar, ChargingBar
+
+from .. import options
+
+if options.cbox:
+    from ..cbox.lib import boost as cbox
 
 
-class Monitor(cbox.library.Monitor):
+class Monitor:
     """
     Dervied class of a Boost.Python.Class
     """
 
-    def __init__(self, _type):
+    def __init__(self, msg_="", iter_=1, type_="test"):
         """
         Initialize and create object
         """
-        super().__init__(_type)
+        if options.cbox:
+            self._bar = cbox.library.Monitor(type_)
+            self._bar._setlimit(iter_)
+            self.msg = msg_
 
-    def setlimit(self, iterlimit):
-        """
-        set max progress for monitor
-        """
-        self._setlimit(iterlimit)
+        else:
+            if type_ == "test":
+                self._bar = Bar(msg_, max=iter_)
 
-    def update(self, msg="", progress=0):
+            elif type_ == "action":
+                self._bar = ChargingBar(msg_, max=iter_)
+
+            else:
+                raise NotImplementedError
+
+    def update(self):
         """
         update monitor
         """
-        self._update(msg, progress)
+        if options.cbox:
+            self._bar._update(self.msg, 0)
+        else:
+            self._bar.next()
 
-    def gettype(self):
+    def finish(self):
         """
-        Get type
+        finish
         """
-        return self._gettype
+        if not options.cbox:
+            self._bar.finish()
