@@ -35,7 +35,7 @@ class TestCache(unittest.TestCase):
             os.getenv("HOME")
             + "/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/not-chunked/"
         )
-        filetags = [*range(0, 58, 10)]
+        filetags = [30]
         prefix = "INS_Pool_Boiling_hdf5_"
         self.filenames = [
             "".join([basedir, prefix, str(filetag).zfill(4)]) for filetag in filetags
@@ -51,7 +51,7 @@ class TestCache(unittest.TestCase):
         ]
 
         for dataset in dataframes:
-            merged_dataset = boxkit.mergeblocks(dataset, "vvel", nthreads=8, backend="loky", monitor=True)
+            merged_dataset = boxkit.mergeblocks(dataset, "vvel", monitor=True)
 
     def test_naive_3D(self):
         """

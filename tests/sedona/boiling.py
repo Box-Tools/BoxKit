@@ -173,7 +173,7 @@ class TestBoiling(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        average_dataset = boxkit.mean_temporal(dataframes, "vvel", nthreads=8, backend="loky")
+        average_dataset = boxkit.mean_temporal(dataframes, "vvel", nthreads=8, backend="loky", monitor=True)
 
         for dataset in dataframes:
             dataset.purge("boxmem")

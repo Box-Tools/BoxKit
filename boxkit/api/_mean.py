@@ -69,11 +69,11 @@ def mean_temporal(
     for varkey in varlist:
         average_dataset.addvar(varkey)
 
-        reduce_dset_list.nthreads = nthreads
-        reduce_dset_list.backend = backend
+        reduce_dset_list.nthreads = 1
+        reduce_dset_list.backend = "serial"
 
         if monitor:
-            time_reduction = library.Timer("[boxkit.mean_temporal.reduce_dset]")
+            time_reduction = library.Timer("[boxkit.mean_temporal.reduce_dset_list]")
 
         reduce_dset_list(merged_datasets, average_dataset, varkey, len(merged_datasets))
 
@@ -95,4 +95,6 @@ def reduce_dset_list(unit, average_dataset, varkey, sample_size):
     Reduce dataset / compute average
     """
     for block_avg, block_unit in zip(average_dataset.blocklist, unit.blocklist):
-        block_avg[varkey][:] = block_unit[varkey][:] / sample_size
+        block_avg[varkey][:] = (
+            block_avg[varkey][:] + block_unit[varkey][:] / sample_size
+        )
