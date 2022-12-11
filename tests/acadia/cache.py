@@ -9,8 +9,7 @@ import numpy
 import h5py
 
 import boxkit
-from boxkit.library import Monitor, Timer
-
+from boxkit.library import Timer
 
 class TestCache(unittest.TestCase):
     """boxkit unit test for 3D boiling data"""
@@ -66,6 +65,8 @@ class TestCache(unittest.TestCase):
 
         for dataset in dataframes:
 
+            timer_mergeblocks_naive = Timer("[mergeblocks.naive]")
+
             merged_dataset = numpy.zeros([nblockz * nzb, nblocky * nyb, nblockx * nxb])
             vvel = numpy.array(dataset["quantities"]["vvel"][:])
 
@@ -78,6 +79,8 @@ class TestCache(unittest.TestCase):
                     nxb * iloc : nxb * (iloc + 1),
                 ] = vvel[lblock, :, :, :]
           
+            del timer_mergeblocks_naive
+
     def tearDown(self):
         """Clean up and timing"""
         del self.timer

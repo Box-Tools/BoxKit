@@ -66,6 +66,8 @@ class TestCache(unittest.TestCase):
 
         for dataset in dataframes:
 
+            timer_mergeblocks_naive = Timer("[mergeblocks.naive]")
+
             merged_dataset = numpy.zeros([nblockz * nzb, nblocky * nyb, nblockx * nxb])
             vvel = numpy.array(dataset["quantities"]["vvel"][:])
 
@@ -77,6 +79,8 @@ class TestCache(unittest.TestCase):
                     nyb * jloc : nyb * (jloc + 1),
                     nxb * iloc : nxb * (iloc + 1),
                 ] = vvel[lblock, :, :, :]
+
+            del timer_mergeblocks_naive
           
     def tearDown(self):
         """Clean up and timing"""
