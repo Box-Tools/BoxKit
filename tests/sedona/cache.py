@@ -9,7 +9,7 @@ import numpy
 import h5py
 
 import boxkit
-from boxkit.library import Monitor, Timer
+from boxkit.library import Timer, Action, Dataset
 
 
 class TestCache(unittest.TestCase):
@@ -41,6 +41,15 @@ class TestCache(unittest.TestCase):
             "".join([basedir, prefix, str(filetag).zfill(4)]) for filetag in filetags
         ]
 
+        self.mean_refs = [
+            0.09109748979981146,
+            0.0997722935402521,
+            0.11196033087810948,
+            0.11828425437773828,
+            0.12960478109109547,
+            0.1472795289832985,
+        ]
+
     def test_optimized_3D(self):
         """
         Test optimize implementation
@@ -50,8 +59,17 @@ class TestCache(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        for dataset in dataframes:
-            merged_dataset = boxkit.mergeblocks(dataset, "vvel", nthreads=8, backend="loky", monitor=True)
+        for dataset, mean_ref in zip(dataframes, self.mean_refs):
+
+            timer_mergeblock_opt = Timer("[mergblocks.optimized]")
+            merged_dataset = boxkit.mergeblocks(
+                dataset, "vvel", nthreads=8, backend="loky"
+            )
+            del timer_mergeblock_opt
+
+            self.assertEqual(numpy.mean(merged_dataset["vvel"][:]), mean_ref)
+
+            del merged_dataset
 
     def test_naive_3D(self):
         """
@@ -59,14 +77,14 @@ class TestCache(unittest.TestCase):
         """
         dataframes = [h5py.File(filename, "r") for filename in self.filenames]
 
-        nblocks, nxb, nyb, nzb = dataframes[0]["quantities"]["vvel"].shape
-        nblockx = int(numpy.cbrt(nblocks))
-        nblocky = nblockx
-        nblockz = nblockx
-
-        for dataset in dataframes:
+        for dataset, mean_ref in zip(dataframes, self.mean_refs):
 
             timer_mergeblocks_naive = Timer("[mergeblocks.naive]")
+
+            nblocks, nxb, nyb, nzb = dataset["quantities"]["vvel"].shape
+            nblockx = int(numpy.cbrt(nblocks))
+            nblocky = nblockx
+            nblockz = nblockx
 
             merged_dataset = numpy.zeros([nblockz * nzb, nblocky * nyb, nblockx * nxb])
             vvel = numpy.array(dataset["quantities"]["vvel"][:])
@@ -81,7 +99,9 @@ class TestCache(unittest.TestCase):
                 ] = vvel[lblock, :, :, :]
 
             del timer_mergeblocks_naive
-          
+
+            self.assertEqual(numpy.mean(merged_dataset[:]), mean_ref)
+
     def tearDown(self):
         """Clean up and timing"""
         del self.timer
