@@ -66,32 +66,32 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
     for varkey in varlist:
         merged_dataset.addvar(varkey, dtype=dataset.dtype[varkey])
 
-        resources = library.Resources()
+    resources = library.Resources()
 
-        if monitor:
-            print(
-                f'[cpu_count]: {resources["cpu_count"]}',
-                f'[cpu_avail]: {resources["cpu_avail"]}',
-                f'[mem_avail]: {resources["mem_avail"]} GB',
-                f'[cpu_usage]: {resources["cpu_usage"]}%',
-                f'[mem_usage]: {resources["mem_usage"]}%',
-            )
+    if monitor:
+        print(
+            f'[cpu_count]: {resources["cpu_count"]}',
+            f'[cpu_avail]: {resources["cpu_avail"]}',
+            f'[mem_avail]: {resources["mem_avail"]} GB',
+            f'[cpu_usage]: {resources["cpu_usage"]}%',
+            f'[mem_usage]: {resources["mem_usage"]}%',
+        )
 
-            print(
-                f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varkey][:])/(2**20),2)} MB"
-            )
+        print(
+            f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varkey][:])/(2**20),2)} MB"
+        )
 
-        map_blk_to_merged_dset.nthreads = nthreads
-        map_blk_to_merged_dset.monitor = monitor
-        map_blk_to_merged_dset.backend = backend
+    map_blk_to_merged_dset.nthreads = nthreads
+    map_blk_to_merged_dset.monitor = monitor
+    map_blk_to_merged_dset.backend = backend
 
-        if monitor:
-            time_mapping = library.Timer("[boxkit.mergeblocks.map_dataset_block]")
+    if monitor:
+        time_mapping = library.Timer("[boxkit.mergeblocks.map_dataset_block]")
 
-        map_blk_to_merged_dset(blocklist_sorted, merged_dataset, varkey)
+    map_blk_to_merged_dset(blocklist_sorted, merged_dataset, varlist)
 
-        if monitor:
-            del time_mapping
+    if monitor:
+        del time_mapping
 
     if monitor:
         del time_mergeblocks
@@ -100,7 +100,7 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
 
 
 @library.Action(unit=library.Block)
-def map_blk_to_merged_dset(unit, merged_dataset, varkey):
+def map_blk_to_merged_dset(unit, merged_dataset, varlist):
     """
     map block to a merged dataset
     """
@@ -108,9 +108,10 @@ def map_blk_to_merged_dset(unit, merged_dataset, varkey):
         origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
     )
 
-    for block in merged_dataset.blocklist:
-        block[varkey][
-            unit.nzb * kloc : unit.nzb * (kloc + 1),
-            unit.nyb * jloc : unit.nyb * (jloc + 1),
-            unit.nxb * iloc : unit.nxb * (iloc + 1),
-        ] = unit[varkey][:, :, :]
+    for varkey in varlist:
+        for block in merged_dataset.blocklist:
+            block[varkey][
+                unit.nzb * kloc : unit.nzb * (kloc + 1),
+                unit.nyb * jloc : unit.nyb * (jloc + 1),
+                unit.nxb * iloc : unit.nxb * (iloc + 1),
+            ] = unit[varkey][:, :, :]

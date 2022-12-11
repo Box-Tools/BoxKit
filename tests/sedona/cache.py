@@ -50,28 +50,35 @@ class TestCache(unittest.TestCase):
             0.1472795289832985,
         ]
 
-    def test_optimized_3D(self):
+    def test_01_optimized_3D(self):
         """
         Test optimize implementation
         """
         dataframes = [
-            boxkit.read_dataset(filename, storage="numpy-memmap")
+            boxkit.read_dataset(filename, storage="numpy")
             for filename in self.filenames
         ]
 
         for dataset, mean_ref in zip(dataframes, self.mean_refs):
 
             timer_mergeblock_opt = Timer("[mergblocks.optimized]")
+
             merged_dataset = boxkit.mergeblocks(
-                dataset, "vvel", nthreads=8, backend="loky"
+                dataset, ["uvel", "vvel", "wvel", "temp", "phi"], nthreads=8, backend="loky", monitor=False
             )
+
             del timer_mergeblock_opt
 
             self.assertEqual(numpy.mean(merged_dataset["vvel"][:]), mean_ref)
 
+            merged_dataset.purge("boxmem")
             del merged_dataset
 
-    def test_naive_3D(self):
+        for dataset in dataframes:
+            dataset.purge("boxmem")
+
+
+    def test_02_naive_3D(self):
         """
         Test naiver implementation
         """
@@ -86,26 +93,53 @@ class TestCache(unittest.TestCase):
             nblocky = nblockx
             nblockz = nblockx
 
-            merged_dataset = numpy.zeros([nblockz * nzb, nblocky * nyb, nblockx * nxb])
-            vvel = numpy.array(dataset["quantities"]["vvel"][:])
+            merged_uvel = numpy.zeros([nblockz * nzb, nblocky * nyb, nblockx * nxb])
+            merged_vvel = numpy.zeros_like(merged_uvel)
+            merged_wvel = numpy.zeros_like(merged_uvel)
+            merged_temp = numpy.zeros_like(merged_uvel)
+            merged_phi = numpy.zeros_like(merged_uvel)
 
             for lblock in range(nblocks):
                 iloc, jloc, kloc = pymorton.deinterleave3(lblock)
 
-                merged_dataset[
+                merged_uvel[
                     nzb * kloc : nzb * (kloc + 1),
                     nyb * jloc : nyb * (jloc + 1),
                     nxb * iloc : nxb * (iloc + 1),
-                ] = vvel[lblock, :, :, :]
+                ] = dataset["quantities"]["uvel"][lblock, :, :, :]
+
+                merged_vvel[
+                    nzb * kloc : nzb * (kloc + 1),
+                    nyb * jloc : nyb * (jloc + 1),
+                    nxb * iloc : nxb * (iloc + 1),
+                ] = dataset["quantities"]["vvel"][lblock, :, :, :]
+
+                merged_wvel[
+                    nzb * kloc : nzb * (kloc + 1),
+                    nyb * jloc : nyb * (jloc + 1),
+                    nxb * iloc : nxb * (iloc + 1),
+                ] = dataset["quantities"]["wvel"][lblock, :, :, :]
+
+                merged_temp[
+                    nzb * kloc : nzb * (kloc + 1),
+                    nyb * jloc : nyb * (jloc + 1),
+                    nxb * iloc : nxb * (iloc + 1),
+                ] = dataset["quantities"]["temp"][lblock, :, :, :]
+
+                merged_phi[
+                    nzb * kloc : nzb * (kloc + 1),
+                    nyb * jloc : nyb * (jloc + 1),
+                    nxb * iloc : nxb * (iloc + 1),
+                ] = dataset["quantities"]["phi"][lblock, :, :, :]
 
             del timer_mergeblocks_naive
 
-            self.assertEqual(numpy.mean(merged_dataset[:]), mean_ref)
+            self.assertEqual(numpy.mean(merged_vvel[:]), mean_ref)
+            del merged_uvel, merged_vvel, merged_wvel
 
     def tearDown(self):
         """Clean up and timing"""
         del self.timer
-
 
 if __name__ == "__main__":
     unittest.main()

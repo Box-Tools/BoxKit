@@ -5,6 +5,7 @@ import string
 import random
 import shutil
 
+import h5pickle
 import numpy
 
 from .. import options
@@ -128,6 +129,8 @@ class Data(_DataBase):
             self._create_numpy_arrays()
         elif self.storage == "numpy-memmap":
             self._create_numpy_memmap()
+        elif self.storage == "h5-datasets":
+            self._create_h5_datasets()
         elif self.storage == "zarr":
             self._create_zarr_objects()
         elif self.storage == "dask":
@@ -138,6 +141,47 @@ class Data(_DataBase):
                 "[boxkit.library.create.Data] "
                 + f'Storage format "{self.storage}" not implemented'
             )
+
+    def _create_h5_datasets(self):
+        """
+        Create h5 datasets for empty keys in variables dictionary
+        """
+        emptykeys = [
+            key
+            for key, value in self.variables.items()
+            if isinstance(value, type(None))
+        ]
+        if not emptykeys:
+            return
+
+        if not self.boxmem:
+            namerandom = "".join(
+                random.choice(string.ascii_lowercase) for i in range(5)
+            )
+            self.boxmem = "".join(["./boxmem/", namerandom])
+        try:
+            os.makedirs(self.boxmem)
+        except FileExistsError:
+            pass
+
+        for varkey in emptykeys:
+            outputfile = h5pickle.File(os.path.join(self.boxmem, varkey), "w")
+
+            outputshape = [
+                self.nblocks,
+                self.nzb + 2 * self.zguard,
+                self.nyb + 2 * self.yguard,
+                self.nxb + 2 * self.xguard,
+            ]
+
+            outputfile.create_dataset(
+                varkey, data=numpy.zeros(outputshape, dtype=self.dtype[varkey])
+            )
+            outputfile.close()
+
+            self.variables[varkey] = h5pickle.File(
+                os.path.join(self.boxmem, varkey), "r+", skip_cache=False
+            )[varkey]
 
     def _create_numpy_memmap(self):
         """
