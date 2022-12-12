@@ -62,7 +62,7 @@ class TestHeater(unittest.TestCase):
         testMonitor.finish()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_regionprops_oneblk_2D(self):
         """
@@ -83,7 +83,7 @@ class TestHeater(unittest.TestCase):
         )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_regionprops_blocks_2D(self):
         """
@@ -108,7 +108,7 @@ class TestHeater(unittest.TestCase):
         )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def tearDown(self):
         """Clean up and timing"""

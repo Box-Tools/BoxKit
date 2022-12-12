@@ -61,7 +61,7 @@ class TestBoiling(unittest.TestCase):
         testMonitor.finish()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_neighbors_3D(self):
         """
@@ -100,7 +100,7 @@ class TestBoiling(unittest.TestCase):
         testMonitor.finish()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_slice_3D(self):
         """
@@ -121,7 +121,7 @@ class TestBoiling(unittest.TestCase):
         testMonitor.finish()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_regionprops_3D(self):
         """
@@ -150,7 +150,7 @@ class TestBoiling(unittest.TestCase):
         self.assertEqual(numbubbles, [1341, 1380, 1262, 1255, 1351, 1362])
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_mergeblocks_3D(self):
         """
@@ -165,10 +165,10 @@ class TestBoiling(unittest.TestCase):
             reshaped_dataset = boxkit.mergeblocks(
                 dataset, "phi", nthreads=8, monitor=True, backend="loky"
             )
-            reshaped_dataset.purge("boxmem")
+            reshaped_dataset.purge()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_mean_temporal_3D(self):
         """
@@ -184,9 +184,9 @@ class TestBoiling(unittest.TestCase):
         )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
-        average_dataset.purge("boxmem")
+        average_dataset.purge()
 
     def tearDown(self):
         """Clean up and timing"""

@@ -19,7 +19,7 @@ def read_test_sample(filename, server):
     """
 
     # Read the hdf5 file
-    inputfile = h5py.File(filename, "r", skip_cache=False)
+    inputfile = h5py.File(filename, "r", skip_cache=True)
 
     # Extract data
     nblocks = inputfile["numbox"][0] * inputfile["numbox"][1] * inputfile["numbox"][2]

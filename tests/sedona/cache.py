@@ -81,11 +81,11 @@ class TestCache(unittest.TestCase):
 
             self.assertEqual(numpy.mean(merged_dataset["vvel"][:]), mean_ref)
 
-            merged_dataset.purge("boxmem")
+            merged_dataset.purge()
             del merged_dataset
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_02_naive_3D(self):
         """
