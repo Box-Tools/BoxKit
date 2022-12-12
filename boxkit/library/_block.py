@@ -71,45 +71,6 @@ class Block:
         """
         self._data[varkey][self.tag] = value  # .to_numpy()[:] = value
 
-    def xrange(self, location):
-        """
-        Get xrange of the block
-        """
-        range_dict = {
-            "center": get_center_loc,
-            "node": get_node_loc,
-        }
-
-        return range_dict[location](
-            self.xmin, self.xmax, self.dx, self.xguard, self.nxb
-        )
-
-    def yrange(self, location):
-        """
-        Get yrange of the block
-        """
-        range_dict = {
-            "center": get_center_loc,
-            "node": get_node_loc,
-        }
-
-        return range_dict[location](
-            self.ymin, self.ymax, self.dy, self.yguard, self.nyb
-        )
-
-    def zrange(self, location):
-        """
-        Get zrange of the block
-        """
-        range_dict = {
-            "center": self.__class__._get_center_loc,
-            "node": self.__class__._get_node_loc,
-        }
-
-        return range_dict[location](
-            self.zmin, self.zmax, self.dz, self.zguard, self.nzb
-        )
-
     def write_neighbuffer(self, varkey):
         """
         Write block data to buffer for halo exchange
@@ -192,39 +153,42 @@ def get_node_loc(min_val, max_val, delta, guard, num_points):
     return numpy.linspace(min_val, max_val, num_points)
 
 
-def set_attributes(self, attributes):
+def set_attributes(block, attributes):
     """
     Private method for intialization
     """
-    self.dx, self.dy, self.dz = [1.0, 1.0, 1.0]
-    self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
-    self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
-    self.tag = 0
-    self.level = 1
-    self.inputproc = None
-    self.leaf = True
+    block.dx, block.dy, block.dz = [1.0, 1.0, 1.0]
+    block.xmin, block.ymin, block.zmin = [0.0, 0.0, 0.0]
+    block.xmax, block.ymax, block.zmax = [0.0, 0.0, 0.0]
+    block.tag = 0
+    block.level = 1
+    block.inputproc = None
+    block.leaf = True
+    block.xrange = {}
+    block.yrange = {}
+    block.zrange = {}
 
     for key, value in attributes.items():
-        if hasattr(self, key):
-            setattr(self, key, value)
+        if hasattr(block, key):
+            setattr(block, key, value)
         else:
             raise ValueError(
                 "[boxkit.library.create.Block] "
                 + f"Attribute {key} not present in class Block"
             )
 
-    self.xcenter = (self.xmin + self.xmax) / 2.0
-    self.ycenter = (self.ymin + self.ymax) / 2.0
-    self.zcenter = (self.zmin + self.zmax) / 2.0
+    block.xcenter = (block.xmin + block.xmax) / 2.0
+    block.ycenter = (block.ymin + block.ymax) / 2.0
+    block.zcenter = (block.zmin + block.zmax) / 2.0
 
 
-def map_data(self, data):
+def map_data(block, data):
     """
     Private method for initialization
     """
-    self._data = None
+    block._data = None
 
-    self.neighdict = {
+    block.neighdict = {
         "xlow": None,
         "xhigh": None,
         "ylow": None,
@@ -236,33 +200,54 @@ def map_data(self, data):
     if not data:
         return
 
-    self._data = data
+    block._data = data
 
-    if 1 in [self.dx, self.dy, self.dz]:
-        set_neighdict_2d(self)
+    if 1 in [block.dx, block.dy, block.dz]:
+        set_neighdict_2d(block)
     else:
-        set_neighdict_3d(self)
+        set_neighdict_3d(block)
 
-    self.nxb, self.xguard = self._data.nxb, self._data.xguard
-    self.nyb, self.yguard = self._data.nyb, self._data.yguard
-    self.nzb, self.zguard = self._data.nzb, self._data.zguard
+    block.nxb, block.xguard = block._data.nxb, block._data.xguard
+    block.nyb, block.yguard = block._data.nyb, block._data.yguard
+    block.nzb, block.zguard = block._data.nzb, block._data.zguard
+
+    block.xrange["center"] = get_center_loc(
+        block.xmin, block.xmax, block.dx, block.xguard, block.nxb
+    )
+    block.xrange["node"] = get_node_loc(
+        block.xmin, block.xmax, block.dx, block.xguard, block.nxb
+    )
+
+    block.yrange["center"] = get_center_loc(
+        block.ymin, block.ymax, block.dy, block.yguard, block.nyb
+    )
+    block.yrange["node"] = get_node_loc(
+        block.ymin, block.ymax, block.dy, block.yguard, block.nyb
+    )
+
+    block.zrange["center"] = get_center_loc(
+        block.zmin, block.zmax, block.dz, block.zguard, block.nzb
+    )
+    block.zrange["node"] = get_node_loc(
+        block.zmin, block.zmax, block.dz, block.zguard, block.nzb
+    )
 
 
-def set_neighdict_2d(self):
+def set_neighdict_2d(block):
     """class property python
     Return neighbor tags
 
     order - imins,iplus,jmins,jplus
     """
-    if self.dz == 1:
+    if block.dz == 1:
         locations = ["xlow", "xhigh", "ylow", "yhigh"]
-    elif self.dy == 1:
+    elif block.dy == 1:
         locations = ["xlow", "xhigh", "zlow", "zhigh"]
     else:
         locations = ["ylow", "yhigh", "zlow", "zhigh"]
 
-    if self._data.nblocks > 1:
-        iloc, jloc = pymorton.deinterleave2(self.tag)
+    if block._data.nblocks > 1:
+        iloc, jloc = pymorton.deinterleave2(block.tag)
 
         neighlist = [
             pymorton.interleave(iloc - 1, jloc),
@@ -272,17 +257,17 @@ def set_neighdict_2d(self):
         ]
 
         neighlist = [
-            None if neighbor > self._data.nblocks - 1 else neighbor
+            None if neighbor > block._data.nblocks - 1 else neighbor
             for neighbor in neighlist
         ]
 
     else:
         neighlist = [None] * 4
 
-    self.neighdict.update(dict(zip(locations, neighlist)))
+    block.neighdict.update(dict(zip(locations, neighlist)))
 
 
-def set_neighdict_3d(self):
+def set_neighdict_3d(block):
     """
     Return neighbor tags
 
@@ -290,8 +275,8 @@ def set_neighdict_3d(self):
     """
     locations = ["xlow", "xhigh", "ylow", "yhigh", "zlow", "zhigh"]
 
-    if self._data.nblocks > 1:
-        xloc, yloc, zloc = pymorton.deinterleave3(self.tag)
+    if block._data.nblocks > 1:
+        xloc, yloc, zloc = pymorton.deinterleave3(block.tag)
 
         neighlist = [
             pymorton.interleave(xloc - 1, yloc, zloc),
@@ -303,11 +288,11 @@ def set_neighdict_3d(self):
         ]
 
         neighlist = [
-            None if neighbor > self._data.nblocks - 1 else neighbor
+            None if neighbor > block._data.nblocks - 1 else neighbor
             for neighbor in neighlist
         ]
 
     else:
         neighlist = [None] * 6
 
-    self.neighdict.update(dict(zip(locations, neighlist)))
+    block.neighdict.update(dict(zip(locations, neighlist)))
