@@ -65,12 +65,12 @@ class TestCache(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        nthreads, subthreads = [2, 8]
+        nthreads, subthreads = [1, 8]
 
         print(f"nthreads: {nthreads}, subthreads: {subthreads}")
 
         merge_dset_list.nthreads = nthreads
-        merge_dset_list.backend = "loky"
+        merge_dset_list.backend = "serial"
 
         mean = merge_dset_list(dataframes, subthreads=subthreads)
 
