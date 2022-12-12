@@ -67,7 +67,7 @@ class TestMergeBlocks(unittest.TestCase):
 
         mean = []
 
-        nthreads = 8
+        nthreads = int(os.getenv("NTHREADS"))
         print(f"nthreads: {nthreads}")
 
         for dataset in dataframes:
