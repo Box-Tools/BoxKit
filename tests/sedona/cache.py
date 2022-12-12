@@ -65,27 +65,19 @@ class TestCache(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        for dataset, mean_ref in zip(dataframes, self.mean_refs):
+        nthreads, subthreads = [2, 8]
 
-            timer_mergeblock_opt = Timer("[mergblocks.optimized]")
+        print(f"nthreads: {nthreads}, subthreads: {subthreads}")
 
-            merged_dataset = boxkit.mergeblocks(
-                dataset,
-                ["uvel", "vvel", "wvel", "temp", "phi"],
-                nthreads=8,
-                backend="loky",
-                monitor=False,
-            )
+        merge_dset_list.nthreads = nthreads
+        merge_dset_list.backend = "loky"
 
-            del timer_mergeblock_opt
-
-            self.assertEqual(numpy.mean(merged_dataset["vvel"][:]), mean_ref)
-
-            merged_dataset.purge()
-            del merged_dataset
+        mean = merge_dset_list(dataframes, subthreads=subthreads)
 
         for dataset in dataframes:
             dataset.purge()
+
+        self.assertEqual(mean, self.mean_refs)
 
     def test_02_naive_3D(self):
         """
@@ -95,7 +87,9 @@ class TestCache(unittest.TestCase):
 
         dataframes = [h5py.File(filename, "r") for filename in self.filenames]
 
-        for dataset, mean_ref in zip(dataframes, self.mean_refs):
+        mean = []
+
+        for dataset in dataframes:
 
             timer_mergeblocks_naive = Timer("[mergeblocks.naive]")
 
@@ -144,8 +138,10 @@ class TestCache(unittest.TestCase):
                 self.spinner.next()
             del timer_mergeblocks_naive
 
-            self.assertEqual(numpy.mean(merged_vvel[:]), mean_ref)
-            del merged_uvel, merged_vvel, merged_wvel
+            mean.append(numpy.mean(merged_vvel[:]))
+            del merged_uvel, merged_vvel, merged_wvel, merged_temp, merged_phi
+
+        self.assertEqual(mean, self.mean_refs)
 
     def test_03_naive_blk_dset_3D(self):
         """
@@ -155,7 +151,9 @@ class TestCache(unittest.TestCase):
 
         dataframes = [h5py.File(filename, "r") for filename in self.filenames]
 
-        for dataset, mean_ref in zip(dataframes, self.mean_refs):
+        mean = []
+
+        for dataset in dataframes:
 
             timer_mergeblocks_naive = Timer("[mergeblocks.naive]")
 
@@ -204,13 +202,37 @@ class TestCache(unittest.TestCase):
                 self.spinner.next()
             del timer_mergeblocks_naive
 
-            self.assertEqual(numpy.mean(merged_vvel[:]), mean_ref)
-            del merged_uvel, merged_vvel, merged_wvel
+            mean.append(numpy.mean(merged_vvel[:]))
+
+            del merged_uvel, merged_vvel, merged_wvel, merged_temp, merged_phi
+
+        self.assertEqual(mean, self.mean_refs)
 
     def tearDown(self):
         """Clean up and timing"""
         self.spinner.finish()
         del self.timer
+
+
+@Action(unit=Dataset, nthreads=1, backend="loky")
+def merge_dset_list(unit, subthreads):
+    timer_mergeblock_opt = Timer("[mergblocks.optimized]")
+
+    merged_dataset = boxkit.mergeblocks(
+        unit,
+        ["uvel", "vvel", "wvel", "temp", "phi"],
+        nthreads=subthreads,
+        backend="loky",
+    )
+
+    del timer_mergeblock_opt
+
+    mean = numpy.mean(merged_dataset["vvel"][:])
+
+    merged_dataset.purge()
+    del merged_dataset
+
+    return mean
 
 
 if __name__ == "__main__":
