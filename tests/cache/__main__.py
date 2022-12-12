@@ -5,7 +5,7 @@ import unittest
 
 
 def main():
-    tests = ["mergeblocks"]
+    tests = ["mergeblocks", "mean"]
 
     suite = unittest.TestSuite()
 

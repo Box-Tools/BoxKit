@@ -10,22 +10,32 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
     """
     Reshaped dataset at a level
     """
+
+    # Create a timer for the subroutine
+    # and activate if monitor is True
     if monitor:
         time_mergeblocks = library.Timer("[boxkit.mergeblocks]")
 
+    # Check if varlist is acutally a string
+    # of one variable and convert to a list
     if isinstance(varlist, str):
         varlist = [varlist]
 
+    # Compute list of blocks at level supplied
+    # as a the function arguments
     blocklist_level = []
     for block in dataset.blocklist:
         if block.level == level:
             blocklist_level.append(block)
 
+    # Handle errors
     if not blocklist_level:
         raise ValueError(
             f"[boxkit.mergeblocks]: level={level} does not exist in input dataset"
         )
 
+    # Compute deltas, number of blocks and set the region
+    # for merged dataset
     dx_level, dy_level, dz_level = [
         blocklist_level[0].dx,
         blocklist_level[0].dy,
@@ -42,6 +52,7 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
 
     region_level = library.Region(blocklist_level)
 
+    # Actually create a merged dataset
     merged_dataset = api.create_dataset(
         nxb=nblockx * dataset.nxb,
         nyb=nblocky * dataset.nyb,
@@ -99,19 +110,19 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
     return merged_dataset
 
 
-@library.Action(unit=library.Block)
-def map_blk_to_merged_dset(unit, merged_dataset, varlist):
+@library.Action(parallel_obj=library.Block)
+def map_blk_to_merged_dset(parallel_obj, merged_dataset, varlist):
     """
     map block to a merged dataset
     """
-    iloc, jloc, kloc = unit.get_relative_loc(
+    iloc, jloc, kloc = parallel_obj.get_relative_loc(
         origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
     )
 
     for varkey in varlist:
         for block in merged_dataset.blocklist:
             block[varkey][
-                unit.nzb * kloc : unit.nzb * (kloc + 1),
-                unit.nyb * jloc : unit.nyb * (jloc + 1),
-                unit.nxb * iloc : unit.nxb * (iloc + 1),
-            ] = unit[varkey][:, :, :]
+                parallel_obj.nzb * kloc : parallel_obj.nzb * (kloc + 1),
+                parallel_obj.nyb * jloc : parallel_obj.nyb * (jloc + 1),
+                parallel_obj.nxb * iloc : parallel_obj.nxb * (iloc + 1),
+            ] = parallel_obj[varkey][:, :, :]

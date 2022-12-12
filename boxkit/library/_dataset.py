@@ -156,9 +156,9 @@ class Dataset:
             halo_exchange_block(self.blocklist, varkey)
 
 
-@Action(unit=Block)
-def halo_exchange_block(unit, varkey):
+@Action(parallel_obj=Block)
+def halo_exchange_block(parallel_obj, varkey):
     """
     Halo exchange
     """
-    unit.exchange_neighdata(varkey)
+    parallel_obj.exchange_neighdata(varkey)
