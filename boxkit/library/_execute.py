@@ -92,18 +92,18 @@ def execute_cbox(action, unitlist, *args, **kwargs):
     Wrapper takes in unitlist and additional arguments and
     then applies target operations to individual units using boxlib
     """
-    #if options.cbox:
+    # if options.cbox:
     #    cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
     #    cbox.utilities.execute_pyTask.restype = ctypes.py_object
-    #    
+    #
     #    listresult = cbox.library.execute_pyTask(action, unitlist, args)
     #
-    #else:
+    # else:
     #    listresult = None
     #    raise NotImplementedError(
     #        "[boxkit.library.execute) Cannot execute using CBOX backend use --with-cbox during setup"
     #    )
-     
+
     raise NotImplementedError("[boxkit.library.execute] CBOX backend not implemented")
 
     return listresult
@@ -147,7 +147,8 @@ def execute_dask(action, unitlist, *args, **kwargs):
 
             with joblib.parallel_backend(n_jobs=action.nthreads, backend="dask"):
                 listresult = joblib.Parallel(batch_size=action.batch)(
-                    joblib.delayed(action.target)(unit, *args, **kwargs) for unit in unitlist
+                    joblib.delayed(action.target)(unit, *args, **kwargs)
+                    for unit in unitlist
                 )
 
     else:
