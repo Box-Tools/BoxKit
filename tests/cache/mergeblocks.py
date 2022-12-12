@@ -5,7 +5,6 @@ import unittest
 import pymorton
 import numpy
 import h5py
-import argparse
 import boxkit
 from boxkit.library import Timer, Action, Dataset
 
@@ -28,18 +27,14 @@ class TestMergeBlocks(unittest.TestCase):
             f"\n-------------------------Running: {self.id()}-------------------------\n"
         )
 
-        test_parser = argparse.ArgumentParser(description="Test Parser")
-        test_parser.add_argument("-s", "--site", help="Test Site", type=str)
-        args = test_parser.parse_args()
-
-        if args.site == "sedona":
+        if os.getenv("SITE") == "sedona":
             basedir = (
                 os.getenv("HOME")
                 + f"/Box/Jarvis-DataShare/Bubble-Box-Sample/boiling-earth/domain3D/not-chunked/"
             )
 
-        elif args.site == "summit":
-            raise NotImplementedError
+        elif os.getenv("SITE") == "summit":
+            basedir = "/gpfs/alpine/ast136/proj-shared/adhruv/Boxkit/"
 
         else:
             raise NotImplementedError
@@ -59,8 +54,6 @@ class TestMergeBlocks(unittest.TestCase):
             0.1472795289832985,
         ]
 
-        self.spinner = Spinner("")
-
     def test_01_optimized_3D(self):
         """
         Test optimize implementation
@@ -74,7 +67,7 @@ class TestMergeBlocks(unittest.TestCase):
 
         mean = []
 
-        nthreads = 1
+        nthreads = 8
         print(f"nthreads: {nthreads}")
 
         for dataset in dataframes:
@@ -154,7 +147,6 @@ class TestMergeBlocks(unittest.TestCase):
                     nxb * iloc : nxb * (iloc + 1),
                 ] = dataset["quantities"]["phi"][lblock, :, :, :]
 
-                self.spinner.next()
             del timer_mergeblocks_naive
 
             mean.append(numpy.mean(merged_vvel[:]))
@@ -162,10 +154,6 @@ class TestMergeBlocks(unittest.TestCase):
 
         self.assertEqual(mean, self.mean_refs)
         del timer_test
-
-    def tearDown(self):
-        """Clean up and timing"""
-        self.spinner.finish()
 
 
 if __name__ == "__main__":
