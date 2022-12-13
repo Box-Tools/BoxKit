@@ -72,7 +72,7 @@ class Action:
         obj_list, args = Action.toparg(*args)
         self._chk_obj_list(obj_list)
 
-        return library.Exectask(self, obj_list, *args, **kwargs)
+        return library.exectask(self, obj_list, *args, **kwargs)
 
     def _chk_obj_list(self, obj_list):
         """Check if obj_list matches the parallel_obj type"""

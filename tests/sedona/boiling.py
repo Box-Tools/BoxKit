@@ -143,7 +143,7 @@ class TestBoiling(unittest.TestCase):
         for dataset in dataframes:
             bubbleframes.append(
                 boxkit.regionprops(
-                    dataset, "phi", backend="loky", monitor=True, nthreads=8
+                    dataset, "phi", backend="dask", monitor=True, nthreads=8
                 )
             )
 

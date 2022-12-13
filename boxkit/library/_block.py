@@ -5,7 +5,7 @@ import numpy
 import pymorton
 
 
-class Block:
+class Block:  # pylint: disable=too-many-instance-attributes
     """Default class for a Block.
 
     Parameters
@@ -22,18 +22,6 @@ class Block:
                  'ymax' : high bound in y dir
                  'zmax' : high bound in z dir
                  'tag'  : block ID }
-
-    Auxillary attributes
-    --------------------
-    { 'nxb' : number of points in x dir
-      'nyb' : number of points in y dir
-      'nzb' : number of points in z dir
-      'xguard' : number of guard cells in x dir
-      'yguard' : number of guard cells in y dir
-      'zguard' : number of guard cells in z dir
-      'xcenter' : block xcenter
-      'ycenter' : block ycenter
-      'zcenter' : block zcenter }
     """
 
     type_ = "default"
@@ -41,6 +29,17 @@ class Block:
     def __init__(self, data=None, **attributes):
         """Initialize the  object and allocate the data."""
         super().__init__()
+
+        self.dx, self.dy, self.dz = [1.0, 1.0, 1.0]  # pylint: disable=invalid-name
+        self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
+        self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
+        self.tag = 0
+        self.level = 1
+        self.inputproc = None
+        self.leaf = True
+        self.xcenter, self.ycenter, self.zcenter = [0.0, 0.0, 0.0]
+        self.nxb, self.nyb, self.nzb = [1, 1, 1]
+        self.xguard, self.yguard, self.zguard = [0, 0, 0]
 
         self._set_attributes(attributes)
         self._map_data(data)
@@ -76,47 +75,43 @@ class Block:
         Get xrange of the block
         """
         range_dict = {
-            "center": self.__class__._get_center_loc,
-            "node": self.__class__._get_node_loc,
+            "center": self.__class__.get_center_loc,
+            "node": self.__class__.get_node_loc,
         }
 
-        return range_dict[location](
-            self.xmin, self.xmax, self.dx, self.xguard, self.nxb
-        )
+        return range_dict[location](self.xmin, self.xmax, self.dx, self.nxb)
 
     def yrange(self, location):
         """
         Get yrange of the block
         """
         range_dict = {
-            "center": self.__class__._get_center_loc,
-            "node": self.__class__._get_node_loc,
+            "center": self.__class__.get_center_loc,
+            "node": self.__class__.get_node_loc,
         }
 
-        return range_dict[location](
-            self.ymin, self.ymax, self.dy, self.yguard, self.nyb
-        )
+        return range_dict[location](self.ymin, self.ymax, self.dy, self.nyb)
 
     def zrange(self, location):
         """
         Get zrange of the block
         """
         range_dict = {
-            "center": self.__class__._get_center_loc,
-            "node": self.__class__._get_node_loc,
+            "center": self.__class__.get_center_loc,
+            "node": self.__class__.get_node_loc,
         }
 
-        return range_dict[location](
-            self.zmin, self.zmax, self.dz, self.zguard, self.nzb
-        )
+        return range_dict[location](self.zmin, self.zmax, self.dz, self.nzb)
 
     @staticmethod
-    def _get_center_loc(min_val, max_val, delta, guard, num_points):
+    def get_center_loc(min_val, max_val, delta, num_points):
         """Private method for center location"""
         return numpy.linspace(min_val + delta / 2, max_val - delta / 2, num_points)
 
     @staticmethod
-    def _get_node_loc(min_val, max_val, delta, guard, num_points):
+    def get_node_loc(
+        min_val, max_val, delta, num_points
+    ):  # pylint: disable=unused-argument
         """Private method for face location"""
         return numpy.linspace(min_val, max_val, num_points)
 
@@ -124,14 +119,6 @@ class Block:
         """
         Private method for intialization
         """
-        self.dx, self.dy, self.dz = [1.0, 1.0, 1.0]
-        self.xmin, self.ymin, self.zmin = [0.0, 0.0, 0.0]
-        self.xmax, self.ymax, self.zmax = [0.0, 0.0, 0.0]
-        self.tag = 0
-        self.level = 1
-        self.inputproc = None
-        self.leaf = True
-
         for key, value in attributes.items():
             if hasattr(self, key):
                 setattr(self, key, value)
@@ -241,13 +228,13 @@ class Block:
         """
         Write block data to buffer for halo exchange
         """
-        pass
+        pass  # pylint: disable=W0107
 
     def read_neighbuffer(self, varkey):
         """
         Read neighbor buffer and perform halo exchange
         """
-        pass
+        pass  # pylint: disable=W0107
 
     def neighdata(self, varkey, neighkey):
         """
@@ -260,7 +247,7 @@ class Block:
 
         return neighdata
 
-    def get_relative_loc(self, origin=[None] * 3):
+    def get_relative_loc(self, origin):
         """
         Get offset from origin
         """

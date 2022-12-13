@@ -5,7 +5,7 @@ from . import Data
 from . import Action
 
 
-class Dataset:
+class Dataset:  # pylint: disable=too-many-instance-attributes
     """API class for storing Dataset info"""
 
     type_ = "default"

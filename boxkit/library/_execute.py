@@ -1,6 +1,6 @@
 """Module with implementation of ExecuteTask utility"""
 
-import ctypes
+from types import SimpleNamespace
 
 import joblib
 import tqdm
@@ -8,21 +8,26 @@ import tqdm
 from .. import options
 
 if options.dask:
-    import dask
+    import dask  # pylint: disable=unused-import
     from dask import distributed
 
 if options.cbox:
-    from ..cbox.lib import extern as cbox
+    import ctypes  # pylint: disable=unused-import
+    from ..cbox.lib import extern as cbox  # pylint: disable=unused-import
 
 
-def Exectask(action, obj_list, *args, **kwargs):
+def exectask(action, obj_list, *args, **kwargs):
     """
     Parameters
     ----------
     action   : action object contains following attributes
 
-               target   : function/action operates on an parallel_obj ---> def target(parallel_obj, *args)
-                          actual call passes obj_list ---> target(obj_list, *args)
+               target   : function/action operates on a,
+                          parallel_obj ---> def target(parallel_obj, *args)
+
+                          actual call passes,
+                          obj_list ---> target(obj_list, *args)
+
                nthreads : number of nthreads (only relevant for parallel operations)
                monitor  : flag (True or False) to show progress bar for action
                backend  : 'serial', 'loky', 'dask'
@@ -34,7 +39,8 @@ def Exectask(action, obj_list, *args, **kwargs):
     """
     action.nthreads = action.nthreads or 1
 
-    backends = {
+    self = SimpleNamespace()
+    self.backends = {
         "serial": execute_serial,
         "loky": execute_loky,
         "dask": execute_dask,
@@ -51,7 +57,7 @@ def Exectask(action, obj_list, *args, **kwargs):
             + action.target.__name__
         )
 
-    return backends[action.backend](action, obj_list, *args, **kwargs)
+    return self.backends[action.backend](action, obj_list, *args, **kwargs)
 
 
 def execute_serial(action, obj_list, *args, **kwargs):
@@ -100,16 +106,13 @@ def execute_cbox(action, obj_list, *args, **kwargs):
     #    cbox.utilities.execute_pyTask.restype = ctypes.py_object
     #
     #    listresult = cbox.library.execute_pyTask(action, obj_list, args)
-    #
+    #    return listresult
     # else:
-    #    listresult = None
     #    raise NotImplementedError(
-    #        "[boxkit.library.execute) Cannot execute using CBOX backend use --with-cbox during setup"
+    #        "[boxkit.library.execute) Install --with-cbox to use CBOX backend"
     #    )
 
     raise NotImplementedError("[boxkit.library.execute] CBOX backend not implemented")
-
-    return listresult
 
 
 def execute_dask(action, obj_list, *args, **kwargs):
@@ -127,37 +130,38 @@ def execute_dask(action, obj_list, *args, **kwargs):
 
             # --------------METHOD 1---------------------------
             # if(action.monitor): obj_list = tqdm.tqdm(obj_list)
-            # lazy_results = [dask.delayed(action.target)(parallel_obj,*args, **kwargs) for parallel_obj in obj_list]
+            # lazy_results = [dask.delayed(action.target)(parallel_obj,*args, **kwargs)
+            #                 for parallel_obj in obj_list]
             # futures = dask.persist(*lazy_results)
             # listresult = dask.compute(*futures)
 
             # --------------METHOD 2---------------------------
-            # biglist = client.scatter(obj_list)
-            # futures = client.map(
-            #     action.target,
-            #     biglist,
-            #     *[[arg] * len(biglist) for arg in args]
-            # )
+            biglist = client.scatter(obj_list)
+            futures = client.map(
+                action.target,
+                biglist,
+                *[[arg] * len(biglist) for arg in args],
+                **kwargs,
+            )
 
-            # if action.monitor:
-            #     distributed.progress(futures)
+            if action.monitor:
+                distributed.progress(futures)
 
-            # listresult = client.gather(futures)
+            listresult = client.gather(futures)
 
             # --------------METHOD 3---------------------------
-            if action.monitor:
-                obj_list = tqdm.tqdm(obj_list)
+            # if action.monitor:
+            #     obj_list = tqdm.tqdm(obj_list)
 
-            with joblib.parallel_backend(n_jobs=action.nthreads, backend="dask"):
-                listresult = joblib.Parallel(batch_size=action.batch)(
-                    joblib.delayed(action.target)(parallel_obj, *args, **kwargs)
-                    for parallel_obj in obj_list
-                )
+            # with joblib.parallel_backend(n_jobs=action.nthreads, backend="dask"):
+            #     listresult = joblib.Parallel(batch_size=action.batch)(
+            #         joblib.delayed(action.target)(parallel_obj, *args, **kwargs)
+            #         for parallel_obj in obj_list
+            #     )
+
+            return listresult
 
     else:
-        listresult = None
         raise NotImplementedError(
-            "[boxkit.utilities.execute) Cannot execute using DASK backend use --with-dask during setup"
+            "[boxkit.library.execute] Install --with-dask to use DASK backend"
         )
-
-    return listresult

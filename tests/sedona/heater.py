@@ -46,7 +46,8 @@ class TestHeater(unittest.TestCase):
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor(
-            msg="run:" + self.id() + ": ", iters=len(dataframes), 
+            msg="run:" + self.id() + ": ",
+            iters=len(dataframes),
         )
 
         for dataset in dataframes:

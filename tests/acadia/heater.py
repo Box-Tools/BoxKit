@@ -7,6 +7,7 @@ import pymorton
 import boxkit
 from boxkit.library import Timer
 
+
 class TestHeater(unittest.TestCase):
     """boxkit unit test for 2D Heater Data"""
 
@@ -21,8 +22,10 @@ class TestHeater(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
- 
+        print(
+            f"\n-------------------------Running: {self.id()}-------------------------\n"
+        )
+
         self.timer = Timer(self.id())
 
         basedir = (
@@ -76,6 +79,7 @@ class TestHeater(unittest.TestCase):
     def tearDown(self):
         """Clean up and timing"""
         del self.timer
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -22,13 +22,13 @@ if options.zarr:
 if options.cbox:
     from ..cbox.lib import boost as cbox
 
-    _DataBase = cbox.library.Data
+    _DataBase = cbox.library.Data  # pylint: disable=c-extension-no-member
 
 else:
     _DataBase = object
 
 
-class Data(_DataBase):
+class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
     """Default class to store data"""
 
     type_ = "default"
@@ -52,6 +52,19 @@ class Data(_DataBase):
                        'storage'   : ('numpy', 'zarr', 'dask', 'pyarrow')}
         """
         super().__init__()
+
+        self.nblocks = 1
+        self.inputfile = None
+        self.remotefile = None
+        self.boxmem = None
+        self.variables = {}
+        self.nxb, self.nyb, self.nzb = [1, 1, 1]
+        self.xguard, self.yguard, self.zguard = [0, 0, 0]
+        self.storage = "numpy-memmap"
+        self.dtype = {}
+        self.varlist = []
+        self.source = ""
+
         self._set_attributes(attributes)
         self._set_data()
 
@@ -82,22 +95,9 @@ class Data(_DataBase):
         """
         Private method for intialization
         """
-
-        self.nblocks = 1
-        self.inputfile = None
-        self.remotefile = None
-        self.boxmem = None
-        self.variables = {}
-        self.nxb, self.nyb, self.nzb = [1, 1, 1]
-        self.xguard, self.yguard, self.zguard = [0, 0, 0]
-        self.storage = "numpy-memmap"
-        self.dtype = {}
-        self.varlist = []
-        self.source = ""
-
         for key, value in attributes.items():
             if hasattr(self, key):
-                if (type(getattr(self, key)) != type(value)) and (
+                if isinstance(type(getattr(self, key)), type(value)) and (
                     key not in ["inputfile", "remotefile"]
                 ):
                     print(key, type(getattr(self, key)), type(value))
@@ -116,7 +116,7 @@ class Data(_DataBase):
 
         for key, value in self.variables.items():
             self.varlist.append(key)
-            if value != None:
+            if value is not None:
                 self.dtype[key] = type(value)
             else:
                 self.dtype[key] = float
@@ -334,7 +334,10 @@ class Data(_DataBase):
                 return
 
             for varkey in emptykeys:
-                if not isinstance(self.variables[varkey], pyarrow.lib.Tensor):
+                if not isinstance(
+                    self.variables[varkey],
+                    pyarrow.lib.Tensor,  # pylint: disable=c-extension-no-member
+                ):
                     templist = []
                     for lblock in range(self.nblocks):
                         templist.append(
@@ -354,7 +357,7 @@ class Data(_DataBase):
         if self.boxmem and purgeflag in ("all", "boxmem"):
             try:
                 shutil.rmtree(self.boxmem)
-            except:
+            except os.error:
                 pass
 
         if self.inputfile and purgeflag in ("all", "inputfile"):
@@ -388,7 +391,7 @@ class Data(_DataBase):
             outputfile = os.path.join(self.boxmem, varkey)
             try:
                 shutil.rmtree(outputfile)
-            except:
+            except os.error:
                 pass
 
         self.varlist = list(self.variables.keys())

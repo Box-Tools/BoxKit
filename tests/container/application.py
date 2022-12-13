@@ -1,8 +1,10 @@
 import boxkit
 import sys
-sys.modules['bubblebox'] = boxkit
-sys.modules['bubblebox.library.create'] = boxkit.library
-sys.modules['bubblebox.library.utilities'] = boxkit.library
+
+sys.modules["bubblebox"] = boxkit
+sys.modules["bubblebox.library.create"] = boxkit.library
+sys.modules["bubblebox.library.utilities"] = boxkit.library
+
 import flowx
 import numpy
 import time
