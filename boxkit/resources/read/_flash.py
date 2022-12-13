@@ -22,7 +22,7 @@ def read_flash(filename, server):
         # Read from remote path
         remotefile = server["sftp"].open(filename)
         remotefile.set_pipelined()
-        inputfile = h5py.File(remotefile, "r", skip_cache=False)
+        inputfile = h5py.File(remotefile, "r", skip_cache=True)
         print(
             "[boxkit.resource.read]: Remote files cannot be pickled. Multithreading should not be used"
         )
@@ -30,7 +30,7 @@ def read_flash(filename, server):
     else:
         # Read from local path
         remotefile = None
-        inputfile = h5pickle.File(filename, "r", skip_cache=False)
+        inputfile = h5pickle.File(filename, "r", skip_cache=True)
 
     # Set variable dictionary for datasets
     variables = {}

@@ -80,13 +80,7 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
     resources = library.Resources()
 
     if monitor:
-        print(
-            f'[cpu_count]: {resources["cpu_count"]}',
-            f'[cpu_avail]: {resources["cpu_avail"]}',
-            f'[mem_avail]: {resources["mem_avail"]} GB',
-            f'[cpu_usage]: {resources["cpu_usage"]}%',
-            f'[mem_usage]: {resources["mem_usage"]}%',
-        )
+        resources.display()
 
         print(
             f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varkey][:])/(2**20),2)} MB"

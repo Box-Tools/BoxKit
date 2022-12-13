@@ -97,8 +97,6 @@ class TestBoiling(unittest.TestCase):
             boxkit.create_slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
         ]
 
-        monitorMsg = "run:" + self.id() + ": "
-
         for region in regionframes:
             self.assertEqual(int(len(region.blocklist) ** (1 / 2)), 16)
 
