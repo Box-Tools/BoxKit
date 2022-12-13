@@ -5,6 +5,13 @@ sys.modules["bubblebox"] = boxkit
 sys.modules["bubblebox.library.create"] = boxkit.library
 sys.modules["bubblebox.library.utilities"] = boxkit.library
 
+class MyAction(boxkit.library.Action):
+      def __init__(self, unit=None, *args, **kwargs):
+          super().__init__(*args, **kwargs):
+          self.unit = self.parallel_obj
+
+sys.modules["bubblebox.library.utilities._action.Action"] = MyAction
+
 import flowx
 import numpy
 import time
