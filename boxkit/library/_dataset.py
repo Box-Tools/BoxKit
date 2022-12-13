@@ -1,7 +1,6 @@
 """Module with implemenetation of Dataset class"""
 
 from . import Block
-from . import Data
 from . import Action
 
 
@@ -10,7 +9,7 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
 
     type_ = "default"
 
-    def __init__(self, blocklist=[], data=None):
+    def __init__(self, blocklist, data):
         """Constructor for Dataset
 
         Parameters
@@ -20,6 +19,12 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
 
         """
         super().__init__()
+
+        self.blocklist = []
+        self.xmin, self.ymin, self.zmin = [1e10] * 3
+        self.xmax, self.ymax, self.zmax = [-1e10] * 3
+        self._data = None
+
         self._map_blocklist(blocklist)
         self._map_data(data)
 
@@ -56,10 +61,6 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         """
         Private method for initialization
         """
-        self.blocklist = []
-        self.xmin, self.ymin, self.zmin = [1e10] * 3
-        self.xmax, self.ymax, self.zmax = [-1e10] * 3
-
         if not blocklist:
             return
 
@@ -78,8 +79,6 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         """
         Private method for initialization
         """
-        self._data = None
-
         if not data:
             return
 
@@ -87,48 +86,60 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
 
     @property
     def nblocks(self):
+        """nblocks"""
         return self._data.nblocks
 
     @property
     def nxb(self):
+        """nxb"""
         return self._data.nxb
 
     @property
     def nyb(self):
+        """nyb"""
         return self._data.nyb
 
     @property
     def nzb(self):
+        """nzb"""
         return self._data.nzb
 
     @property
     def xguard(self):
+        """xguard"""
         return self._data.xguard
 
     @property
     def yguard(self):
+        """yguard"""
         return self._data.yguard
 
     @property
     def zguard(self):
+        """zguard"""
         return self._data.zguard
 
     @property
     def varlist(self):
+        """varlist"""
         return self._data.varlist
 
     @property
     def source(self):
+        """source"""
         return self._data.source
 
     @property
     def dtype(self):
+        """dtype"""
         return self._data.dtype
 
     def addvar(self, varkey, dtype=float):
+        """addvar"""
         self._data.addvar(varkey, dtype)
 
     def delvar(self, varkey):
+        """delvar"""
         self._data.delvar(varkey)
 
     def purge(self, purgeflag="all"):
@@ -137,8 +148,13 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         """
         self._data.purge(purgeflag)
 
-    def halo_exchange(
-        self, varlist, nthreads=1, batch="auto", backend="serial", monitor=False
+    def halo_exchange(  # pylint: disable=too-many-arguments
+        self,
+        varlist,
+        nthreads=1,
+        batch="auto",
+        backend="serial",
+        monitor=False,
     ):
         """
         Perform halo exchange

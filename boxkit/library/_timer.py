@@ -3,7 +3,7 @@
 import time
 
 
-class Timer:
+class Timer:  # pylint: disable=too-few-public-methods
     """
     Timer class
     """
@@ -20,4 +20,4 @@ class Timer:
         Destructor
         """
         self.time = time.time() - self.time
-        print("%s: %.3fs" % (self.name, self.time))
+        print(f"{self.name}: {self.time}.3fs")

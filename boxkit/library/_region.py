@@ -1,12 +1,12 @@
 """Module with implementation of the Region class."""
 
 
-class Region:
+class Region:  # pylint: disable=too-few-public-methods, disable=too-many-instance-attributes
     """Base class for a Region."""
 
     type_ = "base"
 
-    def __init__(self, blocklist=[], **attributes):
+    def __init__(self, blocklist, **attributes):
         """Initialize the Region object and allocate the data.
 
         Parameters
@@ -22,6 +22,11 @@ class Region:
 
         """
         super().__init__()
+
+        self.xmin, self.ymin, self.zmin = [-1e10, -1e10, -1e10]
+        self.xmax, self.ymax, self.zmax = [1e10, 1e10, 1e10]
+        self.xcenter, self.ycenter, self.zcenter = [0.0, 0.0, 0.0]
+
         self._set_attributes(attributes)
         self._map_blocklist(blocklist)
 
@@ -39,10 +44,6 @@ class Region:
         """`
         Private method for intialization
         """
-
-        self.xmin, self.ymin, self.zmin = [-1e10, -1e10, -1e10]
-        self.xmax, self.ymax, self.zmax = [1e10, 1e10, 1e10]
-
         for key, value in attributes.items():
             if hasattr(self, key):
                 setattr(self, key, value)
