@@ -63,7 +63,7 @@ class CustomCmd:
 
         if self.with_cbox:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/cbox.txt {with_user}",
+                f"{sys.executable} -m pip install -r requirements/cbox.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -71,7 +71,7 @@ class CustomCmd:
 
         if self.with_pyarrow:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/pyarrow.txt {with_user}",
+                f"{sys.executable} -m pip install -r requirements/pyarrow.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -79,7 +79,7 @@ class CustomCmd:
 
         if self.with_zarr:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/zarr.txt {with_user}",
+                f"{sys.executable} -m pip install -r requirements/zarr.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -87,7 +87,7 @@ class CustomCmd:
 
         if self.with_dask:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/dask.txt {with_user}",
+                f"{sys.executable} -m pip install -r requirements/dask.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -95,7 +95,7 @@ class CustomCmd:
 
         if self.with_server:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/server.txt {with_user}",
+                f"{sys.executable} -m pip install -r requirements/server.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -103,7 +103,7 @@ class CustomCmd:
 
         if self.enable_testing:
             subprocess.run(
-                f"{sys.executable} -m pip install -r options/testing.txt {with_user}",
+                f"{sys.executable} -m pip install -r requirements/testing.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
