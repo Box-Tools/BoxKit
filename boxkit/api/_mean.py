@@ -84,14 +84,16 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     mean_blk_list.nthreads = nthreads
     mean_blk_list.backend = backend
 
-    if monitor:
-        time_reduction = library.Timer("[boxkit.mean_temporal.mean_blk_list]")
-
     for varkey in varlist:
+        if monitor:
+            time_reduction = library.Timer("[boxkit.mean_temporal.mean_blk_list]")
+
         mean_blk_list(blk_reduce_list, varkey)
 
+        if monitor:
+            del time_reduction
+
     if monitor:
-        del time_reduction
         del time_mean_temporal
 
     return mean_dataset
