@@ -24,7 +24,4 @@ jobs:
           pip3 install black pylint
     - name: Run linting 
       run: |
-          pylint bin/*.py
-          pylint boxkit/api/*.py
-          pylint boxkit/library/*.py
-          pylint boxkit/resources/read/*.py
+          pylint bin/*.py boxkit/api/*.py boxkit/library/*.py boxkit/resources/read/*.py
