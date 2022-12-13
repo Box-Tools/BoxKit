@@ -20,4 +20,4 @@ class Timer:  # pylint: disable=too-few-public-methods
         Destructor
         """
         self.time = time.time() - self.time
-        print(f"{self.name}: {self.time}.3fs")
+        print(f"{self.name}: {round(self.time,3)}s")
