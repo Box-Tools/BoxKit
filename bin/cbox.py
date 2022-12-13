@@ -3,7 +3,7 @@
 import os
 import sys
 import subprocess
-from distutils import sysconfig
+from distutils import sysconfig  # pylint: disable=deprecated-module
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
