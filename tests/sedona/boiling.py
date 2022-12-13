@@ -4,6 +4,7 @@ import os
 import time
 import unittest
 import pymorton
+import numpy
 import boxkit
 from boxkit.library import Monitor, Timer
 
@@ -182,14 +183,23 @@ class TestBoiling(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        average_dataset = boxkit.mean_temporal(
+        mean_dataset = boxkit.mean_temporal(
             dataframes, "vvel", nthreads=8, backend="loky", monitor=True
         )
 
         for dataset in dataframes:
             dataset.purge()
 
-        average_dataset.purge()
+        merged_dataset = boxkit.mergeblocks(
+            mean_dataset, "vvel", nthreads=8, backend="loky", monitor=True
+        )
+        mean = numpy.mean(merged_dataset["vvel"][:])
+
+        mean_dataset.purge()
+        merged_dataset.purge()
+        del mean_dataset, merged_dataset
+
+        self.assertEqual(mean, 0.1163331131117178)
 
     def tearDown(self):
         """Clean up and timing"""

@@ -6,7 +6,9 @@ from .. import library
 from .. import api
 
 
-def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="serial"):
+def mergeblocks(
+    dataset, varlist, nthreads=1, batch="auto", monitor=False, backend="serial"
+):
     """
     Reshaped dataset at a level
     """
@@ -21,53 +23,41 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
     if isinstance(varlist, str):
         varlist = [varlist]
 
-    # Compute list of blocks at level supplied
-    # as a the function arguments
-    blocklist_level = []
+    # Handle errors, compute level of the first
+    # block and raise error if not same for the rest
+    level = dataset.blocklist[0].level
     for block in dataset.blocklist:
-        if block.level == level:
-            blocklist_level.append(block)
+        if block.level != level:
+            raise ValueError(f"[boxkit.mergeblocks] All blocks must be at level 1")
 
-    # Handle errors
-    if not blocklist_level:
-        raise ValueError(
-            f"[boxkit.mergeblocks]: level={level} does not exist in input dataset"
-        )
-
-    # Compute deltas, number of blocks and set the region
-    # for merged dataset
-    dx_level, dy_level, dz_level = [
-        blocklist_level[0].dx,
-        blocklist_level[0].dy,
-        blocklist_level[0].dz,
-    ]
-
-    nblockx = int((dataset.xmax - dataset.xmin) / dx_level / dataset.nxb)
-    nblocky = int((dataset.ymax - dataset.ymin) / dy_level / dataset.nyb)
-    nblockz = int((dataset.zmax - dataset.zmin) / dz_level / dataset.nzb)
+    # Compute number of blocks in each direction
+    nblockx = int((dataset.xmax - dataset.xmin) / dataset.blocklist[0].dx / dataset.nxb)
+    nblocky = int((dataset.ymax - dataset.ymin) / dataset.blocklist[0].dy / dataset.nyb)
+    nblockz = int((dataset.zmax - dataset.zmin) / dataset.blocklist[0].dz / dataset.nzb)
 
     nblockx, nblocky, nblockz = [
         value if value > 0 else 1 for value in [nblockx, nblocky, nblockz]
     ]
 
-    region_level = library.Region(blocklist_level)
-
-    # Actually create a merged dataset
+    # Create a merged dataset
     merged_dataset = api.create_dataset(
+        nblockx=1,
+        nblocky=1,
+        nblockz=1,
         nxb=nblockx * dataset.nxb,
         nyb=nblocky * dataset.nyb,
         nzb=nblockz * dataset.nzb,
-        xmin=region_level.xmin,
-        ymin=region_level.ymin,
-        zmin=region_level.zmin,
-        xmax=region_level.xmax,
-        ymax=region_level.ymax,
-        zmax=region_level.zmax,
+        xmin=dataset.xmin,
+        ymin=dataset.ymin,
+        zmin=dataset.zmin,
+        xmax=dataset.xmax,
+        ymax=dataset.ymax,
+        zmax=dataset.zmax,
     )
 
-    blocklist_sorted = [None] * len(blocklist_level)
+    blocklist_sorted = [None] * len(dataset.blocklist)
 
-    for block in blocklist_level:
+    for block in dataset.blocklist:
         iloc, jloc, kloc = block.get_relative_loc(
             origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
         )
@@ -89,6 +79,7 @@ def mergeblocks(dataset, varlist, level=1, nthreads=1, monitor=False, backend="s
     map_blk_to_merged_dset.nthreads = nthreads
     map_blk_to_merged_dset.monitor = monitor
     map_blk_to_merged_dset.backend = backend
+    map_blk_to_merged_dset.batch = batch
 
     if monitor:
         time_mapping = library.Timer("[boxkit.mergeblocks.map_dataset_block]")

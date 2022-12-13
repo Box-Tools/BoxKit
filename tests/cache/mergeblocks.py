@@ -68,7 +68,8 @@ class TestMergeBlocks(unittest.TestCase):
         mean = []
 
         nthreads = int(os.getenv("NTHREADS"))
-        print(f"nthreads: {nthreads}")
+        batch = int(os.getenv("BATCH")) if os.getenv("BATCH") else "auto"
+        print(f"nthreads: {nthreads}, batch-size: {batch}")
 
         for dataset in dataframes:
             timer_mergeblock_opt = Timer("[mergblocks.optimized]")
@@ -78,6 +79,7 @@ class TestMergeBlocks(unittest.TestCase):
                 ["uvel", "vvel", "wvel", "temp", "phi"],
                 nthreads=nthreads,
                 backend="loky",
+                batch=batch,
             )
 
             del timer_mergeblock_opt

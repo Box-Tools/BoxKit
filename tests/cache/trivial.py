@@ -7,7 +7,8 @@ def multiply(parallel_obj):
     return parallel_obj * 10
 
 
-array = numpy.linspace(0.0, 1e6, int(1e6))
+array_size = 1000000
+array = numpy.linspace(0.0, 1e6, int(array_size))
 
 timer = Timer(f"serial")
 result_serial = multiply(array.tolist())
@@ -31,18 +32,8 @@ del timer
 if not (result_serial == result_parallel):
     raise ValueError
 
-nthreads = -1
-multiply.nthreads = nthreads
-multiply.backend = "loky"
-timer = Timer(f"loky-[nthreads: {nthreads}]")
-result_parallel = multiply(array.tolist())
-del timer
-if not (result_serial == result_parallel):
-    raise ValueError
-
 nthreads = 4
 multiply.nthreads = nthreads
-multiply.backend = "loky"
 timer = Timer(f"loky-[nthreads: {nthreads}]")
 result_parallel = multiply(array.tolist())
 del timer
@@ -51,7 +42,6 @@ if not (result_serial == result_parallel):
 
 nthreads = 8
 multiply.nthreads = nthreads
-multiply.backend = "loky"
 timer = Timer(f"loky-[nthreads: {nthreads}]")
 result_parallel = multiply(array.tolist())
 del timer
