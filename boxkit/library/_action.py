@@ -70,7 +70,9 @@ class Action:  # pylint: disable=too-many-arguments
         """Custom call signature"""
 
         obj_list, args = Action.toparg(*args)
-        self._chk_obj_list(obj_list)
+
+        if self.parallel_obj:
+            self._chk_obj_list(obj_list)
 
         return library.exectask(self, obj_list, *args, **kwargs)
 

@@ -1,7 +1,6 @@
 """ Module with implemenation of measure methods"""
 
 from .. import library
-from .. import api
 
 
 def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False):
@@ -27,7 +26,7 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
         for block in dataset.blocklist:
             if block.level != level:
                 raise ValueError(
-                    f"[boxkit.mean_temporal] All blocks must be at level 1"
+                    f"[boxkit.mean_temporal] All blocks must be at level {level}"
                 )
 
     # Create an mean dataset
@@ -47,15 +46,18 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     for varkey in varlist:
         mean_dataset.addvar(varkey)
 
-    mean_blk_list.nthreads = nthreads
-    mean_blk_list.backend = backend
-
     for varkey in varlist:
         if monitor:
             time_reduction = library.Timer("[boxkit.mean_temporal.mean_blk_list]")
 
-        mean_blk_list(blk_reduce_list, varkey)
-
+        # Run a function in parallel, by wrapping it with
+        # Action class, supply number of threads, backend,
+        library.Action(mean_blk_list, nthreads=nthreads, backend=backend)(
+            #
+            # pass list of parallel objects
+            blk_reduce_list,
+            varkey,
+        )
         if monitor:
             del time_reduction
 
@@ -65,13 +67,12 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     return mean_dataset
 
 
-@library.Action(parallel_obj=list)
-def mean_blk_list(parallel_obj, varkey):
+def mean_blk_list(blk_list, varkey):
     """
     Reduce dataset / compute average
     """
-    mean_blk = parallel_obj[0]
-    sample_size = len(parallel_obj[1:])
+    mean_blk = blk_list[0]
+    sample_size = len(blk_list[1:])
 
-    for work_blk in parallel_obj[1:]:
+    for work_blk in blk_list[1:]:
         mean_blk[varkey] = mean_blk[varkey] + work_blk[varkey] / sample_size
