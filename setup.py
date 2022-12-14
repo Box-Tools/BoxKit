@@ -34,17 +34,8 @@ with open("boxkit/__meta__.py", mode="r") as source:
     }
 
 # core dependancies for the package
-DEPENDENCIES = [
-    "numpy",
-    "h5py",
-    "h5pickle",
-    "pymorton",
-    "joblib",
-    "tqdm",
-    "toml",
-    "psutil",
-    "progress",
-]
+with open('requirements/core.txt') as reqs:
+    DEPENDENCIES = reqs.read()
 
 # Call setup command with necessary arguments
 # replace existing build and develop commands

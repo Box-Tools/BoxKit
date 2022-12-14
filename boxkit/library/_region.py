@@ -1,12 +1,12 @@
 """Module with implementation of the Region class."""
 
 
-class Region:
+class Region:  # pylint: disable=too-few-public-methods, disable=too-many-instance-attributes
     """Base class for a Region."""
 
     type_ = "base"
 
-    def __init__(self, blocklist=[], **attributes):
+    def __init__(self, blocklist, **attributes):
         """Initialize the Region object and allocate the data.
 
         Parameters
@@ -22,8 +22,13 @@ class Region:
 
         """
         super().__init__()
-        set_attributes(self, attributes)
-        map_blocklist(self, blocklist)
+
+        self.xmin, self.ymin, self.zmin = [-1e10, -1e10, -1e10]
+        self.xmax, self.ymax, self.zmax = [1e10, 1e10, 1e10]
+        self.xcenter, self.ycenter, self.zcenter = [0.0, 0.0, 0.0]
+
+        self._set_attributes(attributes)
+        self._map_blocklist(blocklist)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -35,100 +40,93 @@ class Region:
             + f"[{self.xmin}, {self.xmax}]\n"
         )
 
+    def _set_attributes(self, attributes):
+        """`
+        Private method for intialization
+        """
+        for key, value in attributes.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+            else:
+                raise ValueError(
+                    "[boxkit.library.create.Region] "
+                    + f'Attribute "{key}" not present in class Region'
+                )
 
-def set_attributes(region, attributes):
-    """`
-    Private method for intialization
-    """
+        self.xcenter = (self.xmin + self.xmax) / 2.0
+        self.ycenter = (self.ymin + self.ymax) / 2.0
+        self.zcenter = (self.zmin + self.zmax) / 2.0
 
-    region.xmin, region.ymin, region.zmin = [-1e10, -1e10, -1e10]
-    region.xmax, region.ymax, region.zmax = [1e10, 1e10, 1e10]
+    def _map_blocklist(self, blocklist):
+        """
+        Private method for initialization
+        """
+        self.blocklist = []
 
-    for key, value in attributes.items():
-        if hasattr(region, key):
-            setattr(region, key, value)
-        else:
-            raise ValueError(
-                "[boxkit.library.create.Region] "
-                + f'Attribute "{key}" not present in class Region'
-            )
+        if not blocklist:
+            return
 
-    region.xcenter = (region.xmin + region.xmax) / 2.0
-    region.ycenter = (region.ymin + region.ymax) / 2.0
-    region.zcenter = (region.zmin + region.zmax) / 2.0
+        self.blocklist = [block for block in blocklist if self._in_collision(block)]
 
+        self._update_bounds()
 
-def map_blocklist(region, blocklist):
-    """
-    Private method for initialization
-    """
-    region.blocklist = []
-
-    if not blocklist:
-        return
-
-    region.blocklist = [block for block in blocklist if in_collision(region, block)]
-
-    update_bounds(region)
-
-
-def in_collision(region, block):
-    """
-    Check if a block is in collision with the region
-    """
-    xcollision = (
-        abs(region.xcenter - block.xcenter)
-        - (region.xmax - region.xmin) / 2.0
-        - (block.xmax - block.xmin) / 2.0
-        <= 0.0
-    )
-    ycollision = (
-        abs(region.ycenter - block.ycenter)
-        - (region.ymax - region.ymin) / 2.0
-        - (block.ymax - block.ymin) / 2.0
-        <= 0.0
-    )
-    zcollision = (
-        abs(region.zcenter - block.zcenter)
-        - (region.zmax - region.zmin) / 2.0
-        - (block.zmax - block.zmin) / 2.0
-        <= 0.0
-    )
-
-    incollision = xcollision and ycollision and zcollision
-
-    return incollision
-
-
-def update_bounds(region):
-    """
-    Update block bounds using the blocklist
-    """
-    if not region.blocklist:
-        raise ValueError(
-            "[boxkit.library.create.Region] " + "is empty and outside scope of Blocks\n"
+    def _in_collision(self, block):
+        """
+        Check if a block is in collision with the region
+        """
+        xcollision = (
+            abs(self.xcenter - block.xcenter)
+            - (self.xmax - self.xmin) / 2.0
+            - (block.xmax - block.xmin) / 2.0
+            <= 0.0
+        )
+        ycollision = (
+            abs(self.ycenter - block.ycenter)
+            - (self.ymax - self.ymin) / 2.0
+            - (block.ymax - block.ymin) / 2.0
+            <= 0.0
+        )
+        zcollision = (
+            abs(self.zcenter - block.zcenter)
+            - (self.zmax - self.zmin) / 2.0
+            - (block.zmax - block.zmin) / 2.0
+            <= 0.0
         )
 
-    region.xmin, region.ymin, region.zmin = [
-        region.blocklist[0].xmin,
-        region.blocklist[0].ymin,
-        region.blocklist[0].zmin,
-    ]
-    region.xmax, region.ymax, region.zmax = [
-        region.blocklist[0].xmax,
-        region.blocklist[0].ymax,
-        region.blocklist[0].zmax,
-    ]
+        incollision = xcollision and ycollision and zcollision
 
-    for block in region.blocklist:
-        region.xmin = min(region.xmin, block.xmin)
-        region.ymin = min(region.ymin, block.ymin)
-        region.zmin = min(region.zmin, block.zmin)
+        return incollision
 
-        region.xmax = max(region.xmax, block.xmax)
-        region.ymax = max(region.ymax, block.ymax)
-        region.zmax = max(region.zmax, block.zmax)
+    def _update_bounds(self):
+        """
+        Update block bounds using the blocklist
+        """
+        if not self.blocklist:
+            raise ValueError(
+                "[boxkit.library.create.Region] "
+                + "is empty and outside scope of Blocks\n"
+            )
 
-    region.xcenter = (region.xmin + region.xmax) / 2.0
-    region.ycenter = (region.ymin + region.ymax) / 2.0
-    region.zcenter = (region.zmin + region.zmax) / 2.0
+        self.xmin, self.ymin, self.zmin = [
+            self.blocklist[0].xmin,
+            self.blocklist[0].ymin,
+            self.blocklist[0].zmin,
+        ]
+        self.xmax, self.ymax, self.zmax = [
+            self.blocklist[0].xmax,
+            self.blocklist[0].ymax,
+            self.blocklist[0].zmax,
+        ]
+
+        for block in self.blocklist:
+            self.xmin = min(self.xmin, block.xmin)
+            self.ymin = min(self.ymin, block.ymin)
+            self.zmin = min(self.zmin, block.zmin)
+
+            self.xmax = max(self.xmax, block.xmax)
+            self.ymax = max(self.ymax, block.ymax)
+            self.zmax = max(self.zmax, block.zmax)
+
+        self.xcenter = (self.xmin + self.xmax) / 2.0
+        self.ycenter = (self.ymin + self.ymax) / 2.0
+        self.zcenter = (self.zmin + self.zmax) / 2.0

@@ -3,9 +3,10 @@
 import os
 import sys
 import subprocess
-from distutils.sysconfig import get_python_version
+from distutils.sysconfig import get_python_version  # pylint: disable=deprecated-module
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 
 def boost_build():
     """Installation for Boost library"""
@@ -41,14 +42,14 @@ def boost_install():
     """Install Boost library"""
     if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost"):
         subprocess.run(
-            f"mkdir -pv build/lib/boxkit/depends/boost/lib",
+            "mkdir -pv build/lib/boxkit/depends/boost/lib",
             shell=True,
             check=True,
             executable="/bin/bash",
         )
 
         subprocess.run(
-            f"cp boxkit/depends/boost/lib/lib* build/lib/boxkit/depends/boost/lib/.",
+            "cp boxkit/depends/boost/lib/lib* build/lib/boxkit/depends/boost/lib/.",
             shell=True,
             check=True,
             executable="/bin/bash",

@@ -3,7 +3,7 @@
 import os
 import sys
 import subprocess
-from distutils import sysconfig
+from distutils import sysconfig  # pylint: disable=deprecated-module
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -39,7 +39,7 @@ for key, value in CBOX_MAKE_DICT.items():
 # the source code
 def cbox_build():
     """Compile and build cbox"""
-    from find_libpython import find_libpython
+    from find_libpython import find_libpython  # pylint: disable=import-outside-toplevel
 
     subprocess.run(
         f"cd boxkit/cbox/source && make {CBOX_MAKE_ARGS} python_lib_path={find_libpython()}",
@@ -47,6 +47,7 @@ def cbox_build():
         check=True,
         executable="/bin/bash",
     )
+
 
 # Clean CBox environment
 def cbox_clean():

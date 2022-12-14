@@ -4,6 +4,7 @@ import os
 import time
 import unittest
 import pymorton
+import numpy
 import boxkit
 from boxkit.library import Monitor, Timer
 
@@ -48,7 +49,8 @@ class TestBoiling(unittest.TestCase):
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor(
-            msg_="run:" + self.id() + ": ", iter_=len(dataframes), type_="action"
+            msg="run:" + self.id() + ": ",
+            iters=len(dataframes),
         )
 
         for dataset in dataframes:
@@ -61,7 +63,7 @@ class TestBoiling(unittest.TestCase):
         testMonitor.finish()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_neighbors_3D(self):
         """
@@ -70,7 +72,8 @@ class TestBoiling(unittest.TestCase):
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor(
-            msg_="run:" + self.id() + ": ", iter_=len(dataframes), type_="action"
+            msg="run:" + self.id() + ": ",
+            iters=len(dataframes),
         )
 
         for dataset in dataframes:
@@ -100,7 +103,7 @@ class TestBoiling(unittest.TestCase):
         testMonitor.finish()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_slice_3D(self):
         """
@@ -112,7 +115,8 @@ class TestBoiling(unittest.TestCase):
         ]
 
         testMonitor = Monitor(
-            msg_="run:" + self.id() + ": ", iter_=len(regionframes), type_="action"
+            msg="run:" + self.id() + ": ",
+            iters=len(regionframes),
         )
 
         for region in regionframes:
@@ -121,7 +125,7 @@ class TestBoiling(unittest.TestCase):
         testMonitor.finish()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_regionprops_3D(self):
         """
@@ -150,7 +154,7 @@ class TestBoiling(unittest.TestCase):
         self.assertEqual(numbubbles, [1341, 1380, 1262, 1255, 1351, 1362])
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_mergeblocks_3D(self):
         """
@@ -165,10 +169,10 @@ class TestBoiling(unittest.TestCase):
             reshaped_dataset = boxkit.mergeblocks(
                 dataset, "phi", nthreads=8, monitor=True, backend="loky"
             )
-            reshaped_dataset.purge("boxmem")
+            reshaped_dataset.purge()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_mean_temporal_3D(self):
         """
@@ -179,14 +183,23 @@ class TestBoiling(unittest.TestCase):
             for filename in self.filenames
         ]
 
-        average_dataset = boxkit.mean_temporal(
+        mean_dataset = boxkit.mean_temporal(
             dataframes, "vvel", nthreads=8, backend="loky", monitor=True
         )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
-        average_dataset.purge("boxmem")
+        merged_dataset = boxkit.mergeblocks(
+            mean_dataset, "vvel", nthreads=8, backend="loky", monitor=True
+        )
+        mean = numpy.mean(merged_dataset["vvel"][:])
+
+        mean_dataset.purge()
+        merged_dataset.purge()
+        del mean_dataset, merged_dataset
+
+        self.assertEqual(mean, 0.1163331131117178)
 
     def tearDown(self):
         """Clean up and timing"""

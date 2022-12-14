@@ -7,6 +7,7 @@ import pymorton
 import boxkit
 from boxkit.library import Timer
 
+
 class TestHeater(unittest.TestCase):
     """boxkit unit test for 2D Heater Data"""
 
@@ -21,8 +22,10 @@ class TestHeater(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
- 
+        print(
+            f"\n-------------------------Running: {self.id()}-------------------------\n"
+        )
+
         self.timer = Timer(self.id())
 
         basedir = (
@@ -52,7 +55,7 @@ class TestHeater(unittest.TestCase):
                 )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_regionprops_oneblk_2D(self):
         """
@@ -71,11 +74,12 @@ class TestHeater(unittest.TestCase):
         self.assertEqual(numbubbles, [257])
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def tearDown(self):
         """Clean up and timing"""
         del self.timer
+
 
 if __name__ == "__main__":
     unittest.main()

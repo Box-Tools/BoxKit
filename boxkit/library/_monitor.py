@@ -1,11 +1,11 @@
 """Module with implementaion of Monitor class"""
 
-from progress.bar import Bar, ChargingBar
+from progress.bar import Bar, ChargingBar  # pylint: disable=unused-import
 
 from .. import options
 
 if options.cbox:
-    from ..cbox.lib import boost as cbox
+    from ..cbox.lib import boost as cbox  # pylint: disable=c-extension-no-member
 
 
 class Monitor:
@@ -13,31 +13,26 @@ class Monitor:
     Dervied class of a Boost.Python.Class
     """
 
-    def __init__(self, msg_="", iter_=1, type_="test"):
+    def __init__(self, msg="", iters=1):
         """
         Initialize and create object
         """
         if options.cbox:
-            self._bar = cbox.library.Monitor(type_)
-            self._bar._setlimit(iter_)
-            self.msg = msg_
+            self._bar = cbox.library.Monitor(  # pylint: disable=c-extension-no-member
+                "action"
+            )
+            self._bar._setlimit(iters)
+            self.msg = msg
 
         else:
-            if type_ == "test":
-                self._bar = Bar(msg_, max=iter_)
-
-            elif type_ == "action":
-                self._bar = ChargingBar(msg_, max=iter_)
-
-            else:
-                raise NotImplementedError
+            self._bar = ChargingBar(msg, max=iters)
 
     def update(self):
         """
         update monitor
         """
         if options.cbox:
-            self._bar._update(self.msg, 0)
+            self._bar._update(self.msg, 0)  # pylint: disable=protected-access
         else:
             self._bar.next()
 

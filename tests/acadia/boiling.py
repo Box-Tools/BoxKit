@@ -7,6 +7,7 @@ import pymorton
 import boxkit
 from boxkit.library import Timer
 
+
 class TestBoiling(unittest.TestCase):
     """boxkit unit test for 3D boiling data"""
 
@@ -21,8 +22,10 @@ class TestBoiling(unittest.TestCase):
         filenames : list of filenames generated from basedir, prefix and filetags
 
         """
-        print(f"\n-------------------------Running: {self.id()}-------------------------\n")
- 
+        print(
+            f"\n-------------------------Running: {self.id()}-------------------------\n"
+        )
+
         self.timer = Timer(self.id())
 
         basedir = (
@@ -53,7 +56,7 @@ class TestBoiling(unittest.TestCase):
                 )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_neighbors_3D(self):
         """
@@ -86,7 +89,7 @@ class TestBoiling(unittest.TestCase):
                 )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_slice_3D(self):
         """
@@ -97,13 +100,11 @@ class TestBoiling(unittest.TestCase):
             boxkit.create_slice(dataset, zmin=0.01, zmax=0.01) for dataset in dataframes
         ]
 
-        monitorMsg = "run:" + self.id() + ": "
-
         for region in regionframes:
             self.assertEqual(int(len(region.blocklist) ** (1 / 2)), 16)
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_regionprops_3D(self):
         """
@@ -132,7 +133,7 @@ class TestBoiling(unittest.TestCase):
         self.assertEqual(numbubbles, [1255])
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_mergeblocks_3D(self):
         """
@@ -147,14 +148,15 @@ class TestBoiling(unittest.TestCase):
             reshaped_dataset = boxkit.mergeblocks(
                 dataset, "phi", nthreads=1, monitor=True, backend="loky"
             )
-            reshaped_dataset.purge("boxmem")
+            reshaped_dataset.purge()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def tearDown(self):
         """Clean up and timing"""
         del self.timer
+
 
 if __name__ == "__main__":
     unittest.main()

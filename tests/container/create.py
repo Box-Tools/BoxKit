@@ -10,11 +10,11 @@ class TestCreate(unittest.TestCase):
     def test_empty_objects(self):
         """test if empty objects can be created"""
 
-        boxkit.Data()
-        boxkit.Block()
-        boxkit.Region()
-        boxkit.Slice()
-        boxkit.Dataset()
+        data = boxkit.Data()
+        blocklist = [boxkit.Block(data)]  
+        boxkit.Dataset(blocklist, data)
+        boxkit.Region(blocklist)
+        boxkit.Slice(blocklist)
 
         print("Empty objects can be created\n")
 

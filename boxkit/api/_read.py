@@ -2,9 +2,18 @@
 
 from .. import library
 from .. import resources
+from ..library import Action
 
 
-def read_dataset(filename, source="test-sample", storage="numpy-memmap", server=None):
+def read_dataset(
+    filename,
+    source=None,
+    storage=None,
+    server=None,
+    force_memmap=False,
+    nthreads=1,
+    backend="serial",
+):
     """
     Create a dataset from a file
 
@@ -26,9 +35,47 @@ def read_dataset(filename, source="test-sample", storage="numpy-memmap", server=
     Dataset object
 
     """
+    if not source:
+        source = "test-sample"
+
+    if not storage:
+        storage = "numpy-memmap"
+
     data_attributes, block_attributes = resources.read.options[source](filename, server)
 
     data = library.Data(storage=storage, **data_attributes)
     blocklist = [library.Block(data, **attributes) for attributes in block_attributes]
 
-    return library.Dataset(blocklist, data)
+    dataset = library.Dataset(blocklist, data)
+
+    if force_memmap:
+
+        memmap_dataset = dataset.clone(storage="numpy-memmap")
+        for varkey in dataset.varlist:
+            memmap_dataset.addvar(varkey)
+
+        blk_map_list = [
+            [block_memmap, block_read]
+            for block_memmap, block_read in zip(
+                memmap_dataset.blocklist, dataset.blocklist
+            )
+        ]
+
+        copy_blk_to_memmap.nthreads = nthreads
+        copy_blk_to_memmap.backend = backend
+
+        timer_force_memmap = library.Timer("[boxkit.read.force_memmap]")
+        for varkey in memmap_dataset.varlist:
+            copy_blk_to_memmap((blk_list for blk_list in blk_map_list), varkey)
+        del timer_force_memmap
+
+        dataset.purge()
+        return memmap_dataset
+
+    return dataset
+
+
+@Action
+def copy_blk_to_memmap(blk_list, varkey):
+    """copy_blk_to_memmap"""
+    blk_list[0][varkey] = blk_list[1][varkey]

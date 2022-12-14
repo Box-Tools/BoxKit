@@ -5,7 +5,7 @@ import copy
 from .. import library
 
 
-class Action:
+class Action:  # pylint: disable=too-many-arguments
     """Default class for an action."""
 
     type_ = "default"
@@ -28,25 +28,23 @@ class Action:
         nthreads=1,
         monitor=False,
         backend="serial",
-        unit=None,
     ):
         """Initialize the  object and allocate the data.
 
         Parameters
         ----------
-        target   : function/task operates on an unit ---> def target(unit, *args)
-                   actual call passes unitlist ---> target(unitlist, *args)
+        target   : function/task operates on an parallel_obj ---> def target(parallel_obj, *args)
+                   actual call passes obj_list ---> target(obj_list, *args)
         nthreads : number of nthreads (only relevant for parallel operations)
         monitor  : flag (True or False) to show progress bar for task
         backend  : 'serial', 'loky', 'dask'
-        unit     : unit type
+        parallel_obj     : parallel_obj type
         """
         super().__init__()
         self.target = target
         self.nthreads = nthreads
         self.monitor = monitor
         self.backend = backend
-        self.unit = unit
         self.batch = "auto"
 
     def __call__(self, *args, **kwargs):
@@ -69,23 +67,27 @@ class Action:
     def execute(self, *args, **kwargs):
         """Custom call signature"""
 
-        unitlist, args = Action.toparg(*args)
+        toparg, args = Action.toparg(*args)
+        obj_list = list(toparg)
+        del toparg
 
-        self._check_unitlist(unitlist)
+        self.__class__.chk_obj_list(obj_list)
 
-        return library.Exectask(self, unitlist, *args, **kwargs)
+        return library.exectask(self, obj_list, *args, **kwargs)
 
-    def _check_unitlist(self, unitlist):
-        """Check if unitlist matches the unit type"""
+    @staticmethod
+    def chk_obj_list(obj_list):
+        """Check if obj_list matches the parallel_obj type"""
 
-        if not isinstance(unitlist, list):
+        if not isinstance(obj_list, list):
             raise ValueError(
-                "[boxkit.library.Action] Top argument must be a list of units"
+                "[boxkit.library.Action] Top argument must be a list of parallel_objs"
             )
 
-        for unit in unitlist:
-            if not isinstance(unit, self.unit):
+        first_obj = obj_list[0]
+        for index, parallel_obj in enumerate(obj_list):
+            if not isinstance(parallel_obj, type(first_obj)):
                 raise ValueError(
-                    "[boxkit.library.Action] Unit type not consistent."
-                    + f'Expected "{self.unit}" but got "{type(unit)}"'
+                    "[boxkit.library.Action] Inconsistent type at index "
+                    + f'"{index}" in parallel object list'
                 )

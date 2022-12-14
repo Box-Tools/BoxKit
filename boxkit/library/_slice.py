@@ -3,12 +3,12 @@
 from . import Region
 
 
-class Slice(Region):
+class Slice(Region):  # pylint: disable=too-few-public-methods
     """Derived class for a Slice."""
 
     type_ = "derived"
 
-    def __init__(self, blocklist=[], **attributes):
+    def __init__(self, blocklist, **attributes):
         """Initialize the Slice object and allocate the data.
 
         Parameters
@@ -22,7 +22,6 @@ class Slice(Region):
                        'ymax' : high bound in y dir
                        'zmax' : high bound in z dir}
         """
-
         super().__init__(blocklist, **attributes)
 
     def __repr__(self):

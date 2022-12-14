@@ -48,7 +48,7 @@ class TestApplication(unittest.TestCase):
         grid["gamma"][:, :, :, :] = grid["phi"][:, :, :, :]
 
         start = time.time()
-        grid.halo_exchange("phi")
+        grid.halo_exchange("phi", nthreads=1, backend="serial")
         end = time.time()
 
         grid.compute_error("eror", "phi", "gamma")

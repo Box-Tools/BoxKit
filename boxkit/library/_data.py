@@ -22,13 +22,13 @@ if options.zarr:
 if options.cbox:
     from ..cbox.lib import boost as cbox
 
-    _DataBase = cbox.library.Data
+    _DataBase = cbox.library.Data  # pylint: disable=c-extension-no-member
 
 else:
     _DataBase = object
 
 
-class Data(_DataBase):
+class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
     """Default class to store data"""
 
     type_ = "default"
@@ -52,8 +52,21 @@ class Data(_DataBase):
                        'storage'   : ('numpy', 'zarr', 'dask', 'pyarrow')}
         """
         super().__init__()
-        set_attributes(self, attributes)
-        set_data(self)
+
+        self.nblocks = 1
+        self.inputfile = None
+        self.remotefile = None
+        self.outfile = {}
+        self.boxmem = None
+        self.nxb, self.nyb, self.nzb = [1, 1, 1]
+        self.xguard, self.yguard, self.zguard = [0, 0, 0]
+        self.storage = "numpy-memmap"
+        self.variables = {}
+        self.dtype = {}
+        self.varlist = []
+
+        self._set_attributes(attributes)
+        self._set_data()
 
     def __repr__(self):
         """
@@ -85,7 +98,7 @@ class Data(_DataBase):
         if self.boxmem and purgeflag in ("all", "boxmem"):
             try:
                 shutil.rmtree(self.boxmem)
-            except:
+            except os.error:
                 pass
 
         if self.inputfile and purgeflag in ("all", "inputfile"):
@@ -106,7 +119,7 @@ class Data(_DataBase):
         self.variables[varkey] = None
         self.dtype[varkey] = dtype if dtype in [float, int, bool] else float
         self.varlist.append(varkey)
-        set_data(self)
+        self._set_data()
 
     def delvar(self, varkey):
         """
@@ -119,274 +132,278 @@ class Data(_DataBase):
             outputfile = os.path.join(self.boxmem, varkey)
             try:
                 shutil.rmtree(outputfile)
-            except:
+            except os.error:
                 pass
 
         self.varlist = list(self.variables.keys())
 
+    def _set_attributes(self, attributes):
+        """
+        Private method for intialization
+        """
+        for key, value in attributes.items():
+            if hasattr(self, key):
+                if isinstance(type(getattr(self, key)), type(value)) and (
+                    key not in ["inputfile", "remotefile"]
+                ):
+                    print(key, type(getattr(self, key)), type(value))
+                    raise ValueError(
+                        "[boxkit.library.create.Data] "
+                        + f'Type mismatch for attribute "{key}" in class Data'
+                    )
 
-def set_attributes(data, attributes):
-    """
-    Private method for intialization
-    """
+                setattr(self, key, value)
 
-    data.nblocks = 1
-    data.inputfile = None
-    data.remotefile = None
-    data.boxmem = None
-    data.variables = {}
-    data.nxb, data.nyb, data.nzb = [1, 1, 1]
-    data.xguard, data.yguard, data.zguard = [0, 0, 0]
-    data.storage = "numpy-memmap"
-    data.dtype = {}
-    data.varlist = []
-    data.source = ""
-
-    for key, value in attributes.items():
-        if hasattr(data, key):
-            if (type(getattr(data, key)) != type(value)) and (
-                key not in ["inputfile", "remotefile"]
-            ):
-                print(key, type(getattr(data, key)), type(value))
+            else:
                 raise ValueError(
                     "[boxkit.library.create.Data] "
-                    + f'Type mismatch for attribute "{key}" in class Data'
+                    + f'Attribute "{key}" not present in class Data'
                 )
 
-            setattr(data, key, value)
+        for key, value in self.variables.items():
+            self.varlist.append(key)
+            if value is not None:
+                self.dtype[key] = type(value)
+            else:
+                self.dtype[key] = float
 
+    def _set_data(self):
+        """
+        Private method for setting new data
+        """
+        if self.storage == "numpy":
+            self._create_numpy_arrays()
+        elif self.storage == "numpy-memmap":
+            self._create_numpy_memmap()
+        elif self.storage == "h5-datasets":
+            self._create_h5_datasets()
+        elif self.storage == "zarr":
+            self._create_zarr_objects()
+        elif self.storage == "dask":
+            self._create_numpy_memmap()
+            self._create_dask_objects()
         else:
-            raise ValueError(
+            raise NotImplementedError(
                 "[boxkit.library.create.Data] "
-                + f'Attribute "{key}" not present in class Data'
+                + f'Storage format "{self.storage}" not implemented'
             )
 
-    for key, value in data.variables.items():
-        data.varlist.append(key)
-        if value != None:
-            data.dtype[key] = type(value)
-        else:
-            data.dtype[key] = float
-
-
-def set_data(data):
-    """
-    Private method for setting new data
-    """
-    if data.storage == "numpy":
-        create_numpy_arrays(data)
-    elif data.storage == "numpy-memmap":
-        create_numpy_memmap(data)
-    elif data.storage == "h5-datasets":
-        create_h5_datasets(data)
-    elif data.storage == "zarr":
-        create_zarr_objects(data)
-    elif data.storage == "dask":
-        create_numpy_memmap(data)
-        create_dask_objects(data)
-    else:
-        raise NotImplementedError(
-            "[boxkit.library.create.Data] "
-            + f'Storage format "{data.storage}" not implemented'
-        )
-
-
-def create_h5_datasets(data):
-    """
-    Create h5 datasets for empty keys in variables dictionary
-    """
-    emptykeys = [
-        key for key, value in data.variables.items() if isinstance(value, type(None))
-    ]
-    if not emptykeys:
-        return
-
-    if not data.boxmem:
-        namerandom = "".join(random.choice(string.ascii_lowercase) for i in range(5))
-        data.boxmem = "".join(["./boxmem/", namerandom])
-    try:
-        os.makedirs(data.boxmem)
-    except FileExistsError:
-        pass
-
-    for varkey in emptykeys:
-        outputfile = h5pickle.File(os.path.join(data.boxmem, varkey), "w")
-
-        outputshape = [
-            data.nblocks,
-            data.nzb + 2 * data.zguard,
-            data.nyb + 2 * data.yguard,
-            data.nxb + 2 * data.xguard,
-        ]
-
-        outputfile.create_dataset(
-            varkey, data=numpy.zeros(outputshape, dtype=data.dtype[varkey])
-        )
-        outputfile.close()
-
-        data.variables[varkey] = h5pickle.File(
-            os.path.join(data.boxmem, varkey), "r+", skip_cache=False
-        )[varkey]
-
-
-def create_numpy_memmap(data):
-    """
-    Create numpy memory maps for empty keys in variables dictionary
-    """
-    emptykeys = [
-        key for key, value in data.variables.items() if isinstance(value, type(None))
-    ]
-    if not emptykeys:
-        return
-
-    if not data.boxmem:
-        namerandom = "".join(random.choice(string.ascii_lowercase) for i in range(5))
-        data.boxmem = "".join(["./boxmem/", namerandom])
-    try:
-        os.makedirs(data.boxmem)
-    except FileExistsError:
-        pass
-
-    for varkey in emptykeys:
-        outputfile = os.path.join(data.boxmem, varkey)
-        outputshape = (
-            data.nblocks,
-            data.nzb + 2 * data.zguard,
-            data.nyb + 2 * data.yguard,
-            data.nxb + 2 * data.xguard,
-        )
-        data.variables[varkey] = numpy.memmap(
-            outputfile, dtype=data.dtype[varkey], shape=outputshape, mode="w+"
-        )
-
-
-def create_zarr_objects(data):
-    """
-    Create zarr objects
-    """
-
-    if options.zarr:
+    def _create_h5_datasets(self):
+        """
+        Create h5 datasets for empty keys in variables dictionary
+        """
         emptykeys = [
             key
-            for key, value in data.variables.items()
+            for key, value in self.variables.items()
             if isinstance(value, type(None))
         ]
         if not emptykeys:
             return
 
-        if not data.boxmem:
+        if not self.boxmem:
             namerandom = "".join(
                 random.choice(string.ascii_lowercase) for i in range(5)
             )
-            data.boxmem = "".join(["./boxmem_", namerandom])
+            self.boxmem = "".join(["./boxmem/", namerandom])
         try:
-            os.mkdir(data.boxmem)
+            os.makedirs(self.boxmem)
         except FileExistsError:
             pass
 
         for varkey in emptykeys:
-            outputfile = os.path.join(data.boxmem, varkey)
-            outputshape = (
-                data.nblocks,
-                data.nzb + 2 * data.zguard,
-                data.nyb + 2 * data.yguard,
-                data.nxb + 2 * data.xguard,
+            outputfile = h5pickle.File(os.path.join(self.boxmem, varkey), "w")
+
+            outputshape = [
+                self.nblocks,
+                self.nzb + 2 * self.zguard,
+                self.nyb + 2 * self.yguard,
+                self.nxb + 2 * self.xguard,
+            ]
+
+            outputfile.create_dataset(
+                varkey, data=numpy.zeros(outputshape, dtype=self.dtype[varkey])
             )
-            data.variables[varkey] = zarr.open(
-                outputfile,
-                mode="w",
-                shape=outputshape,
-                chunks=(
-                    1,
-                    data.nzb + 2 * data.zguard,
-                    data.nyb + 2 * data.yguard,
-                    data.nxb + 2 * data.xguard,
-                ),
-                dtype=data.dtype[varkey],
+            outputfile.close()
+
+            self.outfile[varkey] = h5pickle.File(
+                os.path.join(self.boxmem, varkey), "r+", skip_cache=False
             )
 
-    else:
-        raise NotImplementedError(
-            "[boxkit.library.data] enable zarr using --with-zarr during install"
-        )
+            self.variables[varkey] = self.outfile[varkey][varkey]
+            self.dtype[varkey] = type(self.variables[varkey])
 
-
-def create_numpy_arrays(data):
-    """
-    Create numpy arrays for empty keys in variables dictionary
-    """
-    emptykeys = [
-        key for key, value in data.variables.items() if isinstance(value, type(None))
-    ]
-    if not emptykeys:
-        return
-
-    for varkey in emptykeys:
-        outputshape = (
-            data.nblocks,
-            data.nzb + 2 * data.zguard,
-            data.nyb + 2 * data.yguard,
-            data.nxb + 2 * data.xguard,
-        )
-        data.variables[varkey] = numpy.ndarray(
-            dtype=data.dtype[varkey], shape=outputshape
-        )
-
-
-def create_dask_objects(data):
-    """
-    Create dask array representation of data
-    """
-    if options.dask:
+    def _create_numpy_memmap(self):
+        """
+        Create numpy memory maps for empty keys in variables dictionary
+        """
         emptykeys = [
             key
-            for key, value in data.variables.items()
+            for key, value in self.variables.items()
             if isinstance(value, type(None))
         ]
         if not emptykeys:
             return
 
+        if not self.boxmem:
+            namerandom = "".join(
+                random.choice(string.ascii_lowercase) for i in range(5)
+            )
+            self.boxmem = "".join(["./boxmem/", namerandom])
+        try:
+            os.makedirs(self.boxmem)
+        except FileExistsError:
+            pass
+
         for varkey in emptykeys:
-            if not isinstance(data.variables[varkey], dsarray.core.Array):
-                data.variables[varkey] = dsarray.from_array(
-                    data.variables[varkey],
+            outputfile = os.path.join(self.boxmem, varkey)
+            outputshape = (
+                self.nblocks,
+                self.nzb + 2 * self.zguard,
+                self.nyb + 2 * self.yguard,
+                self.nxb + 2 * self.xguard,
+            )
+            self.variables[varkey] = numpy.memmap(
+                outputfile, dtype=self.dtype[varkey], shape=outputshape, mode="w+"
+            )
+
+            self.dtype[varkey] = type(self.variables[varkey])
+
+    def _create_zarr_objects(self):
+        """
+        Create zarr objects
+        """
+
+        if options.zarr:
+            emptykeys = [
+                key
+                for key, value in self.variables.items()
+                if isinstance(value, type(None))
+            ]
+            if not emptykeys:
+                return
+
+            if not self.boxmem:
+                namerandom = "".join(
+                    random.choice(string.ascii_lowercase) for i in range(5)
+                )
+                self.boxmem = "".join(["./boxmem/", namerandom])
+            try:
+                os.makedirs(self.boxmem)
+            except FileExistsError:
+                pass
+
+            for varkey in emptykeys:
+                outputfile = os.path.join(self.boxmem, varkey)
+                outputshape = (
+                    self.nblocks,
+                    self.nzb + 2 * self.zguard,
+                    self.nyb + 2 * self.yguard,
+                    self.nxb + 2 * self.xguard,
+                )
+                self.variables[varkey] = zarr.open(
+                    outputfile,
+                    mode="w",
+                    shape=outputshape,
                     chunks=(
                         1,
-                        data.nzb + 2 * data.zguard,
-                        data.nyb + 2 * data.yguard,
-                        data.nxb + 2 * data.xguard,
+                        self.nzb + 2 * self.zguard,
+                        self.nyb + 2 * self.yguard,
+                        self.nxb + 2 * self.xguard,
                     ),
+                    dtype=self.dtype[varkey],
                 )
 
-    else:
-        raise NotImplementedError(
-            "[boxkit.library.data] enable dask using --with-dask during install"
-        )
+                self.dtype[varkey] = type(self.variables[varkey])
 
+        else:
+            raise NotImplementedError(
+                "[boxkit.library.data] enable zarr using --with-zarr during install"
+            )
 
-def create_pyarrow_objects(data):
-    """
-    Create a pyarrow tensor objects
-    """
-    if options.pyarrow:
+    def _create_numpy_arrays(self):
+        """
+        Create numpy arrays for empty keys in variables dictionary
+        """
         emptykeys = [
             key
-            for key, value in data.variables.items()
+            for key, value in self.variables.items()
             if isinstance(value, type(None))
         ]
         if not emptykeys:
             return
 
         for varkey in emptykeys:
-            if not isinstance(data.variables[varkey], pyarrow.lib.Tensor):
-                templist = []
-                for lblock in range(data.nblocks):
-                    templist.append(
-                        pyarrow.Tensor.from_numpy(data.variables[varkey][lblock])
-                    )
-                data.variables[varkey] = templist
+            outputshape = (
+                self.nblocks,
+                self.nzb + 2 * self.zguard,
+                self.nyb + 2 * self.yguard,
+                self.nxb + 2 * self.xguard,
+            )
+            self.variables[varkey] = numpy.ndarray(
+                dtype=self.dtype[varkey], shape=outputshape
+            )
 
-    else:
-        raise NotImplementedError(
-            "[boxkit.library.data] enable pyarrow using --with-pyarrow during install"
-        )
+            self.dtype[varkey] = type(self.variables[varkey])
+
+    def _create_dask_objects(self):
+        """
+        Create dask array representation of data
+        """
+        if options.dask:
+            emptykeys = [
+                key
+                for key, value in self.variables.items()
+                if isinstance(value, type(None))
+            ]
+            if not emptykeys:
+                return
+
+            for varkey in emptykeys:
+                if not isinstance(self.variables[varkey], dsarray.core.Array):
+                    self.variables[varkey] = dsarray.from_array(
+                        self.variables[varkey],
+                        chunks=(
+                            1,
+                            self.nzb + 2 * self.zguard,
+                            self.nyb + 2 * self.yguard,
+                            self.nxb + 2 * self.xguard,
+                        ),
+                    )
+
+                    self.dtype[varkey] = type(self.variables[varkey])
+
+        else:
+            raise NotImplementedError(
+                "[boxkit.library.data] enable dask using --with-dask during install"
+            )
+
+    def _create_pyarrow_objects(self):
+        """
+        Create a pyarrow tensor objects
+        """
+        if options.pyarrow:
+            emptykeys = [
+                key
+                for key, value in self.variables.items()
+                if isinstance(value, type(None))
+            ]
+            if not emptykeys:
+                return
+
+            for varkey in emptykeys:
+                if not isinstance(
+                    self.variables[varkey],
+                    pyarrow.lib.Tensor,  # pylint: disable=c-extension-no-member
+                ):
+                    templist = []
+                    for lblock in range(self.nblocks):
+                        templist.append(
+                            pyarrow.Tensor.from_numpy(self.variables[varkey][lblock])
+                        )
+                    self.variables[varkey] = templist
+                    self.dtype[varkey] = type(self.variables[varkey])
+
+        else:
+            raise NotImplementedError(
+                "[boxkit.library.data] enable pyarrow using --with-pyarrow during install"
+            )

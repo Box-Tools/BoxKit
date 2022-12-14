@@ -1,25 +1,13 @@
 """Module with implemenetation of api methods"""
 
+from types import SimpleNamespace
+
 import pymorton
 
 from .. import library
 
 
-def create_dataset(
-    xmin=0.0,
-    xmax=0.0,
-    ymin=0.0,
-    ymax=0.0,
-    zmin=0.0,
-    zmax=0.0,
-    nxb=1,
-    nyb=1,
-    nzb=1,
-    nblockx=1,
-    nblocky=1,
-    nblockz=1,
-    storage="numpy-memmap",
-):
+def create_dataset(storage=None, **attributes):
     """
     Create a dataset from a file
 
@@ -28,54 +16,78 @@ def create_dataset(
     Dataset object
 
     """
+    if not storage:
+        storage = "numpy-memmap"
+
+    self = SimpleNamespace(
+        xmin=0.0,
+        ymin=0.0,
+        zmin=0.0,
+        xmax=0,
+        ymax=0.0,
+        zmax=0.0,
+        nxb=1,
+        nyb=1,
+        nzb=1,
+        nblockx=1,
+        nblocky=1,
+        nblockz=1,
+    )
+
+    for key, value in attributes.items():
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            raise ValueError(f"[boxkit.create_dataset]: Invalid attributes {key}")
+
     # Create data_attributes
     data_attributes = {
-        "nblocks": int(nblockx * nblocky * nblockz),
-        "nxb": int(nxb),
-        "nyb": int(nyb),
-        "nzb": int(nzb),
+        "nblocks": int(self.nblockx * self.nblocky * self.nblockz),
+        "nxb": int(self.nxb),
+        "nyb": int(self.nyb),
+        "nzb": int(self.nzb),
     }
 
     data = library.Data(storage=storage, **data_attributes)
 
-    delta_x, delta_y, delta_z = [
-        (xmax - xmin) / (nblockx * nxb),
-        (ymax - ymin) / (nblocky * nyb),
-        (zmax - zmin) / (nblockz * nzb),
+    self.dx, self.dy, self.dz = [
+        (self.xmax - self.xmin) / (self.nblockx * self.nxb),
+        (self.ymax - self.ymin) / (self.nblocky * self.nyb),
+        (self.zmax - self.zmin) / (self.nblockz * self.nzb),
     ]
 
     blocklist = []
 
-    for lblock in range(nblockx * nblocky * nblockz):
+    for lblock in range(self.nblockx * self.nblocky * self.nblockz):
         block_attributes = {}
 
-        block_attributes["dx"] = delta_x
-        block_attributes["dy"] = delta_y
-        block_attributes["dz"] = delta_z
+        block_attributes["dx"] = self.dx
+        block_attributes["dy"] = self.dy
+        block_attributes["dz"] = self.dz
 
-        if nblockz == 1:
+        if self.nblockz == 1:
             block_attributes["xmin"] = (
-                xmin + pymorton.deinterleave2(lblock)[0] * nxb * delta_x
+                self.xmin + pymorton.deinterleave2(lblock)[0] * self.nxb * self.dx
             )
             block_attributes["ymin"] = (
-                ymin + pymorton.deinterleave2(lblock)[1] * nyb * delta_y
+                self.ymin + pymorton.deinterleave2(lblock)[1] * self.nyb * self.dy
             )
-            block_attributes["zmin"] = zmin
+            block_attributes["zmin"] = self.zmin
 
         else:
             block_attributes["xmin"] = (
-                xmin + pymorton.deinterleave3(lblock)[0] * nxb * delta_x
+                self.xmin + pymorton.deinterleave3(lblock)[0] * self.nxb * self.dx
             )
             block_attributes["ymin"] = (
-                ymin + pymorton.deinterleave3(lblock)[1] * nyb * delta_y
+                self.ymin + pymorton.deinterleave3(lblock)[1] * self.nyb * self.dy
             )
             block_attributes["zmin"] = (
-                zmin + pymorton.deinterleave3(lblock)[2] * nzb * delta_z
+                self.zmin + pymorton.deinterleave3(lblock)[2] * self.nzb * self.dz
             )
 
-        block_attributes["xmax"] = block_attributes["xmin"] + nxb * delta_x
-        block_attributes["ymax"] = block_attributes["ymin"] + nyb * delta_y
-        block_attributes["zmax"] = block_attributes["zmin"] + nzb * delta_z
+        block_attributes["xmax"] = block_attributes["xmin"] + self.nxb * self.dx
+        block_attributes["ymax"] = block_attributes["ymin"] + self.nyb * self.dy
+        block_attributes["zmax"] = block_attributes["zmin"] + self.nzb * self.dz
 
         block_attributes["tag"] = lblock
 
@@ -103,17 +115,20 @@ def create_region(dataset, **attributes):
     Region object
     """
 
-    region_attributes = {
-        "xmin": dataset.xmin,
-        "ymin": dataset.ymin,
-        "zmin": dataset.zmin,
-        "xmax": dataset.xmax,
-        "ymax": dataset.ymax,
-        "zmax": dataset.zmax,
-    }
+    self = SimpleNamespace(
+        xmin=dataset.xmin,
+        ymin=dataset.ymin,
+        zmin=dataset.zmin,
+        xmax=dataset.xmax,
+        ymax=dataset.ymax,
+        zmax=dataset.zmax,
+    )
 
     for key, value in attributes.items():
-        region_attributes[key] = value
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            raise ValueError(f"[boxkit.create_region]: Invalid attributes {key}")
 
     blocklist = []
 
@@ -121,7 +136,7 @@ def create_region(dataset, **attributes):
         if block.leaf:
             blocklist.append(block)
 
-    return library.Region(blocklist, **region_attributes)
+    return library.Region(blocklist, **vars(self))
 
 
 def create_slice(dataset, **attributes):
@@ -144,17 +159,20 @@ def create_slice(dataset, **attributes):
     Slice object
     """
 
-    slice_attributes = {
-        "xmin": dataset.xmin,
-        "ymin": dataset.ymin,
-        "zmin": dataset.zmin,
-        "xmax": dataset.xmax,
-        "ymax": dataset.ymax,
-        "zmax": dataset.zmax,
-    }
+    self = SimpleNamespace(
+        xmin=dataset.xmin,
+        ymin=dataset.ymin,
+        zmin=dataset.zmin,
+        xmax=dataset.xmax,
+        ymax=dataset.ymax,
+        zmax=dataset.zmax,
+    )
 
     for key, value in attributes.items():
-        slice_attributes[key] = value
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            raise ValueError(f"[boxkit.create_slice]: Invalid attributes {key}")
 
     blocklist = []
 
@@ -162,4 +180,4 @@ def create_slice(dataset, **attributes):
         if block.leaf:
             blocklist.append(block)
 
-    return library.Slice(blocklist, **slice_attributes)
+    return library.Slice(blocklist, **vars(self))

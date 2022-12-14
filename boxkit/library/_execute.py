@@ -1,6 +1,6 @@
 """Module with implementation of ExecuteTask utility"""
 
-import ctypes
+from types import SimpleNamespace
 
 import joblib
 import tqdm
@@ -8,33 +8,39 @@ import tqdm
 from .. import options
 
 if options.dask:
-    import dask
+    import dask  # pylint: disable=unused-import
     from dask import distributed
 
 if options.cbox:
-    from ..cbox.lib import extern as cbox
+    import ctypes  # pylint: disable=unused-import
+    from ..cbox.lib import extern as cbox  # pylint: disable=unused-import
 
 
-def Exectask(action, unitlist, *args, **kwargs):
+def exectask(action, obj_list, *args, **kwargs):
     """
     Parameters
     ----------
     action   : action object contains following attributes
 
-               target   : function/action operates on an unit ---> def target(unit, *args)
-                          actual call passes unitlist ---> target(unitlist, *args)
+               target   : function/action operates on a,
+                          parallel_obj ---> def target(parallel_obj, *args)
+
+                          actual call passes,
+                          obj_list ---> target(obj_list, *args)
+
                nthreads : number of nthreads (only relevant for parallel operations)
                monitor  : flag (True or False) to show progress bar for action
                backend  : 'serial', 'loky', 'dask'
 
-    unitlist : list of units
+    obj_list : list of parallel_objs
 
     args : tuple of additional arguments
 
     """
     action.nthreads = action.nthreads or 1
 
-    backends = {
+    self = SimpleNamespace()
+    self.backends = {
         "serial": execute_serial,
         "loky": execute_loky,
         "dask": execute_dask,
@@ -51,68 +57,68 @@ def Exectask(action, unitlist, *args, **kwargs):
             + action.target.__name__
         )
 
-    return backends[action.backend](action, unitlist, *args, **kwargs)
+    return self.backends[action.backend](action, obj_list, *args, **kwargs)
 
 
-def execute_serial(action, unitlist, *args, **kwargs):
+def execute_serial(action, obj_list, *args, **kwargs):
     """
-    Wrapper takes in unitlist and additional arguments and
-    then applies target operations to individual units in
+    Wrapper takes in obj_list and additional arguments and
+    then applies target operations to individual parallel_objs in
     serial
     """
     if action.monitor:
-        unitlist = tqdm.tqdm(unitlist)
+        obj_list = tqdm.tqdm(obj_list)
 
-    listresult = [action.target(unit, *args, **kwargs) for unit in unitlist]
+    listresult = [
+        action.target(parallel_obj, *args, **kwargs) for parallel_obj in obj_list
+    ]
 
     return listresult
 
 
-def execute_loky(action, unitlist, *args, **kwargs):
+def execute_loky(action, obj_list, *args, **kwargs):
     """
-    Wrapper takes in unitlist and additional arguments and
-    then applies target operations to individual units in
+    Wrapper takes in obj_list and additional arguments and
+    then applies target operations to individual parallel_objs in
     parallel using joblib "loky" backend
 
     nthreads = 1 or None reverts to serial mode
     """
     if action.monitor:
-        unitlist = tqdm.tqdm(unitlist)
+        obj_list = tqdm.tqdm(obj_list)
 
     with joblib.parallel_backend(n_jobs=action.nthreads, backend="loky"):
         listresult = joblib.Parallel(batch_size=action.batch)(
-            joblib.delayed(action.target)(unit, *args, **kwargs) for unit in unitlist
+            joblib.delayed(action.target)(parallel_obj, *args, **kwargs)
+            for parallel_obj in obj_list
         )
 
     return listresult
 
 
-def execute_cbox(action, unitlist, *args, **kwargs):
+def execute_cbox(action, obj_list, *args, **kwargs):
     """
-    Wrapper takes in unitlist and additional arguments and
-    then applies target operations to individual units using boxlib
+    Wrapper takes in obj_list and additional arguments and
+    then applies target operations to individual parallel_objs using boxlib
     """
-    #if options.cbox:
+    # if options.cbox:
     #    cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
     #    cbox.utilities.execute_pyTask.restype = ctypes.py_object
-    #    
-    #    listresult = cbox.library.execute_pyTask(action, unitlist, args)
     #
-    #else:
-    #    listresult = None
+    #    listresult = cbox.library.execute_pyTask(action, obj_list, args)
+    #    return listresult
+    # else:
     #    raise NotImplementedError(
-    #        "[boxkit.library.execute) Cannot execute using CBOX backend use --with-cbox during setup"
+    #        "[boxkit.library.execute) Install --with-cbox to use CBOX backend"
     #    )
-     
+
     raise NotImplementedError("[boxkit.library.execute] CBOX backend not implemented")
 
-    return listresult
 
-
-def execute_dask(action, unitlist, *args, **kwargs):
+def execute_dask(action, obj_list, *args, **kwargs):
     """
-    Wrapper takes in unitlist and additional arguments and
-    then applies target operations to individual units in
+    Wrapper takes in obj_list and additional arguments and
+    then applies target operations to individual parallel_objs in
     using dask parallel backend
 
     nthreads = 1 or None reverts to serial mode
@@ -123,37 +129,39 @@ def execute_dask(action, unitlist, *args, **kwargs):
         ) as cluster, distributed.Client(cluster) as client:
 
             # --------------METHOD 1---------------------------
-            # if(action.monitor): unitlist = tqdm.tqdm(unitlist)
-            # lazy_results = [dask.delayed(action.target)(unit,*args, **kwargs) for unit in unitlist]
+            # if(action.monitor): obj_list = tqdm.tqdm(obj_list)
+            # lazy_results = [dask.delayed(action.target)(parallel_obj,*args, **kwargs)
+            #                 for parallel_obj in obj_list]
             # futures = dask.persist(*lazy_results)
             # listresult = dask.compute(*futures)
 
             # --------------METHOD 2---------------------------
-            # biglist = client.scatter(unitlist)
-            # futures = client.map(
-            #     action.target,
-            #     biglist,
-            #     *[[arg] * len(biglist) for arg in args]
-            # )
+            biglist = client.scatter(obj_list)
+            futures = client.map(
+                action.target,
+                biglist,
+                *[[arg] * len(biglist) for arg in args],
+                **kwargs,
+            )
 
-            # if action.monitor:
-            #     distributed.progress(futures)
+            if action.monitor:
+                distributed.progress(futures)
 
-            # listresult = client.gather(futures)
+            listresult = client.gather(futures)
 
             # --------------METHOD 3---------------------------
-            if action.monitor:
-                unitlist = tqdm.tqdm(unitlist)
+            # if action.monitor:
+            #     obj_list = tqdm.tqdm(obj_list)
 
-            with joblib.parallel_backend(n_jobs=action.nthreads, backend="dask"):
-                listresult = joblib.Parallel(batch_size=action.batch)(
-                    joblib.delayed(action.target)(unit, *args, **kwargs) for unit in unitlist
-                )
+            # with joblib.parallel_backend(n_jobs=action.nthreads, backend="dask"):
+            #     listresult = joblib.Parallel(batch_size=action.batch)(
+            #         joblib.delayed(action.target)(parallel_obj, *args, **kwargs)
+            #         for parallel_obj in obj_list
+            #     )
+
+            return listresult
 
     else:
-        listresult = None
         raise NotImplementedError(
-            "[boxkit.utilities.execute) Cannot execute using DASK backend use --with-dask during setup"
+            "[boxkit.library.execute] Install --with-dask to use DASK backend"
         )
-
-    return listresult

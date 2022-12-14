@@ -46,7 +46,8 @@ class TestHeater(unittest.TestCase):
         dataframes = [boxkit.read_dataset(filename) for filename in self.filenames]
 
         testMonitor = Monitor(
-            msg_="run:" + self.id() + ": ", iter_=len(dataframes), type_="action"
+            msg="run:" + self.id() + ": ",
+            iters=len(dataframes),
         )
 
         for dataset in dataframes:
@@ -62,7 +63,7 @@ class TestHeater(unittest.TestCase):
         testMonitor.finish()
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_regionprops_oneblk_2D(self):
         """
@@ -83,7 +84,7 @@ class TestHeater(unittest.TestCase):
         )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def test_regionprops_blocks_2D(self):
         """
@@ -108,7 +109,7 @@ class TestHeater(unittest.TestCase):
         )
 
         for dataset in dataframes:
-            dataset.purge("boxmem")
+            dataset.purge()
 
     def tearDown(self):
         """Clean up and timing"""

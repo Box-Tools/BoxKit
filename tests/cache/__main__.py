@@ -5,7 +5,7 @@ import unittest
 
 
 def main():
-    tests = ["boiling", "heater", "application"]
+    tests = ["mergeblocks", "mean"]
 
     suite = unittest.TestSuite()
 

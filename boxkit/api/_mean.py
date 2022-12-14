@@ -1,100 +1,79 @@
 """ Module with implemenation of measure methods"""
 
 from .. import library
-from .. import api
+from ..library import Action
 
 
-def mean_temporal(
-    datasets, varlist, level=1, backend="serial", nthreads=1, monitor=False
-):
+def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False):
     """
     Compute average across a dataset list
     """
+    # Set timer for monitoring
     if monitor:
         time_mean_temporal = library.Timer("[boxkit.mean_temporal]")
 
+    # Check if varlist is actually a string
+    # of one variable and convert to a list
     if isinstance(varlist, str):
         varlist = [varlist]
 
-    merged_datasets = [
-        api.mergeblocks(
-            dataset,
-            varlist,
-            level=level,
-            backend=backend,
-            nthreads=nthreads,
-            monitor=monitor,
-        )
-        for dataset in datasets
-    ]
+    # TODO: Add more error handling here to account
+    # for consistency between multiple datasets
+    #
+    # Handle errors, compute level of the first
+    # block and raise error if not same for the rest
+    level = datasets[0].blocklist[0].level
+    for dataset in datasets:
+        for block in dataset.blocklist:
+            if block.level != level:
+                raise ValueError(
+                    f"[boxkit.mean_temporal] All blocks must be at level {level}"
+                )
 
-    nxb, nyb, nzb, dx, dy, dz, xmin, ymin, zmin, xmax, ymax, zmax = [
-        merged_datasets[0].nxb,
-        merged_datasets[0].nyb,
-        merged_datasets[0].nzb,
-        merged_datasets[0].blocklist[0].dx,
-        merged_datasets[0].blocklist[0].dy,
-        merged_datasets[0].blocklist[0].dz,
-        merged_datasets[0].xmin,
-        merged_datasets[0].ymin,
-        merged_datasets[0].zmin,
-        merged_datasets[0].xmax,
-        merged_datasets[0].ymax,
-        merged_datasets[0].zmax,
-    ]
+    # Create an mean dataset
+    mean_dataset = datasets[0].clone(storage="numpy-memmap")
 
-    for dataset in merged_datasets:
-        if [nxb, nyb, nzb] != [dataset.nxb, dataset.nyb, dataset.nzb]:
-            raise ValueError("[boxkit.mean_temporal] inconsistent sizes for datasets")
+    # Create a block list for reduction, first add
+    # blocks from average_dataset and then loop over
+    # datasets to add blocks from their respective blocklist
+    blk_reduce_list = [[block] for block in mean_dataset.blocklist]
 
-    average_data = library.Data(nblocks=1, nxb=nxb, nyb=nyb, nzb=nzb)
+    for dataset in datasets:
+        for block, blk_list in zip(dataset.blocklist, blk_reduce_list):
+            blk_list.append(block)
 
-    average_blocklist = [
-        library.Block(
-            average_data,
-            dx=dx,
-            dy=dy,
-            dz=dz,
-            xmin=xmin,
-            ymin=ymin,
-            zmin=zmin,
-            xmax=xmax,
-            ymax=ymax,
-            zmax=zmax,
-        )
-    ]
-
-    average_dataset = library.Dataset(average_blocklist, average_data)
+    # loop over varlist append values to
+    # add it to the mean dataset and perform mean
+    for varkey in varlist:
+        mean_dataset.addvar(varkey)
 
     for varkey in varlist:
-        average_dataset.addvar(varkey)
-
-        reduce_dset_list.nthreads = 1
-        reduce_dset_list.backend = "serial"
-
         if monitor:
-            time_reduction = library.Timer("[boxkit.mean_temporal.reduce_dset_list]")
+            time_reduction = library.Timer("[boxkit.mean_temporal.mean_blk_list]")
 
-        reduce_dset_list(merged_datasets, average_dataset, varkey, len(merged_datasets))
-
+        # Run a function in parallel, by wrapping it with
+        # Action class, supply number of threads, backend,
+        Action(mean_blk_list, nthreads=nthreads, backend=backend)(
+            #
+            # pass list of parallel objects
+            (blk_list for blk_list in blk_reduce_list),
+            varkey,
+        )
         if monitor:
             del time_reduction
-
-    for dataset in merged_datasets:
-        dataset.purge("boxmem")
 
     if monitor:
         del time_mean_temporal
 
-    return average_dataset
+    return mean_dataset
 
 
-@library.Action(unit=library.Dataset)
-def reduce_dset_list(unit, average_dataset, varkey, sample_size):
+def mean_blk_list(blk_list, varkey):
     """
     Reduce dataset / compute average
     """
-    for block_avg, block_unit in zip(average_dataset.blocklist, unit.blocklist):
-        block_avg[varkey][:] = (
-            block_avg[varkey][:] + block_unit[varkey][:] / sample_size
-        )
+    mean_blk = blk_list[0]
+    sample_size = len(blk_list[1:])
+
+    for work_blk in blk_list[1:]:
+        mean_blk[varkey] = mean_blk[varkey] + work_blk[varkey] / sample_size

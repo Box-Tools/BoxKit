@@ -4,19 +4,32 @@ import math
 import psutil
 
 
-def Resources():
+class Resources:  # pylint: disable=too-few-public-methods
     """
     Return dictionary of available and used resources to optimize usage
     """
 
-    cpu_count = psutil.cpu_count()
-    cpu_percent = psutil.cpu_percent()
-    virtual_memory = psutil.virtual_memory()
+    def __init__(self):
+        """
+        Constructor
+        """
+        self.cpu_count = psutil.cpu_count()
+        self.cpu_usage = psutil.cpu_percent()
+        self.virtual_memory = psutil.virtual_memory()
+        self.cpu_avail = self.cpu_count - math.floor(
+            self.cpu_usage * self.cpu_count / 100
+        )
+        self.mem_avail = round(self.virtual_memory[1] / (2**30), 2)
+        self.mem_usage = self.virtual_memory[2]
 
-    return {
-        "cpu_count": cpu_count,
-        "cpu_avail": cpu_count - math.floor(cpu_percent * cpu_count / 100),
-        "mem_avail": round(virtual_memory[1] / (2**30), 2),
-        "cpu_usage": cpu_percent,
-        "mem_usage": virtual_memory[2],
-    }
+    def display(self):
+        """
+        Display resource status
+        """
+        print(
+            f"[cpu_count]: {self.cpu_count}",
+            f"[cpu_avail]: {self.cpu_avail}",
+            f"[mem_avail]: {self.mem_avail} GB",
+            f"[cpu_usage]: {self.cpu_usage}%",
+            f"[mem_usage]: {self.mem_usage}%",
+        )

@@ -4,21 +4,13 @@ from . import Block
 from . import Data
 from . import Action
 
-# DEVNOTE: The main class is separated from
-# some initialization methods to investigate
-# cache optimization during pickling. A call
-# to these methods from parallel environment
-# can result in some bottlenecks. If and when
-# a need arises to use some of these methods
-# in the future, then they should be assigned
-# to the class object
 
-class Dataset:
+class Dataset:  # pylint: disable=too-many-instance-attributes
     """API class for storing Dataset info"""
 
     type_ = "default"
 
-    def __init__(self, blocklist=[], data=None):
+    def __init__(self, blocklist, data):
         """Constructor for Dataset
 
         Parameters
@@ -28,8 +20,14 @@ class Dataset:
 
         """
         super().__init__()
-        map_blocklist(self, blocklist)
-        map_data(self, data)
+
+        self.blocklist = []
+        self.xmin, self.ymin, self.zmin = [1e10] * 3
+        self.xmax, self.ymax, self.zmax = [-1e10] * 3
+        self._data = None
+
+        self._map_blocklist(blocklist)
+        self._map_data(data)
 
     def __repr__(self):
         """Return a representation of the object."""
@@ -60,50 +58,89 @@ class Dataset:
         """
         self._data[varkey] = value
 
+    def _map_blocklist(self, blocklist):
+        """
+        Private method for initialization
+        """
+        if not blocklist:
+            return
+
+        self.blocklist = blocklist
+
+        for block in self.blocklist:
+            self.xmin = min(self.xmin, block.xmin)
+            self.ymin = min(self.ymin, block.ymin)
+            self.zmin = min(self.zmin, block.zmin)
+
+            self.xmax = max(self.xmax, block.xmax)
+            self.ymax = max(self.ymax, block.ymax)
+            self.zmax = max(self.zmax, block.zmax)
+
+    def _map_data(self, data):
+        """
+        Private method for initialization
+        """
+        if not data:
+            return
+
+        self._data = data
+
     @property
     def nblocks(self):
+        """nblocks"""
         return self._data.nblocks
 
     @property
     def nxb(self):
+        """nxb"""
         return self._data.nxb
 
     @property
     def nyb(self):
+        """nyb"""
         return self._data.nyb
 
     @property
     def nzb(self):
+        """nzb"""
         return self._data.nzb
 
     @property
     def xguard(self):
+        """xguard"""
         return self._data.xguard
 
     @property
     def yguard(self):
+        """yguard"""
         return self._data.yguard
 
     @property
     def zguard(self):
+        """zguard"""
         return self._data.zguard
 
     @property
     def varlist(self):
+        """varlist"""
         return self._data.varlist
 
     @property
     def source(self):
+        """source"""
         return self._data.source
 
     @property
     def dtype(self):
+        """dtype"""
         return self._data.dtype
 
     def addvar(self, varkey, dtype=float):
+        """addvar"""
         self._data.addvar(varkey, dtype)
 
     def delvar(self, varkey):
+        """delvar"""
         self._data.delvar(varkey)
 
     def purge(self, purgeflag="all"):
@@ -112,8 +149,51 @@ class Dataset:
         """
         self._data.purge(purgeflag)
 
-    def halo_exchange(
-        self, varlist, nthreads=1, batch="auto", backend="serial", monitor=False
+    def clone(self, storage="numpy-memmap"):
+        """
+        Clone dataset
+        """
+        # Create data attributes
+        data_attributes = {
+            "nblocks": int(self.nblocks),
+            "nxb": int(self.nxb),
+            "nyb": int(self.nyb),
+            "nzb": int(self.nzb),
+            "storage": storage,
+        }
+
+        data = Data(**data_attributes)
+
+        # Create block attributes
+        block_attributes = [
+            {
+                "dx": block.dx,
+                "dy": block.dy,
+                "dz": block.dz,
+                "xmin": block.xmin,
+                "ymin": block.ymin,
+                "zmin": block.zmin,
+                "xmax": block.xmax,
+                "ymax": block.ymax,
+                "zmax": block.zmax,
+                "tag": block.tag,
+                "leaf": block.leaf,
+                "level": block.level,
+            }
+            for block in self.blocklist
+        ]
+
+        blocklist = [Block(data, **attributes) for attributes in block_attributes]
+
+        return self.__class__(blocklist, data)
+
+    def halo_exchange(  # pylint: disable=too-many-arguments
+        self,
+        varlist,
+        nthreads=1,
+        batch="auto",
+        backend="serial",
+        monitor=False,
     ):
         """
         Perform halo exchange
@@ -122,53 +202,18 @@ class Dataset:
         if isinstance(varlist, str):
             varlist = [varlist]
 
-        halo_exchange_blk.nthreads = nthreads
-        halo_exchange_blk.batch = batch
-        halo_exchange_blk.backend = backend
-        halo_exchange_blk.monitor = monitor
+        halo_exchange_block.nthreads = nthreads
+        halo_exchange_block.batch = batch
+        halo_exchange_block.backend = backend
+        halo_exchange_block.monitor = monitor
 
         for varkey in varlist:
-            halo_exchange_blk(self.blocklist, varkey)
+            halo_exchange_block((block for block in self.blocklist), varkey)
 
 
-@Action(unit=Block)
-def halo_exchange_blk(unit, varkey):
+@Action
+def halo_exchange_block(block, varkey):
     """
     Halo exchange
     """
-    unit.exchange_neighdata(varkey)
-
-
-def map_blocklist(dataset, blocklist):
-    """
-    Private method for initialization
-    """
-    dataset.blocklist = []
-    dataset.xmin, dataset.ymin, dataset.zmin = [1e10] * 3
-    dataset.xmax, dataset.ymax, dataset.zmax = [-1e10] * 3
-
-    if not blocklist:
-        return
-
-    dataset.blocklist = blocklist
-
-    for block in dataset.blocklist:
-        dataset.xmin = min(dataset.xmin, block.xmin)
-        dataset.ymin = min(dataset.ymin, block.ymin)
-        dataset.zmin = min(dataset.zmin, block.zmin)
-
-        dataset.xmax = max(dataset.xmax, block.xmax)
-        dataset.ymax = max(dataset.ymax, block.ymax)
-        dataset.zmax = max(dataset.zmax, block.zmax)
-
-
-def map_data(dataset, data):
-    """
-    Private method for initialization
-    """
-    dataset._data = None
-
-    if not data:
-        return
-
-    dataset._data = data
+    block.exchange_neighdata(varkey)
