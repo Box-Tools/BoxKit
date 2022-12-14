@@ -38,8 +38,8 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     blk_reduce_list = [[block] for block in mean_dataset.blocklist]
 
     for dataset in datasets:
-        for block, reduce_list in zip(dataset.blocklist, blk_reduce_list):
-            reduce_list.append(block)
+        for block, blk_list in zip(dataset.blocklist, blk_reduce_list):
+            blk_list.append(block)
 
     # loop over varlist append values to
     # add it to the mean dataset and perform mean
