@@ -2,6 +2,7 @@
 
 from .. import library
 from .. import resources
+from ..library import Action
 
 
 def read_dataset(
@@ -65,7 +66,7 @@ def read_dataset(
 
         timer_force_memmap = library.Timer("[boxkit.read.force_memmap]")
         for varkey in memmap_dataset.varlist:
-            copy_blk_to_memmap(blk_map_list, varkey)
+            copy_blk_to_memmap((blk_list for blk_list in blk_map_list), varkey)
         del timer_force_memmap
 
         dataset.purge()
@@ -74,7 +75,7 @@ def read_dataset(
     return dataset
 
 
-@library.Action(parallel_obj=list, nthreads=1, backend="serial")
-def copy_blk_to_memmap(parallel_obj, varkey):
+@Action
+def copy_blk_to_memmap(blk_list, varkey):
     """copy_blk_to_memmap"""
-    parallel_obj[0][varkey] = parallel_obj[1][varkey]
+    blk_list[0][varkey] = blk_list[1][varkey]

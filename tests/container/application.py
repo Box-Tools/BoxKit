@@ -8,7 +8,7 @@ sys.modules["bubblebox.library.utilities"] = boxkit.library
 
 class MyAction(boxkit.library.Action):
     def __init__(self, unit=None, *args, **kwargs):
-        super().__init__(parallel_obj=unit, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 boxkit.library.Action = MyAction

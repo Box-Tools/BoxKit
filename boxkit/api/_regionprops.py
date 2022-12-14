@@ -4,7 +4,7 @@ import itertools
 import skimage.measure as skimage_measure
 
 from .. import api
-from .. import library
+from ..library import Action
 
 
 def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
@@ -28,7 +28,9 @@ def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     skimage_props_blk.backend = backend
     skimage_props_blk.monitor = monitor
 
-    listprops = skimage_props_blk(region.blocklist, lsetkey, labelkey)
+    listprops = skimage_props_blk(
+        (block for block in region.blocklist), lsetkey, labelkey
+    )
     listprops = list(itertools.chain.from_iterable(listprops))
 
     dataset.delvar(labelkey)
@@ -36,14 +38,14 @@ def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     return listprops
 
 
-@library.Action(parallel_obj=library.Block)
-def skimage_props_blk(parallel_obj, lsetkey, labelkey):
+@Action
+def skimage_props_blk(block, lsetkey, labelkey):
     """
     Measure properties for a block
 
     Parameters
     ----------
-    parallel_obj     : Block object
+    block     : Block object
     lsetkey  : key to the level-set/binary data
     labelkey : key to store stratch data
 
@@ -52,13 +54,12 @@ def skimage_props_blk(parallel_obj, lsetkey, labelkey):
     listprops : list of properties
     """
 
-    parallel_obj[labelkey][:, :, :] = skimage_measure.label(parallel_obj[lsetkey] >= 0)
+    block[labelkey][:, :, :] = skimage_measure.label(block[lsetkey] >= 0)
 
-    listprops = skimage_measure.regionprops(parallel_obj[labelkey].astype(int))
+    listprops = skimage_measure.regionprops(block[labelkey].astype(int))
 
     listprops = [
-        {"area": props["area"] * parallel_obj.dx * parallel_obj.dy * parallel_obj.dz}
-        for props in listprops
+        {"area": props["area"] * block.dx * block.dy * block.dz} for props in listprops
     ]
 
     return listprops

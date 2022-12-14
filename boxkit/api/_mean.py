@@ -1,6 +1,7 @@
 """ Module with implemenation of measure methods"""
 
 from .. import library
+from ..library import Action
 
 
 def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False):
@@ -52,10 +53,10 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
 
         # Run a function in parallel, by wrapping it with
         # Action class, supply number of threads, backend,
-        library.Action(mean_blk_list, nthreads=nthreads, backend=backend)(
+        Action(mean_blk_list, nthreads=nthreads, backend=backend)(
             #
             # pass list of parallel objects
-            blk_reduce_list,
+            (blk_list for blk_list in blk_reduce_list),
             varkey,
         )
         if monitor:

@@ -4,6 +4,7 @@ import sys
 
 from .. import library
 from .. import api
+from ..library import Action
 
 
 def mergeblocks(
@@ -28,7 +29,9 @@ def mergeblocks(
     level = dataset.blocklist[0].level
     for block in dataset.blocklist:
         if block.level != level:
-            raise ValueError(f"[boxkit.mergeblocks] All blocks must be at level 1")
+            raise ValueError(
+                f"[boxkit.mergeblocks] All blocks must be at level {level}"
+            )
 
     # Compute number of blocks in each direction
     nblockx = int((dataset.xmax - dataset.xmin) / dataset.blocklist[0].dx / dataset.nxb)
@@ -74,7 +77,7 @@ def mergeblocks(
         resources.display()
 
         print(
-            f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varkey][:])/(2**20),2)} MB"
+            f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varlist[0]][:])/(2**20),2)} MB"
         )
 
     map_blk_to_merged_dset.nthreads = nthreads
@@ -85,7 +88,9 @@ def mergeblocks(
     if monitor:
         time_mapping = library.Timer("[boxkit.mergeblocks.map_dataset_block]")
 
-    map_blk_to_merged_dset(blocklist_sorted, merged_dataset, varlist)
+    map_blk_to_merged_dset(
+        (blk_sorted for blk_sorted in blocklist_sorted), merged_dataset, varlist
+    )
 
     if monitor:
         del time_mapping
@@ -96,19 +101,19 @@ def mergeblocks(
     return merged_dataset
 
 
-@library.Action(parallel_obj=library.Block)
-def map_blk_to_merged_dset(parallel_obj, merged_dataset, varlist):
+@Action
+def map_blk_to_merged_dset(blk_sorted, merged_dataset, varlist):
     """
     map block to a merged dataset
     """
-    iloc, jloc, kloc = parallel_obj.get_relative_loc(
+    iloc, jloc, kloc = blk_sorted.get_relative_loc(
         origin=[merged_dataset.xmin, merged_dataset.ymin, merged_dataset.zmin]
     )
 
     for varkey in varlist:
         for block in merged_dataset.blocklist:
             block[varkey][
-                parallel_obj.nzb * kloc : parallel_obj.nzb * (kloc + 1),
-                parallel_obj.nyb * jloc : parallel_obj.nyb * (jloc + 1),
-                parallel_obj.nxb * iloc : parallel_obj.nxb * (iloc + 1),
-            ] = parallel_obj[varkey][:, :, :]
+                blk_sorted.nzb * kloc : blk_sorted.nzb * (kloc + 1),
+                blk_sorted.nyb * jloc : blk_sorted.nyb * (jloc + 1),
+                blk_sorted.nxb * iloc : blk_sorted.nxb * (iloc + 1),
+            ] = blk_sorted[varkey][:, :, :]

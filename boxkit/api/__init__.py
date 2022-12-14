@@ -1,3 +1,5 @@
+"""boxkit.api module"""
+
 import os
 
 from .. import options

@@ -208,12 +208,12 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         halo_exchange_block.monitor = monitor
 
         for varkey in varlist:
-            halo_exchange_block(self.blocklist, varkey)
+            halo_exchange_block((block for block in self.blocklist), varkey)
 
 
-@Action(parallel_obj=Block)
-def halo_exchange_block(parallel_obj, varkey):
+@Action
+def halo_exchange_block(block, varkey):
     """
     Halo exchange
     """
-    parallel_obj.exchange_neighdata(varkey)
+    block.exchange_neighdata(varkey)

@@ -28,7 +28,6 @@ class Action:  # pylint: disable=too-many-arguments
         nthreads=1,
         monitor=False,
         backend="serial",
-        parallel_obj=None,
     ):
         """Initialize the  object and allocate the data.
 
@@ -46,7 +45,6 @@ class Action:  # pylint: disable=too-many-arguments
         self.nthreads = nthreads
         self.monitor = monitor
         self.backend = backend
-        self.parallel_obj = parallel_obj
         self.batch = "auto"
 
     def __call__(self, *args, **kwargs):
@@ -69,14 +67,16 @@ class Action:  # pylint: disable=too-many-arguments
     def execute(self, *args, **kwargs):
         """Custom call signature"""
 
-        obj_list, args = Action.toparg(*args)
+        toparg, args = Action.toparg(*args)
+        obj_list = list(toparg)
+        del toparg
 
-        if self.parallel_obj:
-            self._chk_obj_list(obj_list)
+        self.__class__.chk_obj_list(obj_list)
 
         return library.exectask(self, obj_list, *args, **kwargs)
 
-    def _chk_obj_list(self, obj_list):
+    @staticmethod
+    def chk_obj_list(obj_list):
         """Check if obj_list matches the parallel_obj type"""
 
         if not isinstance(obj_list, list):
@@ -84,9 +84,10 @@ class Action:  # pylint: disable=too-many-arguments
                 "[boxkit.library.Action] Top argument must be a list of parallel_objs"
             )
 
-        for parallel_obj in obj_list:
-            if not isinstance(parallel_obj, self.parallel_obj):
+        first_obj = obj_list[0]
+        for index, parallel_obj in enumerate(obj_list):
+            if not isinstance(parallel_obj, type(first_obj)):
                 raise ValueError(
-                    "[boxkit.library.Action] Unit type not consistent."
-                    + f'Expected "{self.parallel_obj}" but got "{type(parallel_obj)}"'
+                    "[boxkit.library.Action] Inconsistent type at index "
+                    + f'"{index}" in parallel object list'
                 )
