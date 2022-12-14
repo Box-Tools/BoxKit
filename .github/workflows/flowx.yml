@@ -12,8 +12,8 @@ on:
 
 jobs:
 
-  application:
-    name: "application"
+  library:
+    name: "library"
     runs-on: ubuntu-latest
     steps:
     #- name: Login to Docker Hub
