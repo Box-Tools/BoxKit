@@ -62,13 +62,13 @@ class Block:  # pylint: disable=too-many-instance-attributes
         """
         Get variable data
         """
-        return self._data[varkey][self.tag]  # .to_numpy()[:]
+        return self._data[varkey][self.tag, :]  # .to_numpy()[:]
 
     def __setitem__(self, varkey, value):
         """
         Set variable data
         """
-        self._data[varkey][self.tag] = value  # .to_numpy()[:] = value
+        self._data[varkey][self.tag, :] = value  # .to_numpy()[:] = value
 
     def xrange(self, location):
         """

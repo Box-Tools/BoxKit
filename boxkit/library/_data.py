@@ -56,14 +56,14 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
         self.nblocks = 1
         self.inputfile = None
         self.remotefile = None
+        self.outfile = {}
         self.boxmem = None
-        self.variables = {}
         self.nxb, self.nyb, self.nzb = [1, 1, 1]
         self.xguard, self.yguard, self.zguard = [0, 0, 0]
         self.storage = "numpy-memmap"
+        self.variables = {}
         self.dtype = {}
         self.varlist = []
-        self.source = ""
 
         self._set_attributes(attributes)
         self._set_data()
@@ -90,6 +90,52 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
         Set variable data
         """
         self.variables[varkey] = value
+
+    def purge(self, purgeflag="all"):
+        """
+        Clean up data and close it
+        """
+        if self.boxmem and purgeflag in ("all", "boxmem"):
+            try:
+                shutil.rmtree(self.boxmem)
+            except os.error:
+                pass
+
+        if self.inputfile and purgeflag in ("all", "inputfile"):
+            self.inputfile.close()
+
+        if self.remotefile and purgeflag in ("all", "remotefile"):
+            self.remotefile.close()
+
+    def addvar(self, varkey, dtype=float):
+        """
+        Add a variables to data
+        """
+        if varkey in self.variables:
+            raise ValueError(
+                f"[boxkit.library.data] Variable {varkey!r} already present in dataset"
+            )
+
+        self.variables[varkey] = None
+        self.dtype[varkey] = dtype if dtype in [float, int, bool] else float
+        self.varlist.append(varkey)
+        self._set_data()
+
+    def delvar(self, varkey):
+        """
+        Delete a variable
+        """
+        del self.variables[varkey]
+        del self.dtype[varkey]
+
+        if self.boxmem:
+            outputfile = os.path.join(self.boxmem, varkey)
+            try:
+                shutil.rmtree(outputfile)
+            except os.error:
+                pass
+
+        self.varlist = list(self.variables.keys())
 
     def _set_attributes(self, attributes):
         """
@@ -179,9 +225,12 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
             )
             outputfile.close()
 
-            self.variables[varkey] = h5pickle.File(
+            self.outfile[varkey] = h5pickle.File(
                 os.path.join(self.boxmem, varkey), "r+", skip_cache=False
-            )[varkey]
+            )
+
+            self.variables[varkey] = self.outfile[varkey][varkey]
+            self.dtype[varkey] = type(self.variables[varkey])
 
     def _create_numpy_memmap(self):
         """
@@ -217,6 +266,8 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                 outputfile, dtype=self.dtype[varkey], shape=outputshape, mode="w+"
             )
 
+            self.dtype[varkey] = type(self.variables[varkey])
+
     def _create_zarr_objects(self):
         """
         Create zarr objects
@@ -235,9 +286,9 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                 namerandom = "".join(
                     random.choice(string.ascii_lowercase) for i in range(5)
                 )
-                self.boxmem = "".join(["./boxmem_", namerandom])
+                self.boxmem = "".join(["./boxmem/", namerandom])
             try:
-                os.mkdir(self.boxmem)
+                os.makedirs(self.boxmem)
             except FileExistsError:
                 pass
 
@@ -261,6 +312,8 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                     ),
                     dtype=self.dtype[varkey],
                 )
+
+                self.dtype[varkey] = type(self.variables[varkey])
 
         else:
             raise NotImplementedError(
@@ -290,6 +343,8 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                 dtype=self.dtype[varkey], shape=outputshape
             )
 
+            self.dtype[varkey] = type(self.variables[varkey])
+
     def _create_dask_objects(self):
         """
         Create dask array representation of data
@@ -314,6 +369,8 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                             self.nxb + 2 * self.xguard,
                         ),
                     )
+
+                    self.dtype[varkey] = type(self.variables[varkey])
 
         else:
             raise NotImplementedError(
@@ -344,54 +401,9 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                             pyarrow.Tensor.from_numpy(self.variables[varkey][lblock])
                         )
                     self.variables[varkey] = templist
+                    self.dtype[varkey] = type(self.variables[varkey])
 
         else:
             raise NotImplementedError(
                 "[boxkit.library.data] enable pyarrow using --with-pyarrow during install"
             )
-
-    def purge(self, purgeflag="all"):
-        """
-        Clean up data and close it
-        """
-        if self.boxmem and purgeflag in ("all", "boxmem"):
-            try:
-                shutil.rmtree(self.boxmem)
-            except os.error:
-                pass
-
-        if self.inputfile and purgeflag in ("all", "inputfile"):
-            self.inputfile.close()
-
-        if self.remotefile and purgeflag in ("all", "remotefile"):
-            self.remotefile.close()
-
-    def addvar(self, varkey, dtype=float):
-        """
-        Add a variables to data
-        """
-        if varkey in self.variables:
-            raise ValueError(
-                f"[boxkit.library.data] Variable {varkey!r} already present in dataset"
-            )
-
-        self.variables[varkey] = None
-        self.dtype[varkey] = dtype if dtype in [float, int, bool] else float
-        self.varlist.append(varkey)
-        self._set_data()
-
-    def delvar(self, varkey):
-        """
-        Delete a variable
-        """
-        del self.variables[varkey]
-        del self.dtype[varkey]
-
-        if self.boxmem:
-            outputfile = os.path.join(self.boxmem, varkey)
-            try:
-                shutil.rmtree(outputfile)
-            except os.error:
-                pass
-
-        self.varlist = list(self.variables.keys())

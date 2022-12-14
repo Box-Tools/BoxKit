@@ -4,7 +4,7 @@ import math
 import psutil
 
 
-class Resources: # pylint: disable=too-few-public-methods
+class Resources:  # pylint: disable=too-few-public-methods
     """
     Return dictionary of available and used resources to optimize usage
     """

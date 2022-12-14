@@ -61,7 +61,7 @@ class TestMergeBlocks(unittest.TestCase):
         timer_test = Timer(self.id())
 
         dataframes = [
-            boxkit.read_dataset(filename, storage="numpy-memmap")
+            boxkit.read_dataset(filename)
             for filename in self.filenames
         ]
 

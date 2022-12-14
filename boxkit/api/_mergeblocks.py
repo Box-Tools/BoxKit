@@ -53,6 +53,7 @@ def mergeblocks(
         xmax=dataset.xmax,
         ymax=dataset.ymax,
         zmax=dataset.zmax,
+        storage="numpy-memmap",
     )
 
     blocklist_sorted = [None] * len(dataset.blocklist)

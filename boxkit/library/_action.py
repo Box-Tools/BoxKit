@@ -5,7 +5,7 @@ import copy
 from .. import library
 
 
-class Action: # pylint: disable=too-many-arguments
+class Action:  # pylint: disable=too-many-arguments
     """Default class for an action."""
 
     type_ = "default"

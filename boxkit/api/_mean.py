@@ -12,7 +12,7 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     if monitor:
         time_mean_temporal = library.Timer("[boxkit.mean_temporal]")
 
-    # Check if varlist is acutally a string
+    # Check if varlist is actually a string
     # of one variable and convert to a list
     if isinstance(varlist, str):
         varlist = [varlist]
@@ -30,42 +30,8 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
                     f"[boxkit.mean_temporal] All blocks must be at level 1"
                 )
 
-    # Compute number of blocks in each direction
-    nblockx = int(
-        (datasets[0].xmax - datasets[0].xmin)
-        / datasets[0].blocklist[0].dx
-        / datasets[0].nxb
-    )
-    nblocky = int(
-        (datasets[0].ymax - datasets[0].ymin)
-        / datasets[0].blocklist[0].dy
-        / datasets[0].nyb
-    )
-    nblockz = int(
-        (datasets[0].zmax - datasets[0].zmin)
-        / datasets[0].blocklist[0].dz
-        / datasets[0].nzb
-    )
-
-    nblockx, nblocky, nblockz = [
-        value if value > 0 else 1 for value in [nblockx, nblocky, nblockz]
-    ]
-
     # Create an mean dataset
-    mean_dataset = api.create_dataset(
-        nblockx=nblockx,
-        nblocky=nblocky,
-        nblockz=nblockz,
-        nxb=datasets[0].nxb,
-        nyb=datasets[0].nyb,
-        nzb=datasets[0].nzb,
-        xmin=datasets[0].xmin,
-        ymin=datasets[0].ymin,
-        zmin=datasets[0].zmin,
-        xmax=datasets[0].xmax,
-        ymax=datasets[0].ymax,
-        zmax=datasets[0].zmax,
-    )
+    mean_dataset = datasets[0].clone(storage="numpy-memmap")
 
     # Create a block list for reduction, first add
     # blocks from average_dataset and then loop over
@@ -108,4 +74,4 @@ def mean_blk_list(parallel_obj, varkey):
     sample_size = len(parallel_obj[1:])
 
     for work_blk in parallel_obj[1:]:
-        mean_blk[varkey][:] = mean_blk[varkey][:] + work_blk[varkey][:] / sample_size
+        mean_blk[varkey] = mean_blk[varkey] + work_blk[varkey] / sample_size

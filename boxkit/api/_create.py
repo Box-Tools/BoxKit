@@ -7,7 +7,7 @@ import pymorton
 from .. import library
 
 
-def create_dataset(storage="numpy-memmap", **attributes):
+def create_dataset(storage=None, **attributes):
     """
     Create a dataset from a file
 
@@ -16,6 +16,9 @@ def create_dataset(storage="numpy-memmap", **attributes):
     Dataset object
 
     """
+    if not storage:
+        storage = "numpy-memmap"
+
     self = SimpleNamespace(
         xmin=0.0,
         ymin=0.0,

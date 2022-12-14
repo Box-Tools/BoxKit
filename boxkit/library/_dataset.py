@@ -1,6 +1,7 @@
 """Module with implemenetation of Dataset class"""
 
 from . import Block
+from . import Data
 from . import Action
 
 
@@ -147,6 +148,44 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         Clean up the dataset and close it
         """
         self._data.purge(purgeflag)
+
+    def clone(self, storage="numpy-memmap"):
+        """
+        Clone dataset
+        """
+        # Create data attributes
+        data_attributes = {
+            "nblocks": int(self.nblocks),
+            "nxb": int(self.nxb),
+            "nyb": int(self.nyb),
+            "nzb": int(self.nzb),
+            "storage": storage,
+        }
+
+        data = Data(**data_attributes)
+
+        # Create block attributes
+        block_attributes = [
+            {
+                "dx": block.dx,
+                "dy": block.dy,
+                "dz": block.dz,
+                "xmin": block.xmin,
+                "ymin": block.ymin,
+                "zmin": block.zmin,
+                "xmax": block.xmax,
+                "ymax": block.ymax,
+                "zmax": block.zmax,
+                "tag": block.tag,
+                "leaf": block.leaf,
+                "level": block.level,
+            }
+            for block in self.blocklist
+        ]
+
+        blocklist = [Block(data, **attributes) for attributes in block_attributes]
+
+        return self.__class__(blocklist, data)
 
     def halo_exchange(  # pylint: disable=too-many-arguments
         self,
