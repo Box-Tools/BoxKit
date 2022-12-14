@@ -12,8 +12,6 @@ class TestCreate(unittest.TestCase):
 
         boxkit.Data()
         boxkit.Block()
-        boxkit.Region()
-        boxkit.Slice()
         boxkit.Dataset()
 
         print("Empty objects can be created\n")
