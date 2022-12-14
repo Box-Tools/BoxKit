@@ -1,13 +1,13 @@
-## Software Design and Developer's Guide for BoxKit
+# Software Design and Developer's Guide for BoxKit
 
-### API
+## API
 BoxKit API details here
 
-### Library
+## Library
 BoxKit library details here
 
-### C-Box
+## C-Box
 C++ backend detailes here
 
-### Miscellaneous
+## Miscellaneous
 Miscellaneous details about how to develop frontend methods, etc.
