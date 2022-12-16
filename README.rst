@@ -1,6 +1,3 @@
-.. |icon| image:: ./media/icon.svg
-   :width: 30
-
 ###############
  |icon| BoxKit
 ###############
@@ -111,3 +108,6 @@ Please file an issue on the repository page
 .. |Minimal| image:: https://github.com/akashdhruv/BoxKit/workflows/Minimal/badge.svg
 
 .. |Publish| image:: https://github.com/akashdhruv/BoxKit/workflows/Publish/badge.svg
+
+.. |icon| image:: ./media/icon.svg
+   :width: 30
