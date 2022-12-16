@@ -1,5 +1,3 @@
-<p align="center"> <img src="./media/book.svg" width="30" style="border:none;background:none;"/> </p>
-
 ## <p align="center"> Software Design and Developer's Guide for BoxKit </p>
 
 ### 1. API
