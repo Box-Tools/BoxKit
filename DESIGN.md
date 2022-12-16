@@ -1,13 +1,15 @@
-# Software Design and Developer's Guide for BoxKit
+<p align="center"> <img src="./media/book.svg" width="30" style="border:none;background:none;"/> </p>
 
-## API
+## <p align="center"> Software Design and Developer's Guide for BoxKit </p>
+
+### 1. API
 BoxKit API details here
 
-## Library
+### 2. Library
 BoxKit library details here
 
-## C-Box
+### 3. C-Box
 C++ backend detailes here
 
-## Miscellaneous
+### 4. Miscellaneous
 Miscellaneous details about how to develop frontend methods, etc.
