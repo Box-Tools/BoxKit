@@ -27,4 +27,4 @@ C++ backend detailes here
 Miscellaneous details about how to develop frontend methods, etc.
 
 .. |icon| image:: ./media/book.svg
-   :width: 30
+   :width: 25
