@@ -1,87 +1,113 @@
 .. |icon| image:: ./media/icon.svg
-  :width: 30
- 
-=============
-|icon| BoxKit
-=============
+   :width: 30
+
+###############
+ |icon| BoxKit
+###############
 
 |Code style: black|
 
 |FlashX| |FlowX| |Minimal| |Publish|
 
-BoxKit is a library that provides building blocks to parallelize and scale data science, high performance computing, and machine learning applications for block-structured datasets. Spatial data from simulations and experiments can be accessed and managed using tools available in this library when working with more data analysis oriented packages like SciKit (https://github.com/scikit-learn/scikit-learn) and FlowNet (https://github.com/NVIDIA/flownet2-pytorch)
+BoxKit is a library that provides building blocks to parallelize and
+scale data science, high performance computing, and machine learning
+applications for block-structured datasets. Spatial data from
+simulations and experiments can be accessed and managed using tools
+available in this library when working with more data analysis oriented
+packages like SciKit (https://github.com/scikit-learn/scikit-learn) and
+FlowNet (https://github.com/NVIDIA/flownet2-pytorch)
 
-Installation
-============
+**************
+ Installation
+**************
 
-Stable releases of BoxKit are hosted on Python Package Index website (`<https://pypi.org/project/BoxKit/>`_) and can be installed by executing,
+Stable releases of BoxKit are hosted on Python Package Index website
+(https://pypi.org/project/BoxKit/) and can be installed by executing,
 
-::
+.. code::
 
    pip install BoxKit --user
-   
+
    export CXX=$(CPP_COMPILER)
    pip install BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
-   
-Note that ``pip`` should point to ``python3+`` installation package ``pip3``. 
 
-Upgrading and uninstallation is easily managed through this interface using,
+Note that ``pip`` should point to ``python3+`` installation package
+``pip3``.
 
-::
+Upgrading and uninstallation is easily managed through this interface
+using,
+
+.. code::
 
    pip install --upgrade BoxKit --user
    pip install --upgrade BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
    pip uninstall BoxKit
 
-There maybe situations where users may want to install BoxKit in development mode $\\textemdash$ to design new features, debug, or customize classes/methods to their needs. This can be easily accomplished using the ``setup`` script located in the project root directory and executing,
+There maybe situations where users may want to install BoxKit in
+development mode $\\textemdash$ to design new features, debug, or
+customize classes/methods to their needs. This can be easily
+accomplished using the ``setup`` script located in the project root
+directory and executing,
 
-::
+.. code::
 
    ./setup develop
 
-Development mode enables testing of features/updates directly from the source code and is an effective method for debugging. Note that the ``setup`` script relies on ``click``, which can be installed using,
+Development mode enables testing of features/updates directly from the
+source code and is an effective method for debugging. Note that the
+``setup`` script relies on ``click``, which can be installed using,
 
-::
+.. code::
 
-  pip install click
-  
-Usage
-=====
+   pip install click
 
-BoxKit is undergoing active development and therefore design changes are frequent, however, the library is divided into two broad categories:
+*******
+ Usage
+*******
 
-- **Create**: Containing interface for classes/methods to store spatial data in a rectangular/cubic frame, along with auxillary tools to manage irregular geometries composed of unstructured triangular mesh.
+BoxKit is undergoing active development and therefore design changes are
+frequent, however, the library is divided into two broad categories:
 
-- **Utilities**: Containing interface for classes/method to improve memory managment of data on NUMA nodes.
+-  **Create**: Containing interface for classes/methods to store spatial
+   data in a rectangular/cubic frame, along with auxillary tools to
+   manage irregular geometries composed of unstructured triangular mesh.
 
-We are currently setting up use cases for BoxKit, and will update this section when we are able to demonstrate proof-of-concept.
+-  **Utilities**: Containing interface for classes/method to improve
+   memory managment of data on NUMA nodes.
 
-Citation
-========
+We are currently setting up use cases for BoxKit, and will update this
+section when we are able to demonstrate proof-of-concept.
 
-::
+**********
+ Citation
+**********
 
-  @software{akash_dhruv_2022_7255632,
-    author       = {Akash Dhruv},
-    title        = {akashdhruv/BoxKit: October 2022},
-    month        = oct,
-    year         = 2022,
-    publisher    = {Zenodo},
-    version      = {22.10},
-    doi          = {10.5281/zenodo.7255632},
-    url          = {https://doi.org/10.5281/zenodo.7255632}
-  }
+.. code::
 
-Help & Support
-==============
+   @software{akash_dhruv_2022_7255632,
+     author       = {Akash Dhruv},
+     title        = {akashdhruv/BoxKit: October 2022},
+     month        = oct,
+     year         = 2022,
+     publisher    = {Zenodo},
+     version      = {22.10},
+     doi          = {10.5281/zenodo.7255632},
+     url          = {https://doi.org/10.5281/zenodo.7255632}
+   }
+
+****************
+ Help & Support
+****************
 
 Please file an issue on the repository page
 
-
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
-   
+
 .. |FlashX| image:: https://github.com/akashdhruv/BoxKit/workflows/FlashX/badge.svg
+
 .. |FlowX| image:: https://github.com/akashdhruv/BoxKit/workflows/FlowX/badge.svg
+
 .. |Minimal| image:: https://github.com/akashdhruv/BoxKit/workflows/Minimal/badge.svg
+
 .. |Publish| image:: https://github.com/akashdhruv/BoxKit/workflows/Publish/badge.svg
