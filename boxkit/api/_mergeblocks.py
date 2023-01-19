@@ -76,10 +76,6 @@ def mergeblocks(
     if monitor:
         resources.display()
 
-        print(
-            f"[mem_dataset]: {round(sys.getsizeof(dataset._data.variables[varlist[0]][:])/(2**20),2)} MB"
-        )
-
     map_blk_to_merged_dset.nthreads = nthreads
     map_blk_to_merged_dset.monitor = monitor
     map_blk_to_merged_dset.backend = backend
