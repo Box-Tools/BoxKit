@@ -89,6 +89,6 @@ class Action:  # pylint: disable=too-many-arguments
         for index, parallel_obj in enumerate(obj_list):
             if not isinstance(parallel_obj, type(first_obj)):
                 raise ValueError(
-                    "[boxkit.library.Action] Inconsistent type at index "
+                    f"[boxkit.library.Action] Inconsistent type {type(parallel_obj)} vs {type(first_obj)} at index "
                     + f'"{index}" in parallel object list'
                 )

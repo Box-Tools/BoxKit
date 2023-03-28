@@ -34,9 +34,9 @@ def mergeblocks(
             )
 
     # Compute number of blocks in each direction
-    nblockx = int((dataset.xmax - dataset.xmin) / dataset.blocklist[0].dx / dataset.nxb)
-    nblocky = int((dataset.ymax - dataset.ymin) / dataset.blocklist[0].dy / dataset.nyb)
-    nblockz = int((dataset.zmax - dataset.zmin) / dataset.blocklist[0].dz / dataset.nzb)
+    nblockx = round((dataset.xmax - dataset.xmin) / dataset.blocklist[0].dx / dataset.nxb)
+    nblocky = round((dataset.ymax - dataset.ymin) / dataset.blocklist[0].dy / dataset.nyb)
+    nblockz = round((dataset.zmax - dataset.zmin) / dataset.blocklist[0].dz / dataset.nzb)
 
     nblockx, nblocky, nblockz = [
         value if value > 0 else 1 for value in [nblockx, nblocky, nblockz]
