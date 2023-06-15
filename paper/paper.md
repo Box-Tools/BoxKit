@@ -1,15 +1,14 @@
 ---
-title: 'BoxKit'
+title: 'BoxKit: A Python library to manage analysis of block-structured simulation datasets'
 tags:
   - Python
   - block structured datasets
-  - data analysis
+  - simulation analysis
   - machine learning
   - performance optimization
 authors:
   - name: Akash Dhruv
     orcid: 0000-0003-4997-321X
-    equal-contrib: true
     affiliation: 1
 affiliations:
  - name: Argonne National Laboratory, USA
