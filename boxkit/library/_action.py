@@ -2,7 +2,7 @@
 from types import GeneratorType
 import copy
 
-from boxkit import library
+from boxkit import library  # pylint: disable=cyclic-import
 
 
 class Action:  # pylint: disable=too-many-arguments
@@ -89,7 +89,7 @@ class Action:  # pylint: disable=too-many-arguments
         for index, parallel_obj in enumerate(obj_list):
             if not isinstance(parallel_obj, type(first_obj)):
                 raise ValueError(
-                    f"[boxkit.library.Action] Inconsistent type "
+                    "[boxkit.library.Action] Inconsistent type "
                     + f"{type(parallel_obj)} vs {type(first_obj)} at index "
                     + f'"{index}" in parallel object list'
                 )

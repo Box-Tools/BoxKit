@@ -17,7 +17,7 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     if isinstance(varlist, str):
         varlist = [varlist]
 
-    # TODO: Add more error handling here to account
+    # TODO: Add more error handling here to account # pylint: disable=fixme
     # for consistency between multiple datasets
     #
     # Handle errors, compute level of the first

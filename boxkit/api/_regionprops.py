@@ -3,8 +3,8 @@
 import itertools
 import skimage.measure as skimage_measure
 
-from .. import api
-from ..library import Action
+from boxkit import api  # pylint: disable=cyclic-import
+from boxkit.library import Action  # pylint: disable=cyclic-import
 
 
 def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):

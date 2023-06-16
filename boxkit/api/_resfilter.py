@@ -1,12 +1,12 @@
 """Module with implemenetation of api reshape methods"""
 
-from .. import library
-from .. import api
+from boxkit import library  # pylint: disable=cyclic-import
+from boxkit import api  # pylint: disable=cyclic-import
 
 
 def resfilter(
     dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"
-):
+):  # pylint: disable=too-many-arguments disable=too-many-locals
     """
     Build a pseudo UG dataset from AMR dataset at a level
 

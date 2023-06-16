@@ -1,6 +1,6 @@
 """Module with implementation of the Slice class."""
 
-from boxkit.library import Region
+from boxkit.library import Region  # pylint: disable=cyclic-import
 
 
 class Slice(Region):  # pylint: disable=too-few-public-methods
@@ -8,7 +8,7 @@ class Slice(Region):  # pylint: disable=too-few-public-methods
 
     type_ = "derived"
 
-    def __init__(self, blocklist, **attributes):
+    def __init__(self, blocklist, **attributes):  # pylint: disable=W0235
         """Initialize the Slice object and allocate the data.
 
         Parameters

@@ -1,15 +1,13 @@
 """Module with implemenetation of api methods"""
 
-import sys
-
-from .. import library
-from .. import api
-from ..library import Action
+from boxkit import library  # pylint: disable=cyclic-import
+from boxkit import api  # pylint: disable=cyclic-import
+from boxkit.library import Action  # pylint: disable=cyclic-import
 
 
 def mergeblocks(
     dataset, varlist, nthreads=1, batch="auto", monitor=False, backend="serial"
-):
+):  # pylint: disable=too-many-arguments disable=too-many-locals
     """
     Reshaped dataset at a level
     """
@@ -34,9 +32,15 @@ def mergeblocks(
             )
 
     # Compute number of blocks in each direction
-    nblockx = round((dataset.xmax - dataset.xmin) / dataset.blocklist[0].dx / dataset.nxb)
-    nblocky = round((dataset.ymax - dataset.ymin) / dataset.blocklist[0].dy / dataset.nyb)
-    nblockz = round((dataset.zmax - dataset.zmin) / dataset.blocklist[0].dz / dataset.nzb)
+    nblockx = round(
+        (dataset.xmax - dataset.xmin) / dataset.blocklist[0].dx / dataset.nxb
+    )
+    nblocky = round(
+        (dataset.ymax - dataset.ymin) / dataset.blocklist[0].dy / dataset.nyb
+    )
+    nblockz = round(
+        (dataset.zmax - dataset.zmin) / dataset.blocklist[0].dz / dataset.nzb
+    )
 
     nblockx, nblocky, nblockz = [
         value if value > 0 else 1 for value in [nblockx, nblocky, nblockz]

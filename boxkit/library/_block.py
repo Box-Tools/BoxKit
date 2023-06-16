@@ -1,6 +1,5 @@
 """Module with implementation of the Block class."""
 
-import math
 import numpy
 import pymorton
 
