@@ -2,7 +2,7 @@
 from types import GeneratorType
 import copy
 
-from .. import library
+from boxkit import library
 
 
 class Action:  # pylint: disable=too-many-arguments

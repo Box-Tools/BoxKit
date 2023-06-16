@@ -1,6 +1,6 @@
 """Module with implementation of the Slice class."""
 
-from . import Region
+from boxkit.library import Region
 
 
 class Slice(Region):  # pylint: disable=too-few-public-methods

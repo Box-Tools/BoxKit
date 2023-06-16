@@ -8,7 +8,7 @@ import h5py
 import h5pickle
 import numpy
 
-from .. import options
+from boxkit import options
 
 if options.dask:
     import dask.array as dsarray
