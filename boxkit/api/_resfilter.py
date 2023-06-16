@@ -1,12 +1,13 @@
 """Module with implemenetation of api reshape methods"""
 
 from boxkit import library  # pylint: disable=cyclic-import
-from boxkit import api  # pylint: disable=cyclic-import
+
+# from boxkit import api  # pylint: disable=cyclic-import
 
 
 def resfilter(
     dataset, varlist=None, level=1, nthreads=1, monitor=False, backend="serial"
-):  # pylint: disable=too-many-arguments disable=too-many-locals
+):  # pylint: disable=too-many-arguments disable=too-many-locals disable=unused-argument
     """
     Build a pseudo UG dataset from AMR dataset at a level
 
@@ -51,20 +52,21 @@ def resfilter(
         for value in [nblockx_level, nblocky_level, nblockz_level]
     ]
 
-    filtered_dataset = api.create_dataset(
-        nblockx=nblockx_level,
-        nblocky=nblocky_level,
-        nblockz=nblockz_level,
-        nxb=dataset.nxb,
-        nyb=dataset.nyb,
-        nzb=dataset.nzb,
-        xmin=dataset.xmin,
-        ymin=dataset.ymin,
-        zmin=dataset.zmin,
-        xmax=dataset.xmax,
-        ymax=dataset.ymax,
-        zmax=dataset.zmax,
-    )
+    # TODO: uncomment this # pylint: disable=fixme
+    # filtered_dataset = api.create_dataset(
+    #    nblockx=nblockx_level,
+    #    nblocky=nblocky_level,
+    #    nblockz=nblockz_level,
+    #    nxb=dataset.nxb,
+    #    nyb=dataset.nyb,
+    #    nzb=dataset.nzb,
+    #    xmin=dataset.xmin,
+    #    ymin=dataset.ymin,
+    #    zmin=dataset.zmin,
+    #    xmax=dataset.xmax,
+    #    ymax=dataset.ymax,
+    #    zmax=dataset.zmax,
+    # )
 
     if monitor:
         del time_resfilter
