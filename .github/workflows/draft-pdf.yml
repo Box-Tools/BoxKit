@@ -1,8 +1,9 @@
+name: draft-pdf
+
 on: [push]
 
 jobs:
   paper:
-    name: "paper-draft"
     runs-on: ubuntu-latest
     name: Paper Draft
     steps:
