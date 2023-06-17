@@ -3,7 +3,7 @@
 import h5pickle as h5py
 
 
-def read_test_sample(filename, server):
+def read_test_sample(filename, server):  # pylint: disable=too-many-locals
     """
     Read dataset from BoxKit test sample
 
@@ -34,9 +34,9 @@ def read_test_sample(filename, server):
     xmax = inputfile["boundbox/max"][:, 0]
     ymax = inputfile["boundbox/max"][:, 1]
     zmax = inputfile["boundbox/max"][:, 2]
-    dx = inputfile["deltas"][0]
-    dy = inputfile["deltas"][1]
-    dz = inputfile["deltas"][2]
+    dx = inputfile["deltas"][0]  # pylint: disable=invalid-name
+    dy = inputfile["deltas"][1]  # pylint: disable=invalid-name
+    dz = inputfile["deltas"][2]  # pylint: disable=invalid-name
 
     variables = {}
     variables.update(inputfile["quantities"])

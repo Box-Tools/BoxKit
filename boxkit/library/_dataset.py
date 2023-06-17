@@ -1,8 +1,8 @@
 """Module with implemenetation of Dataset class"""
 
-from . import Block
-from . import Data
-from . import Action
+from boxkit.library import Block  # pylint: disable=cyclic-import
+from boxkit.library import Data  # pylint: disable=cyclic-import
+from boxkit.library import Action  # pylint: disable=cyclic-import
 
 
 class Dataset:  # pylint: disable=too-many-instance-attributes

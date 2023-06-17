@@ -2,7 +2,7 @@
 
 from progress.bar import Bar, ChargingBar  # pylint: disable=unused-import
 
-from .. import options
+from boxkit import options
 
 if options.cbox:
     from ..cbox.lib import boost as cbox  # pylint: disable=c-extension-no-member

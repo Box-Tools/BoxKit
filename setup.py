@@ -11,16 +11,16 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # Import bin from current working directory
 # sys.path.insert makes sure that current file path is searched
 # first to find this module
-import bin.cmd as bin_cmd
+import bin.cmd as bin_cmd  # pylint: disable=wrong-import-position
 
 # Parse README and get long
 # description
-with open("README.rst", mode="r") as readme:
+with open("README.rst", mode="r", encoding="ascii") as readme:
     long_description = readme.read()
 
 
 # Open metadata file to extract package information
-with open("boxkit/__meta__.py", mode="r") as source:
+with open("boxkit/__meta__.py", mode="r", encoding="ascii") as source:
     content = source.read().strip()
     metadata = {
         key: re.search(key + r'\s*=\s*[\'"]([^\'"]*)[\'"]', content).group(1)
@@ -34,8 +34,8 @@ with open("boxkit/__meta__.py", mode="r") as source:
     }
 
 # core dependancies for the package
-with open('requirements/core.txt') as reqs:
-    DEPENDENCIES = reqs.read()
+with open("requirements/core.txt", mode="r", encoding="ascii") as core_reqs:
+    DEPENDENCIES = core_reqs.read()
 
 # Call setup command with necessary arguments
 # replace existing build and develop commands

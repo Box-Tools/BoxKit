@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import joblib
 import tqdm
 
-from .. import options
+from boxkit import options
 
 if options.dask:
     import dask  # pylint: disable=unused-import

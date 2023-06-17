@@ -13,7 +13,7 @@ def read_dataset(
     force_memmap=False,
     nthreads=1,
     backend="serial",
-):
+):  # pylint: disable=too-many-arguments disable=too-many-locals
     """
     Create a dataset from a file
 

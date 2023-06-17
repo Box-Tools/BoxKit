@@ -4,11 +4,11 @@ import os
 import string
 import random
 import shutil
-
+import h5py
 import h5pickle
 import numpy
 
-from .. import options
+from boxkit import options
 
 if options.dask:
     import dask.array as dsarray
@@ -211,7 +211,7 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
             pass
 
         for varkey in emptykeys:
-            outputfile = h5pickle.File(os.path.join(self.boxmem, varkey), "w")
+            outputfile = h5py.File(os.path.join(self.boxmem, varkey), "w")
 
             outputshape = [
                 self.nblocks,
@@ -224,9 +224,10 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                 varkey, data=numpy.zeros(outputshape, dtype=self.dtype[varkey])
             )
             outputfile.close()
+            del outputfile
 
             self.outfile[varkey] = h5pickle.File(
-                os.path.join(self.boxmem, varkey), "r+", skip_cache=False
+                os.path.join(self.boxmem, varkey), "r+", skip_cache=True
             )
 
             self.variables[varkey] = self.outfile[varkey][varkey]
@@ -264,6 +265,12 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
             )
             self.variables[varkey] = numpy.memmap(
                 outputfile, dtype=self.dtype[varkey], shape=outputshape, mode="w+"
+            )
+            self.variables[varkey].flush()
+            del self.variables[varkey]
+
+            self.variables[varkey] = numpy.memmap(
+                outputfile, dtype=self.dtype[varkey], shape=outputshape, mode="r+"
             )
 
             self.dtype[varkey] = type(self.variables[varkey])
@@ -303,6 +310,20 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                 self.variables[varkey] = zarr.open(
                     outputfile,
                     mode="w",
+                    shape=outputshape,
+                    chunks=(
+                        1,
+                        self.nzb + 2 * self.zguard,
+                        self.nyb + 2 * self.yguard,
+                        self.nxb + 2 * self.xguard,
+                    ),
+                    dtype=self.dtype[varkey],
+                )
+                del self.variables[varkey]
+
+                self.variables[varkey] = zarr.open(
+                    outputfile,
+                    mode="r+",
                     shape=outputshape,
                     chunks=(
                         1,

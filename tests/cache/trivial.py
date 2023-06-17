@@ -2,7 +2,7 @@ import numpy
 from boxkit.library import Action, Timer
 
 
-@Action(parallel_obj=float, backend="serial", nthreads=1, monitor=True)
+@Action(backend="serial", nthreads=1, monitor=True)
 def multiply(parallel_obj):
     return parallel_obj * 10
 

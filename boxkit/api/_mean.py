@@ -17,7 +17,7 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     if isinstance(varlist, str):
         varlist = [varlist]
 
-    # TODO: Add more error handling here to account
+    # TODO: Add more error handling here to account # pylint: disable=fixme
     # for consistency between multiple datasets
     #
     # Handle errors, compute level of the first
@@ -33,6 +33,13 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     # Create an mean dataset
     mean_dataset = datasets[0].clone(storage="numpy-memmap")
 
+    # loop over varlist append values to
+    # add it to the mean dataset and perform mean
+    for varkey in varlist:
+        mean_dataset.addvar(varkey)
+
+    sample_size = len(datasets)
+
     # Create a block list for reduction, first add
     # blocks from average_dataset and then loop over
     # datasets to add blocks from their respective blocklist
@@ -42,12 +49,8 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
         for block, blk_list in zip(dataset.blocklist, blk_reduce_list):
             blk_list.append(block)
 
-    # loop over varlist append values to
-    # add it to the mean dataset and perform mean
     for varkey in varlist:
-        mean_dataset.addvar(varkey)
 
-    for varkey in varlist:
         if monitor:
             time_reduction = library.Timer("[boxkit.mean_temporal.mean_blk_list]")
 
@@ -58,7 +61,9 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
             # pass list of parallel objects
             (blk_list for blk_list in blk_reduce_list),
             varkey,
+            sample_size,
         )
+
         if monitor:
             del time_reduction
 
@@ -68,12 +73,11 @@ def mean_temporal(datasets, varlist, backend="serial", nthreads=1, monitor=False
     return mean_dataset
 
 
-def mean_blk_list(blk_list, varkey):
+def mean_blk_list(blk_list, varkey, sample_size):
     """
     Reduce dataset / compute average
     """
     mean_blk = blk_list[0]
-    sample_size = len(blk_list[1:])
 
     for work_blk in blk_list[1:]:
         mean_blk[varkey] = mean_blk[varkey] + work_blk[varkey] / sample_size

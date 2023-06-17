@@ -1,8 +1,8 @@
 """Module with implementation of Action utility"""
-
+from types import GeneratorType
 import copy
 
-from .. import library
+from boxkit import library  # pylint: disable=cyclic-import
 
 
 class Action:  # pylint: disable=too-many-arguments
@@ -68,9 +68,15 @@ class Action:  # pylint: disable=too-many-arguments
         """Custom call signature"""
 
         toparg, args = Action.toparg(*args)
+
+        if not isinstance(toparg, GeneratorType) and not isinstance(toparg, list):
+            raise ValueError(
+                "[boxkit.library.Action] First argument "
+                + f"must be {GeneratorType!r} or {list!r} not {type(toparg)!r}"
+            )
+
         obj_list = list(toparg)
         del toparg
-
         self.__class__.chk_obj_list(obj_list)
 
         return library.exectask(self, obj_list, *args, **kwargs)
@@ -79,15 +85,11 @@ class Action:  # pylint: disable=too-many-arguments
     def chk_obj_list(obj_list):
         """Check if obj_list matches the parallel_obj type"""
 
-        if not isinstance(obj_list, list):
-            raise ValueError(
-                "[boxkit.library.Action] Top argument must be a list of parallel_objs"
-            )
-
         first_obj = obj_list[0]
         for index, parallel_obj in enumerate(obj_list):
             if not isinstance(parallel_obj, type(first_obj)):
                 raise ValueError(
-                    "[boxkit.library.Action] Inconsistent type at index "
+                    "[boxkit.library.Action] Inconsistent type "
+                    + f"{type(parallel_obj)} vs {type(first_obj)} at index "
                     + f'"{index}" in parallel object list'
                 )

@@ -1,6 +1,5 @@
 """Module with implementation of the Block class."""
 
-import math
 import numpy
 import pymorton
 
@@ -252,9 +251,9 @@ class Block:  # pylint: disable=too-many-instance-attributes
         Get offset from origin
         """
         iloc, jloc, kloc = [
-            math.ceil((self.xmin - origin[0]) / (self.xmax - self.xmin + 1e-13)),
-            math.ceil((self.ymin - origin[1]) / (self.ymax - self.ymin + 1e-13)),
-            math.ceil((self.zmin - origin[2]) / (self.zmax - self.zmin + 1e-13)),
+            round((self.xmin - origin[0]) / (self.xmax - self.xmin + 1e-13)),
+            round((self.ymin - origin[1]) / (self.ymax - self.ymin + 1e-13)),
+            round((self.zmin - origin[2]) / (self.zmax - self.zmin + 1e-13)),
         ]
 
         return iloc, jloc, kloc
