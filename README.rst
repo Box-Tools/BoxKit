@@ -4,15 +4,16 @@
 
 |Code style: black|
 
-|FlashX| |FlowX| |Minimal| |Publish|
+|FlashX| |FlowX| |Minimal| |Publish| |Linting|
 
-BoxKit is a library that provides building blocks to parallelize and
-scale data science, high performance computing, and machine learning
-applications for block-structured datasets. Spatial data from
-simulations and experiments can be accessed and managed using tools
-available in this library when working with more data analysis oriented
-packages like SciKit (https://github.com/scikit-learn/scikit-learn) and
-FlowNet (https://github.com/NVIDIA/flownet2-pytorch)
+**********
+ Overview
+**********
+
+An overview of BoxKit is available in ``paper/paper.md`` that can be
+compiled into a Journal of Open Source Software (JOSS) pdf by running
+``make`` in the ``paper`` directory. Please note that the ``Makefile``
+requires a functioning Docker service on the machine.
 
 **************
  Installation
@@ -63,17 +64,7 @@ source code and is an effective method for debugging. Note that the
 *******
 
 BoxKit is undergoing active development and therefore design changes are
-frequent, however, the library is divided into two broad categories:
-
--  **Create**: Containing interface for classes/methods to store spatial
-   data in a rectangular/cubic frame, along with auxillary tools to
-   manage irregular geometries composed of unstructured triangular mesh.
-
--  **Utilities**: Containing interface for classes/method to improve
-   memory managment of data on NUMA nodes.
-
-We are currently setting up use cases for BoxKit, and will update this
-section when we are able to demonstrate proof-of-concept.
+frequent, we will update this section soon.
 
 **********
  Citation
@@ -92,6 +83,15 @@ section when we are able to demonstrate proof-of-concept.
      url          = {https://doi.org/10.5281/zenodo.7255632}
    }
 
+**************
+ Contribution
+**************
+
+Contribution to the source code is encouraged. Developers can create
+pull requests from their individual forks to the ``development`` branch.
+Please read ``DESIGN.rst`` for an overview of software design and
+developer guide
+
 ****************
  Help & Support
 ****************
@@ -108,6 +108,8 @@ Please file an issue on the repository page
 .. |Minimal| image:: https://github.com/akashdhruv/BoxKit/workflows/Minimal/badge.svg
 
 .. |Publish| image:: https://github.com/akashdhruv/BoxKit/workflows/Publish/badge.svg
+
+.. |Linting| image:: https://github.com/akashdhruv/BoxKit/workflows/Linting/badge.svg
 
 .. |icon| image:: ./media/icon.svg
    :width: 30

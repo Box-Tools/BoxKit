@@ -9,10 +9,8 @@ tags:
 authors:
   - name: Akash Dhruv
     orcid: 0000-0003-4997-321X
-    affiliation: 1
 affiliations:
  - name: Argonne National Laboratory, USA
-   index: 1
 date: 15 June 2023
 bibliography: paper.bib
 ---
@@ -20,61 +18,66 @@ bibliography: paper.bib
 # Summary
 
 BoxKit is a library that provides building blocks to parallelize and 
-scale data science, high performance computing, and machine learning
+scale data science, statistical analysis, and machine learning
 applications for block-structured datasets. Spatial data from
-simulations and experiments can be accessed and managed using tools
-available in this library when working with more data analysis oriented
-packages like SciKit, FlowNet, and OpticalFlow
+simulations can be accessed and managed using tools
+available in this library when working with Python-based
+packages like SciKit, PyTorch, and OpticalFlow.
 
+The library provides a Python interface to efficiently access Adaptive 
+Mesh Refinement (AMR) data typical of simulation outputs, and leverages
+multiprocessing libraries like JobLib and Dask to scale analysis on 
+Non-Uniform Memory Access (NUMA) and distributed computing architectures.
 
 # Statement of need
 
-Details about why there is software addresses references like
-[@DUBEY2022], [@DHRUV2023], and [@HASSAN2023] 
+Simulation sofware instruments like Flash-X [@DUBEY2022] store output in 
+the form of Hierarchical Data Format (HDF5) datasets. Each dataset is often
+terabytes (TB) in size and requires cache efficient techniques to enable its 
+integration with Python packages. BoxKit datastructures act as a wrapper around 
+simulation output stored in HDF5 files and provide metadata for AMR blocks that 
+describe the simulation domain. The wrapper objects are lightweight in nature and
+represent chunks of data stored on disk, acting as array like input for Python
+functions/methods. This approach allows for selective loading of data from disk to
+memory in form of chunks/blocks which improves cache efficiency. The library also enables 
+creation of new datasets for data-intensive workflows, and can be extended beyond its current 
+application to numerical simulations.
 
-# Mathematics
+![BoxKit is designed to integrate simulation software instruments like Flash-X 
+with Python-based machine learning and data analysis packages. Large simulation 
+datasets (~TB) can leverage BoxKit to improve performance of offline training/analysis. 
+This mechanism is part of a broader workflow to  integrate simulations with machine 
+learning using a Fortran-Python bridge shown with dotted lines. \label{fig:workflow}](../media/workflow.png)
 
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
+BoxKit also offers wrappers to scale the process of deploying workflows on NUMA and distributed
+computing architectures by providing decorators that can parallelize Python operations over a
+single datastructure to operate over a list. This can be understood better using the 
+workflow described in Figure \autoref{fig:workflow} that has been applied to data analysis and 
+machine learning applications in chemical and thermal science engineering [@DHRUV2023; @HASSAN2023].
+Output from Flash-X boiling simulations is created and stored on multinode clusters. Processing 
+this output through BoxKit allows for scaling a simple operation over block to a list of blocks as
+shown below,
 
-Double dollars make self-standing equations:
+```
+def operation_on_block(block, *args):
+    pass
 
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
+Action(operation_on_block, no_of_processes, parallel_backend)(
+    (block for block in list_of_blocks), *args)
+```
 
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
+The `Action` wrappers converts the function, `operation_on_block`, into a parallel method which 
+can be deployed on a multinode cluster with the desired backend (JobLib/Dask). BoxKit does not
+interfere with parallelization schema of target applications like SciKit, OpticalFlow, and PyTorch 
+which function independently using available resources.
 
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
+We aim to use BoxKit as part of a broader workflow that integrates Fortran/C++ based applications
+with state-of-art machine learning packages available in Python, described using dotted line in 
+Figure \autoref{fig:workflow}.
 
 # Acknowledgements
 
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
+We acknowledge contributions from Laboratory Directed Research and Development
+(LDRD) program supported by Argonne National Laboratory [@argonne].
 
 # References
