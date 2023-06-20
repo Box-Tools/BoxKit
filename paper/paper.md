@@ -26,6 +26,7 @@ simulations and experiments can be accessed and managed using tools
 available in this library when working with more data analysis oriented
 packages like SciKit, FlowNet, and OpticalFlow
 
+![Machine learning and data analysis workflow for Flash-X.\label{fig:workflow}](../media/workflow.png)
 
 # Statement of need
 
