@@ -26,7 +26,7 @@ simulations and experiments can be accessed and managed using tools
 available in this library when working with more data analysis oriented
 packages like SciKit, FlowNet, and OpticalFlow
 
-![Machine learning and data analysis workflow for Flash-X.\label{fig:workflow}](../media/workflow.png)
+![BoxKit is designed to integrate simulation software instruments like Flash-X [@DUBEY2022] with Python-based machine learning and data analysis libraries. Large simulation datasets (~TB) can leverage BoxKit to improve performance of offline training/analysis. This mechanism is part of a broader workflow to integrate simulations with machine learning using a Fortran-Python bridge shown with dotted lines. \label{fig:workflow}](../media/workflow.png)
 
 # Statement of need
 
