@@ -56,6 +56,15 @@ def create_dataset(storage=None, **attributes):
         (self.zmax - self.zmin) / (self.nblockz * self.nzb),
     ]
 
+    if self.dx == 0:
+        self.dx = 1
+
+    if self.dy == 0:
+        self.dy = 1
+
+    if self.dz == 0:
+        self.dz = 1
+
     blocklist = []
 
     for lblock in range(self.nblockx * self.nblocky * self.nblockz):
