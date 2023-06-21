@@ -175,4 +175,4 @@ features, and ask questions about usage
    :width: 30
 
 .. |performance| image:: ./media/performance.png
-   :width: 100
+   :width: 1000
