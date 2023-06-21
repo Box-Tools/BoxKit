@@ -34,7 +34,7 @@ Non-Uniform Memory Access (NUMA) and distributed computing architectures.
 Simulation sofware instruments like Flash-X [@DUBEY2022] store output in 
 the form of Hierarchical Data Format (HDF5) datasets. Each dataset is often
 gigabytes (GB) in size and requires cache efficient techniques to enable its 
-integration with Python packages. BoxKit datastructures act as a wrapper around 
+integration with Python packages. BoxKit data structures act as a wrapper around 
 simulation output stored in HDF5 files and provide metadata for AMR blocks that 
 describe the simulation domain. The wrapper objects are lightweight in nature and
 represent chunks of data stored on disk, acting as array like input for Python
