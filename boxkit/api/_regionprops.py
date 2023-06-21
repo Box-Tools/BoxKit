@@ -58,8 +58,12 @@ def skimage_props_blk(block, lsetkey, labelkey):
 
     listprops = skimage_measure.regionprops(block[labelkey].astype(int))
 
-    listprops = [
-        {"area": props["area"] * block.dx * block.dy * block.dz} for props in listprops
-    ]
+    proplist = ["area", "centroid", "equivalent_diameter_area"]
+
+    # listprops = [
+    #    {"area": props["area"] * block.dx * block.dy * block.dz} for props in listprops
+    # ]
+
+    listprops = [{key: props[key] for key in proplist} for props in listprops]
 
     return listprops
