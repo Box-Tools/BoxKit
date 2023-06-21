@@ -107,15 +107,41 @@ be read by executing,
 
 .. code:: python
 
+   # Read dataset from a Flash-X simulation
    dset = boxkit.read_dataset(path_to_hdf5_file, source="flash")
 
 New datasets can be created using the ``create_dataset`` method
 
 .. code:: python
 
-   dset = boxkit.create_dataset(*args, **kwargs)
+   # Create a dataset using custom attributes
+   dset = boxkit.create_dataset(**attributes)
 
-A full of list of arguments can be found in the documentation.
+Following is a short on how to create a block-structured dataset in
+BoxKit and use its interface. Similar functionality exists for datasets
+that are read from a simulation source like Flash-X
+(https://flash-x.org)
+
+.. code:: python
+   
+   # Create a two-dimensional dataset with 25 blocks of size 4x4
+   dset = boxkit.create_dataset(xmin=0,xmax=1,ymin=0,ymax=1,nxb=4,nyb=4,nblockx=5,nblocky=5)
+
+   print(dset)
+
+.. code::
+
+   Dataset:
+   - type         : <class 'boxkit.library._dataset.Dataset'>
+   - file         : None
+   - keys         : []
+   - dtype	: []
+   - bound(z-y-x) : [0.0, 1.0] x [0.0, 0.8] x [0.0, 1.6]
+   - shape(z-y-x) : 1 x 4 x 4
+   - guard(z-y-x) : 0 x 0 x 0
+   - nblocks      : 25
+   - dtype        : {}
+
 
 *********
  Testing

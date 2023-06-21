@@ -99,13 +99,22 @@ total number of datasets,
 Loading all the datasets into cache memory at the same time is very 
 inefficient for this problem and requires use of BoxKit's metadata
 wrappers to efficiently load data chunks from disk, operate locally in space, 
-and scale its computation across multiple threads. Based on the graph in F
+and scale its computation across multiple threads. Based on the graph in 
+\autoref{fig:performance} the parallel performance scales better as $Nt$
+increases.
+
+Mapping of AMR data to contingous arrays becomes important for applications
+where global operations in space are required. An example of this is SciKit's 
+``skimage_measure`` method, which can be used to measure bubble shape and size 
+for Flash-X boiling simulations. BoxKit improves performance of this operation 
+by ~5x.
 
 # Ongoing work
 
-We aim to use BoxKit as part of a broader workflow that integrates 
-Fortran/C++ based applications with state-of-art machine learning packages 
-available in Python shown by dotted lines in \autoref{fig:workflow}.
+Our ongoing work focuses on using BoxKit to improve performance of Scientific
+Machine Learning (SciML) applications and using it as part of a broader workflow 
+that integrates Fortran/C++ based applications with state-of-art machine learning 
+packages available in Python shown by dotted lines in \autoref{fig:workflow}.
 
 # Acknowledgements
 
