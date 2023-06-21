@@ -58,15 +58,21 @@ Output from Flash-X boiling simulations is created and stored on multinode clust
 this output through BoxKit allows for scaling a simple operation over block to a list of blocks as
 shown below,
 
-```
+```python
+
+# Decorate function on a block
+# with desired configuration for
+# parallelization
+@Action(num_procs, parallel_backend)
 def operation_on_block(block, *args):
     pass
 
-Action(operation_on_block, no_of_processes, parallel_backend)(
-    (block for block in list_of_blocks), *args)
+# Call the function with list of 
+# blocks as the first argument
+operation_on_block((block for block in list_of_blocks), *args)
 ```
 
-The `Action` wrappers converts the function, `operation_on_block`, into a parallel method which 
+The `Action` wrapperer converts the function, `operation_on_block`, into a parallel method which 
 can be deployed on a multinode cluster with the desired backend (JobLib/Dask). BoxKit does not
 interfere with parallelization schema of target applications like SciKit, OpticalFlow, and PyTorch 
 which function independently using available resources.
