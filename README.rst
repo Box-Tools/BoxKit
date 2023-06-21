@@ -11,10 +11,9 @@
 **********
 
 An overview of BoxKit is available in ``paper/paper.md`` that provides a
-summary and statement of purpose for the package. You can compile it
-into a pdf by running ``make`` in the ``paper`` directory. Please note
-that the ``Makefile`` requires a functioning Docker service on the
-machine.
+summary and statement of need for the package. You can compile it into a
+pdf by running ``make`` in the ``paper`` directory. Please note that the
+``Makefile`` requires a functioning Docker service on the machine.
 
 **************
  Installation
