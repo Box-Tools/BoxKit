@@ -174,8 +174,8 @@ a dataset's ``blocklist``
        print(block["soln"])
 
 For instructions on using parallelization wrapper please read
-``paper/paper.md``. More detailed information is available in BoxKit's
-documentation (https://akashdhruv.github.io/BoxKit/).
+``paper/paper.md``. Detailed information on full functionality is
+availabe in documentation (https://akashdhruv.github.io/BoxKit/).
 
 **************
  Contribution
