@@ -135,15 +135,15 @@ for an example.
 
 .. code::
 
-   @software{akash_dhruv_2022_7255632,
+   @software{akash_dhruv_2023_8063195,
      author       = {Akash Dhruv},
-     title        = {akashdhruv/BoxKit: October 2022},
-     month        = oct,
-     year         = 2022,
+     title        = {akashdhruv/BoxKit: June 2023},
+     month        = jun,
+     year         = 2023,
      publisher    = {Zenodo},
-     version      = {22.10},
-     doi          = {10.5281/zenodo.7255632},
-     url          = {https://doi.org/10.5281/zenodo.7255632}
+     version      = {2023.06},
+     doi          = {10.5281/zenodo.8063195},
+     url          = {https://doi.org/10.5281/zenodo.8063195}
    }
 
 **************
