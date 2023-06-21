@@ -94,25 +94,36 @@ environment by adding the following to iPython notebooks and scripts,
    import boxkit
 
 Once the library is imported in the environment, simulation datasets can
-be loading by executing,
-
-Reading datasets
-================
+be read by executing,
 
 .. code:: python
 
    dset = boxkit.read_dataset(path_to_hdf5_file, source="flash")
 
-New datasets can be created using the ``create_dataset`` command
-
-Creating datasets
-=================
+New datasets can be created using the ``create_dataset`` method
 
 .. code:: python
 
    dset = boxkit.create_dataset(*args, **kwargs)
 
 A full of list of arguments can be found in the documentation.
+
+|performance|
+
+*********
+ Testing
+*********
+
+Testing for BoxKit is performed across different hardware platforms
+where high-fidelity simulation data can reside. The sites $\\textemdash$
+acadia and sedona refer to a Mac and Ubuntu operating systems
+respectively where regular testing takes place.
+
+For lightweight testing during pull requests and merger, new tests can
+be added to ``tests/container``. Each test should be accompanied with a
+coresspoding addition to YAML files located under ``.github/workflows``.
+See ``tests/container/heater.py`` and ``.github/workflows/flashx.yaml``
+for an example.
 
 **********
  Citation
@@ -162,3 +173,6 @@ features, and ask questions about usage
 
 .. |icon| image:: ./media/icon.svg
    :width: 30
+
+.. |performance| image:: ./media/performance.png
+   :width: 100
