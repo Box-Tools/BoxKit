@@ -52,7 +52,7 @@ learning using a Fortran-Python bridge shown with dotted lines. \label{fig:workf
 BoxKit also offers wrappers to scale the process of deploying workflows on NUMA and distributed
 computing architectures by providing decorators that can parallelize Python operations over a
 single data structure to operate over a list. This can be understood better using the 
-workflow described in Figure \autoref{fig:workflow} that has been applied to data analysis and 
+workflow described in \autoref{fig:workflow} that has been applied to data analysis and 
 machine learning applications in chemical and thermal science engineering [@DHRUV2023; @HASSAN2023].
 Output from Flash-X boiling simulations is created and stored on multinode clusters. Processing 
 this output through BoxKit allows for scaling a simple operation over block to a list of blocks as
@@ -81,7 +81,7 @@ calculation of temporal mean across multiple datasets (left),
 and merging block-structured AMR datasets into contiguous 
 arrays (right). \label{fig:performance}](../media/performance.png)
 
-Figure \autoref{fig:performance} provides results of performance tests performed 
+\autoref{fig:performance} provides results of performance tests performed 
 on a single 22 core node on Summit [@summit] for two basic operations: 
 (1) Calculation of temporal mean of heat flux in Flash-X boiling simulations 
 $q(x,y,z,t)$, and (2) A block merger operations to convert AMR data into contiguous 
@@ -105,7 +105,7 @@ and scale its computation across multiple threads. Based on the graph in F
 
 We aim to use BoxKit as part of a broader workflow that integrates 
 Fortran/C++ based applications with state-of-art machine learning packages 
-available in Python shown by dotted lines in Figure \autoref{fig:workflow}.
+available in Python shown by dotted lines in \autoref{fig:workflow}.
 
 # Acknowledgements
 
