@@ -13,7 +13,7 @@
 An overview of BoxKit is available in ``paper/paper.md`` that provides a
 summary and statement of need for the package. You can compile it into a
 pdf by running ``make`` in the ``paper`` directory. Please note that the
-``Makefile`` requires a functioning Docker service on the machine.
+``Makefile`` requires Docker to be installed and running on the machine.
 
 **************
  Installation
@@ -82,6 +82,15 @@ source code and is an effective method for debugging. Note that the
 
    pip install click
 
+The ``setup`` command acts a wrapper over ``setup.py`` to provide a
+developer friendly interface. The ``--help`` option provides
+instructions on how to configure installation with different options,
+
+.. code::
+
+   ./setup --help
+   ./setup develop --help
+
 *******
  Usage
 *******
@@ -98,21 +107,84 @@ be read by executing,
 
 .. code:: python
 
+   # Read dataset from a Flash-X simulation
    dset = boxkit.read_dataset(path_to_hdf5_file, source="flash")
 
 New datasets can be created using the ``create_dataset`` method
 
 .. code:: python
 
-   dset = boxkit.create_dataset(*args, **kwargs)
+   # Create a dataset using custom attributes
+   dset = boxkit.create_dataset(**attributes)
 
-A full of list of arguments can be found in the documentation.
+Following is an example on how to create a block-structured dataset in
+BoxKit and use its interface. Similar functionality exists for datasets
+that are read from a simulation source like Flash-X
+(https://flash-x.org)
 
-*************
- Performance
-*************
+.. code:: python
 
-|performance|
+   # Create a two-dimensional dataset with 25 blocks of size 4x4
+   dset = boxkit.create_dataset(xmin=0,xmax=1,ymin=0,ymax=1,nxb=4,nyb=4,nblockx=5,nblocky=5)
+
+.. code::
+
+   print(dset)
+
+   Dataset:
+   - type         : <class 'boxkit.library._dataset.Dataset'>
+   - file         : None
+   - keys         : []
+   - dtype      : []
+   - bound(z-y-x) : [0.0, 1.0] x [0.0, 0.8] x [0.0, 1.6]
+   - shape(z-y-x) : 1 x 4 x 4
+   - guard(z-y-x) : 0 x 0 x 0
+   - nblocks      : 25
+   - dtype        : {}
+
+Next add a solution variable using,
+
+.. code:: python
+
+   # Add a solution variable to the dataset
+   dset.addvar("soln")
+
+This creates a numpy memmap for solution variable and stores it on disk.
+The data can be accessed directly using ``dset["soln"]``. When dataset
+is read from HDF5 source using ``read_dataset``, like Flash-X
+simulations, then its representation on the disk is in the form of
+``h5py`` objects.
+
+.. code::
+
+   print(numpy.shape(dset["soln"])
+   (25, 1, 4, 4)
+
+The example dataset here contains 25 blocks that are arranged using a
+space-filling morton order as below,
+
+|morton|
+
+Solution data local to individual blocks can be accessed by looping over
+a dataset's ``blocklist``
+
+.. code:: python
+
+   for block in dset.blocklist:
+       print(block["soln"])
+
+For instructions on using parallelization wrapper please read
+``paper/paper.md``. Detailed information on full functionality is
+availabe in documentation (https://akashdhruv.github.io/BoxKit/).
+
+**************
+ Contribution
+**************
+
+Developers are encouraged to fork the repository and contribute to the
+source code in the form of pull requests to the ``development`` branch.
+Please read documentation (https://akashdhruv.github.io/BoxKit/) for an
+overview of software design and developer guide
 
 *********
  Testing
@@ -146,15 +218,6 @@ for an example.
      url          = {https://doi.org/10.5281/zenodo.8063195}
    }
 
-**************
- Contribution
-**************
-
-Developers are encouraged to fork the repository and contribute to the
-source code in the form of pull requests to the ``development`` branch.
-Please read ``DESIGN.rst`` for an overview of software design and
-developer guide
-
 ****************
  Help & Support
 ****************
@@ -178,5 +241,5 @@ features, and ask questions about usage
 .. |icon| image:: ./media/icon.svg
    :width: 30
 
-.. |performance| image:: ./media/performance.png
-   :width: 1000
+.. |morton| image:: ./media/morton.png
+   :width: 150
