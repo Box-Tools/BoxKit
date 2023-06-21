@@ -86,36 +86,33 @@ source code and is an effective method for debugging. Note that the
  Usage
 *******
 
-After ``pip`` installation, BoxKit can be imported inside
-Python environment by adding,
+After ``pip`` installation, BoxKit can be imported inside Python
+environment by adding the following to iPython notebooks and scripts,
 
 .. code:: python
 
    import boxkit
 
-to iPython notebooks or scripts.
-
-Once the library is imported in the environment, simulation
-datasets can be loading by executing,
+Once the library is imported in the environment, simulation datasets can
+be loading by executing,
 
 Reading datasets
-****************
+================
+
 .. code:: python
 
    dset = boxkit.read_dataset(path_to_hdf5_file, source="flash")
 
-
 New datasets can be created using the ``create_dataset`` command
 
 Creating datasets
-*****************
+=================
+
 .. code:: python
 
    dset = boxkit.create_dataset(*args, **kwargs)
 
 A full of list of arguments can be found in the documentation.
-
-
 
 **********
  Citation
