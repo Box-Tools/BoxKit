@@ -150,20 +150,41 @@ Next add a solution variable using,
    dset.addvar("soln")
 
 This creates a numpy memmap for solution variable and stores it on disk.
-The data can be accessed directly using ``dset["soln"]``. When dataset 
-is read from HDF5 source using ``read_dataset``, like Flash-X simulations,
-then its representation on the disk is in the form of ``h5py`` objects.
+The data can be accessed directly using ``dset["soln"]``. When dataset
+is read from HDF5 source using ``read_dataset``, like Flash-X
+simulations, then its representation on the disk is in the form of
+``h5py`` objects.
 
 .. code::
 
    print(numpy.shape(dset["soln"])
    (25, 1, 4, 4)
 
-
-The example dataset here contains 25 blocks that are arranged using a space-filling
-morton order as below,
+The example dataset here contains 25 blocks that are arranged using a
+space-filling morton order as below,
 
 |morton|
+
+Solution data local to individual blocks can be accessed by looping over
+a dataset's ``blocklist``
+
+.. code:: python
+
+   for block in dset.blocklist:
+       print(block["soln"])
+
+For instructions on using parallelization wrapper please read
+``paper/paper.md``. More detailed information is available in BoxKit's
+documentation (https://akashdhruv.github.io/BoxKit/).
+
+**************
+ Contribution
+**************
+
+Developers are encouraged to fork the repository and contribute to the
+source code in the form of pull requests to the ``development`` branch.
+Please read documentation (https://akashdhruv.github.io/BoxKit/) for an
+overview of software design and developer guide
 
 *********
  Testing
@@ -196,15 +217,6 @@ for an example.
      doi          = {10.5281/zenodo.8063195},
      url          = {https://doi.org/10.5281/zenodo.8063195}
    }
-
-**************
- Contribution
-**************
-
-Developers are encouraged to fork the repository and contribute to the
-source code in the form of pull requests to the ``development`` branch.
-Please read documentation (https://akashdhruv.github.io/BoxKit/) for an
-overview of software design and developer guide
 
 ****************
  Help & Support
