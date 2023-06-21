@@ -62,9 +62,7 @@ source code and is an effective method for debugging. Note that the
 *******
  Usage
 *******
-
-BoxKit is undergoing active development and therefore design changes are
-frequent, we will update this section soon.
+Add usage details here
 
 **********
  Citation
