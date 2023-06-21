@@ -19,10 +19,10 @@ bibliography: paper.bib
 
 BoxKit is a library that provides building blocks to parallelize and 
 scale data science, statistical analysis, and machine learning
-applications for block-structured datasets. Spatial data from
-simulations can be accessed and managed using tools
-available in this library when working with Python-based
-packages like SciKit, PyTorch, and OpticalFlow.
+applications for block-structured simulation datasets. Spatial data
+from simulations can be accessed and managed using tools available 
+in this library to interface with packages like SciKit, PyTorch, and 
+OpticalFlow for post-processing and analysis.
 
 The library provides a Python interface to efficiently access Adaptive 
 Mesh Refinement (AMR) data typical of simulation outputs, and leverages
@@ -41,7 +41,7 @@ represent chunks of data stored on disk, acting as array like input for Python
 functions/methods. This approach allows for selective loading of data from disk to
 memory in form of chunks/blocks which improves cache efficiency. The library also enables 
 creation of new datasets for data-intensive workflows, and can be extended beyond its current 
-application to numerical simulations.
+application to numerical simulations. 
 
 ![BoxKit is designed to integrate simulation software instruments like Flash-X 
 with Python-based machine learning and data analysis packages. Large simulation 

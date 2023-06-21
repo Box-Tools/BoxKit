@@ -10,10 +10,11 @@
  Overview
 **********
 
-An overview of BoxKit is available in ``paper/paper.md`` that can be
-compiled into a Journal of Open Source Software (JOSS) pdf by running
-``make`` in the ``paper`` directory. Please note that the ``Makefile``
-requires a functioning Docker service on the machine.
+An overview of BoxKit is available in ``paper/paper.md`` that provides a
+summary and statement of purpose for the package. You can compile it
+into a pdf by running ``make`` in the ``paper`` directory. Please note
+that the ``Makefile`` requires a functioning Docker service on the
+machine.
 
 **************
  Installation
@@ -26,9 +27,6 @@ Stable releases of BoxKit are hosted on Python Package Index website
 
    pip install BoxKit --user
 
-   export CXX=$(CPP_COMPILER)
-   pip install BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
-
 Note that ``pip`` should point to ``python3+`` installation package
 ``pip3``.
 
@@ -38,8 +36,34 @@ using,
 .. code::
 
    pip install --upgrade BoxKit --user
-   pip install --upgrade BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
    pip uninstall BoxKit
+
+Pre-release version can be installed directly from the git reposity by
+executing,
+
+.. code::
+
+   pip install git+ssh://git@github.com/akashdhruv/BoxKit.git --user
+
+BoxKit provides various installation options that can be used to
+configure the library with desired features. Following is a list of
+options,
+
+.. code::
+
+   with-cbox      - With C++ backend
+   with-pyarrow   - With Apache Arrow data backend
+   with-zarr      - With Zarr data backend
+   with-dask      - With Dask data/parallel backend
+   enable-testing - Enabling testing mode for development
+
+Correspondingly, the installation command can be modified to include
+necessary options as follows,
+
+.. code::
+
+   export CXX=$(CPP_COMPILER)
+   pip install BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
 
 There maybe situations where users may want to install BoxKit in
 development mode $\\textemdash$ to design new features, debug, or
@@ -62,6 +86,11 @@ source code and is an effective method for debugging. Note that the
 *******
  Usage
 *******
+
+.. code:: python
+
+   import boxkit
+
 Add usage details here
 
 **********
@@ -85,8 +114,8 @@ Add usage details here
  Contribution
 **************
 
-Contribution to the source code is encouraged. Developers can create
-pull requests from their individual forks to the ``development`` branch.
+Developers are encouraged to fork the repository and contribute to the
+source code in the form of pull requests to the ``development`` branch.
 Please read ``DESIGN.rst`` for an overview of software design and
 developer guide
 
@@ -94,7 +123,8 @@ developer guide
  Help & Support
 ****************
 
-Please file an issue on the repository page
+Please file an issue on the repository page to report bugs, request
+features, and ask questions about usage
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
