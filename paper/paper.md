@@ -60,15 +60,12 @@ shown below,
 
 ```python
 
-# Decorate function on a block
-# with desired configuration for
-# parallelization
+# Decorate function on a block with desired configuration for parallelization
 @Action(num_procs, parallel_backend)
 def operation_on_block(block, *args):
     pass
 
-# Call the function with list of 
-# blocks as the first argument
+# Call the function with list of blocks as the first argument
 operation_on_block((block for block in list_of_blocks), *args)
 ```
 
