@@ -1,24 +1,16 @@
-##############################################
- |icon| Software Design and Developer's Guide
-##############################################
+#######################################################
+ |icon| Overview of current datastructures and methods
+#######################################################
 
 *****
- API
+ api
 *****
-
-BoxKit API details here
 
 *********
- Library
+ library
 *********
 
 BoxKit library details here
-
-*******
- C-Box
-*******
-
-C++ backend detailes here
 
 ***************
  Miscellaneous

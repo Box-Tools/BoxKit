@@ -33,7 +33,7 @@ Non-Uniform Memory Access (NUMA) and distributed computing architectures.
 
 Simulation sofware instruments like Flash-X [@DUBEY2022] store output in 
 the form of Hierarchical Data Format (HDF5) datasets. Each dataset is often
-terabytes (TB) in size and requires cache efficient techniques to enable its 
+gigabytes (GB) in size and requires cache efficient techniques to enable its 
 integration with Python packages. BoxKit datastructures act as a wrapper around 
 simulation output stored in HDF5 files and provide metadata for AMR blocks that 
 describe the simulation domain. The wrapper objects are lightweight in nature and
@@ -45,13 +45,13 @@ application to numerical simulations.
 
 ![BoxKit is designed to integrate simulation software instruments like Flash-X 
 with Python-based machine learning and data analysis packages. Large simulation 
-datasets (~TB) can leverage BoxKit to improve performance of offline training/analysis. 
+datasets (~10 GB) can leverage BoxKit to improve performance of offline training/analysis. 
 This mechanism is part of a broader workflow to  integrate simulations with machine 
 learning using a Fortran-Python bridge shown with dotted lines. \label{fig:workflow}](../media/workflow.png)
 
 BoxKit also offers wrappers to scale the process of deploying workflows on NUMA and distributed
 computing architectures by providing decorators that can parallelize Python operations over a
-single datastructure to operate over a list. This can be understood better using the 
+single data structure to operate over a list. This can be understood better using the 
 workflow described in Figure \autoref{fig:workflow} that has been applied to data analysis and 
 machine learning applications in chemical and thermal science engineering [@DHRUV2023; @HASSAN2023].
 Output from Flash-X boiling simulations is created and stored on multinode clusters. Processing 
@@ -74,14 +74,38 @@ can be deployed on a multinode cluster with the desired backend (JobLib/Dask). B
 interfere with parallelization schema of target applications like SciKit, OpticalFlow, and PyTorch 
 which function independently using available resources.
 
-![Performance of BoxKit on a single 22 core IBM Power9 node 
-(L1 cache - 32+32 KiB per core, L2 cache - 512 KiB per core),
-for operations involving calculation of temporal mean across 
-multiple datasets, and merging block-structured AMR datasets 
-into contiguous arrays. \label{fig:performance}](../media/performance.png)
+![Preliminary performance analysis of BoxKit on a single 
+22 core IBM Power9 node (L1 cache - 32+32 kilobytes (KiB) per core, 
+L2 cache - 512 KiB per core) for operations involving 
+calculation of temporal mean across multiple datasets (left), 
+and merging block-structured AMR datasets into contiguous 
+arrays (right). \label{fig:performance}](../media/performance.png)
 
-We aim to use BoxKit as part of a broader workflow that integrates Fortran/C++ based applications
-with state-of-art machine learning packages available in Python.
+Figure \autoref{fig:performance} provides results of performance tests performed 
+on a single 22 core node on Summit [@summit] for two basic operations: 
+(1) Calculation of temporal mean of heat flux in Flash-X boiling simulations 
+$q(x,y,z,t)$, and (2) A block merger operations to convert AMR data into contiguous 
+arrays.
+
+Calculation of temporal mean requires operation on data across multiple 
+datasets, with each dataset approximately 10 GB in size. Following is 
+the mathematical representation of the problem where $Nt$ represents the 
+total number of datasets,
+
+\begin{equation}\label{eq:mean}
+\overline q = \frac{\sum_{n=1}^{Nt} q(x,y,z,t)}{Nt}
+\end{equation}
+
+Loading all the datasets into cache memory at the same time is very 
+inefficient for this problem and requires use of BoxKit's metadata
+wrappers to efficiently load data chunks from disk, operate locally in space, 
+and scale its computation across multiple threads. Based on the graph in F
+
+# Ongoing work
+
+We aim to use BoxKit as part of a broader workflow that integrates 
+Fortran/C++ based applications with state-of-art machine learning packages 
+available in Python shown by dotted lines in Figure \autoref{fig:workflow}.
 
 # Acknowledgements
 
