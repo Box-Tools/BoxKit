@@ -160,8 +160,8 @@ then its representation on the disk is in the form of ``h5py`` objects.
    (25, 1, 4, 4)
 
 
-The example dataset here 25 blocks that arranged using a space-filling
-morton order,
+The example dataset here contains 25 blocks that are arranged using a space-filling
+morton order as below,
 
 |morton|
 
@@ -230,4 +230,4 @@ features, and ask questions about usage
    :width: 30
 
 .. |morton| image:: ./media/morton.png
-   :width: 200
+   :width: 150
