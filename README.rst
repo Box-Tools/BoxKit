@@ -108,6 +108,10 @@ New datasets can be created using the ``create_dataset`` method
 
 A full of list of arguments can be found in the documentation.
 
+*************
+ Performance
+*************
+
 |performance|
 
 *********
