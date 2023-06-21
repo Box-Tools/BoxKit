@@ -82,6 +82,15 @@ source code and is an effective method for debugging. Note that the
 
    pip install click
 
+The ``setup`` command acts a wrapper over ``setup.py`` to provide a
+developer friendly interface. The ``--help`` option provides
+instructions on how to configure installation with different options,
+
+.. code::
+
+   ./setup --help
+   ./setup develop --help
+
 *******
  Usage
 *******
@@ -107,12 +116,6 @@ New datasets can be created using the ``create_dataset`` method
    dset = boxkit.create_dataset(*args, **kwargs)
 
 A full of list of arguments can be found in the documentation.
-
-*************
- Performance
-*************
-
-|performance|
 
 *********
  Testing
@@ -152,8 +155,8 @@ for an example.
 
 Developers are encouraged to fork the repository and contribute to the
 source code in the form of pull requests to the ``development`` branch.
-Please read ``DESIGN.rst`` for an overview of software design and
-developer guide
+Please read documentation (https://akashdhruv.github.io/BoxKit/) for an
+overview of software design and developer guide
 
 ****************
  Help & Support
@@ -177,6 +180,3 @@ features, and ask questions about usage
 
 .. |icon| image:: ./media/icon.svg
    :width: 30
-
-.. |performance| image:: ./media/performance.png
-   :width: 1000

@@ -69,14 +69,19 @@ def operation_on_block(block, *args):
 operation_on_block((block for block in list_of_blocks), *args)
 ```
 
-The `Action` wrapperer converts the function, `operation_on_block`, into a parallel method which 
+The `Action` wrapper converts the function, `operation_on_block`, into a parallel method which 
 can be deployed on a multinode cluster with the desired backend (JobLib/Dask). BoxKit does not
 interfere with parallelization schema of target applications like SciKit, OpticalFlow, and PyTorch 
 which function independently using available resources.
 
+![Performance of BoxKit on a single 22 core IBM Power9 node 
+(L1 cache - 32+32 KiB per core, L2 cache - 512 KiB per core),
+for operations involving calculation of temporal mean across 
+multiple datasets, and merging block-structured AMR datasets 
+into contiguous arrays. \label{fig:performance}](../media/performance.png)
+
 We aim to use BoxKit as part of a broader workflow that integrates Fortran/C++ based applications
-with state-of-art machine learning packages available in Python, described using dotted line in 
-Figure \autoref{fig:workflow}.
+with state-of-art machine learning packages available in Python.
 
 # Acknowledgements
 
