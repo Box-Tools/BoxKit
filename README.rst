@@ -173,9 +173,31 @@ a dataset's ``blocklist``
    for block in dset.blocklist:
        print(block["soln"])
 
-For instructions on using parallelization wrapper please read
-``paper/paper.md``. Detailed information on full functionality is
-availabe in documentation (https://akashdhruv.github.io/BoxKit/).
+BoxKit also offers wrappers to scale the process of deploying workflows
+on NUMA and distributed computing architectures by providing decorators
+that can parallelize Python operations over a single data structure to
+operate over a list,
+
+.. code:: python
+
+   from boxkit.library import Action
+
+   # Decorate function on a block with desired configuration for parallelization
+   @Action(num_procs, parallel_backend)
+   def operation_on_block(block, *args):
+       pass
+
+   # Call the function with list of blocks as the first argument
+   operation_on_block((block for block in list_of_blocks), *args)
+
+The ``Action`` wrapper converts the function, ``operation_on_block``,
+into a parallel method which can be deployed on a multinode cluster with
+the desired backend (JobLib/Dask). BoxKit does not interfere with
+parallelization schema of target applications like SciKit, OpticalFlow,
+and PyTorch which function independently using available resources.
+
+Detailed information on full functionality is availabe in documentation
+(https://akashdhruv.github.io/BoxKit/).
 
 **************
  Contribution
