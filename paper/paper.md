@@ -9,8 +9,10 @@ tags:
 authors:
   - name: Akash Dhruv
     orcid: 0000-0003-4997-321X
+    affiliation: 1
 affiliations:
  - name: Argonne National Laboratory, USA
+   index: 1
 date: 15 June 2023
 bibliography: paper.bib
 ---
