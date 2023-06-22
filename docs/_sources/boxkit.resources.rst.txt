@@ -8,7 +8,6 @@ Subpackages
    :maxdepth: 4
 
    boxkit.resources.read
-   boxkit.resources.stencils
 
 Module contents
 ---------------

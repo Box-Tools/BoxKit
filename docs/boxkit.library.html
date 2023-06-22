@@ -17,7 +17,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="boxkit.library.create package" href="boxkit.library.create.html" />
+    <link rel="next" title="boxkit.resources package" href="boxkit.resources.html" />
     <link rel="prev" title="boxkit.cbox.lib package" href="boxkit.cbox.lib.html" /> 
 </head>
 
@@ -85,32 +85,555 @@
              
   <div class="section" id="boxkit-library-package">
 <h1>boxkit.library package<a class="headerlink" href="#boxkit-library-package" title="Permalink to this headline"></a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline"></a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="boxkit.library.create.html">boxkit.library.create package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.create.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.create.html#module-boxkit.library.create._block">boxkit.library.create._block module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.create.html#module-boxkit.library.create._data">boxkit.library.create._data module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.create.html#module-boxkit.library.create._dataset">boxkit.library.create._dataset module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.create.html#module-boxkit.library.create._region">boxkit.library.create._region module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.create.html#module-boxkit.library.create._slice">boxkit.library.create._slice module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.create.html#module-boxkit.library.create">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="boxkit.library.utilities.html">boxkit.library.utilities package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.utilities.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._action">boxkit.library.utilities._action module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._execute">boxkit.library.utilities._execute module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._monitor">boxkit.library.utilities._monitor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._process">boxkit.library.utilities._process module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities._server">boxkit.library.utilities._server module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="boxkit.library.utilities.html#module-boxkit.library.utilities">Module contents</a></li>
-</ul>
-</li>
-</ul>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </div>
+<div class="section" id="module-boxkit.library._action">
+<span id="boxkit-library-action-module"></span><h2>boxkit.library._action module<a class="headerlink" href="#module-boxkit.library._action" title="Permalink to this headline"></a></h2>
+<p>Module with implementation of Action utility</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._action.Action">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._action.</span></span><span class="sig-name descname"><span class="pre">Action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'serial'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._action.Action" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Default class for an action.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._action.Action.chk_obj_list">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chk_obj_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._action.Action.chk_obj_list" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj_list matches the parallel_obj type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._action.Action.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._action.Action.copy" title="Permalink to this definition"></a></dt>
+<dd><p>Custom copy method</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._action.Action.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._action.Action.execute" title="Permalink to this definition"></a></dt>
+<dd><p>Custom call signature</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._action.Action.toparg">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">toparg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._action.Action.toparg" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get top argument from <a href="#id1"><span class="problematic" id="id2">*</span></a>args</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="boxkit.library._action.Action.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'default'</span></em><a class="headerlink" href="#boxkit.library._action.Action.type_" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._block">
+<span id="boxkit-library-block-module"></span><h2>boxkit.library._block module<a class="headerlink" href="#module-boxkit.library._block" title="Permalink to this headline"></a></h2>
+<p>Module with implementation of the Block class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._block.Block">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._block.</span></span><span class="sig-name descname"><span class="pre">Block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Default class for a Block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>data object</em>) – </p></li>
+<li><p><strong>attributes</strong> (<em>dictionary</em>) – <dl class="simple">
+<dt>{ ‘dx’<span class="classifier">grid spacing in x dir</span></dt><dd><p>’dy’   : grid spacing in y dir
+‘dz’   : grid spacing in z dir
+‘xmin’ : low  bound in x dir
+‘ymin’ : low  bound in y dir
+‘zmin’ : low  bound in z dir
+‘xmax’ : high bound in x dir
+‘ymax’ : high bound in y dir
+‘zmax’ : high bound in z dir
+‘tag’  : block ID }</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block._map_data">
+<span class="sig-name descname"><span class="pre">_map_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block._map_data" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for initialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block._set_attributes">
+<span class="sig-name descname"><span class="pre">_set_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block._set_attributes" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for intialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block._set_neighdict_2d">
+<span class="sig-name descname"><span class="pre">_set_neighdict_2d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block._set_neighdict_2d" title="Permalink to this definition"></a></dt>
+<dd><p>class property python
+Return neighbor tags</p>
+<p>order - imins,iplus,jmins,jplus</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block._set_neighdict_3d">
+<span class="sig-name descname"><span class="pre">_set_neighdict_3d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block._set_neighdict_3d" title="Permalink to this definition"></a></dt>
+<dd><p>Return neighbor tags</p>
+<p>order - xmins,xplus,ymins,yplus,zmins,zplus</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.exchange_neighdata">
+<span class="sig-name descname"><span class="pre">exchange_neighdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.exchange_neighdata" title="Permalink to this definition"></a></dt>
+<dd><p>Exchange information</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.get_center_loc">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_center_loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.get_center_loc" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for center location</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.get_node_loc">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_node_loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.get_node_loc" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for face location</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.get_relative_loc">
+<span class="sig-name descname"><span class="pre">get_relative_loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.get_relative_loc" title="Permalink to this definition"></a></dt>
+<dd><p>Get offset from origin</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.neighdata">
+<span class="sig-name descname"><span class="pre">neighdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighkey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.neighdata" title="Permalink to this definition"></a></dt>
+<dd><p>Get neighbor data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.read_neighbuffer">
+<span class="sig-name descname"><span class="pre">read_neighbuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.read_neighbuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Read neighbor buffer and perform halo exchange</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'default'</span></em><a class="headerlink" href="#boxkit.library._block.Block.type_" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.write_neighbuffer">
+<span class="sig-name descname"><span class="pre">write_neighbuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.write_neighbuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Write block data to buffer for halo exchange</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.xrange">
+<span class="sig-name descname"><span class="pre">xrange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.xrange" title="Permalink to this definition"></a></dt>
+<dd><p>Get xrange of the block</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.yrange">
+<span class="sig-name descname"><span class="pre">yrange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.yrange" title="Permalink to this definition"></a></dt>
+<dd><p>Get yrange of the block</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._block.Block.zrange">
+<span class="sig-name descname"><span class="pre">zrange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._block.Block.zrange" title="Permalink to this definition"></a></dt>
+<dd><p>Get zrange of the block</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._data">
+<span id="boxkit-library-data-module"></span><h2>boxkit.library._data module<a class="headerlink" href="#module-boxkit.library._data" title="Permalink to this headline"></a></h2>
+<p>Module with implementation of the Data class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._data.Data">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._data.</span></span><span class="sig-name descname"><span class="pre">Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="boxkit.cbox.lib.html#boxkit.cbox.lib.library.Data" title="boxkit.cbox.lib.library.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">boxkit.cbox.lib.library.Data</span></code></a></p>
+<p>Default class to store data</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data._create_dask_objects">
+<span class="sig-name descname"><span class="pre">_create_dask_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._create_dask_objects" title="Permalink to this definition"></a></dt>
+<dd><p>Create dask array representation of data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data._create_h5_datasets">
+<span class="sig-name descname"><span class="pre">_create_h5_datasets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._create_h5_datasets" title="Permalink to this definition"></a></dt>
+<dd><p>Create h5 datasets for empty keys in variables dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data._create_numpy_arrays">
+<span class="sig-name descname"><span class="pre">_create_numpy_arrays</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._create_numpy_arrays" title="Permalink to this definition"></a></dt>
+<dd><p>Create numpy arrays for empty keys in variables dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data._create_numpy_memmap">
+<span class="sig-name descname"><span class="pre">_create_numpy_memmap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._create_numpy_memmap" title="Permalink to this definition"></a></dt>
+<dd><p>Create numpy memory maps for empty keys in variables dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data._create_pyarrow_objects">
+<span class="sig-name descname"><span class="pre">_create_pyarrow_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._create_pyarrow_objects" title="Permalink to this definition"></a></dt>
+<dd><p>Create a pyarrow tensor objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data._create_zarr_objects">
+<span class="sig-name descname"><span class="pre">_create_zarr_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._create_zarr_objects" title="Permalink to this definition"></a></dt>
+<dd><p>Create zarr objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data._set_attributes">
+<span class="sig-name descname"><span class="pre">_set_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._set_attributes" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for intialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data._set_data">
+<span class="sig-name descname"><span class="pre">_set_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._set_data" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for setting new data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data.addvar">
+<span class="sig-name descname"><span class="pre">addvar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'float'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data.addvar" title="Permalink to this definition"></a></dt>
+<dd><p>Add a variables to data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data.delvar">
+<span class="sig-name descname"><span class="pre">delvar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data.delvar" title="Permalink to this definition"></a></dt>
+<dd><p>Delete a variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._data.Data.purge">
+<span class="sig-name descname"><span class="pre">purge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">purgeflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data.purge" title="Permalink to this definition"></a></dt>
+<dd><p>Clean up data and close it</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="boxkit.library._data.Data.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'default'</span></em><a class="headerlink" href="#boxkit.library._data.Data.type_" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._dataset">
+<span id="boxkit-library-dataset-module"></span><h2>boxkit.library._dataset module<a class="headerlink" href="#module-boxkit.library._dataset" title="Permalink to this headline"></a></h2>
+<p>Module with implemenetation of Dataset class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._dataset.</span></span><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocklist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._dataset.Dataset" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>API class for storing Dataset info</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset._map_blocklist">
+<span class="sig-name descname"><span class="pre">_map_blocklist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocklist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._dataset.Dataset._map_blocklist" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for initialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset._map_data">
+<span class="sig-name descname"><span class="pre">_map_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._dataset.Dataset._map_data" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for initialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.addvar">
+<span class="sig-name descname"><span class="pre">addvar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'float'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._dataset.Dataset.addvar" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.clone">
+<span class="sig-name descname"><span class="pre">clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy-memmap'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._dataset.Dataset.clone" title="Permalink to this definition"></a></dt>
+<dd><p>Clone dataset</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.delvar">
+<span class="sig-name descname"><span class="pre">delvar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._dataset.Dataset.delvar" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.dtype">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.dtype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.halo_exchange">
+<span class="sig-name descname"><span class="pre">halo_exchange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'serial'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._dataset.Dataset.halo_exchange" title="Permalink to this definition"></a></dt>
+<dd><p>Perform halo exchange</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.nblocks">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nblocks</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.nblocks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.nxb">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nxb</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.nxb" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.nyb">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nyb</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.nyb" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.nzb">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nzb</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.nzb" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.purge">
+<span class="sig-name descname"><span class="pre">purge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">purgeflag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._dataset.Dataset.purge" title="Permalink to this definition"></a></dt>
+<dd><p>Clean up the dataset and close it</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.source">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.source" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'default'</span></em><a class="headerlink" href="#boxkit.library._dataset.Dataset.type_" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.varlist">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">varlist</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.varlist" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.xguard">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xguard</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.xguard" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.yguard">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">yguard</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.yguard" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="boxkit.library._dataset.Dataset.zguard">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zguard</span></span><a class="headerlink" href="#boxkit.library._dataset.Dataset.zguard" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._execute">
+<span id="boxkit-library-execute-module"></span><h2>boxkit.library._execute module<a class="headerlink" href="#module-boxkit.library._execute" title="Permalink to this headline"></a></h2>
+<p>Module with implementation of ExecuteTask utility</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.library._execute.exectask">
+<span class="sig-prename descclassname"><span class="pre">boxkit.library._execute.</span></span><span class="sig-name descname"><span class="pre">exectask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._execute.exectask" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action</strong> (<em>action object contains following attributes</em>) – <dl>
+<dt>target<span class="classifier">function/action operates on a,</span></dt><dd><p>parallel_obj —&gt; def target(parallel_obj, <a href="#id3"><span class="problematic" id="id4">*</span></a>args)</p>
+<p>actual call passes,
+obj_list —&gt; target(obj_list, <a href="#id5"><span class="problematic" id="id6">*</span></a>args)</p>
+</dd>
+</dl>
+<p>nthreads : number of nthreads (only relevant for parallel operations)
+monitor  : flag (True or False) to show progress bar for action
+backend  : ‘serial’, ‘loky’, ‘dask’</p>
+</p></li>
+<li><p><strong>obj_list</strong> (<em>list of parallel_objs</em>) – </p></li>
+<li><p><strong>args</strong> (<em>tuple of additional arguments</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.library._execute.execute_cbox">
+<span class="sig-prename descclassname"><span class="pre">boxkit.library._execute.</span></span><span class="sig-name descname"><span class="pre">execute_cbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._execute.execute_cbox" title="Permalink to this definition"></a></dt>
+<dd><p>Wrapper takes in obj_list and additional arguments and
+then applies target operations to individual parallel_objs using boxlib</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.library._execute.execute_dask">
+<span class="sig-prename descclassname"><span class="pre">boxkit.library._execute.</span></span><span class="sig-name descname"><span class="pre">execute_dask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._execute.execute_dask" title="Permalink to this definition"></a></dt>
+<dd><p>Wrapper takes in obj_list and additional arguments and
+then applies target operations to individual parallel_objs in
+using dask parallel backend</p>
+<p>nthreads = 1 or None reverts to serial mode</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.library._execute.execute_loky">
+<span class="sig-prename descclassname"><span class="pre">boxkit.library._execute.</span></span><span class="sig-name descname"><span class="pre">execute_loky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._execute.execute_loky" title="Permalink to this definition"></a></dt>
+<dd><p>Wrapper takes in obj_list and additional arguments and
+then applies target operations to individual parallel_objs in
+parallel using joblib “loky” backend</p>
+<p>nthreads = 1 or None reverts to serial mode</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.library._execute.execute_serial">
+<span class="sig-prename descclassname"><span class="pre">boxkit.library._execute.</span></span><span class="sig-name descname"><span class="pre">execute_serial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._execute.execute_serial" title="Permalink to this definition"></a></dt>
+<dd><p>Wrapper takes in obj_list and additional arguments and
+then applies target operations to individual parallel_objs in
+serial</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._monitor">
+<span id="boxkit-library-monitor-module"></span><h2>boxkit.library._monitor module<a class="headerlink" href="#module-boxkit.library._monitor" title="Permalink to this headline"></a></h2>
+<p>Module with implementaion of Monitor class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._monitor.Monitor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._monitor.</span></span><span class="sig-name descname"><span class="pre">Monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._monitor.Monitor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Dervied class of a Boost.Python.Class</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._monitor.Monitor.finish">
+<span class="sig-name descname"><span class="pre">finish</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._monitor.Monitor.finish" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._monitor.Monitor.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._monitor.Monitor.update" title="Permalink to this definition"></a></dt>
+<dd><p>update monitor</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._region">
+<span id="boxkit-library-region-module"></span><h2>boxkit.library._region module<a class="headerlink" href="#module-boxkit.library._region" title="Permalink to this headline"></a></h2>
+<p>Module with implementation of the Region class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._region.Region">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._region.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocklist</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._region.Region" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for a Region.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._region.Region._in_collision">
+<span class="sig-name descname"><span class="pre">_in_collision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._region.Region._in_collision" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a block is in collision with the region</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._region.Region._map_blocklist">
+<span class="sig-name descname"><span class="pre">_map_blocklist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocklist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._region.Region._map_blocklist" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for initialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._region.Region._set_attributes">
+<span class="sig-name descname"><span class="pre">_set_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._region.Region._set_attributes" title="Permalink to this definition"></a></dt>
+<dd><p>`
+Private method for intialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._region.Region._update_bounds">
+<span class="sig-name descname"><span class="pre">_update_bounds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._region.Region._update_bounds" title="Permalink to this definition"></a></dt>
+<dd><p>Update block bounds using the blocklist</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="boxkit.library._region.Region.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'base'</span></em><a class="headerlink" href="#boxkit.library._region.Region.type_" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._resources">
+<span id="boxkit-library-resources-module"></span><h2>boxkit.library._resources module<a class="headerlink" href="#module-boxkit.library._resources" title="Permalink to this headline"></a></h2>
+<p>Module for managing resources</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._resources.Resources">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._resources.</span></span><span class="sig-name descname"><span class="pre">Resources</span></span><a class="headerlink" href="#boxkit.library._resources.Resources" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Return dictionary of available and used resources to optimize usage</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._resources.Resources.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._resources.Resources.display" title="Permalink to this definition"></a></dt>
+<dd><p>Display resource status</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._server">
+<span id="boxkit-library-server-module"></span><h2>boxkit.library._server module<a class="headerlink" href="#module-boxkit.library._server" title="Permalink to this headline"></a></h2>
+<p>Module with implementation of Server utility</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._server.Server">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._server.</span></span><span class="sig-name descname"><span class="pre">Server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._server.Server" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">paramiko.client.SSHClient</span></code></p>
+<p>Server class implementation for remote data access</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._server.Server._set_attributes">
+<span class="sig-name descname"><span class="pre">_set_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._server.Server._set_attributes" title="Permalink to this definition"></a></dt>
+<dd><p>Private method for intialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._server.Server.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._server.Server.close" title="Permalink to this definition"></a></dt>
+<dd><p>Method to close server connections</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="boxkit.library._server.Server.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._server.Server.connect" title="Permalink to this definition"></a></dt>
+<dd><p>Method to connect to the server</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._slice">
+<span id="boxkit-library-slice-module"></span><h2>boxkit.library._slice module<a class="headerlink" href="#module-boxkit.library._slice" title="Permalink to this headline"></a></h2>
+<p>Module with implementation of the Slice class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._slice.Slice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._slice.</span></span><span class="sig-name descname"><span class="pre">Slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocklist</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._slice.Slice" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#boxkit.library._region.Region" title="boxkit.library._region.Region"><code class="xref py py-class docutils literal notranslate"><span class="pre">boxkit.library._region.Region</span></code></a></p>
+<p>Derived class for a Slice.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="boxkit.library._slice.Slice.type_">
+<span class="sig-name descname"><span class="pre">type_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'derived'</span></em><a class="headerlink" href="#boxkit.library._slice.Slice.type_" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.library._timer">
+<span id="boxkit-library-timer-module"></span><h2>boxkit.library._timer module<a class="headerlink" href="#module-boxkit.library._timer" title="Permalink to this headline"></a></h2>
+<p>Module with implementation of the Timer class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="boxkit.library._timer.Timer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._timer.</span></span><span class="sig-name descname"><span class="pre">Timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._timer.Timer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Timer class</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-boxkit.library">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-boxkit.library" title="Permalink to this headline"></a></h2>
@@ -123,7 +646,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="boxkit.cbox.lib.html" class="btn btn-neutral float-left" title="boxkit.cbox.lib package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="boxkit.library.create.html" class="btn btn-neutral float-right" title="boxkit.library.create package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="boxkit.resources.html" class="btn btn-neutral float-right" title="boxkit.resources package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -4,28 +4,55 @@ boxkit.api package
 Submodules
 ----------
 
-boxkit.api.create module
+boxkit.api.\_create module
+--------------------------
+
+.. automodule:: boxkit.api._create
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.api.\_mean module
 ------------------------
 
-.. automodule:: boxkit.api.create
+.. automodule:: boxkit.api._mean
    :members:
    :undoc-members:
    :show-inheritance:
    :private-members:
 
-boxkit.api.measure module
--------------------------
+boxkit.api.\_mergeblocks module
+-------------------------------
 
-.. automodule:: boxkit.api.measure
+.. automodule:: boxkit.api._mergeblocks
    :members:
    :undoc-members:
    :show-inheritance:
    :private-members:
 
-boxkit.api.read module
-----------------------
+boxkit.api.\_read module
+------------------------
 
-.. automodule:: boxkit.api.read
+.. automodule:: boxkit.api._read
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.api.\_regionprops module
+-------------------------------
+
+.. automodule:: boxkit.api._regionprops
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.api.\_resfilter module
+-----------------------------
+
+.. automodule:: boxkit.api._resfilter
    :members:
    :undoc-members:
    :show-inheritance:

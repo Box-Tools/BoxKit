@@ -1,14 +1,107 @@
 boxkit.library package
 ======================
 
-Subpackages
------------
+Submodules
+----------
 
-.. toctree::
-   :maxdepth: 4
+boxkit.library.\_action module
+------------------------------
 
-   boxkit.library.create
-   boxkit.library.utilities
+.. automodule:: boxkit.library._action
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_block module
+-----------------------------
+
+.. automodule:: boxkit.library._block
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_data module
+----------------------------
+
+.. automodule:: boxkit.library._data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_dataset module
+-------------------------------
+
+.. automodule:: boxkit.library._dataset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_execute module
+-------------------------------
+
+.. automodule:: boxkit.library._execute
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_monitor module
+-------------------------------
+
+.. automodule:: boxkit.library._monitor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_region module
+------------------------------
+
+.. automodule:: boxkit.library._region
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_resources module
+---------------------------------
+
+.. automodule:: boxkit.library._resources
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_server module
+------------------------------
+
+.. automodule:: boxkit.library._server
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_slice module
+-----------------------------
+
+.. automodule:: boxkit.library._slice
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+boxkit.library.\_timer module
+-----------------------------
+
+.. automodule:: boxkit.library._timer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
 
 Module contents
 ---------------

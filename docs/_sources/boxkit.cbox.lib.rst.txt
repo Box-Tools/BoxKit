@@ -13,15 +13,6 @@ boxkit.cbox.lib.boost module
    :show-inheritance:
    :private-members:
 
-boxkit.cbox.lib.create module
------------------------------
-
-.. automodule:: boxkit.cbox.lib.create
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
 boxkit.cbox.lib.extern module
 -----------------------------
 
@@ -31,10 +22,10 @@ boxkit.cbox.lib.extern module
    :show-inheritance:
    :private-members:
 
-boxkit.cbox.lib.utilities module
---------------------------------
+boxkit.cbox.lib.library module
+------------------------------
 
-.. automodule:: boxkit.cbox.lib.utilities
+.. automodule:: boxkit.cbox.lib.library
    :members:
    :undoc-members:
    :show-inheritance:

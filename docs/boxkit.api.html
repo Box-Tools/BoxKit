@@ -88,31 +88,23 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </div>
-<div class="section" id="module-boxkit.api.create">
-<span id="boxkit-api-create-module"></span><h2>boxkit.api.create module<a class="headerlink" href="#module-boxkit.api.create" title="Permalink to this headline"></a></h2>
-<p>Module with implemenetation of api create methods</p>
+<div class="section" id="module-boxkit.api._create">
+<span id="boxkit-api-create-module"></span><h2>boxkit.api._create module<a class="headerlink" href="#module-boxkit.api._create" title="Permalink to this headline"></a></h2>
+<p>Module with implemenetation of api methods</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="boxkit.api.create.dataset">
-<span class="sig-prename descclassname"><span class="pre">boxkit.api.create.</span></span><span class="sig-name descname"><span class="pre">dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[{}]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy-memmap'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api.create.dataset" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="boxkit.api._create.create_dataset">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._create.</span></span><span class="sig-name descname"><span class="pre">create_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._create.create_dataset" title="Permalink to this definition"></a></dt>
 <dd><p>Create a dataset from a file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_attributes</strong> (<em>data attributes</em>) – </p></li>
-<li><p><strong>block_attributes</strong> (<em>block attributes</em>) – </p></li>
-<li><p><strong>storage</strong> (<em>storage option 'disk'</em><em>, </em><em>'pyarrow'</em><em>, or </em><em>'dask'</em>) – default(‘disk’)</p></li>
-<li><p><strong>references</strong><strong>)</strong> (<em>(</em><em>see tests/boiling.py and tests/heater.py for</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dataset object</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dataset object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="boxkit.api.create.region">
-<span class="sig-prename descclassname"><span class="pre">boxkit.api.create.</span></span><span class="sig-name descname"><span class="pre">region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api.create.region" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="boxkit.api._create.create_region">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._create.</span></span><span class="sig-name descname"><span class="pre">create_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._create.create_region" title="Permalink to this definition"></a></dt>
 <dd><p>Create a region from a dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -136,8 +128,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="boxkit.api.create.slice">
-<span class="sig-prename descclassname"><span class="pre">boxkit.api.create.</span></span><span class="sig-name descname"><span class="pre">slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api.create.slice" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="boxkit.api._create.create_slice">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._create.</span></span><span class="sig-name descname"><span class="pre">create_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._create.create_slice" title="Permalink to this definition"></a></dt>
 <dd><p>Create a slice from a dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -161,16 +153,38 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-boxkit.api.measure">
-<span id="boxkit-api-measure-module"></span><h2>boxkit.api.measure module<a class="headerlink" href="#module-boxkit.api.measure" title="Permalink to this headline"></a></h2>
-<p>Module with implemenation of region methods</p>
+<div class="section" id="module-boxkit.api._mean">
+<span id="boxkit-api-mean-module"></span><h2>boxkit.api._mean module<a class="headerlink" href="#module-boxkit.api._mean" title="Permalink to this headline"></a></h2>
+<p>Module with implemenation of measure methods</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.api._mean.mean_blk_list">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._mean.</span></span><span class="sig-name descname"><span class="pre">mean_blk_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blk_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varkey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._mean.mean_blk_list" title="Permalink to this definition"></a></dt>
+<dd><p>Reduce dataset / compute average</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.api._mean.mean_temporal">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._mean.</span></span><span class="sig-name descname"><span class="pre">mean_temporal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'serial'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._mean.mean_temporal" title="Permalink to this definition"></a></dt>
+<dd><p>Compute average across a dataset list</p>
+</dd></dl>
+
 </div>
-<div class="section" id="module-boxkit.api.read">
-<span id="boxkit-api-read-module"></span><h2>boxkit.api.read module<a class="headerlink" href="#module-boxkit.api.read" title="Permalink to this headline"></a></h2>
+<div class="section" id="module-boxkit.api._mergeblocks">
+<span id="boxkit-api-mergeblocks-module"></span><h2>boxkit.api._mergeblocks module<a class="headerlink" href="#module-boxkit.api._mergeblocks" title="Permalink to this headline"></a></h2>
+<p>Module with implemenetation of api methods</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.api._mergeblocks.mergeblocks">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._mergeblocks.</span></span><span class="sig-name descname"><span class="pre">mergeblocks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'serial'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._mergeblocks.mergeblocks" title="Permalink to this definition"></a></dt>
+<dd><p>Reshaped dataset at a level</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.api._read">
+<span id="boxkit-api-read-module"></span><h2>boxkit.api._read module<a class="headerlink" href="#module-boxkit.api._read" title="Permalink to this headline"></a></h2>
 <p>Module with implemenetation of api read methods</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="boxkit.api.read.dataset">
-<span class="sig-prename descclassname"><span class="pre">boxkit.api.read.</span></span><span class="sig-name descname"><span class="pre">dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test-sample'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api.read.dataset" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="boxkit.api._read.read_dataset">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._read.</span></span><span class="sig-name descname"><span class="pre">read_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_memmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'serial'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._read.read_dataset" title="Permalink to this definition"></a></dt>
 <dd><p>Create a dataset from a file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -190,8 +204,57 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-boxkit.api._regionprops">
+<span id="boxkit-api-regionprops-module"></span><h2>boxkit.api._regionprops module<a class="headerlink" href="#module-boxkit.api._regionprops" title="Permalink to this headline"></a></h2>
+<p>Module with implemenation of measure methods</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.api._regionprops.regionprops">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._regionprops.</span></span><span class="sig-name descname"><span class="pre">regionprops</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lsetkey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'serial'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._regionprops.regionprops" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<em>Dataset object</em>) – </p></li>
+<li><p><strong>lsetkey</strong> (<em>key containing level-set/binary data</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>listprops</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of bubble properties</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-boxkit.api._resfilter">
+<span id="boxkit-api-resfilter-module"></span><h2>boxkit.api._resfilter module<a class="headerlink" href="#module-boxkit.api._resfilter" title="Permalink to this headline"></a></h2>
+<p>Module with implemenetation of api reshape methods</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="boxkit.api._resfilter.resfilter">
+<span class="sig-prename descclassname"><span class="pre">boxkit.api._resfilter.</span></span><span class="sig-name descname"><span class="pre">resfilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'serial'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api._resfilter.resfilter" title="Permalink to this definition"></a></dt>
+<dd><p>Build a pseudo UG dataset from AMR dataset at a level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dataset</strong> (<em>dataset  - BoxKit library</em>) – </p></li>
+<li><p><strong>filter</strong> (<em>varlist  - list of variables to</em>) – </p></li>
+<li><p><strong>1</strong> (<em>level    - AMR level default is</em>) – </p></li>
+<li><p><strong>on</strong> (<em>nthreads - number of threads to run this operation</em>) – </p></li>
+<li><p><strong>process</strong> (<em>monitor  - flag for timer and indicator for</em>) – </p></li>
+<li><p><strong>backend</strong> (<em>backend  -</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>filtered_dataset - BoxKit library Dataset</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-boxkit.api">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-boxkit.api" title="Permalink to this headline"></a></h2>
+<p>boxkit.api module</p>
 </div>
 </div>
 
