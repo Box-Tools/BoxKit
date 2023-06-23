@@ -9,17 +9,19 @@
 **********
  Overview
 **********
-BoxKit is a library that provides building blocks to parallelize and 
-scale data science, statistical analysis, and machine learning
-applications for block-structured simulation datasets. Spatial data
-from simulations can be accessed and managed using tools available 
-in this library to interface with packages like SciKit, PyTorch, and 
-OpticalFlow for post-processing and analysis.
 
-The library provides a Python interface to efficiently access Adaptive 
+BoxKit is a library that provides building blocks to parallelize and
+scale data science, statistical analysis, and machine learning
+applications for block-structured simulation datasets. Spatial data from
+simulations can be accessed and managed using tools available in this
+library to interface with packages like SciKit, PyTorch, and OpticalFlow
+for post-processing and analysis.
+
+The library provides a Python interface to efficiently access Adaptive
 Mesh Refinement (AMR) data typical of simulation outputs, and leverages
-multiprocessing libraries like JobLib and Dask to scale analysis on 
-Non-Uniform Memory Access (NUMA) and distributed computing architectures.
+multiprocessing libraries like JobLib and Dask to scale analysis on
+Non-Uniform Memory Access (NUMA) and distributed computing
+architectures.
 
 **************
  Installation
@@ -252,6 +254,15 @@ for an example.
 
 Please file an issue on the repository page to report bugs, request
 features, and ask questions about usage
+
+***********
+ Tutorials
+***********
+
+.. toctree::
+   :glob:
+
+   tutorials/astrophysics_example_01/*
 
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black

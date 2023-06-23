@@ -5,7 +5,9 @@
 # command
 
 echo Removing artifacts
-rm -rf source/README.rst source/media module.rst boxkit.*
+rm -rf source/README.rst source/media \
+	source/module.rst source/boxkit.* \
+	source/tutorials
 
 sphinx-apidoc -fPeM --implicit-namespaces -o source ../../BoxKit/boxkit \
 	../../BoxKit/boxkit/__meta__.py \
@@ -14,4 +16,9 @@ sphinx-apidoc -fPeM --implicit-namespaces -o source ../../BoxKit/boxkit \
 
 echo Copying README.rst
 cp ../../BoxKit/README.rst source/.
+
+echo Copying media
 cp -r ../../BoxKit/media source/.
+
+echo Copying tutorials
+cp -r ../../BoxKit/tutorials source/.

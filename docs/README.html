@@ -17,7 +17,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="boxkit package" href="boxkit.html" />
+    <link rel="next" title="In this example we will use BoxKit to work with three dimensional astrophysics data. After performing the required installation steps we are read to import BoxKit into Python environment" href="tutorials/astrophysics_example_01/astrophysics_example_01.html" />
     <link rel="prev" title="Welcome to BoxKit’s documentation!" href="index.html" /> 
 </head>
 
@@ -46,6 +46,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#help-support">Help &amp; Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorials">Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html">In this example we will use BoxKit to work with three dimensional astrophysics data. After performing the required installation steps we are read to import BoxKit into Python environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html#next-we-read-and-parse-dataset-information-from-a-hdf5-file-25m-3d-32km-hdf5-plt-cnt-1000-that-contains-flash-x-simulation-output">Next we read and parse dataset information from a HDF5 file, <code class="docutils literal notranslate"><span class="pre">25m_3d_32km_hdf5_plt_cnt_1000</span></code>, that contains Flash-X simulation output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html#we-can-probe-into-the-information-for-this-dataset-by-using-a-simple-print-statement">We can probe into the information for this dataset by using a simple print statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html#the-dataset-contains-90200-blocks-each-of-size-8x8x8-along-with-variables-listed-in-keys-we-can-now-use-this-dataset-to-create-a-slice-at-location-y-0-1">The dataset contains 90200 blocks each of size 8x8x8, along with variables listed in <code class="docutils literal notranslate"><span class="pre">keys</span></code>. We can now use this dataset to create a slice at location <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">0.1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html#now-we-can-loop-over-blocks-in-this-slice-and-extract-data-from-right-indices">Now we can loop over blocks in this slice and extract data from right indices</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="boxkit.html">boxkit package</a></li>
@@ -83,14 +91,15 @@
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
 <p>BoxKit is a library that provides building blocks to parallelize and
 scale data science, statistical analysis, and machine learning
-applications for block-structured simulation datasets. Spatial data
-from simulations can be accessed and managed using tools available
-in this library to interface with packages like SciKit, PyTorch, and
-OpticalFlow for post-processing and analysis.</p>
+applications for block-structured simulation datasets. Spatial data from
+simulations can be accessed and managed using tools available in this
+library to interface with packages like SciKit, PyTorch, and OpticalFlow
+for post-processing and analysis.</p>
 <p>The library provides a Python interface to efficiently access Adaptive
 Mesh Refinement (AMR) data typical of simulation outputs, and leverages
 multiprocessing libraries like JobLib and Dask to scale analysis on
-Non-Uniform Memory Access (NUMA) and distributed computing architectures.</p>
+Non-Uniform Memory Access (NUMA) and distributed computing
+architectures.</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
@@ -275,6 +284,18 @@ for an example.</p>
 <p>Please file an issue on the repository page to report bugs, request
 features, and ask questions about usage</p>
 </div>
+<div class="section" id="tutorials">
+<h2>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html">In this example we will use BoxKit to work with three dimensional astrophysics data. After performing the required installation steps we are read to import BoxKit into Python environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html#next-we-read-and-parse-dataset-information-from-a-hdf5-file-25m-3d-32km-hdf5-plt-cnt-1000-that-contains-flash-x-simulation-output">Next we read and parse dataset information from a HDF5 file, <code class="docutils literal notranslate"><span class="pre">25m_3d_32km_hdf5_plt_cnt_1000</span></code>, that contains Flash-X simulation output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html#we-can-probe-into-the-information-for-this-dataset-by-using-a-simple-print-statement">We can probe into the information for this dataset by using a simple print statement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html#the-dataset-contains-90200-blocks-each-of-size-8x8x8-along-with-variables-listed-in-keys-we-can-now-use-this-dataset-to-create-a-slice-at-location-y-0-1">The dataset contains 90200 blocks each of size 8x8x8, along with variables listed in <code class="docutils literal notranslate"><span class="pre">keys</span></code>. We can now use this dataset to create a slice at location <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">0.1</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/astrophysics_example_01/astrophysics_example_01.html#now-we-can-loop-over-blocks-in-this-slice-and-extract-data-from-right-indices">Now we can loop over blocks in this slice and extract data from right indices</a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -282,7 +303,7 @@ features, and ask questions about usage</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to BoxKit’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="boxkit.html" class="btn btn-neutral float-right" title="boxkit package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorials/astrophysics_example_01/astrophysics_example_01.html" class="btn btn-neutral float-right" title="In this example we will use BoxKit to work with three dimensional astrophysics data. After performing the required installation steps we are read to import BoxKit into Python environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
