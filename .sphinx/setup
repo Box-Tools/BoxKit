@@ -7,7 +7,7 @@
 echo Removing artifacts
 rm -rf source/README.rst source/media module.rst boxkit.*
 
-sphinx-apidoc -fPeM -o source ../../BoxKit/boxkit \
+sphinx-apidoc -fPeM --implicit-namespaces -o source ../../BoxKit/boxkit \
 	../../BoxKit/boxkit/__meta__.py \
 	../../BoxKit/boxkit/options.py \
 	../../BoxKit/boxkit/cbox

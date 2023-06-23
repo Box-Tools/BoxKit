@@ -1,0 +1,8 @@
+boxkit.resources.read.\_flash module
+====================================
+
+.. automodule:: boxkit.resources.read._flash
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

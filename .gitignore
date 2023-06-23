@@ -13,5 +13,5 @@ boxkit/depends/boost/*
 .sphinx/build/*
 .sphinx/source/media/*
 !.sphinx/source/index.rst
-!README.rst
-!DESIGN.rst
+!./README.rst
+!./DESIGN.rst

@@ -4,7 +4,7 @@ from progress.bar import Bar, ChargingBar  # pylint: disable=unused-import
 
 from boxkit import options
 
-if options.cbox:
+if options.CBOX:
     from ..cbox.lib import boost as cbox  # pylint: disable=c-extension-no-member
 
 
@@ -17,7 +17,7 @@ class Monitor:
         """
         Initialize and create object
         """
-        if options.cbox:
+        if options.CBOX:
             self._bar = cbox.library.Monitor(  # pylint: disable=c-extension-no-member
                 "action"
             )
@@ -31,7 +31,7 @@ class Monitor:
         """
         update monitor
         """
-        if options.cbox:
+        if options.CBOX:
             self._bar._update(self.msg, 0)  # pylint: disable=protected-access
         else:
             self._bar.next()
@@ -40,5 +40,5 @@ class Monitor:
         """
         finish
         """
-        if not options.cbox:
+        if not options.CBOX:
             self._bar.finish()

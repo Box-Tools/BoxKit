@@ -10,16 +10,16 @@ import numpy
 
 from boxkit import options
 
-if options.dask:
+if options.DASK:
     import dask.array as dsarray
 
-if options.pyarrow:
+if options.PYARROW:
     import pyarrow
 
-if options.zarr:
+if options.ZARR:
     import zarr
 
-if options.cbox:
+if options.CBOX:
     from ..cbox.lib import boost as cbox
 
     _DataBase = cbox.library.Data  # pylint: disable=c-extension-no-member
@@ -280,7 +280,7 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
         Create zarr objects
         """
 
-        if options.zarr:
+        if options.ZARR:
             emptykeys = [
                 key
                 for key, value in self.variables.items()
@@ -370,7 +370,7 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
         """
         Create dask array representation of data
         """
-        if options.dask:
+        if options.DASK:
             emptykeys = [
                 key
                 for key, value in self.variables.items()
@@ -402,7 +402,7 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
         """
         Create a pyarrow tensor objects
         """
-        if options.pyarrow:
+        if options.PYARROW:
             emptykeys = [
                 key
                 for key, value in self.variables.items()
