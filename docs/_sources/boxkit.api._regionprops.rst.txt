@@ -1,0 +1,8 @@
+boxkit.api.\_regionprops module
+===============================
+
+.. automodule:: boxkit.api._regionprops
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

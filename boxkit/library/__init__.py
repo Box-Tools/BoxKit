@@ -12,5 +12,5 @@ from ._timer import Timer
 from ._resources import Resources
 from ._monitor import Monitor
 
-if options.server:
+if options.SERVER:
     from ._server import Server

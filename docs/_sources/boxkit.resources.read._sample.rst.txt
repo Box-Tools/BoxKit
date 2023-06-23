@@ -1,0 +1,8 @@
+boxkit.resources.read.\_sample module
+=====================================
+
+.. automodule:: boxkit.resources.read._sample
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

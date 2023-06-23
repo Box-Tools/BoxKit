@@ -1,0 +1,8 @@
+boxkit.api.\_read module
+========================
+
+.. automodule:: boxkit.api._read
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

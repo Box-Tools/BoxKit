@@ -1,1 +1,17 @@
-sphinx-apidoc -f -P -o source ../../BoxKit/boxkit
+# Excluding __meta__.py, options.py, and cbox
+# from current documentation. If the need arises
+# to include them in future releases, please
+# remove them from excluded paths in sphinx-apidoc
+# command
+
+echo Removing artifacts
+rm -rf source/README.rst source/media module.rst boxkit.*
+
+sphinx-apidoc -fPeM --implicit-namespaces -o source ../../BoxKit/boxkit \
+	../../BoxKit/boxkit/__meta__.py \
+	../../BoxKit/boxkit/options.py \
+	../../BoxKit/boxkit/cbox
+
+echo Copying README.rst
+cp ../../BoxKit/README.rst source/.
+cp -r ../../BoxKit/media source/.

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BoxKit &mdash; BoxKit  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="boxkit package" href="boxkit.html" />
+    <link rel="prev" title="Welcome to BoxKit’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> BoxKit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"> BoxKit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contribution">Contribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#help-support">Help &amp; Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="boxkit.html">boxkit package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BoxKit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li> BoxKit</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/README.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="icon-boxkit">
+<h1><a class="reference internal" href="_images/icon.svg"><img alt="icon" src="_images/icon.svg" width="30" /></a> BoxKit<a class="headerlink" href="#icon-boxkit" title="Permalink to this headline"></a></h1>
+<p><a class="reference external" href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
+<p><img alt="FlashX" src="https://github.com/akashdhruv/BoxKit/workflows/FlashX/badge.svg" /> <img alt="FlowX" src="https://github.com/akashdhruv/BoxKit/workflows/FlowX/badge.svg" /> <img alt="Minimal" src="https://github.com/akashdhruv/BoxKit/workflows/Minimal/badge.svg" /> <img alt="Publish" src="https://github.com/akashdhruv/BoxKit/workflows/Publish/badge.svg" /> <img alt="Linting" src="https://github.com/akashdhruv/BoxKit/workflows/Linting/badge.svg" /></p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<p>BoxKit is a library that provides building blocks to parallelize and
+scale data science, statistical analysis, and machine learning
+applications for block-structured simulation datasets. Spatial data
+from simulations can be accessed and managed using tools available
+in this library to interface with packages like SciKit, PyTorch, and
+OpticalFlow for post-processing and analysis.</p>
+<p>The library provides a Python interface to efficiently access Adaptive
+Mesh Refinement (AMR) data typical of simulation outputs, and leverages
+multiprocessing libraries like JobLib and Dask to scale analysis on
+Non-Uniform Memory Access (NUMA) and distributed computing architectures.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<p>Stable releases of BoxKit are hosted on Python Package Index website
+(<a class="reference external" href="https://pypi.org/project/BoxKit/">https://pypi.org/project/BoxKit/</a>) and can be installed by executing,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">BoxKit</span> <span class="o">--</span><span class="n">user</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">pip</span></code> should point to <code class="docutils literal notranslate"><span class="pre">python3+</span></code> installation package
+<code class="docutils literal notranslate"><span class="pre">pip3</span></code>.</p>
+<p>Upgrading and uninstallation is easily managed through this interface
+using,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">BoxKit</span> <span class="o">--</span><span class="n">user</span>
+<span class="n">pip</span> <span class="n">uninstall</span> <span class="n">BoxKit</span>
+</pre></div>
+</div>
+<p>Pre-release version can be installed directly from the git reposity by
+executing,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">ssh</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">akashdhruv</span><span class="o">/</span><span class="n">BoxKit</span><span class="o">.</span><span class="n">git</span> <span class="o">--</span><span class="n">user</span>
+</pre></div>
+</div>
+<p>BoxKit provides various installation options that can be used to
+configure the library with desired features. Following is a list of
+options,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span><span class="o">-</span><span class="n">cbox</span>      <span class="o">-</span> <span class="n">With</span> <span class="n">C</span><span class="o">++</span> <span class="n">backend</span>
+<span class="k">with</span><span class="o">-</span><span class="n">pyarrow</span>   <span class="o">-</span> <span class="n">With</span> <span class="n">Apache</span> <span class="n">Arrow</span> <span class="n">data</span> <span class="n">backend</span>
+<span class="k">with</span><span class="o">-</span><span class="n">zarr</span>      <span class="o">-</span> <span class="n">With</span> <span class="n">Zarr</span> <span class="n">data</span> <span class="n">backend</span>
+<span class="k">with</span><span class="o">-</span><span class="n">dask</span>      <span class="o">-</span> <span class="n">With</span> <span class="n">Dask</span> <span class="n">data</span><span class="o">/</span><span class="n">parallel</span> <span class="n">backend</span>
+<span class="n">enable</span><span class="o">-</span><span class="n">testing</span> <span class="o">-</span> <span class="n">Enabling</span> <span class="n">testing</span> <span class="n">mode</span> <span class="k">for</span> <span class="n">development</span>
+</pre></div>
+</div>
+<p>Correspondingly, the installation command can be modified to include
+necessary options as follows,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export CXX=$(CPP_COMPILER)
+pip install BoxKit --user --install-option=&quot;--enable-testing&quot; --install-option=&quot;--with-cbox&quot;
+</pre></div>
+</div>
+<p>There maybe situations where users may want to install BoxKit in
+development mode $\textemdash$ to design new features, debug, or
+customize classes/methods to their needs. This can be easily
+accomplished using the <code class="docutils literal notranslate"><span class="pre">setup</span></code> script located in the project root
+directory and executing,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">setup</span> <span class="n">develop</span>
+</pre></div>
+</div>
+<p>Development mode enables testing of features/updates directly from the
+source code and is an effective method for debugging. Note that the
+<code class="docutils literal notranslate"><span class="pre">setup</span></code> script relies on <code class="docutils literal notranslate"><span class="pre">click</span></code>, which can be installed using,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">click</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">setup</span></code> command acts a wrapper over <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> to provide a
+developer friendly interface. The <code class="docutils literal notranslate"><span class="pre">--help</span></code> option provides
+instructions on how to configure installation with different options,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">setup</span> <span class="o">--</span><span class="n">help</span>
+<span class="o">./</span><span class="n">setup</span> <span class="n">develop</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<p>After <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation, BoxKit can be imported inside Python
+environment by adding the following to iPython notebooks and scripts,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boxkit</span>
+</pre></div>
+</div>
+<p>Once the library is imported in the environment, simulation datasets can
+be read by executing,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read dataset from a Flash-X simulation</span>
+<span class="n">dset</span> <span class="o">=</span> <span class="n">boxkit</span><span class="o">.</span><span class="n">read_dataset</span><span class="p">(</span><span class="n">path_to_hdf5_file</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;flash&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>New datasets can be created using the <code class="docutils literal notranslate"><span class="pre">create_dataset</span></code> method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a dataset using custom attributes</span>
+<span class="n">dset</span> <span class="o">=</span> <span class="n">boxkit</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="o">**</span><span class="n">attributes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Following is an example on how to create a block-structured dataset in
+BoxKit and use its interface. Similar functionality exists for datasets
+that are read from a simulation source like Flash-X
+(<a class="reference external" href="https://flash-x.org">https://flash-x.org</a>)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a two-dimensional dataset with 25 blocks of size 4x4</span>
+<span class="n">dset</span> <span class="o">=</span> <span class="n">boxkit</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">ymax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nxb</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">nyb</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">nblockx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">nblocky</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>print(dset)
+
+Dataset:
+- type         : &lt;class &#39;boxkit.library._dataset.Dataset&#39;&gt;
+- file         : None
+- keys         : []
+- dtype      : []
+- bound(z-y-x) : [0.0, 1.0] x [0.0, 0.8] x [0.0, 1.6]
+- shape(z-y-x) : 1 x 4 x 4
+- guard(z-y-x) : 0 x 0 x 0
+- nblocks      : 25
+- dtype        : {}
+</pre></div>
+</div>
+<p>Next add a solution variable using,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a solution variable to the dataset</span>
+<span class="n">dset</span><span class="o">.</span><span class="n">addvar</span><span class="p">(</span><span class="s2">&quot;soln&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This creates a numpy memmap for solution variable and stores it on disk.
+The data can be accessed directly using <code class="docutils literal notranslate"><span class="pre">dset[&quot;soln&quot;]</span></code>. When dataset
+is read from HDF5 source using <code class="docutils literal notranslate"><span class="pre">read_dataset</span></code>, like Flash-X
+simulations, then its representation on the disk is in the form of
+<code class="docutils literal notranslate"><span class="pre">h5py</span></code> objects.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">dset</span><span class="p">[</span><span class="s2">&quot;soln&quot;</span><span class="p">])</span>
+<span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The example dataset here contains 25 blocks that are arranged using a
+space-filling morton order as below,</p>
+<p><a class="reference internal" href="_images/morton.png"><img alt="morton" src="_images/morton.png" style="width: 150px;" /></a></p>
+<p>Solution data local to individual blocks can be accessed by looping over
+a dataset’s <code class="docutils literal notranslate"><span class="pre">blocklist</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">dset</span><span class="o">.</span><span class="n">blocklist</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">&quot;soln&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>BoxKit also offers wrappers to scale the process of deploying workflows
+on NUMA and distributed computing architectures by providing decorators
+that can parallelize Python operations over a single data structure to
+operate over a list,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">boxkit.library</span> <span class="kn">import</span> <span class="n">Action</span>
+
+<span class="c1"># Decorate function on a block with desired configuration for parallelization</span>
+<span class="nd">@Action</span><span class="p">(</span><span class="n">num_procs</span><span class="p">,</span> <span class="n">parallel_backend</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">operation_on_block</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="c1"># Call the function with list of blocks as the first argument</span>
+<span class="n">operation_on_block</span><span class="p">((</span><span class="n">block</span> <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">list_of_blocks</span><span class="p">),</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Action</span></code> wrapper converts the function, <code class="docutils literal notranslate"><span class="pre">operation_on_block</span></code>,
+into a parallel method which can be deployed on a multinode cluster with
+the desired backend (JobLib/Dask). BoxKit does not interfere with
+parallelization schema of target applications like SciKit, OpticalFlow,
+and PyTorch which function independently using available resources.</p>
+<p>Detailed information on full functionality is availabe in documentation
+(<a class="reference external" href="https://akashdhruv.github.io/BoxKit/">https://akashdhruv.github.io/BoxKit/</a>).</p>
+</div>
+<div class="section" id="contribution">
+<h2>Contribution<a class="headerlink" href="#contribution" title="Permalink to this headline"></a></h2>
+<p>Developers are encouraged to fork the repository and contribute to the
+source code in the form of pull requests to the <code class="docutils literal notranslate"><span class="pre">development</span></code> branch.
+Please read documentation (<a class="reference external" href="https://akashdhruv.github.io/BoxKit/">https://akashdhruv.github.io/BoxKit/</a>) for an
+overview of software design and developer guide</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline"></a></h2>
+<p>Testing for BoxKit is performed across different hardware platforms
+where high-fidelity simulation data can reside. The sites $\textemdash$
+acadia and sedona refer to a Mac and Ubuntu operating systems
+respectively where regular testing takes place.</p>
+<p>For lightweight testing during pull requests and merger, new tests can
+be added to <code class="docutils literal notranslate"><span class="pre">tests/container</span></code>. Each test should be accompanied with a
+coresspoding addition to YAML files located under <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code>.
+See <code class="docutils literal notranslate"><span class="pre">tests/container/heater.py</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/flashx.yaml</span></code>
+for an example.</p>
+</div>
+<div class="section" id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Permalink to this headline"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@software</span><span class="p">{</span><span class="n">akash_dhruv_2023_8063195</span><span class="p">,</span>
+  <span class="n">author</span>       <span class="o">=</span> <span class="p">{</span><span class="n">Akash</span> <span class="n">Dhruv</span><span class="p">},</span>
+  <span class="n">title</span>        <span class="o">=</span> <span class="p">{</span><span class="n">akashdhruv</span><span class="o">/</span><span class="n">BoxKit</span><span class="p">:</span> <span class="n">June</span> <span class="mi">2023</span><span class="p">},</span>
+  <span class="n">month</span>        <span class="o">=</span> <span class="n">jun</span><span class="p">,</span>
+  <span class="n">year</span>         <span class="o">=</span> <span class="mi">2023</span><span class="p">,</span>
+  <span class="n">publisher</span>    <span class="o">=</span> <span class="p">{</span><span class="n">Zenodo</span><span class="p">},</span>
+  <span class="n">version</span>      <span class="o">=</span> <span class="p">{</span><span class="mf">2023.06</span><span class="p">},</span>
+  <span class="n">doi</span>          <span class="o">=</span> <span class="p">{</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="mf">.8063195</span><span class="p">},</span>
+  <span class="n">url</span>          <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="mf">.8063195</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="help-support">
+<h2>Help &amp; Support<a class="headerlink" href="#help-support" title="Permalink to this headline"></a></h2>
+<p>Please file an issue on the repository page to report bugs, request
+features, and ask questions about usage</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to BoxKit’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="boxkit.html" class="btn btn-neutral float-right" title="boxkit package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Akash Dhruv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

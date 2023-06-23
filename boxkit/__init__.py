@@ -5,5 +5,5 @@ from . import library
 from . import options
 from . import resources
 
-if options.cbox:
+if options.CBOX:
     from . import cbox

@@ -1,0 +1,8 @@
+boxkit.library.\_data module
+============================
+
+.. automodule:: boxkit.library._data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

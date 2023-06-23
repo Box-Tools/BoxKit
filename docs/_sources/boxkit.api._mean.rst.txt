@@ -1,0 +1,8 @@
+boxkit.api.\_mean module
+========================
+
+.. automodule:: boxkit.api._mean
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

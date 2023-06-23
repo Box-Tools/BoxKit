@@ -1,32 +1,17 @@
 boxkit.resources.read package
 =============================
 
-Submodules
-----------
-
-boxkit.resources.read.\_flash module
-------------------------------------
-
-.. automodule:: boxkit.resources.read._flash
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
-boxkit.resources.read.\_sample module
--------------------------------------
-
-.. automodule:: boxkit.resources.read._sample
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
-Module contents
----------------
-
 .. automodule:: boxkit.resources.read
    :members:
    :undoc-members:
    :show-inheritance:
    :private-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   boxkit.resources.read._flash
+   boxkit.resources.read._sample

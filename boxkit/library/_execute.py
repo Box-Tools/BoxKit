@@ -7,11 +7,11 @@ import tqdm
 
 from boxkit import options
 
-if options.dask:
+if options.DASK:
     import dask  # pylint: disable=unused-import
     from dask import distributed
 
-if options.cbox:
+if options.CBOX:
     import ctypes  # pylint: disable=unused-import
     from ..cbox.lib import extern as cbox  # pylint: disable=unused-import
 
@@ -23,10 +23,10 @@ def exectask(action, obj_list, *args, **kwargs):
     action   : action object contains following attributes
 
                target   : function/action operates on a,
-                          parallel_obj ---> def target(parallel_obj, *args)
+                          parallel_obj ---> def target(parallel_obj, args)
 
                           actual call passes,
-                          obj_list ---> target(obj_list, *args)
+                          obj_list ---> target(obj_list, args)
 
                nthreads : number of nthreads (only relevant for parallel operations)
                monitor  : flag (True or False) to show progress bar for action
@@ -101,7 +101,7 @@ def execute_cbox(action, obj_list, *args, **kwargs):
     Wrapper takes in obj_list and additional arguments and
     then applies target operations to individual parallel_objs using boxlib
     """
-    # if options.cbox:
+    # if options.CBOX:
     #    cbox.utilities.execute_pyTask.argtypes = [ctypes.py_object] * 3
     #    cbox.utilities.execute_pyTask.restype = ctypes.py_object
     #
@@ -123,7 +123,7 @@ def execute_dask(action, obj_list, *args, **kwargs):
 
     nthreads = 1 or None reverts to serial mode
     """
-    if options.dask:
+    if options.DASK:
         with distributed.LocalCluster(
             threads_per_worker=None, n_workers=None, processes=False
         ) as cluster, distributed.Client(cluster) as client:

@@ -1,0 +1,8 @@
+boxkit.library.\_action module
+==============================
+
+.. automodule:: boxkit.library._action
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

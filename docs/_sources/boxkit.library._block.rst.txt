@@ -1,0 +1,8 @@
+boxkit.library.\_block module
+=============================
+
+.. automodule:: boxkit.library._block
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
