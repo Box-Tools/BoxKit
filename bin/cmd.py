@@ -30,12 +30,12 @@ class CustomCmd:
         """
         Initialize options
         """
-        self.with_cbox = 0  # pylint: disable=attribute-defined-outside-init
-        self.with_pyarrow = 0  # pylint: disable=attribute-defined-outside-init
-        self.with_zarr = 0  # pylint: disable=attribute-defined-outside-init
-        self.with_dask = 0  # pylint: disable=attribute-defined-outside-init
-        self.with_server = 0  # pylint: disable=attribute-defined-outside-init
-        self.enable_testing = 0  # pylint: disable=attribute-defined-outside-init
+        self.with_cbox = None  # pylint: disable=attribute-defined-outside-init
+        self.with_pyarrow = None  # pylint: disable=attribute-defined-outside-init
+        self.with_zarr = None  # pylint: disable=attribute-defined-outside-init
+        self.with_dask = None  # pylint: disable=attribute-defined-outside-init
+        self.with_server = None  # pylint: disable=attribute-defined-outside-init
+        self.enable_testing = None  # pylint: disable=attribute-defined-outside-init
 
     def finalize_options(self):
         """
@@ -49,7 +49,7 @@ class CustomCmd:
             "with_server",
             "enable_testing",
         ]:
-            if getattr(self, option) not in [0, 1]:
+            if getattr(self, option) not in [None, 1]:
                 raise ValueError(f"{option} is a flag")
 
     def run(self, user):
