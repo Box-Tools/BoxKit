@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astrophysics Example 1 &mdash; BoxKit  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Pool Boiling Gravity" href="../pool_boiling_gravity/pool_boiling_gravity.html" />
+    <link rel="prev" title="BoxKit" href="../../README.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> BoxKit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../README.html"> BoxKit</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#contribution">Contribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#citation">Citation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../README.html#help-support">Help &amp; Support</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../README.html#tutorials">Tutorials</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Astrophysics Example 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pool_boiling_gravity/pool_boiling_gravity.html">Pool Boiling Gravity</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../boxkit.html">boxkit package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BoxKit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../README.html"> BoxKit</a> &raquo;</li>
+      <li>Astrophysics Example 1</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorials/astrophysics_example_01/astrophysics_example_01.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="astrophysics-example-1">
+<h1>Astrophysics Example 1<a class="headerlink" href="#astrophysics-example-1" title="Permalink to this headline"></a></h1>
+<p>In this example we will use BoxKit to work with three dimensional
+astrophysics data. After performing the required installation steps we
+are read to import BoxKit into Python environment</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boxkit</span>
+</pre></div>
+</div>
+<p>Next we read and parse dataset information from a HDF5 file,
+<code class="docutils literal notranslate"><span class="pre">25m_3d_32km_hdf5_plt_cnt_1000</span></code>, that contains Flash-X simulation
+output</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dset</span> <span class="o">=</span> <span class="n">boxkit</span><span class="o">.</span><span class="n">read_dataset</span><span class="p">(</span><span class="s2">&quot;25m_3d_32km_hdf5_plt_cnt_1000&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;flash&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can probe into the information for this dataset by using a simple
+print statement</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dset</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Dataset:
+ - type         : &lt;class &#39;boxkit.library._dataset.Dataset&#39;&gt;
+ - file         : &lt;HDF5 file &quot;25m_3d_32km_hdf5_plt_cnt_1000&quot; (mode r)&gt;
+ - keys         : [&#39;dens&#39;, &#39;temp&#39;, &#39;velx&#39;, &#39;vely&#39;, &#39;ye  &#39;, &#39;fe54&#39;, &#39;fe56&#39;, &#39;o16 &#39;, &#39;si28&#39;, &#39;entr&#39;, &#39;enuc&#39;, &#39;cr48&#39;, &#39;cr56&#39;, &#39;fe52&#39;, &#39;ni56&#39;, &#39;pres&#39;, &#39;c12 &#39;, &#39;s32 &#39;, &#39;gpot&#39;, &#39;gamc&#39;, &#39;dtbn&#39;, &#39;velz&#39;]
+ - dtype    : [&lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;, &lt;class &#39;h5pickle.Dataset&#39;&gt;]
+ - bound(z-y-x) : [-10000000000.0, 10000000000.0] x [-10000000000.0, 10000000000.0] x [-10000000000.0, 10000000000.0]
+ - shape(z-y-x) : 8 x 8 x 8
+ - guard(z-y-x) : 0 x 0 x 0
+ - nblocks      : 90200
+ - dtype        : {&#39;dens&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;temp&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;velx&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;vely&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;ye  &#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;fe54&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;fe56&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;o16 &#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;si28&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;entr&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;enuc&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;cr48&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;cr56&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;fe52&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;ni56&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;pres&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;c12 &#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;s32 &#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;gpot&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;gamc&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;dtbn&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;velz&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;}
+</pre></div>
+</div>
+<p>The dataset contains 90200 blocks each of size 8x8x8, along with
+variables listed in <code class="docutils literal notranslate"><span class="pre">keys</span></code>. We can now use this dataset to create a
+slice at location <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">0.1</span></code></p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yloc</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">dset_slice</span> <span class="o">=</span> <span class="n">boxkit</span><span class="o">.</span><span class="n">create_slice</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=</span><span class="n">yloc</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="n">yloc</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dset_slice</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Region:
+ - type          : &lt;class &#39;boxkit.library._slice.Slice&#39;&gt;
+ - bound (z-y-x) : [-10000000000.0, 10000000000.0] x [0.0, 1666666624.0] x [-10000000000.0, 10000000000.0]
+</pre></div>
+</div>
+<p>Now we can loop over blocks in this slice and extract data from right
+indices</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import required libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">pyplot</span>
+
+<span class="c1"># create a pyplot figure object</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+<span class="c1"># Name of the contour variable</span>
+<span class="n">cvar</span> <span class="o">=</span> <span class="s2">&quot;temp&quot;</span>
+
+<span class="c1"># Initialize min/max values</span>
+<span class="n">min_cval</span> <span class="o">=</span> <span class="mf">1e10</span>
+<span class="n">max_cval</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e10</span>
+
+<span class="c1"># loop over blocks for blocklist included in the slice</span>
+<span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">dset_slice</span><span class="o">.</span><span class="n">blocklist</span><span class="p">:</span>
+
+    <span class="c1"># Get y-index closest to the probe location</span>
+    <span class="n">yindex</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">yrange</span><span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">yloc</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+
+    <span class="c1"># Create a mesh grid in x-z plane</span>
+    <span class="n">xmesh</span><span class="p">,</span> <span class="n">zmesh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">xrange</span><span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">),</span> <span class="n">block</span><span class="o">.</span><span class="n">yrange</span><span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">))</span>
+
+    <span class="c1"># plot contour</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">xmesh</span><span class="p">,</span><span class="n">zmesh</span><span class="p">,</span><span class="n">block</span><span class="p">[</span><span class="n">cvar</span><span class="p">][:,</span><span class="n">yindex</span><span class="p">,:])</span>
+
+    <span class="n">min_cval</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="n">cvar</span><span class="p">][:,</span><span class="n">yindex</span><span class="p">,:]),</span> <span class="n">min_cval</span><span class="p">)</span>
+    <span class="n">max_cval</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="n">cvar</span><span class="p">][:,</span><span class="n">yindex</span><span class="p">,:]),</span> <span class="n">max_cval</span><span class="p">)</span>
+
+<span class="c1">#pyplot.colorbar()</span>
+<span class="c1">#pyplot.clim(min_cval,max_cval)</span>
+</pre></div>
+</div>
+<img alt="../../_images/output_10_0.png" src="../../_images/output_10_0.png" />
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../README.html" class="btn btn-neutral float-left" title="BoxKit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../pool_boiling_gravity/pool_boiling_gravity.html" class="btn btn-neutral float-right" title="Pool Boiling Gravity" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Akash Dhruv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
