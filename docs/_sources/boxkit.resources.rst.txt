@@ -1,6 +1,12 @@
 boxkit.resources package
 ========================
 
+.. automodule:: boxkit.resources
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
 Subpackages
 -----------
 
@@ -8,13 +14,3 @@ Subpackages
    :maxdepth: 4
 
    boxkit.resources.read
-   boxkit.resources.stencils
-
-Module contents
----------------
-
-.. automodule:: boxkit.resources
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

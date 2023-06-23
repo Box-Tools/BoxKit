@@ -12,7 +12,7 @@ class Action:  # pylint: disable=too-many-arguments
 
     @staticmethod
     def toparg(*args):
-        """Method to get top argument from *args"""
+        """Method to get top argument from args"""
 
         top = args[0]
 

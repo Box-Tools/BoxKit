@@ -1,0 +1,8 @@
+boxkit.api.\_resfilter module
+=============================
+
+.. automodule:: boxkit.api._resfilter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

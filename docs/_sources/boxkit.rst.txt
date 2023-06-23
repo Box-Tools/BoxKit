@@ -1,6 +1,12 @@
 boxkit package
 ==============
 
+.. automodule:: boxkit
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
 Subpackages
 -----------
 
@@ -8,36 +14,5 @@ Subpackages
    :maxdepth: 4
 
    boxkit.api
-   boxkit.cbox
    boxkit.library
    boxkit.resources
-
-Submodules
-----------
-
-boxkit.\_\_meta\_\_ module
---------------------------
-
-.. automodule:: boxkit.__meta__
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
-boxkit.options module
----------------------
-
-.. automodule:: boxkit.options
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
-Module contents
----------------
-
-.. automodule:: boxkit
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

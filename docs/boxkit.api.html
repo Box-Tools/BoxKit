@@ -17,7 +17,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="boxkit.cbox package" href="boxkit.cbox.html" />
+    <link rel="next" title="boxkit.api._create module" href="boxkit.api._create.html" />
     <link rel="prev" title="boxkit package" href="boxkit.html" /> 
 </head>
 
@@ -38,19 +38,15 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">boxkit</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="boxkit.html">boxkit package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="boxkit.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">boxkit.api package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.cbox.html">boxkit.cbox package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.library.html">boxkit.library package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="boxkit.resources.html">boxkit.resources package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html"> BoxKit</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="boxkit.html">boxkit package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="boxkit.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">boxkit.api package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="boxkit.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="boxkit.html#module-boxkit.__meta__">boxkit.__meta__ module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="boxkit.html#module-boxkit.options">boxkit.options module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="boxkit.html#module-boxkit">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="boxkit.library.html">boxkit.library package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="boxkit.resources.html">boxkit.resources package</a></li>
 </ul>
 </li>
 </ul>
@@ -71,7 +67,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">boxkit</a> &raquo;</li>
           <li><a href="boxkit.html">boxkit package</a> &raquo;</li>
       <li>boxkit.api package</li>
       <li class="wy-breadcrumbs-aside">
@@ -83,115 +78,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="boxkit-api-package">
-<h1>boxkit.api package<a class="headerlink" href="#boxkit-api-package" title="Permalink to this headline"></a></h1>
+  <div class="section" id="module-boxkit.api">
+<span id="boxkit-api-package"></span><h1>boxkit.api package<a class="headerlink" href="#module-boxkit.api" title="Permalink to this headline"></a></h1>
+<p>boxkit.api module</p>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
-</div>
-<div class="section" id="module-boxkit.api.create">
-<span id="boxkit-api-create-module"></span><h2>boxkit.api.create module<a class="headerlink" href="#module-boxkit.api.create" title="Permalink to this headline"></a></h2>
-<p>Module with implemenetation of api create methods</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="boxkit.api.create.dataset">
-<span class="sig-prename descclassname"><span class="pre">boxkit.api.create.</span></span><span class="sig-name descname"><span class="pre">dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[{}]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy-memmap'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api.create.dataset" title="Permalink to this definition"></a></dt>
-<dd><p>Create a dataset from a file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_attributes</strong> (<em>data attributes</em>) – </p></li>
-<li><p><strong>block_attributes</strong> (<em>block attributes</em>) – </p></li>
-<li><p><strong>storage</strong> (<em>storage option 'disk'</em><em>, </em><em>'pyarrow'</em><em>, or </em><em>'dask'</em>) – default(‘disk’)</p></li>
-<li><p><strong>references</strong><strong>)</strong> (<em>(</em><em>see tests/boiling.py and tests/heater.py for</em>) – </p></li>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="boxkit.api._create.html">boxkit.api._create module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boxkit.api._mean.html">boxkit.api._mean module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boxkit.api._mergeblocks.html">boxkit.api._mergeblocks module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boxkit.api._read.html">boxkit.api._read module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boxkit.api._regionprops.html">boxkit.api._regionprops module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boxkit.api._resfilter.html">boxkit.api._resfilter module</a></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dataset object</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="boxkit.api.create.region">
-<span class="sig-prename descclassname"><span class="pre">boxkit.api.create.</span></span><span class="sig-name descname"><span class="pre">region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api.create.region" title="Permalink to this definition"></a></dt>
-<dd><p>Create a region from a dataset</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<em>Dataset object</em>) – </p></li>
-<li><p><strong>attributes</strong> (<em>dictionary of attributes</em>) – <dl class="simple">
-<dt>{ ‘xmin’<span class="classifier">low x bound</span></dt><dd><p>’ymin’ : low y bound
-‘zmin’ : low z bound
-‘xmax’ : high x bound
-‘ymax’ : high y bound
-‘zmax’ : high z bound }</p>
-</dd>
-</dl>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Region object</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="boxkit.api.create.slice">
-<span class="sig-prename descclassname"><span class="pre">boxkit.api.create.</span></span><span class="sig-name descname"><span class="pre">slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api.create.slice" title="Permalink to this definition"></a></dt>
-<dd><p>Create a slice from a dataset</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<em>Dataset object</em>) – </p></li>
-<li><p><strong>attributes</strong> (<em>dictionary of attributes</em>) – <dl class="simple">
-<dt>{ ‘xmin’<span class="classifier">low x bound</span></dt><dd><p>’ymin’ : low y bound
-‘zmin’ : low z bound
-‘xmax’ : high x bound
-‘ymax’ : high y bound
-‘zmax’ : high z bound }</p>
-</dd>
-</dl>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Slice object</p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
-<div class="section" id="module-boxkit.api.measure">
-<span id="boxkit-api-measure-module"></span><h2>boxkit.api.measure module<a class="headerlink" href="#module-boxkit.api.measure" title="Permalink to this headline"></a></h2>
-<p>Module with implemenation of region methods</p>
-</div>
-<div class="section" id="module-boxkit.api.read">
-<span id="boxkit-api-read-module"></span><h2>boxkit.api.read module<a class="headerlink" href="#module-boxkit.api.read" title="Permalink to this headline"></a></h2>
-<p>Module with implemenetation of api read methods</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="boxkit.api.read.dataset">
-<span class="sig-prename descclassname"><span class="pre">boxkit.api.read.</span></span><span class="sig-name descname"><span class="pre">dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test-sample'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.api.read.dataset" title="Permalink to this definition"></a></dt>
-<dd><p>Create a dataset from a file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>string containing file name</em>) – </p></li>
-<li><p><strong>source</strong> (<em>string identifying source/format of the file</em>) – ‘test-sample’ : method to create sample dataset for BoxKit API tests
-‘flash’  : method to create FLASH dataset</p></li>
-<li><p><strong>storage</strong> (<em>storage option 'disk'</em><em>, </em><em>'pyarrow'</em><em>, or </em><em>'dask'</em>) – default(‘disk’)</p></li>
-<li><p><strong>server</strong> (<em>server dictionary</em>) – </p></li>
-<li><p><strong>references</strong><strong>)</strong> (<em>(</em><em>see tests/boiling.py and tests/heater.py for</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Dataset object</p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
-<div class="section" id="module-boxkit.api">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-boxkit.api" title="Permalink to this headline"></a></h2>
 </div>
 </div>
 
@@ -200,7 +101,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="boxkit.html" class="btn btn-neutral float-left" title="boxkit package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="boxkit.cbox.html" class="btn btn-neutral float-right" title="boxkit.cbox package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="boxkit.api._create.html" class="btn btn-neutral float-right" title="boxkit.api._create module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,41 +1,21 @@
 boxkit.api package
 ==================
 
-Submodules
-----------
-
-boxkit.api.create module
-------------------------
-
-.. automodule:: boxkit.api.create
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
-boxkit.api.measure module
--------------------------
-
-.. automodule:: boxkit.api.measure
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
-boxkit.api.read module
-----------------------
-
-.. automodule:: boxkit.api.read
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
-Module contents
----------------
-
 .. automodule:: boxkit.api
    :members:
    :undoc-members:
    :show-inheritance:
    :private-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   boxkit.api._create
+   boxkit.api._mean
+   boxkit.api._mergeblocks
+   boxkit.api._read
+   boxkit.api._regionprops
+   boxkit.api._resfilter

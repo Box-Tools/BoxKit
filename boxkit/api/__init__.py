@@ -10,5 +10,5 @@ from ._mergeblocks import mergeblocks
 from ._resfilter import resfilter
 from ._mean import mean_temporal
 
-if options.testing:
+if options.TESTING:
     from ._regionprops import regionprops

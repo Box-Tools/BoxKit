@@ -1,20 +1,26 @@
 boxkit.library package
 ======================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   boxkit.library.create
-   boxkit.library.utilities
-
-Module contents
----------------
-
 .. automodule:: boxkit.library
    :members:
    :undoc-members:
    :show-inheritance:
    :private-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   boxkit.library._action
+   boxkit.library._block
+   boxkit.library._data
+   boxkit.library._dataset
+   boxkit.library._execute
+   boxkit.library._monitor
+   boxkit.library._region
+   boxkit.library._resources
+   boxkit.library._server
+   boxkit.library._slice
+   boxkit.library._timer

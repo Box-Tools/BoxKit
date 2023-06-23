@@ -1,0 +1,8 @@
+boxkit.library.\_monitor module
+===============================
+
+.. automodule:: boxkit.library._monitor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

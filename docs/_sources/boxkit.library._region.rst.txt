@@ -1,0 +1,8 @@
+boxkit.library.\_region module
+==============================
+
+.. automodule:: boxkit.library._region
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
