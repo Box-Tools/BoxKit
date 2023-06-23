@@ -15,3 +15,4 @@ boxkit/depends/boost/*
 !.sphinx/source/index.rst
 !./README.rst
 !./DESIGN.rst
+!tutorials/*/*.rst
