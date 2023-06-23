@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>In this example we will use BoxKit to work with three dimensional astrophysics data. After performing the required installation steps we are read to import BoxKit into Python environment &mdash; BoxKit  documentation</title>
+  <title>Astrophysics Example 1 &mdash; BoxKit  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -47,11 +47,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../README.html#citation">Citation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../README.html#help-support">Help &amp; Support</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../README.html#tutorials">Tutorials</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">In this example we will use BoxKit to work with three dimensional astrophysics data. After performing the required installation steps we are read to import BoxKit into Python environment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#next-we-read-and-parse-dataset-information-from-a-hdf5-file-25m-3d-32km-hdf5-plt-cnt-1000-that-contains-flash-x-simulation-output">Next we read and parse dataset information from a HDF5 file, <code class="docutils literal notranslate"><span class="pre">25m_3d_32km_hdf5_plt_cnt_1000</span></code>, that contains Flash-X simulation output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#we-can-probe-into-the-information-for-this-dataset-by-using-a-simple-print-statement">We can probe into the information for this dataset by using a simple print statement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#the-dataset-contains-90200-blocks-each-of-size-8x8x8-along-with-variables-listed-in-keys-we-can-now-use-this-dataset-to-create-a-slice-at-location-y-0-1">The dataset contains 90200 blocks each of size 8x8x8, along with variables listed in <code class="docutils literal notranslate"><span class="pre">keys</span></code>. We can now use this dataset to create a slice at location <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">0.1</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#now-we-can-loop-over-blocks-in-this-slice-and-extract-data-from-right-indices">Now we can loop over blocks in this slice and extract data from right indices</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Astrophysics Example 1</a></li>
 </ul>
 </li>
 </ul>
@@ -74,7 +70,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../README.html"> BoxKit</a> &raquo;</li>
-      <li>In this example we will use BoxKit to work with three dimensional astrophysics data. After performing the required installation steps we are read to import BoxKit into Python environment</li>
+      <li>Astrophysics Example 1</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/tutorials/astrophysics_example_01/astrophysics_example_01.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -84,20 +80,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="in-this-example-we-will-use-boxkit-to-work-with-three-dimensional-astrophysics-data-after-performing-the-required-installation-steps-we-are-read-to-import-boxkit-into-python-environment">
-<h1>In this example we will use BoxKit to work with three dimensional astrophysics data. After performing the required installation steps we are read to import BoxKit into Python environment<a class="headerlink" href="#in-this-example-we-will-use-boxkit-to-work-with-three-dimensional-astrophysics-data-after-performing-the-required-installation-steps-we-are-read-to-import-boxkit-into-python-environment" title="Permalink to this headline"></a></h1>
+  <div class="section" id="astrophysics-example-1">
+<h1>Astrophysics Example 1<a class="headerlink" href="#astrophysics-example-1" title="Permalink to this headline"></a></h1>
+<p>In this example we will use BoxKit to work with three dimensional
+astrophysics data. After performing the required installation steps we
+are read to import BoxKit into Python environment</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boxkit</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="next-we-read-and-parse-dataset-information-from-a-hdf5-file-25m-3d-32km-hdf5-plt-cnt-1000-that-contains-flash-x-simulation-output">
-<h1>Next we read and parse dataset information from a HDF5 file, <code class="docutils literal notranslate"><span class="pre">25m_3d_32km_hdf5_plt_cnt_1000</span></code>, that contains Flash-X simulation output<a class="headerlink" href="#next-we-read-and-parse-dataset-information-from-a-hdf5-file-25m-3d-32km-hdf5-plt-cnt-1000-that-contains-flash-x-simulation-output" title="Permalink to this headline"></a></h1>
+<p>Next we read and parse dataset information from a HDF5 file,
+<code class="docutils literal notranslate"><span class="pre">25m_3d_32km_hdf5_plt_cnt_1000</span></code>, that contains Flash-X simulation
+output</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dset</span> <span class="o">=</span> <span class="n">boxkit</span><span class="o">.</span><span class="n">read_dataset</span><span class="p">(</span><span class="s2">&quot;25m_3d_32km_hdf5_plt_cnt_1000&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;flash&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="we-can-probe-into-the-information-for-this-dataset-by-using-a-simple-print-statement">
-<h1>We can probe into the information for this dataset by using a simple print statement<a class="headerlink" href="#we-can-probe-into-the-information-for-this-dataset-by-using-a-simple-print-statement" title="Permalink to this headline"></a></h1>
+<p>We can probe into the information for this dataset by using a simple
+print statement</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dset</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -113,9 +111,9 @@
  - dtype        : {&#39;dens&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;temp&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;velx&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;vely&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;ye  &#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;fe54&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;fe56&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;o16 &#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;si28&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;entr&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;enuc&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;cr48&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;cr56&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;fe52&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;ni56&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;pres&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;c12 &#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;s32 &#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;gpot&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;gamc&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;dtbn&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;, &#39;velz&#39;: &lt;class &#39;h5pickle.Dataset&#39;&gt;}
 </pre></div>
 </div>
-</div>
-<div class="section" id="the-dataset-contains-90200-blocks-each-of-size-8x8x8-along-with-variables-listed-in-keys-we-can-now-use-this-dataset-to-create-a-slice-at-location-y-0-1">
-<h1>The dataset contains 90200 blocks each of size 8x8x8, along with variables listed in <code class="docutils literal notranslate"><span class="pre">keys</span></code>. We can now use this dataset to create a slice at location <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">0.1</span></code><a class="headerlink" href="#the-dataset-contains-90200-blocks-each-of-size-8x8x8-along-with-variables-listed-in-keys-we-can-now-use-this-dataset-to-create-a-slice-at-location-y-0-1" title="Permalink to this headline"></a></h1>
+<p>The dataset contains 90200 blocks each of size 8x8x8, along with
+variables listed in <code class="docutils literal notranslate"><span class="pre">keys</span></code>. We can now use this dataset to create a
+slice at location <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">0.1</span></code></p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yloc</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">dset_slice</span> <span class="o">=</span> <span class="n">boxkit</span><span class="o">.</span><span class="n">create_slice</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=</span><span class="n">yloc</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="n">yloc</span><span class="p">)</span>
 </pre></div>
@@ -128,9 +126,8 @@
  - bound (z-y-x) : [-10000000000.0, 10000000000.0] x [0.0, 1666666624.0] x [-10000000000.0, 10000000000.0]
 </pre></div>
 </div>
-</div>
-<div class="section" id="now-we-can-loop-over-blocks-in-this-slice-and-extract-data-from-right-indices">
-<h1>Now we can loop over blocks in this slice and extract data from right indices<a class="headerlink" href="#now-we-can-loop-over-blocks-in-this-slice-and-extract-data-from-right-indices" title="Permalink to this headline"></a></h1>
+<p>Now we can loop over blocks in this slice and extract data from right
+indices</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import required libraries</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">pyplot</span>
