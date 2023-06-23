@@ -111,12 +111,12 @@ class CustomCmd:
 
         with open("boxkit/options.py", "w", encoding="ascii") as optfile:
 
-            optfile.write(f"cbox={self.with_cbox}\n")
-            optfile.write(f"pyarrow={self.with_pyarrow}\n")
-            optfile.write(f"zarr={self.with_zarr}\n")
-            optfile.write(f"dask={self.with_dask}\n")
-            optfile.write(f"server={self.with_server}\n")
-            optfile.write(f"testing={self.enable_testing}\n")
+            optfile.write(f"CBOX={self.with_cbox}\n")
+            optfile.write(f"PYARROW={self.with_pyarrow}\n")
+            optfile.write(f"ZARR={self.with_zarr}\n")
+            optfile.write(f"DASK={self.with_dask}\n")
+            optfile.write(f"SERVER={self.with_server}\n")
+            optfile.write(f"TESTING={self.enable_testing}\n")
 
 
 # replaces the default build command for setup.py
