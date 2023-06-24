@@ -3,6 +3,8 @@
 import h5py
 import h5pickle
 
+from boxkit.library import Action
+
 
 def read_flash(filename, server):
     """
@@ -60,31 +62,45 @@ def read_flash(filename, server):
     }
 
     # Create block attributes
-    block_attributes = [
-        {
-            "dx": inputfile["block size"][lblock][0] / nxb,
-            "dy": (
-                1.0
-                if inputfile["block size"][lblock][1] == 0.0
-                else inputfile["block size"][lblock][1] / nyb
-            ),
-            "dz": (
-                1.0
-                if inputfile["block size"][lblock][2] == 0.0
-                else inputfile["block size"][lblock][2] / nzb
-            ),
-            "xmin": inputfile["bounding box"][lblock][0][0],
-            "ymin": inputfile["bounding box"][lblock][1][0],
-            "zmin": inputfile["bounding box"][lblock][2][0],
-            "xmax": inputfile["bounding box"][lblock][0][1],
-            "ymax": inputfile["bounding box"][lblock][1][1],
-            "zmax": inputfile["bounding box"][lblock][2][1],
-            "tag": lblock,
-            "level": inputfile["refine level"][lblock],
-            "leaf": bool(inputfile["node type"][lblock] == 1),
-            "inputproc": inputfile["processor number"][lblock],
-        }
-        for lblock in range(nblocks)
-    ]
+    block_attributes = get_blk_attributes(
+        (lblock for lblock in range(nblocks)), inputfile, nxb, nyb, nzb
+    )
 
     return data_attributes, block_attributes
+
+
+@Action(nthreads=8, backend="loky", monitor=True)
+def get_blk_attributes(lblock, inputfile, nxb, nyb, nzb):
+    """
+    lblock: block number
+    inputfile: HDF5 file handle
+
+    Returns
+    -------
+    block_dict
+    """
+    block_dict = {
+        "dx": inputfile["block size"][lblock][0] / nxb,
+        "dy": (
+            1.0
+            if inputfile["block size"][lblock][1] == 0.0
+            else inputfile["block size"][lblock][1] / nyb
+        ),
+        "dz": (
+            1.0
+            if inputfile["block size"][lblock][2] == 0.0
+            else inputfile["block size"][lblock][2] / nzb
+        ),
+        "xmin": inputfile["bounding box"][lblock][0][0],
+        "ymin": inputfile["bounding box"][lblock][1][0],
+        "zmin": inputfile["bounding box"][lblock][2][0],
+        "xmax": inputfile["bounding box"][lblock][0][1],
+        "ymax": inputfile["bounding box"][lblock][1][1],
+        "zmax": inputfile["bounding box"][lblock][2][1],
+        "tag": lblock,
+        "level": inputfile["refine level"][lblock],
+        "leaf": bool(inputfile["node type"][lblock] == 1),
+        "inputproc": inputfile["processor number"][lblock],
+    }
+
+    return block_dict
