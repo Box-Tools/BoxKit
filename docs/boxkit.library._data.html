@@ -86,7 +86,25 @@
 <dt class="sig sig-object py" id="boxkit.library._data.Data">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">boxkit.library._data.</span></span><span class="sig-name descname"><span class="pre">Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">boxkit.cbox.lib.library.Data</span></code></p>
-<p>Default class to store data</p>
+<p>Class to store handles for physical data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>attributes</strong> (<em>Dictionary of attributes</em>) – <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;nblocks&#39;</span>   <span class="p">:</span> <span class="n">total</span> <span class="n">number</span> <span class="n">of</span> <span class="n">blocks</span><span class="p">,</span>
+<span class="s1">&#39;nxb&#39;</span>       <span class="p">:</span> <span class="n">number</span> <span class="n">of</span> <span class="n">grid</span> <span class="n">points</span> <span class="n">per</span> <span class="n">block</span> <span class="n">x</span> <span class="n">direction</span><span class="p">,</span>
+<span class="s1">&#39;nyb&#39;</span>       <span class="p">:</span> <span class="n">number</span> <span class="n">of</span> <span class="n">grid</span> <span class="n">points</span> <span class="n">per</span> <span class="n">block</span> <span class="n">y</span> <span class="n">direction</span><span class="p">,</span>
+<span class="s1">&#39;nzb&#39;</span>       <span class="p">:</span> <span class="n">number</span> <span class="n">of</span> <span class="n">grid</span> <span class="n">points</span> <span class="n">per</span> <span class="n">block</span> <span class="n">z</span> <span class="n">direction</span><span class="p">,</span>
+<span class="s1">&#39;xguard&#39;</span>    <span class="p">:</span> <span class="n">number</span> <span class="n">of</span> <span class="n">guard</span> <span class="n">cells</span> <span class="n">x</span> <span class="n">direction</span><span class="p">,</span>
+<span class="s1">&#39;yguard&#39;</span>    <span class="p">:</span> <span class="n">number</span> <span class="n">of</span> <span class="n">guard</span> <span class="n">cells</span> <span class="n">y</span> <span class="n">direction</span><span class="p">,</span>
+<span class="s1">&#39;zguard&#39;</span>    <span class="p">:</span> <span class="n">number</span> <span class="n">of</span> <span class="n">guard</span> <span class="n">cells</span> <span class="n">z</span> <span class="n">direction</span><span class="p">,</span>
+<span class="s1">&#39;inputfile&#39;</span> <span class="p">:</span> <span class="n">hdf5</span> <span class="n">inputfile</span> <span class="n">default</span> <span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+<span class="s1">&#39;remotefile&#39;</span><span class="p">:</span> <span class="n">sftp</span> <span class="n">remote</span> <span class="n">file</span> <span class="n">default</span> <span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+<span class="s1">&#39;variables&#39;</span> <span class="p">:</span> <span class="n">dictionary</span> <span class="n">of</span> <span class="n">variables</span> <span class="n">default</span> <span class="p">({}),</span>
+<span class="s1">&#39;storage&#39;</span>   <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;numpy&#39;</span><span class="p">,</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span> <span class="s1">&#39;dask&#39;</span><span class="p">,</span> <span class="s1">&#39;pyarrow&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="boxkit.library._data.Data._create_dask_objects">
 <span class="sig-name descname"><span class="pre">_create_dask_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#boxkit.library._data.Data._create_dask_objects" title="Permalink to this definition"></a></dt>

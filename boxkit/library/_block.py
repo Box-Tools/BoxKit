@@ -5,22 +5,26 @@ import pymorton
 
 
 class Block:  # pylint: disable=too-many-instance-attributes
-    """Default class for a Block.
+    """
+    Class for storing block metadata
 
     Parameters
     ----------
-    data       : data object
-    attributes : dictionary
-               { 'dx'   : grid spacing in x dir
-                 'dy'   : grid spacing in y dir
-                 'dz'   : grid spacing in z dir
-                 'xmin' : low  bound in x dir
-                 'ymin' : low  bound in y dir
-                 'zmin' : low  bound in z dir
-                 'xmax' : high bound in x dir
-                 'ymax' : high bound in y dir
-                 'zmax' : high bound in z dir
-                 'tag'  : block ID }
+    data       : Boxkit Data object
+    attributes : Dictionary of attributes
+
+               .. code-block::
+
+                  'dx'   : grid spacing x direction
+                  'dy'   : grid spacing y direction
+                  'dz'   : grid spacing z direction
+                  'xmin' : low  bound x direction
+                  'ymin' : low  bound y direction
+                  'zmin' : low  bound z direction
+                  'xmax' : high bound x direction
+                  'ymax' : high bound y direction
+                  'zmax' : high bound z direction
+                  'tag'  : block ID
     """
 
     type_ = "default"

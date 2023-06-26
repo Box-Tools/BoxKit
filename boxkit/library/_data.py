@@ -29,28 +29,32 @@ else:
 
 
 class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
-    """Default class to store data"""
+    """
+    Class to store handles for physical data
+
+    Parameters
+    ----------
+    attributes : Dictionary of attributes
+               .. code-block::
+
+                  'nblocks'   : total number of blocks,
+                  'nxb'       : number of grid points per block x direction,
+                  'nyb'       : number of grid points per block y direction,
+                  'nzb'       : number of grid points per block z direction,
+                  'xguard'    : number of guard cells x direction,
+                  'yguard'    : number of guard cells y direction,
+                  'zguard'    : number of guard cells z direction,
+                  'inputfile' : hdf5 inputfile default (None),
+                  'remotefile': sftp remote file default (None),
+                  'variables' : dictionary of variables default ({}),
+                  'storage'   : ('numpy', 'zarr', 'dask', 'pyarrow')
+    """
 
     type_ = "default"
 
     def __init__(self, **attributes):
-        """Initialize the class object
+        """Initialize the class object"""
 
-        Parameters
-        ----------
-        attributes : dictionary
-                     { 'nblocks'   : total number of blocks,
-                       'nxb'       : number of grid points per block in x dir,
-                       'nyb'       : number of grid points per block in y dir,
-                       'nzb'       : number of grid points per block in z dir,
-                       'xguard'    : number of guard cells in x dir,
-                       'yguard'    : number of guard cells in y dir,
-                       'zguard'    : number of guard cells in z dir,
-                       'inputfile' : hdf5 inputfile default (None),
-                       'remotefile': sftp remote file default (None),
-                       'variables' : dictionary of variables default ({}),
-                       'storage'   : ('numpy', 'zarr', 'dask', 'pyarrow')}
-        """
         super().__init__()
 
         self.nblocks = 1
