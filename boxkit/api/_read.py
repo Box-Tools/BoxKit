@@ -13,6 +13,8 @@ def read_dataset(
     force_memmap=False,
     nthreads=1,
     backend="serial",
+    monitor=False,
+    batch="auto",
 ):  # pylint: disable=too-many-arguments disable=too-many-locals
     """
     Create a dataset from a file
@@ -28,6 +30,14 @@ def read_dataset(
 
     server : server dictionary
 
+    force_memamp : flag
+
+    nthreads : integer
+
+    backend : string parameter for parallel backend
+
+    monitor : flag
+
     (see tests/boiling.py and tests/heater.py for references)
 
     Returns
@@ -41,7 +51,9 @@ def read_dataset(
     if not storage:
         storage = "numpy-memmap"
 
-    data_attributes, block_attributes = resources.read.options[source](filename, server)
+    data_attributes, block_attributes = resources.read.options[source](
+        filename, server, nthreads, batch, monitor, backend
+    )
 
     data = library.Data(storage=storage, **data_attributes)
     blocklist = [library.Block(data, **attributes) for attributes in block_attributes]

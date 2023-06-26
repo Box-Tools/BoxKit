@@ -6,7 +6,9 @@ import h5pickle
 from boxkit.library import Action
 
 
-def read_flash(filename, server):
+def read_flash(
+    filename, server, nthreads, batch, monitor, backend
+):  # pylint: disable=too-many-locals disable=too-many-arguments
     """
     Read dataset from FLASH output file
 
@@ -61,6 +63,11 @@ def read_flash(filename, server):
         "variables": variables,
     }
 
+    get_blk_attributes.nthreads = nthreads
+    get_blk_attributes.backend = backend
+    get_blk_attributes.batch = batch
+    get_blk_attributes.monitor = monitor
+
     # Create block attributes
     block_attributes = get_blk_attributes(
         (lblock for lblock in range(nblocks)), inputfile, nxb, nyb, nzb
@@ -69,7 +76,7 @@ def read_flash(filename, server):
     return data_attributes, block_attributes
 
 
-@Action(nthreads=8, backend="loky", monitor=True)
+@Action
 def get_blk_attributes(lblock, inputfile, nxb, nyb, nzb):
     """
     lblock: block number

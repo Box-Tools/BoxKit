@@ -3,7 +3,9 @@
 import h5pickle as h5py
 
 
-def read_test_sample(filename, server):  # pylint: disable=too-many-locals
+def read_test_sample(
+    filename, server, nthreads, batch, monitor, backend
+):  # pylint: disable=too-many-locals disable=too-many-arguments disable=unused-argument
     """
     Read dataset from BoxKit test sample
 
