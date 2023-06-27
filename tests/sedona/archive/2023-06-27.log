@@ -1,0 +1,83 @@
+
+-------------------------Running: boiling.TestBoiling.test_data_pointers_3D-------------------------
+
+boiling.TestBoiling.test_data_pointers_3D: 0.615s
+.
+-------------------------Running: boiling.TestBoiling.test_mean_temporal_3D-------------------------
+
+[boxkit.mean_temporal.mean_blk_list]: 1.823s
+[boxkit.mean_temporal]: 1.992s
+[cpu_count]: 24 [cpu_avail]: 20 [mem_avail]: 25.85 GB [cpu_usage]: 18.6% [mem_usage]: 17.3%
+run-loky:boxkit.api._mergeblocks.map_blk_to_merged_dset
+[boxkit.mergeblocks.map_dataset_block]: 0.231s
+[boxkit.mergeblocks]: 0.261s
+boiling.TestBoiling.test_mean_temporal_3D: 2.888s
+.
+-------------------------Running: boiling.TestBoiling.test_mergeblocks_3D-------------------------
+
+[cpu_count]: 24 [cpu_avail]: 21 [mem_avail]: 25.87 GB [cpu_usage]: 15.6% [mem_usage]: 17.2%
+run-loky:boxkit.api._mergeblocks.map_blk_to_merged_dset
+[boxkit.mergeblocks.map_dataset_block]: 0.218s
+[boxkit.mergeblocks]: 0.239s
+boiling.TestBoiling.test_mergeblocks_3D: 0.372s
+.
+-------------------------Running: boiling.TestBoiling.test_neighbors_3D-------------------------
+
+boiling.TestBoiling.test_neighbors_3D: 0.904s
+.
+-------------------------Running: boiling.TestBoiling.test_regionprops_3D-------------------------
+
+run-loky:boxkit.api._regionprops.skimage_props_blk
+run-loky:boxkit.api._regionprops.skimage_props_blk
+run-loky:boxkit.api._regionprops.skimage_props_blk
+run-loky:boxkit.api._regionprops.skimage_props_blk
+run-loky:boxkit.api._regionprops.skimage_props_blk
+run-loky:boxkit.api._regionprops.skimage_props_blk
+boxkit.regionprops: 2.388s
+boiling.TestBoiling.test_regionprops_3D: 3.34s
+.
+-------------------------Running: boiling.TestBoiling.test_slice_3D-------------------------
+
+boiling.TestBoiling.test_slice_3D: 0.661s
+.
+-------------------------Running: heater.TestHeater.test_neighbors_oneblk_2D-------------------------
+
+heater.TestHeater.test_neighbors_oneblk_2D: 0.037s
+
+.
+-------------------------Running: heater.TestHeater.test_regionprops_blocks_2D-------------------------
+
+heater.TestHeater.test_regionprops_blocks_2D: 1.602s
+
+.
+-------------------------Running: heater.TestHeater.test_regionprops_oneblk_2D-------------------------
+
+heater.TestHeater.test_regionprops_oneblk_2D: 0.185s
+
+.
+-------------------------Running: application.TestApplication.test_flowx-------------------------
+
+run-loky:flowx.imbound._interface.utils._shapely_search._search_block
+Search time:  2.0188839435577393
+[fill guardcells time]:  0.024975061416625977
+.
+-------------------------Running: astrophysics.TestAstrophysics.test_read_nthreads_12_3D-------------------------
+
+run-loky:boxkit.resources.read._flash.get_blk_attributes
+Dataset:
+ - type         : <class 'boxkit.library._dataset.Dataset'>
+ - file         : <HDF5 file "25m_3d_32km_hdf5_plt_cnt_1000" (mode r)>
+ - keys         : ['dens', 'temp', 'velx', 'vely', 'ye  ', 'fe54', 'fe56', 'o16 ', 'si28', 'entr', 'enuc', 'cr48', 'cr56', 'fe52', 'ni56', 'pres', 'c12 ', 's32 ', 'gpot', 'gamc', 'dtbn', 'velz']
+ - dtype	: [<class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>, <class 'h5pickle.Dataset'>]
+ - bound(z-y-x) : [-10000000000.0, 10000000000.0] x [-10000000000.0, 10000000000.0] x [-10000000000.0, 10000000000.0]
+ - shape(z-y-x) : 8 x 8 x 8
+ - guard(z-y-x) : 0 x 0 x 0
+ - nblocks      : 90200
+ - dtype        : {'dens': <class 'h5pickle.Dataset'>, 'temp': <class 'h5pickle.Dataset'>, 'velx': <class 'h5pickle.Dataset'>, 'vely': <class 'h5pickle.Dataset'>, 'ye  ': <class 'h5pickle.Dataset'>, 'fe54': <class 'h5pickle.Dataset'>, 'fe56': <class 'h5pickle.Dataset'>, 'o16 ': <class 'h5pickle.Dataset'>, 'si28': <class 'h5pickle.Dataset'>, 'entr': <class 'h5pickle.Dataset'>, 'enuc': <class 'h5pickle.Dataset'>, 'cr48': <class 'h5pickle.Dataset'>, 'cr56': <class 'h5pickle.Dataset'>, 'fe52': <class 'h5pickle.Dataset'>, 'ni56': <class 'h5pickle.Dataset'>, 'pres': <class 'h5pickle.Dataset'>, 'c12 ': <class 'h5pickle.Dataset'>, 's32 ': <class 'h5pickle.Dataset'>, 'gpot': <class 'h5pickle.Dataset'>, 'gamc': <class 'h5pickle.Dataset'>, 'dtbn': <class 'h5pickle.Dataset'>, 'velz': <class 'h5pickle.Dataset'>}
+astrophysics.TestAstrophysics.test_read_nthreads_12_3D: 4.612s
+.
+----------------------------------------------------------------------
+Ran 11 tests in 17.356s
+
+OK
+
