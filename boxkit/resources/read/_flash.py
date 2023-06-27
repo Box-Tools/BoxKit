@@ -87,7 +87,7 @@ def read_flash(
 @Action
 def get_blk_attributes(
     lblock, block_size, bounding_box, refine_level, node_type, proc_num, nxb, nyb, nzb
-):
+):  # pylint: disable=too-many-arguments
     """
     lblock: block number
     inputfile: HDF5 file handle
