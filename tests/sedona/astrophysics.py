@@ -61,6 +61,7 @@ class TestAstrophysics(unittest.TestCase):
             for filename in self.filenames
         ]
         for dataset in dataframes:
+            print(dataset)
             dataset.purge()
 
     def tearDown(self):

@@ -70,14 +70,24 @@ def read_flash(
 
     # Create block attributes
     block_attributes = get_blk_attributes(
-        (lblock for lblock in range(nblocks)), inputfile, nxb, nyb, nzb
+        (lblock for lblock in range(nblocks)),
+        inputfile["block size"][:],
+        inputfile["bounding box"][:],
+        inputfile["refine level"][:],
+        inputfile["node type"][:],
+        inputfile["processor number"][:],
+        nxb,
+        nyb,
+        nzb,
     )
 
     return data_attributes, block_attributes
 
 
 @Action
-def get_blk_attributes(lblock, inputfile, nxb, nyb, nzb):
+def get_blk_attributes(
+    lblock, block_size, bounding_box, refine_level, node_type, proc_num, nxb, nyb, nzb
+):
     """
     lblock: block number
     inputfile: HDF5 file handle
@@ -87,27 +97,19 @@ def get_blk_attributes(lblock, inputfile, nxb, nyb, nzb):
     block_dict
     """
     block_dict = {
-        "dx": inputfile["block size"][lblock][0] / nxb,
-        "dy": (
-            1.0
-            if inputfile["block size"][lblock][1] == 0.0
-            else inputfile["block size"][lblock][1] / nyb
-        ),
-        "dz": (
-            1.0
-            if inputfile["block size"][lblock][2] == 0.0
-            else inputfile["block size"][lblock][2] / nzb
-        ),
-        "xmin": inputfile["bounding box"][lblock][0][0],
-        "ymin": inputfile["bounding box"][lblock][1][0],
-        "zmin": inputfile["bounding box"][lblock][2][0],
-        "xmax": inputfile["bounding box"][lblock][0][1],
-        "ymax": inputfile["bounding box"][lblock][1][1],
-        "zmax": inputfile["bounding box"][lblock][2][1],
+        "dx": block_size[lblock][0] / nxb,
+        "dy": (1.0 if block_size[lblock][1] == 0.0 else block_size[lblock][1] / nyb),
+        "dz": (1.0 if block_size[lblock][2] == 0.0 else block_size[lblock][2] / nzb),
+        "xmin": bounding_box[lblock][0][0],
+        "ymin": bounding_box[lblock][1][0],
+        "zmin": bounding_box[lblock][2][0],
+        "xmax": bounding_box[lblock][0][1],
+        "ymax": bounding_box[lblock][1][1],
+        "zmax": bounding_box[lblock][2][1],
         "tag": lblock,
-        "level": inputfile["refine level"][lblock],
-        "leaf": bool(inputfile["node type"][lblock] == 1),
-        "inputproc": inputfile["processor number"][lblock],
+        "level": refine_level[lblock],
+        "leaf": bool(node_type[lblock] == 1),
+        "inputproc": proc_num[lblock],
     }
 
     return block_dict
