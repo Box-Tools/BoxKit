@@ -1,0 +1,40 @@
+
+-------------------------Running: boiling.TestBoiling.test_data_pointers_3D-------------------------
+
+boiling.TestBoiling.test_data_pointers_3D: 0.058s
+.
+-------------------------Running: boiling.TestBoiling.test_mergeblocks_3D-------------------------
+
+[cpu_count]: 8 [cpu_avail]: 2 [mem_avail]: 8.17 GB [cpu_usage]: 78.1% [mem_usage]: 48.9%
+run-loky:boxkit.api._mergeblocks.map_blk_to_merged_dset
+[boxkit.mergeblocks.map_dataset_block]: 0.305s
+[boxkit.mergeblocks]: 0.327s
+boiling.TestBoiling.test_mergeblocks_3D: 0.478s
+.
+-------------------------Running: boiling.TestBoiling.test_neighbors_3D-------------------------
+
+boiling.TestBoiling.test_neighbors_3D: 0.096s
+.
+-------------------------Running: boiling.TestBoiling.test_regionprops_3D-------------------------
+
+run-loky:boxkit.api._regionprops.skimage_props_blk
+boxkit.regionprops: 2.187s
+boiling.TestBoiling.test_regionprops_3D: 2.26s
+.
+-------------------------Running: boiling.TestBoiling.test_slice_3D-------------------------
+
+boiling.TestBoiling.test_slice_3D: 0.061s
+.
+-------------------------Running: heater.TestHeater.test_neighbors_oneblk_2D-------------------------
+
+heater.TestHeater.test_neighbors_oneblk_2D: 0.002s
+.
+-------------------------Running: heater.TestHeater.test_regionprops_oneblk_2D-------------------------
+
+heater.TestHeater.test_regionprops_oneblk_2D: 0.05s
+.
+----------------------------------------------------------------------
+Ran 7 tests in 3.006s
+
+OK
+
