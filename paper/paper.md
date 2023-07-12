@@ -118,6 +118,9 @@ where global operations in space are required. An example of this is SciKit's
 for Flash-X boiling simulations. BoxKit improves performance of this operation 
 by ~5x.
 
+Raw data for performance results along with corresponding IPython notebooks can
+be found in [@boxkit-performance].
+
 # Ongoing work
 
 Our ongoing work focuses on using BoxKit to improve performance of Scientific
