@@ -53,7 +53,7 @@ learning using a Fortran-Python bridge shown with dotted lines. \label{fig:workf
 
 Compared to existing data analysis packages like yt [@yt], BoxKit offers more intuitive 
 abstraction layers over AMR blocks through its metadata wrappers. This provides raw access 
-to simulation data enabling users to develop their own low-level methods for spatio-temporal 
+to simulation data allowing users to develop their own low-level methods for spatio-temporal 
 interpolation and stenciled computations. We aim for this library to complement existing
 packages rather than replace them.
 
