@@ -45,6 +45,12 @@ memory in form of chunks/blocks which improves cache efficiency. The library als
 creation of new datasets for data-intensive workflows, and can be extended beyond its current 
 application to numerical simulations. 
 
+Compared to existing data analysis packages like yt [@yt], BoxKit offers more intuitive 
+abstraction layers over AMR blocks through its metadata wrappers. This provides raw access 
+to simulation data enabling users to develop their own low-level methods for spatio-temporal 
+interpolation and stenciled computations. We aim for this library to complement existing
+packages rather than replace them.
+
 ![BoxKit is designed to integrate simulation software instruments like Flash-X 
 with Python-based machine learning and data analysis packages. Large simulation 
 datasets (~10 GB) can leverage BoxKit to improve performance of offline training/analysis. 
@@ -68,7 +74,8 @@ def operation_on_block(block, *args):
     pass
 
 # Call the function with list of blocks as the first argument
-operation_on_block((block for block in list_of_blocks), *args)
+dset = boxkit.read_datset(...)
+operation_on_block((block for block in dset.blocklist), *args)
 ```
 
 The `Action` wrapper converts the function, `operation_on_block`, into a parallel method which 
