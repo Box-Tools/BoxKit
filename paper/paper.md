@@ -123,7 +123,7 @@ be found in [@boxkit-performance].
 
 # Ongoing work
 
-Our ongoing work focuses on using BoxKit to improve performance of Scientific
+Our ongoing work focuses on developing BoxKit to improve performance of Scientific
 Machine Learning (SciML) applications and using it as part of a broader workflow 
 that integrates Fortran/C++ based applications with state-of-art machine learning 
 packages available in Python shown by dotted lines in \autoref{fig:workflow}.
