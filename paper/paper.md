@@ -45,17 +45,17 @@ memory in form of chunks/blocks which improves cache efficiency. The library als
 creation of new datasets for data-intensive workflows, and can be extended beyond its current 
 application to numerical simulations. 
 
-Compared to existing data analysis packages like yt [@yt], BoxKit offers more intuitive 
-abstraction layers over AMR blocks through its metadata wrappers. This provides raw access 
-to simulation data enabling users to develop their own low-level methods for spatio-temporal 
-interpolation and stenciled computations. We aim for this library to complement existing
-packages rather than replace them.
-
 ![BoxKit is designed to integrate simulation software instruments like Flash-X 
 with Python-based machine learning and data analysis packages. Large simulation 
 datasets (~10 GB) can leverage BoxKit to improve performance of offline training/analysis. 
 This mechanism is part of a broader workflow to  integrate simulations with machine 
 learning using a Fortran-Python bridge shown with dotted lines. \label{fig:workflow}](../media/workflow.png)
+
+Compared to existing data analysis packages like yt [@yt], BoxKit offers more intuitive 
+abstraction layers over AMR blocks through its metadata wrappers. This provides raw access 
+to simulation data enabling users to develop their own low-level methods for spatio-temporal 
+interpolation and stenciled computations. We aim for this library to complement existing
+packages rather than replace them.
 
 BoxKit also offers wrappers to scale the process of deploying workflows on NUMA and distributed
 computing architectures by providing decorators that can parallelize Python operations over a
