@@ -116,7 +116,7 @@ Mapping of AMR data to contingous arrays becomes important for applications
 where global operations in space are required. An example of this is SciKit's 
 ``skimage_measure`` method, which can be used to measure bubble shape and size 
 for Flash-X boiling simulations. BoxKit improves performance of this operation 
-by ~5x. Raw data for these performance results along with corresponding IPython 
+by ~5x. Data for these performance studies along with corresponding IPython 
 notebooks can be found in [@boxkit-performance].
 
 # Ongoing work
@@ -124,7 +124,7 @@ notebooks can be found in [@boxkit-performance].
 Our ongoing work focuses on developing BoxKit to improve performance of Scientific
 Machine Learning (SciML) applications and using it as part of a broader workflow 
 that integrates Fortran/C++ based applications with state-of-art machine learning 
-packages available in Python shown by dotted lines in \autoref{fig:workflow}.
+packages available in Python as highlighted in \autoref{fig:workflow}.
 
 # Acknowledgements
 
