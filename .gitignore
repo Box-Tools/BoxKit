@@ -8,12 +8,11 @@ boxkit/options.py
 build/*
 dist/*
 dask-worker-space
-*.rst
 boxkit/depends/boost/*
+.sphinx/*/*.rst
 .sphinx/build/*
 .sphinx/source/media/*
 .sphinx/source/tutorials/*
 !.sphinx/source/index.rst
-!./README.rst
-!./DESIGN.rst
+!requirements/README.rst
 !tutorials/*/*.rst
