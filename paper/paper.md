@@ -114,7 +114,7 @@ increases.
 
 Mapping of AMR data to contingous arrays becomes important for applications
 where global operations in space are required. An example of this is SciKit's 
-``skimage_measure`` method, which can be used to measure bubble shape and size 
+``skimage.measure`` method, which can be used to measure bubble shape and size 
 for Flash-X boiling simulations. BoxKit improves performance of this operation 
 by ~5x. Data for these performance studies along with corresponding IPython 
 notebooks can be found in [@boxkit-performance].
