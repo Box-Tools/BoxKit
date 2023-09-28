@@ -46,7 +46,7 @@ setup(
     author=metadata["__authors__"],
     description=metadata["__description__"],
     license=metadata["__license__"],
-    packages=find_packages(where="./"),
+    packages=find_packages(where=os.getcwd()),
     package_dir={"": "./"},
     package_data={
         "": [
