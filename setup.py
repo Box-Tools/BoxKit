@@ -4,6 +4,7 @@
 import os
 import sys
 import re
+import platform
 from setuptools import setup, find_packages
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -40,14 +41,19 @@ with open("requirements/core.txt", mode="r", encoding="ascii") as core_reqs:
 # Call setup command with necessary arguments
 # replace existing build and develop commands
 # with custom commands defined in 'bin.cmd'
+if platform.system() == "Windows":
+    PACKAGE_DIR = ":\\"
+else:
+    PACKAGE_DIR = "./"
+
 setup(
     name=metadata["__pkgname__"],
     version=metadata["__version__"],
     author=metadata["__authors__"],
     description=metadata["__description__"],
     license=metadata["__license__"],
-    packages=find_packages(where=os.path.dirname(os.path.abspath(__file__))),
-    package_dir={"": os.path.dirname(os.path.abspath(__file__))},
+    packages=find_packages(where=PACKAGE_DIR),
+    package_dir={"": PACKAGE_DIR},
     package_data={
         "": [
             "options.py",
