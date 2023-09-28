@@ -1,6 +1,8 @@
 name: Minimal
 
 on:
+  push:
+     - development
   pull_request:
     branches: 
       - main
@@ -13,6 +15,24 @@ on:
 
 jobs:
 
+  windows:
+    name: "windows"
+    runs-on: windows-latest
+    - uses: actions/checkout@v2      
+    - uses: akashdhruv/Maple/.github/actions/maple@main
+    - name: Build Container
+      run: |
+          maple image build boxkit
+    - uses: ./.github/actions/install
+      with:
+        image: boxkit
+    - name: Run BoxKit tests
+      run: |
+          maple container pour --image=boxkit
+          maple container execute "python3 tests/container/create.py"
+          maple container rinse
+          maple image delete boxkit
+ 
   library:
     name: "library" 
     runs-on: ubuntu-latest
