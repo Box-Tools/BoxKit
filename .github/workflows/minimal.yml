@@ -2,7 +2,8 @@ name: Minimal
 
 on:
   push:
-     - development
+    branches:
+      - development
   pull_request:
     branches: 
       - main
