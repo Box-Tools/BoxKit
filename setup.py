@@ -42,7 +42,7 @@ with open("requirements/core.txt", mode="r", encoding="ascii") as core_reqs:
 # replace existing build and develop commands
 # with custom commands defined in 'bin.cmd'
 if platform.system() == "Windows":
-    PACKAGE_DIR = ":\\"
+    PACKAGE_DIR = ".\\"
 else:
     PACKAGE_DIR = "./"
 
