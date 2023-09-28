@@ -51,6 +51,12 @@ datasets (~10 GB) can leverage BoxKit to improve performance of offline training
 This mechanism is part of a broader workflow to  integrate simulations with machine 
 learning using a Fortran-Python bridge shown with dotted lines. \label{fig:workflow}](../media/workflow.png)
 
+Compared to existing data analysis packages like yt [@yt], BoxKit offers more intuitive 
+abstraction layers over AMR blocks through its metadata wrappers. This provides raw access 
+to simulation data allowing users to develop their own low-level methods for spatio-temporal 
+interpolation and stenciled computations. We aim for this library to complement existing
+packages rather than replace them.
+
 BoxKit also offers wrappers to scale the process of deploying workflows on NUMA and distributed
 computing architectures by providing decorators that can parallelize Python operations over a
 single data structure to operate over a list. This can be understood better using the 
@@ -68,7 +74,8 @@ def operation_on_block(block, *args):
     pass
 
 # Call the function with list of blocks as the first argument
-operation_on_block((block for block in list_of_blocks), *args)
+dset = boxkit.read_datset(...)
+operation_on_block((block for block in dset.blocklist), *args)
 ```
 
 The `Action` wrapper converts the function, `operation_on_block`, into a parallel method which 
@@ -107,16 +114,17 @@ increases.
 
 Mapping of AMR data to contingous arrays becomes important for applications
 where global operations in space are required. An example of this is SciKit's 
-``skimage_measure`` method, which can be used to measure bubble shape and size 
+``skimage.measure`` method, which can be used to measure bubble shape and size 
 for Flash-X boiling simulations. BoxKit improves performance of this operation 
-by ~5x.
+by ~5x. Data for these performance studies along with corresponding IPython 
+notebooks can be found in [@boxkit-performance].
 
 # Ongoing work
 
-Our ongoing work focuses on using BoxKit to improve performance of Scientific
+Our ongoing work focuses on developing BoxKit to improve performance of Scientific
 Machine Learning (SciML) applications and using it as part of a broader workflow 
 that integrates Fortran/C++ based applications with state-of-art machine learning 
-packages available in Python shown by dotted lines in \autoref{fig:workflow}.
+packages available in Python as highlighted in \autoref{fig:workflow}.
 
 # Acknowledgements
 

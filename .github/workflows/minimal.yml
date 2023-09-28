@@ -1,6 +1,9 @@
 name: Minimal
 
 on:
+  push:
+    branches:
+      - development
   pull_request:
     branches: 
       - main
@@ -13,8 +16,27 @@ on:
 
 jobs:
 
-  library:
-    name: "library" 
+  windows:
+    name: "windows"
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2      
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: |
+          pip3 install click
+          pip3 install -r requirements/core.txt
+    - name: Run setup
+      run: |
+          python3 setup.py install --user
+    - name: Run tests
+      run: |
+          python3 tests/container/create.py
+
+  ubuntu: 
+    name: "ubuntu" 
     runs-on: ubuntu-latest
     steps:
     #- name: Login to Docker Hub

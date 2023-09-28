@@ -17,13 +17,13 @@ CBOX_MAKE_DICT = {
     "boost_version": "".join(sysconfig.get_python_version().split(".")),
     "python_include_path": sysconfig.get_python_inc(),
     "boost_include_path": (
-        os.getenv("PWD") + "/boxkit/depends/boost/include"
-        if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
+        os.getcwd() + "/boxkit/depends/boost/include"
+        if os.path.exists(os.getcwd() + "/boxkit/depends/boost")
         else os.getenv("BOOST_INCLUDE_DIR")
     ),
     "boost_lib_path": (
-        os.getenv("PWD") + "/boxkit/depends/boost/lib"
-        if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost")
+        os.getcwd() + "/boxkit/depends/boost/lib"
+        if os.path.exists(os.getcwd() + "/boxkit/depends/boost")
         else os.getenv("BOOST_LIB_DIR")
     ),
 }
