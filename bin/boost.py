@@ -21,7 +21,7 @@ def boost_build():
         "cd submodules/boost && ./bootstrap.sh"
         + f" --with-python-version={get_python_version()}"
         + " --with-toolset=gcc"
-        + f" --prefix={os.getenv('PWD')}/boxkit/depends/boost && ./b2 install",
+        + f" --prefix={os.getcwd()}/boxkit/depends/boost && ./b2 install",
         shell=True,
         check=True,
         executable="/bin/bash",
@@ -40,7 +40,7 @@ def boost_clean():
 
 def boost_install():
     """Install Boost library"""
-    if os.path.exists(os.getenv("PWD") + "/boxkit/depends/boost"):
+    if os.path.exists(os.getcwd() + "/boxkit/depends/boost"):
         subprocess.run(
             "mkdir -pv build/lib/boxkit/depends/boost/lib",
             shell=True,
