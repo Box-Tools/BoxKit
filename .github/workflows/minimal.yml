@@ -32,9 +32,9 @@ jobs:
           maple container execute "python3 tests/container/create.py"
           maple container rinse
           maple image delete boxkit
- 
-  library:
-    name: "library" 
+
+  ubuntu: 
+    name: "ubuntu" 
     runs-on: ubuntu-latest
     steps:
     #- name: Login to Docker Hub
