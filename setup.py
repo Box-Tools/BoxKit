@@ -46,8 +46,8 @@ setup(
     author=metadata["__authors__"],
     description=metadata["__description__"],
     license=metadata["__license__"],
-    packages=find_packages(where=os.getcwd()),
-    package_dir={"": "./"},
+    packages=find_packages(where=os.path.dirname(os.path.abspath(__file__))),
+    package_dir={"": os.path.dirname(os.path.abspath(__file__))},
     package_data={
         "": [
             "options.py",
