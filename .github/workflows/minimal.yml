@@ -21,19 +21,14 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2      
-    - uses: akashdhruv/Maple/.github/actions/maple@main
-    - name: Build Container
-      run: |
-          maple image build boxkit
-    - uses: ./.github/actions/install
+    - uses: actions/setup-python@v4
       with:
-        image: boxkit
+        python-version: '3.11'
     - name: Run BoxKit tests
       run: |
-          maple container pour --image=boxkit
-          maple container execute "python3 tests/container/create.py"
-          maple container rinse
-          maple image delete boxkit
+          pip3 install click
+          ./setup develop --enable-testing
+          python3 tests/container/create.py
 
   ubuntu: 
     name: "ubuntu" 
