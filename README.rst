@@ -50,7 +50,7 @@ executing,
 
 .. code::
 
-   pip install git+ssh://git@github.com/akashdhruv/BoxKit.git --user
+   pip install git+ssh://git@github.com/Box-Tools/BoxKit.git --user
 
 BoxKit provides various installation options that can be used to
 configure the library with desired features. Following is a list of
@@ -205,7 +205,7 @@ parallelization schema of target applications like SciKit, OpticalFlow,
 and PyTorch which function independently using available resources.
 
 Detailed information on full functionality is availabe in documentation
-(https://akashdhruv.github.io/BoxKit/).
+(https://box-tools.github.io/BoxKit/).
 
 **************
  Contribution
@@ -213,7 +213,7 @@ Detailed information on full functionality is availabe in documentation
 
 Developers are encouraged to fork the repository and contribute to the
 source code in the form of pull requests to the ``development`` branch.
-Please read documentation (https://akashdhruv.github.io/BoxKit/) for an
+Please read documentation (https://box-tools.github.io/BoxKit/) for an
 overview of software design and developer guide
 
 *********
@@ -268,15 +268,15 @@ features, and ask questions about usage
 .. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
 
-.. |FlashX| image:: https://github.com/akashdhruv/BoxKit/workflows/FlashX/badge.svg
+.. |FlashX| image:: https://github.com/Box-Tools/BoxKit/workflows/FlashX/badge.svg
 
-.. |FlowX| image:: https://github.com/akashdhruv/BoxKit/workflows/FlowX/badge.svg
+.. |FlowX| image:: https://github.com/Box-Tools/BoxKit/workflows/FlowX/badge.svg
 
-.. |Minimal| image:: https://github.com/akashdhruv/BoxKit/workflows/Minimal/badge.svg
+.. |Minimal| image:: https://github.com/Box-Tools/BoxKit/workflows/Minimal/badge.svg
 
-.. |Publish| image:: https://github.com/akashdhruv/BoxKit/workflows/Publish/badge.svg
+.. |Publish| image:: https://github.com/Box-Tools/BoxKit/workflows/Publish/badge.svg
 
-.. |Linting| image:: https://github.com/akashdhruv/BoxKit/workflows/Linting/badge.svg
+.. |Linting| image:: https://github.com/Box-Tools/BoxKit/workflows/Linting/badge.svg
 
 .. |icon| image:: ./media/icon.svg
    :width: 30
