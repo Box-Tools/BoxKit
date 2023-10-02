@@ -205,7 +205,7 @@ parallelization schema of target applications like SciKit, OpticalFlow,
 and PyTorch which function independently using available resources.
 
 Detailed information on full functionality is availabe in documentation
-(https://Box-Tools.github.io/BoxKit/).
+(https://box-tools.github.io/BoxKit/).
 
 **************
  Contribution
