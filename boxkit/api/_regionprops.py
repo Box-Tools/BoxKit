@@ -1,5 +1,5 @@
 """ Module with implemenation of measure methods"""
-
+import numpy
 import itertools
 import skimage.measure as skimage_measure
 
@@ -53,22 +53,37 @@ def skimage_props_blk(block, lsetkey, labelkey):
     -------
     listprops : list of properties
     """
-
     block[labelkey][:, :, :] = skimage_measure.label(block[lsetkey] >= 0)
 
-    listprops = skimage_measure.regionprops(block[labelkey].astype(int))
+    shape, deltas, corners = [list(), list(), list()]
 
-    # proplist = ["area", "centroid", "equivalent_diameter_area"]
-    # proplist = ["area"]
+    for idim, nblocks in enumerate([block.nzb, block.nyb, block.nxb]):
+        if nblocks == 1:
+            continue
+        else:
+            shape.append(nblocks)
+            deltas.append([block.dz, block.dy, block.dx][idim])
+            corners.append([block.zmin, block.ymin, block.xmin][idim])
 
-    listprops = [
-        {
-            "area": props["area"] * block.dx * block.dy * block.dz,
-            "centroid": props["centroid"],
-        }
-        for props in listprops
-    ]
+    listprops = skimage_measure.regionprops(
+        numpy.reshape(block[labelkey], shape).astype(int)
+    )
+    ndim = len(shape)
 
-    # listprops = [{key: props[key] for key in proplist} for props in listprops]
+    modified_props = list()
+    for props in listprops:
 
-    return listprops
+        modified_dict = dict()
+
+        modified_dict["area"] = props["area"] * numpy.prod(deltas)
+        modified_dict["centroid"] = [
+            corners[idim] + deltas[idim] * props["centroid"][idim]
+            for idim in range(ndim)
+        ]
+
+        if ndim == 2:
+            modified_dict["perimeter"] = props["perimeter"] * deltas[0]
+
+        modified_props.append(modified_dict)
+
+    return modified_props

@@ -135,6 +135,11 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         """dtype"""
         return self._data.dtype
 
+    @property
+    def time(self):
+        """time"""
+        return self._data.time
+
     def addvar(self, varkey, dtype=float):
         """addvar"""
         self._data.addvar(varkey, dtype)

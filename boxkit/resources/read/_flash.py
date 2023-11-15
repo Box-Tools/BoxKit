@@ -61,6 +61,7 @@ def read_flash(
         "inputfile": inputfile,
         "remotefile": remotefile,
         "variables": variables,
+        "time": inputfile["real scalars"][0][1],
     }
 
     get_blk_attributes.nthreads = nthreads
