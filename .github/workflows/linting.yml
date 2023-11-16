@@ -71,4 +71,5 @@ jobs:
           pip3 install -r requirements/core.txt -r requirements/cbox.txt -r requirements/dask.txt -r requirements/pyarrow.txt -r requirements/server.txt -r requirements/analysis.txt -r requirements/zarr.txt
     - name: Run linting 
       run: |
-          pylint boxkit/resources/read/*.py
+          pylint boxkit/resources/*.py
+          pylint boxkit/resources/*/*.py
