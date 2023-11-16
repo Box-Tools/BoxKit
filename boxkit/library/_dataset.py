@@ -203,8 +203,11 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         """
         Perform halo exchange
         """
-        # Convert single string to a list
-        if isinstance(varlist, str):
+        # Treat exceptions
+        if varlist is None:
+            varlist = self.varlist
+
+        elif isinstance(varlist, str):
             varlist = [varlist]
 
         halo_exchange_block.nthreads = nthreads
@@ -215,12 +218,15 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         for varkey in varlist:
             halo_exchange_block((block for block in self.blocklist), varkey)
 
-    def fill_guard_cells(self, varlist):
+    def fill_guard_cells(self, varlist=None):
         """
         Fill guard cells
         """
-        # Convert single string to a list
-        if isinstance(varlist, str):
+        # Treat exceptions
+        if varlist is None:
+            varlist = self.varlist
+
+        elif isinstance(varlist, str):
             varlist = [varlist]
 
         if len(self.blocklist) > 1:

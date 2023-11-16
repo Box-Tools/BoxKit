@@ -5,7 +5,8 @@ from ... import options
 
 if options.ANALYSIS == 1:
     from ._lset import (
-        bubble_contour_plot,
-        bubble_normal_vectors,
-        bubble_shape_measurement,
+        lset_plot_contour_2d,
+        lset_plot_normals_2d,
+        lset_shape_measurement_2d,
+        lset_compute_normals_2d,
     )
