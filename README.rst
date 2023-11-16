@@ -62,7 +62,7 @@ options,
    with-pyarrow   - With Apache Arrow data backend
    with-zarr      - With Zarr data backend
    with-dask      - With Dask data/parallel backend
-   enable-testing - Enabling testing mode for development
+   enable-analysis - Enabling analysis/testing mode for development
 
 Correspondingly, the installation command can be modified to include
 necessary options as follows,
@@ -70,7 +70,7 @@ necessary options as follows,
 .. code::
 
    export CXX=$(CPP_COMPILER)
-   pip install BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
+   pip install BoxKit --user --install-option="--enable-analysis" --install-option="--with-cbox"
 
 There maybe situations where users may want to install BoxKit in
 development mode $\\textemdash$ to design new features, debug, or
