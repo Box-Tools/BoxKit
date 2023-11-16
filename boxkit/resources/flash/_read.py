@@ -6,7 +6,7 @@ import h5pickle
 from boxkit.library import Action
 
 
-def read_flash(
+def read(
     filename, server, nthreads, batch, monitor, backend
 ):  # pylint: disable=too-many-locals disable=too-many-arguments
     """

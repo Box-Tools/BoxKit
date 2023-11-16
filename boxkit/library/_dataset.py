@@ -215,6 +215,39 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
         for varkey in varlist:
             halo_exchange_block((block for block in self.blocklist), varkey)
 
+    def fill_guard_cells(self, varlist):
+        """
+        Fill guard cells
+        """
+        # Convert single string to a list
+        if isinstance(varlist, str):
+            varlist = [varlist]
+
+        if len(self.blocklist) > 1:
+            raise NotImplementedError(
+                "[boxkit.library.create.Dataset] fill_guard_cells is only implemented for blocklist == 1"
+            )
+
+        for block in self.blocklist:
+            for var in varlist:
+                for bnd in range(block.xguard):
+                    block[var][:, :, bnd] = block[var][:, :, block.xguard]
+                    block[var][:, :, bnd + block.nxb + block.xguard] = block[var][
+                        :, :, block.nxb + block.xguard - 1
+                    ]
+
+                for bnd in range(block.yguard):
+                    block[var][:, bnd, :] = block[var][:, block.yguard, :]
+                    block[var][:, bnd + block.nyb + block.yguard, :] = block[var][
+                        :, block.nyb + block.yguard - 1, :
+                    ]
+
+                for bnd in range(block.zguard):
+                    block[var][bnd, :, :] = block[var][block.zguard, :, :]
+                    block[var][bnd + block.nzb + block.zguard, :, :] = block[var][
+                        block.nzb + block.zguard - 1, :, :
+                    ]
+
 
 @Action
 def halo_exchange_block(block, varkey):

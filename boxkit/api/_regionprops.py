@@ -22,6 +22,10 @@ def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     labelkey = "bwlabel"
     dataset.addvar(labelkey, dtype=int)
 
+    normals = ["normx", "normy"]
+    for norm in normals:
+        dataset.addvar(norm)
+
     region = api.create_region(dataset)
 
     skimage_props_blk.nthreads = nthreads
@@ -34,6 +38,8 @@ def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     listprops = list(itertools.chain.from_iterable(listprops))
 
     dataset.delvar(labelkey)
+    for norm in normals:
+        dataset.delvar(norm)
 
     return listprops
 
@@ -66,7 +72,14 @@ def skimage_props_blk(block, lsetkey, labelkey):
             corners.append([block.zmin, block.ymin, block.xmin][idim])
 
     listprops = skimage_measure.regionprops(
-        numpy.reshape(block[labelkey], shape).astype(int)
+        numpy.reshape(
+            block[labelkey][
+                block.zguard : block.nzb + block.zguard,
+                block.yguard : block.nyb + block.yguard,
+                block.xguard : block.nxb + block.xguard,
+            ],
+            shape,
+        ).astype(int)
     )
     ndim = len(shape)
 

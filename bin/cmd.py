@@ -23,7 +23,7 @@ class CustomCmd:
         ("with-zarr", None, "With zarr data backend"),
         ("with-dask", None, "With dask data/parallel backend"),
         ("with-server", None, "With remote server utilitiy"),
-        ("enable-testing", None, "Enable testing mode"),
+        ("enable-analysis", None, "Enable analysis mode"),
     ]
 
     def initialize_options(self):
@@ -35,7 +35,7 @@ class CustomCmd:
         self.with_zarr = None  # pylint: disable=attribute-defined-outside-init
         self.with_dask = None  # pylint: disable=attribute-defined-outside-init
         self.with_server = None  # pylint: disable=attribute-defined-outside-init
-        self.enable_testing = None  # pylint: disable=attribute-defined-outside-init
+        self.enable_analysis = None  # pylint: disable=attribute-defined-outside-init
 
     def finalize_options(self):
         """
@@ -47,7 +47,7 @@ class CustomCmd:
             "with_zarr",
             "with_dask",
             "with_server",
-            "enable_testing",
+            "enable_analysis",
         ]:
             if getattr(self, option) not in [None, 1]:
                 raise ValueError(f"{option} is a flag")
@@ -101,9 +101,9 @@ class CustomCmd:
                 executable="/bin/bash",
             )
 
-        if self.enable_testing:
+        if self.enable_analysis:
             subprocess.run(
-                f"{sys.executable} -m pip install -r requirements/testing.txt {with_user}",
+                f"{sys.executable} -m pip install -r requirements/analysis.txt {with_user}",
                 shell=True,
                 check=True,
                 executable="/bin/bash",
@@ -116,7 +116,7 @@ class CustomCmd:
             optfile.write(f"ZARR={self.with_zarr}\n")
             optfile.write(f"DASK={self.with_dask}\n")
             optfile.write(f"SERVER={self.with_server}\n")
-            optfile.write(f"TESTING={self.enable_testing}\n")
+            optfile.write(f"ANALYSIS={self.enable_analysis}\n")
 
 
 # replaces the default build command for setup.py
