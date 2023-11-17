@@ -8,7 +8,7 @@ from numba import jit
 import boxkit
 
 
-def lset_plot_contour_2d(ax, merged_dataset, filled=False, *args, **kwargs):
+def lset_plot_contour_2d(ax, merged_dataset, *args, filled=False, **kwargs):
     """
     Plot lset from a dataset to a figure
 
