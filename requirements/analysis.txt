@@ -1,2 +1,2 @@
 scikit-image>=0.18.1
-numba
+numba==0.58.1

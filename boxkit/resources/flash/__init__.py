@@ -8,6 +8,6 @@ if options.ANALYSIS == 1:
         lset_plot_contour_2d,
         lset_plot_normals_2d,
         lset_shape_measurement_2d,
-        lset_vel_measurement_2d,
+        lset_quant_measurement_2d,
         lset_compute_normals_2d,
     )

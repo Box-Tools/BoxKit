@@ -8,7 +8,7 @@ from numba import jit
 
 def lset_plot_contour_2d(ax, merged_dataset, filled=False, *args, **kwargs):
     """
-    Plot bubble from a dataset to a figure
+    Plot lset from a dataset to a figure
 
     Arguments
     ---------
@@ -65,7 +65,7 @@ def lset_plot_contour_2d(ax, merged_dataset, filled=False, *args, **kwargs):
 
 def lset_plot_normals_2d(ax, merged_dataset, *args, **kwargs):
     """
-    Plot normal vectors to bubble from a dataset to a figure
+    Plot normal vectors to lset from a dataset to a figure
 
     Arguments
     ---------
@@ -137,7 +137,7 @@ def lset_compute_normals_2d(dataset, varlist):
     dataset.fill_guard_cells(varlist)
 
 
-def lset_vel_measurement_2d(merged_dataset):
+def lset_quant_measurement_2d(merged_dataset):
     """
     Perform velocity measurement on level set
     """
@@ -148,16 +148,26 @@ def lset_vel_measurement_2d(merged_dataset):
 
     merged_dataset.addvar("bwlabel", dtype=int)
 
+    quantlist = []
+
     for block in merged_dataset.blocklist:
         block["bwlabel"] = skimage_measure.label(block["dfun"] >= 0)
-        mean_vel = numpy.zeros([numpy.max(block["bwlabel"][:]), 2], dtype=float)
-        mean_label = numpy.zeros([numpy.max(block["bwlabel"][:]), 1], dtype=float)
+        shape_num = numpy.max(block["bwlabel"][:])
+
+        mean_vel = numpy.zeros([shape_num, 2], dtype=float)
+        mean_label = numpy.zeros([shape_num, 1], dtype=float)
+        mean_pos = numpy.zeros([shape_num, 2], dtype=float)
+
+        xcenter = block.xrange("center")
+        ycenter = block.yrange("center")
 
         lset_vel_blk_2d(
             block["dfun"],
             block["bwlabel"],
             block["velx"],
             block["vely"],
+            xcenter,
+            ycenter,
             block.nxb,
             block.nyb,
             block.xguard,
@@ -165,14 +175,24 @@ def lset_vel_measurement_2d(merged_dataset):
             block.dx,
             block.dy,
             mean_vel,
+            mean_pos,
             mean_label,
         )
 
-    mean_vel = mean_vel / mean_label
+        mean_vel = mean_vel / mean_label
+        mean_pos = mean_pos / mean_label
+
+        for shape_index in range(shape_num):
+            shape_dict = {
+                "velocity": mean_vel[shape_index, :],
+                "centroid": mean_pos[shape_index, :],
+            }
+
+            quantlist.append(shape_dict)
 
     merged_dataset.delvar("bwlabel")
 
-    return mean_vel
+    return quantlist
 
 
 def lset_shape_measurement_2d(merged_dataset, correction=False):
@@ -184,7 +204,7 @@ def lset_shape_measurement_2d(merged_dataset, correction=False):
             "[boxkit.resources.flash.lset_shape_measurement_2d] dataset must only have one block"
         )
 
-    bubblelist = boxkit.regionprops(merged_dataset, "dfun")
+    shapelist = boxkit.regionprops(merged_dataset, "dfun")
 
     if correction:
 
@@ -194,7 +214,7 @@ def lset_shape_measurement_2d(merged_dataset, correction=False):
 
         lset_compute_normals_2d(merged_dataset, ["nrmx", "nrmy"])
 
-        modified_perimeter = numpy.zeros([len(bubblelist), 1], dtype=float)
+        modified_perimeter = numpy.zeros([len(shapelist), 1], dtype=float)
         sol_points = numpy.zeros([2, 2], dtype=float)
 
         for block in merged_dataset.blocklist:
@@ -219,32 +239,55 @@ def lset_shape_measurement_2d(merged_dataset, correction=False):
                 sol_points,
             )
 
-        for bubble_index, bubble in enumerate(bubblelist):
-            bubble["perimeter"] = modified_perimeter[bubble_index]
+        for shape_index, shape in enumerate(shapelist):
+            shape["perimeter"] = modified_perimeter[shape_index]
 
         merged_dataset.delvar("bwlabel")
         merged_dataset.delvar("nrmx")
         merged_dataset.delvar("nrmy")
 
-    return bubblelist
+    return shapelist
 
 
 @jit(nopython=True)
 def lset_vel_blk_2d(
-    dfun, label, velx, vely, nxb, nyb, xguard, yguard, dx, dy, mean_vel, mean_label
+    dfun,
+    label,
+    velx,
+    vely,
+    xcenter,
+    ycenter,
+    nxb,
+    nyb,
+    xguard,
+    yguard,
+    dx,
+    dy,
+    mean_vel,
+    mean_pos,
+    mean_label,
 ):
     k = 0
     for j in range(yguard, nyb + yguard):
         for i in range(xguard, nxb + xguard):
             if label[k, j, i] > 0:
-                bubble_index = label[k, j, i] - 1
-                mean_vel[bubble_index, 0] = (
-                    mean_vel[bubble_index, 0] + vely[k, j, i] * dx * dy
+                shape_index = label[k, j, i] - 1
+
+                mean_vel[shape_index, 0] = (
+                    mean_vel[shape_index, 0] + vely[k, j, i] * dx * dy
                 )
-                mean_vel[bubble_index, 1] = (
-                    mean_vel[bubble_index, 1] + velx[k, j, i] * dx * dy
+                mean_vel[shape_index, 1] = (
+                    mean_vel[shape_index, 1] + velx[k, j, i] * dx * dy
                 )
-                mean_label[bubble_index] = mean_label[bubble_index] + dx * dy
+
+                mean_pos[shape_index, 0] = (
+                    mean_pos[shape_index, 0] + ycenter[j] * dx * dy
+                )
+                mean_pos[shape_index, 1] = (
+                    mean_pos[shape_index, 1] + xcenter[i] * dx * dy
+                )
+
+                mean_label[shape_index] = mean_label[shape_index] + dx * dy
 
 
 @jit(nopython=True)
@@ -284,7 +327,7 @@ def lset_perimeter_blk_2d(
                     label[k, j - 1, i],
                 ]
 
-                bubble_index = (
+                shape_index = (
                     list(set([label for label in labels if label != 0]))[0] - 1
                 )
 
@@ -301,7 +344,7 @@ def lset_perimeter_blk_2d(
                         sol_points,
                     )
 
-                    perimeter[bubble_index] = perimeter[bubble_index] + numpy.sqrt(
+                    perimeter[shape_index] = perimeter[shape_index] + numpy.sqrt(
                         (sol_points[1, 1] - sol_points[0, 1]) ** 2
                         + (sol_points[1, 0] - sol_points[0, 0]) ** 2
                     )
