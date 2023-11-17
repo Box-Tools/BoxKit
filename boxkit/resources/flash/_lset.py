@@ -1,9 +1,11 @@
 """Module for level-set related operations"""
 
 import numpy
-import boxkit
 import skimage.measure as skimage_measure
+
 from numba import jit
+
+import boxkit
 
 
 def lset_plot_contour_2d(ax, merged_dataset, filled=False, *args, **kwargs):
@@ -161,8 +163,7 @@ def lset_quant_measurement_2d(merged_dataset):
         xcenter = block.xrange("center")
         ycenter = block.yrange("center")
 
-        lset_vel_blk_2d(
-            block["dfun"],
+        lset_quant_blk_2d(
             block["bwlabel"],
             block["velx"],
             block["vely"],
@@ -250,8 +251,7 @@ def lset_shape_measurement_2d(merged_dataset, correction=False):
 
 
 @jit(nopython=True)
-def lset_vel_blk_2d(
-    dfun,
+def lset_quant_blk_2d(
     label,
     velx,
     vely,
@@ -266,7 +266,10 @@ def lset_vel_blk_2d(
     mean_vel,
     mean_pos,
     mean_label,
-):
+):  # pylint: disable=too-many-arguments disable=too-many-locals
+    """
+    perform quant measurement on a block
+    """
     k = 0
     for j in range(yguard, nyb + yguard):
         for i in range(xguard, nxb + xguard):
@@ -306,7 +309,7 @@ def lset_perimeter_blk_2d(
     dx,
     dy,
     sol_points,
-):
+):  # pylint: disable=too-many-arguments disable=too-many-locals
     """
     Get perimeter using level-set
     """
@@ -351,7 +354,9 @@ def lset_perimeter_blk_2d(
 
 
 @jit(nopython=True)
-def lset_intersect_blk_2d(dfun, nrmx, nrmy, xcenter, ycenter, dx, dy, sol_points):
+def lset_intersect_blk_2d(
+    dfun, nrmx, nrmy, xcenter, ycenter, dx, dy, sol_points
+):  # pylint: disable=too-many-arguments disable=too-many-locals
     """
     Get intersection of level-set with block
     """

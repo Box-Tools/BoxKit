@@ -231,7 +231,8 @@ class Dataset:  # pylint: disable=too-many-instance-attributes
 
         if len(self.blocklist) > 1:
             raise NotImplementedError(
-                "[boxkit.library.create.Dataset] fill_guard_cells is only implemented for blocklist == 1"
+                "[boxkit.library.create.Dataset] "
+                + "fill_guard_cells is only implemented for blocklist == 1"
             )
 
         for block in self.blocklist:

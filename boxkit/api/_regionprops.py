@@ -61,15 +61,15 @@ def skimage_props_blk(block, lsetkey, labelkey):
     """
     block[labelkey][:, :, :] = skimage_measure.label(block[lsetkey] >= 0)
 
-    shape, deltas, corners = [list(), list(), list()]
+    shape, deltas, corners = [[], [], []]
 
     for idim, nblocks in enumerate([block.nzb, block.nyb, block.nxb]):
         if nblocks == 1:
             continue
-        else:
-            shape.append(nblocks)
-            deltas.append([block.dz, block.dy, block.dx][idim])
-            corners.append([block.zmin, block.ymin, block.xmin][idim])
+
+        shape.append(nblocks)
+        deltas.append([block.dz, block.dy, block.dx][idim])
+        corners.append([block.zmin, block.ymin, block.xmin][idim])
 
     listprops = skimage_measure.regionprops(
         numpy.reshape(
@@ -83,10 +83,10 @@ def skimage_props_blk(block, lsetkey, labelkey):
     )
     ndim = len(shape)
 
-    modified_props = list()
+    modified_props = []
     for props in listprops:
 
-        modified_dict = dict()
+        modified_dict = {}
 
         modified_dict["area"] = props["area"] * numpy.prod(deltas)
         modified_dict["centroid"] = [
