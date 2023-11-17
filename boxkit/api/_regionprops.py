@@ -1,6 +1,6 @@
 """ Module with implemenation of measure methods"""
-import numpy
 import itertools
+import numpy
 import skimage.measure as skimage_measure
 
 from boxkit import api  # pylint: disable=cyclic-import
