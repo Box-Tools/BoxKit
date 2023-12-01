@@ -8,7 +8,9 @@ from numba import jit
 import boxkit
 
 
-def lset_plot_contour_2d(ax, merged_dataset, *args, filled=False, **kwargs):
+def lset_plot_contour_2d(
+    ax, merged_dataset, *args, filled=False, xmirror=False, **kwargs
+):
     """
     Plot lset from a dataset to a figure
 
@@ -45,24 +47,63 @@ def lset_plot_contour_2d(ax, merged_dataset, *args, filled=False, **kwargs):
             )
 
         else:
-            ax.contour(
-                xmesh[
-                    block.yguard : block.nyb + block.yguard,
-                    block.xguard : block.nxb + block.xguard,
-                ],
-                ymesh[
-                    block.yguard : block.nyb + block.yguard,
-                    block.xguard : block.nxb + block.xguard,
-                ],
-                block["dfun"][
-                    0,
-                    block.yguard : block.nyb + block.yguard,
-                    block.xguard : block.nxb + block.xguard,
-                ],
-                levels=[0],
-                *args,
-                **kwargs,
-            )
+            if xmirror:
+                ax.contour(
+                    xmesh[
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    ymesh[
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    block["dfun"][
+                        0,
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    levels=[0],
+                    *args,
+                    **kwargs,
+                )
+                ax.contour(
+                    -xmesh[
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    ymesh[
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    block["dfun"][
+                        0,
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    levels=[0],
+                    *args,
+                    **kwargs,
+                )
+
+            else:
+                ax.contour(
+                    xmesh[
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    ymesh[
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    block["dfun"][
+                        0,
+                        block.yguard : block.nyb + block.yguard,
+                        block.xguard : block.nxb + block.xguard,
+                    ],
+                    levels=[0],
+                    *args,
+                    **kwargs,
+                )
 
 
 def lset_plot_normals_2d(ax, merged_dataset, *args, **kwargs):
