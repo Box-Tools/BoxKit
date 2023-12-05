@@ -1,6 +1,6 @@
 """ Module with implemenation of measure methods"""
-
 import itertools
+import numpy
 import skimage.measure as skimage_measure
 
 from boxkit import api  # pylint: disable=cyclic-import
@@ -22,6 +22,10 @@ def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     labelkey = "bwlabel"
     dataset.addvar(labelkey, dtype=int)
 
+    normals = ["normx", "normy"]
+    for norm in normals:
+        dataset.addvar(norm)
+
     region = api.create_region(dataset)
 
     skimage_props_blk.nthreads = nthreads
@@ -34,6 +38,8 @@ def regionprops(dataset, lsetkey, backend="serial", nthreads=1, monitor=False):
     listprops = list(itertools.chain.from_iterable(listprops))
 
     dataset.delvar(labelkey)
+    for norm in normals:
+        dataset.delvar(norm)
 
     return listprops
 
@@ -53,18 +59,44 @@ def skimage_props_blk(block, lsetkey, labelkey):
     -------
     listprops : list of properties
     """
-
     block[labelkey][:, :, :] = skimage_measure.label(block[lsetkey] >= 0)
 
-    listprops = skimage_measure.regionprops(block[labelkey].astype(int))
+    shape, deltas, corners = [[], [], []]
 
-    # proplist = ["area", "centroid", "equivalent_diameter_area"]
-    proplist = ["area"]
+    for idim, nblocks in enumerate([block.nzb, block.nyb, block.nxb]):
+        if nblocks == 1:
+            continue
 
-    # listprops = [
-    #    {"area": props["area"] * block.dx * block.dy * block.dz} for props in listprops
-    # ]
+        shape.append(nblocks)
+        deltas.append([block.dz, block.dy, block.dx][idim])
+        corners.append([block.zmin, block.ymin, block.xmin][idim])
 
-    listprops = [{key: props[key] for key in proplist} for props in listprops]
+    listprops = skimage_measure.regionprops(
+        numpy.reshape(
+            block[labelkey][
+                block.zguard : block.nzb + block.zguard,
+                block.yguard : block.nyb + block.yguard,
+                block.xguard : block.nxb + block.xguard,
+            ],
+            shape,
+        ).astype(int)
+    )
+    ndim = len(shape)
 
-    return listprops
+    modified_props = []
+    for props in listprops:
+
+        modified_dict = {}
+
+        modified_dict["area"] = props["area"] * numpy.prod(deltas)
+        modified_dict["centroid"] = [
+            corners[idim] + deltas[idim] * props["centroid"][idim]
+            for idim in range(ndim)
+        ]
+
+        if ndim == 2:
+            modified_dict["perimeter"] = props["perimeter"] * deltas[0]
+
+        modified_props.append(modified_dict)
+
+    return modified_props

@@ -12,7 +12,7 @@ from bin.cbox import cbox_clean
 
 
 def get_options(
-    with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing
+    with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_analysis
 ):
     options = ""
 
@@ -26,8 +26,8 @@ def get_options(
         options = options + " --with-dask"
     if with_server:
         options = options + " --with-server"
-    if enable_testing:
-        options = options + " --enable-testing"
+    if enable_analysis:
+        options = options + " --enable-analysis"
 
     return options
 
@@ -52,8 +52,10 @@ def depends(keep_artifacts):
 @click.option("--with-zarr", is_flag=True, help="With zarr data backend")
 @click.option("--with-dask", is_flag=True, help="With dask data/parallel backend")
 @click.option("--with-server", is_flag=True, help="With remote server utility")
-@click.option("--enable-testing", is_flag=True, help="Enable testing mode")
-def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing):
+@click.option("--enable-analysis", is_flag=True, help="Enable analysis mode")
+def develop(
+    with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_analysis
+):
     """
     \b
     Development mode
@@ -65,7 +67,7 @@ def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_t
     BOOST_LIB_DIR	:	Path to libboost_python.so, libbboost_python.dylib
     """
     options = get_options(
-        with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing
+        with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_analysis
     )
 
     subprocess.run(
@@ -82,18 +84,18 @@ def develop(with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_t
 @click.option("--with-zarr", is_flag=True, help="With zarr data backend")
 @click.option("--with-dask", is_flag=True, help="With dask data/parallel backend")
 @click.option("--with-server", is_flag=True, help="With remote server utility")
-@click.option("--enable-testing", is_flag=True, help="Enable testing mode")
+@click.option("--enable-analysis", is_flag=True, help="Enable analysis mode")
 def install(
     with_cbox,
     with_pyarrow,
     with_zarr,
     with_dask,
     with_server,
-    enable_testing,
+    enable_analysis,
 ):
     """Installation command"""
     options = get_options(
-        with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_testing
+        with_cbox, with_pyarrow, with_zarr, with_dask, with_server, enable_analysis
     )
 
     subprocess.run(

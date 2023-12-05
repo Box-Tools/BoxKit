@@ -54,6 +54,9 @@ def mergeblocks(
         nxb=nblockx * dataset.nxb,
         nyb=nblocky * dataset.nyb,
         nzb=nblockz * dataset.nzb,
+        xguard=0 if dataset.nxb == 1 else 1,
+        yguard=0 if dataset.nyb == 1 else 1,
+        zguard=0 if dataset.nzb == 1 else 1,
         xmin=dataset.xmin,
         ymin=dataset.ymin,
         zmin=dataset.zmin,
@@ -113,7 +116,17 @@ def map_blk_to_merged_dset(blk_sorted, merged_dataset, varlist):
     for varkey in varlist:
         for block in merged_dataset.blocklist:
             block[varkey][
-                blk_sorted.nzb * kloc : blk_sorted.nzb * (kloc + 1),
-                blk_sorted.nyb * jloc : blk_sorted.nyb * (jloc + 1),
-                blk_sorted.nxb * iloc : blk_sorted.nxb * (iloc + 1),
-            ] = blk_sorted[varkey][:, :, :]
+                blk_sorted.nzb * kloc
+                + block.zguard : blk_sorted.nzb * (kloc + 1)
+                + block.zguard,
+                blk_sorted.nyb * jloc
+                + block.yguard : blk_sorted.nyb * (jloc + 1)
+                + block.yguard,
+                blk_sorted.nxb * iloc
+                + block.xguard : blk_sorted.nxb * (iloc + 1)
+                + block.xguard,
+            ] = blk_sorted[varkey][
+                blk_sorted.zguard : blk_sorted.nzb + blk_sorted.zguard,
+                blk_sorted.yguard : blk_sorted.nyb + blk_sorted.yguard,
+                blk_sorted.xguard : blk_sorted.nxb + blk_sorted.xguard,
+            ]

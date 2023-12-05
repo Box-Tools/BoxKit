@@ -6,7 +6,7 @@ import h5pickle
 from boxkit.library import Action
 
 
-def read_flash(
+def read(
     filename, server, nthreads, batch, monitor, backend
 ):  # pylint: disable=too-many-locals disable=too-many-arguments
     """
@@ -61,6 +61,7 @@ def read_flash(
         "inputfile": inputfile,
         "remotefile": remotefile,
         "variables": variables,
+        "time": inputfile["real scalars"][0][1],
     }
 
     get_blk_attributes.nthreads = nthreads

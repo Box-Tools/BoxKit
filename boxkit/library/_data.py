@@ -48,6 +48,7 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
                   'remotefile': sftp remote file default (None),
                   'variables' : dictionary of variables default ({}),
                   'storage'   : ('numpy', 'zarr', 'dask', 'pyarrow')
+                  'time'      : float variable to store time
     """
 
     type_ = "default"
@@ -68,6 +69,7 @@ class Data(_DataBase):  # pylint: disable=too-many-instance-attributes
         self.variables = {}
         self.dtype = {}
         self.varlist = []
+        self.time = 0.0
 
         self._set_attributes(attributes)
         self._set_data()

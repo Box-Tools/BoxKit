@@ -46,12 +46,14 @@ def read_dataset(
 
     """
     if not source:
-        source = "test-sample"
+        source = "sample"
 
     if not storage:
         storage = "numpy-memmap"
 
-    data_attributes, block_attributes = resources.read.options[source](
+    source = getattr(resources, source)
+
+    data_attributes, block_attributes = source.read(
         filename, server, nthreads, batch, monitor, backend
     )
 

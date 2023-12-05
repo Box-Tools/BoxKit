@@ -62,7 +62,7 @@ options,
    with-pyarrow   - With Apache Arrow data backend
    with-zarr      - With Zarr data backend
    with-dask      - With Dask data/parallel backend
-   enable-testing - Enabling testing mode for development
+   enable-analysis - Enabling analysis/testing mode for development
 
 Correspondingly, the installation command can be modified to include
 necessary options as follows,
@@ -70,7 +70,7 @@ necessary options as follows,
 .. code::
 
    export CXX=$(CPP_COMPILER)
-   pip install BoxKit --user --install-option="--enable-testing" --install-option="--with-cbox"
+   pip install BoxKit --user --install-option="--enable-analysis" --install-option="--with-cbox"
 
 There maybe situations where users may want to install BoxKit in
 development mode $\\textemdash$ to design new features, debug, or
@@ -235,17 +235,23 @@ for an example.
  Citation
 **********
 
+Please cite our JOSS paper,
+
+|JOSS|
+
 .. code::
 
-   @software{akash_dhruv_2023_8063195,
-     author       = {Akash Dhruv},
-     title        = {akashdhruv/BoxKit: June 2023},
-     month        = jun,
-     year         = 2023,
-     publisher    = {Zenodo},
-     version      = {2023.06},
-     doi          = {10.5281/zenodo.8063195},
-     url          = {https://doi.org/10.5281/zenodo.8063195}
+   @article{Dhruv2023,
+     doi = {10.21105/joss.05649},
+     url = {https://doi.org/10.21105/joss.05649},
+     year = {2023},
+     publisher = {The Open Journal},
+     volume = {8},
+     number = {92},
+     pages = {5649},
+     author = {Akash Dhruv},
+     title = {BoxKit: A Python library to manage analysis of block-structured simulation datasets},
+     journal = {Journal of Open Source Software}
    }
 
 ****************
@@ -283,3 +289,6 @@ features, and ask questions about usage
 
 .. |morton| image:: ./media/morton.png
    :width: 150
+
+.. |JOSS| image:: https://joss.theoj.org/papers/10.21105/joss.05649/status.svg
+   :target: https://doi.org/10.21105/joss.05649

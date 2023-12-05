@@ -1,2 +1,4 @@
 """Initialize resources"""
-from . import read
+
+from . import sample
+from . import flash
