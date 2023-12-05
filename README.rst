@@ -247,15 +247,17 @@ for an example.
 
 .. code::
 
-   @software{akash_dhruv_2023_8063195,
-     author       = {Akash Dhruv},
-     title        = {akashdhruv/BoxKit: June 2023},
-     month        = jun,
-     year         = 2023,
-     publisher    = {Zenodo},
-     version      = {2023.06},
-     doi          = {10.5281/zenodo.8063195},
-     url          = {https://doi.org/10.5281/zenodo.8063195}
+   @article{Dhruv2023,
+     doi = {10.21105/joss.05649},
+     url = {https://doi.org/10.21105/joss.05649},
+     year = {2023},
+     publisher = {The Open Journal},
+     volume = {8},
+     number = {92},
+     pages = {5649},
+     author = {Akash Dhruv},
+     title = {BoxKit: A Python library to manage analysis of block-structured simulation datasets},
+     journal = {Journal of Open Source Software}
    }
 
 ****************
