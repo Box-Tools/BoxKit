@@ -2,7 +2,13 @@
  |icon| BoxKit
 ###############
 
-|Code style: black| |JOSS|
+|Code style: black|
+
+*******
+ Paper
+*******
+
+|JOSS|
 
 *******
  Tests
