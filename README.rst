@@ -4,16 +4,6 @@
 
 |Code style: black|
 
-*******
- Paper
-*******
-
-|JOSS|
-
-*******
- Tests
-*******
-
 |FlashX| |FlowX| |Minimal| |Publish| |Linting|
 
 **********
@@ -244,6 +234,8 @@ for an example.
 **********
  Citation
 **********
+
+Please cite our JOSS paper |JOSS|
 
 .. code::
 
