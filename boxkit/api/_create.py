@@ -29,6 +29,9 @@ def create_dataset(storage=None, **attributes):
         nxb=1,
         nyb=1,
         nzb=1,
+        xguard=0,
+        yguard=0,
+        zguard=0,
         nblockx=1,
         nblocky=1,
         nblockz=1,
@@ -46,6 +49,9 @@ def create_dataset(storage=None, **attributes):
         "nxb": int(self.nxb),
         "nyb": int(self.nyb),
         "nzb": int(self.nzb),
+        "xguard": int(self.xguard),
+        "yguard": int(self.yguard),
+        "zguard": int(self.zguard),
     }
 
     data = library.Data(storage=storage, **data_attributes)

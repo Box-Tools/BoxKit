@@ -3,7 +3,7 @@
 import h5pickle as h5py
 
 
-def read_test_sample(
+def read(
     filename, server, nthreads, batch, monitor, backend
 ):  # pylint: disable=too-many-locals disable=too-many-arguments disable=unused-argument
     """

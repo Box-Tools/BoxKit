@@ -3,4 +3,4 @@ PYARROW=None
 ZARR=None
 DASK=None
 SERVER=None
-TESTING=None
+ANALYSIS=None

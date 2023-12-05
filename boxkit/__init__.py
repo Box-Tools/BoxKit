@@ -2,8 +2,8 @@
 
 from .api import *
 from . import library
-from . import options
 from . import resources
+from . import options
 
 if options.CBOX:
     from . import cbox

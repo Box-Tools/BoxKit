@@ -82,7 +82,9 @@ class Block:  # pylint: disable=too-many-instance-attributes
             "node": self.__class__.get_node_loc,
         }
 
-        return range_dict[location](self.xmin, self.xmax, self.dx, self.nxb)
+        return range_dict[location](
+            self.xmin, self.xmax, self.dx, self.nxb, self.xguard
+        )
 
     def yrange(self, location):
         """
@@ -93,7 +95,9 @@ class Block:  # pylint: disable=too-many-instance-attributes
             "node": self.__class__.get_node_loc,
         }
 
-        return range_dict[location](self.ymin, self.ymax, self.dy, self.nyb)
+        return range_dict[location](
+            self.ymin, self.ymax, self.dy, self.nyb, self.yguard
+        )
 
     def zrange(self, location):
         """
@@ -104,19 +108,29 @@ class Block:  # pylint: disable=too-many-instance-attributes
             "node": self.__class__.get_node_loc,
         }
 
-        return range_dict[location](self.zmin, self.zmax, self.dz, self.nzb)
+        return range_dict[location](
+            self.zmin, self.zmax, self.dz, self.nzb, self.zguard
+        )
 
     @staticmethod
-    def get_center_loc(min_val, max_val, delta, num_points):
+    def get_center_loc(min_val, max_val, delta, num_points, num_guards):
         """Private method for center location"""
-        return numpy.linspace(min_val + delta / 2, max_val - delta / 2, num_points)
+        return numpy.linspace(
+            min_val + delta / 2 - num_guards * delta,
+            max_val - delta / 2 + num_guards * delta,
+            num_points + 2 * num_guards,
+        )
 
     @staticmethod
     def get_node_loc(
-        min_val, max_val, delta, num_points
+        min_val, max_val, delta, num_points, num_guards
     ):  # pylint: disable=unused-argument
         """Private method for face location"""
-        return numpy.linspace(min_val, max_val, num_points)
+        return numpy.linspace(
+            min_val - num_guards * delta,
+            max_val + num_guards * delta,
+            num_points + 2 * num_guards,
+        )
 
     def _set_attributes(self, attributes):
         """

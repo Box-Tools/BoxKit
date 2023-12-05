@@ -13,7 +13,7 @@ runs:
       shell: bash
     - run: maple container execute "pip3 install click"
       shell: bash
-    - run: maple container execute "export CXX=g++ BOOST_LIB_DIR=usr/lib BOOST_INCLUDE_DIR=/usr/include && ./setup install --with-cbox"
+    - run: maple container execute "export CXX=g++ BOOST_LIB_DIR=usr/lib BOOST_INCLUDE_DIR=/usr/include && ./setup install --with-cbox --enable-analysis"
       shell: bash
     - run: maple container execute "./setup clean"
       shell: bash

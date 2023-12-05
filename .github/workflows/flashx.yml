@@ -29,7 +29,7 @@ jobs:
     - name: Build Container
       run: |
           maple image build flashx --base=${{secrets.DOCKER_HUB_USERNAME}}/boxkit:testing
-    - uses: ./.github/actions/install
+    - uses: ./.github/actions/install-analysis
       with:
         image: flashx
     - name: Run BoxKit tests
