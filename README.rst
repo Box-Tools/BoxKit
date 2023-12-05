@@ -235,7 +235,9 @@ for an example.
  Citation
 **********
 
-Please cite our JOSS paper |JOSS|
+Please cite our JOSS paper,
+
+|JOSS|
 
 .. code::
 
