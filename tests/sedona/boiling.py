@@ -193,7 +193,7 @@ class TestBoiling(unittest.TestCase):
         merged_dataset = boxkit.mergeblocks(
             mean_dataset, "vvel", nthreads=8, backend="loky", monitor=True
         )
-        mean = numpy.mean(merged_dataset["vvel"][:])
+        mean = numpy.mean(merged_dataset["vvel"][0, 1:-1, 1:-1, 1:-1])
 
         mean_dataset.purge()
         merged_dataset.purge()
