@@ -8,29 +8,23 @@ class Block:  # pylint: disable=too-many-instance-attributes
     """
     Class for storing block metadata
 
-    Parameters
-    ----------
-    data       : Boxkit Data object
-    attributes : Dictionary of attributes
-
-               .. code-block::
-
-                  'dx'   : grid spacing x direction
-                  'dy'   : grid spacing y direction
-                  'dz'   : grid spacing z direction
-                  'xmin' : low  bound x direction
-                  'ymin' : low  bound y direction
-                  'zmin' : low  bound z direction
-                  'xmax' : high bound x direction
-                  'ymax' : high bound y direction
-                  'zmax' : high bound z direction
-                  'tag'  : block ID
+    :param data: BoxKit Data object
+    :param attributes['dx']: Grid spacing in x direction
+    :param attributes['dy']: Grid spacing in y direction
+    :param attributes['dz']: Grid spacing in z direction
+    :param attributes['xmin']: Lower bound in x direction
+    :param attributes['ymin']: Lower bound in y direction
+    :param attributes['zmin']: Lower bound in z direction
+    :param attributes['xmax']: Higher bound in x direction
+    :param attributes['ymax']: Higher bound in y direction
+    :param attributes['zmax']: Higher bound in z direction
+    :param attributes['tag']: Block ID
     """
 
     type_ = "default"
 
     def __init__(self, data=None, **attributes):
-        """Initialize the  object and allocate the data."""
+        """Initialize the object and map data."""
         super().__init__()
 
         self.dx, self.dy, self.dz = [1.0, 1.0, 1.0]  # pylint: disable=invalid-name
